@@ -1,0 +1,1453 @@
+{
+ "url": "http://localhost:8000/products/cupang-halfmoon-rosetail-super-red",
+ "at": "2026-11-13T15:30:17.437Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.62,
+    0.45,
+    0.57
+   ],
+   "motion": {
+    "elements": 9,
+    "css": 1,
+    "transitions": 8,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 2597,
+     "screens": 2.9,
+     "words": 363,
+     "img": 5,
+     "video": 0,
+     "canvas": 0,
+     "svg": 9,
+     "sections": 2,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 5,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "cupang-halfmoon.jpg",
+      "cupang-plakat.jpg",
+      "channa-maru.jpg",
+      "guppy-afr.jpg",
+      "neon-tetra.jpg"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+     "words": 8,
+     "chars": 49,
+     "lines": 2,
+     "size": 44,
+     "vw": 3.1,
+     "font": "Hanken Grotesk",
+     "weight": 500,
+     "tracking": -0.035,
+     "leading": 1,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "right",
+     "widthRatio": 0.41,
+     "top": 187,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+     "words": 8,
+     "lines": 2,
+     "size": 44,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+      "words": 8,
+      "chars": 49,
+      "lines": 2,
+      "size": 44,
+      "vw": 3.1,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.41,
+      "top": 187,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Rp 175.000",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 44,
+      "vw": 3.1,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.03,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.15,
+      "top": 371,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "Produk terkait",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 44,
+      "vw": 3.1,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.84,
+      "top": 1271,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Temukan ikan berikutnya.",
+      "words": 3,
+      "chars": 24,
+      "lines": 2,
+      "size": 28,
+      "vw": 1.9,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.15,
+      "top": 2301,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 85.3,
+      "vw": 5.9,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.29,
+      "top": 2358,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 5,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 3,
+     "centered": 1,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      13,
+      16,
+      20,
+      28,
+      44,
+      85
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": -0.005,
+      "contrast": 11.5
+     },
+     "measureChars": 73,
+     "max": {
+      "size": 85.3,
+      "vw": 5.9,
+      "font": "Hanken Grotesk",
+      "text": "DUNIA IKAN"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0.02,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#e2dccf",
+     "bodyBgHsl": {
+      "h": 41,
+      "s": 0.25,
+      "l": 0.85
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#e2dccf",
+       "top": 0,
+       "hsl": {
+        "h": 41,
+        "s": 0.25,
+        "l": 0.85
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2a1110",
+       "share": 0.81
+      },
+      {
+       "color": "#6b524c",
+       "share": 0.16
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.02
+      },
+      {
+       "color": "#e2dccf",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#2a1110",
+      "hsl": {
+       "h": 2,
+       "s": 0.45,
+       "l": 0.11
+      },
+      "fg": "#e2dccf"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 2,
+     "radius": 6,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Daftar",
+      "Tambah ke keranjang"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 5,
+     "mediaRadius": 2,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.33
+     }
+    ],
+    "nav": {
+     "links": 11,
+     "fixed": true,
+     "height": 104,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 2597,
+    "margins": {
+     "left": 112,
+     "right": 118
+    },
+    "sections": [
+     {
+      "sel": "section.container-page.pt-6",
+      "tag": "section",
+      "top": 104,
+      "height": 1071,
+      "words": 154,
+      "media": 1,
+      "middle": 41,
+      "heading": {
+       "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+       "size": 44,
+       "tag": "h1"
+      },
+      "left": 105,
+      "right": 112,
+      "textLeft": 112,
+      "textRight": 122,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page.py-20",
+      "tag": "section",
+      "top": 1175,
+      "height": 821,
+      "words": 113,
+      "media": 4,
+      "middle": 16,
+      "heading": {
+       "text": "Produk terkait",
+       "size": 44,
+       "tag": "h2"
+      },
+      "left": 112,
+      "right": 112,
+      "textLeft": 112,
+      "textRight": 118,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.container-page.pb-2",
+      "tag": "footer",
+      "top": 1995,
+      "height": 602,
+      "words": 81,
+      "media": 0,
+      "middle": 121,
+      "heading": {
+       "text": "DUNIA IKAN",
+       "size": 85,
+       "tag": "p"
+      },
+      "left": 128,
+      "right": 148,
+      "textLeft": 128,
+      "textRight": 148,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+      "size": 44,
+      "top": 187,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 744,
+      "n": 4
+     },
+     {
+      "x": 112,
+      "n": 1
+     },
+     {
+      "x": 728,
+      "n": 1
+     },
+     {
+      "x": 764,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 7,
+    "bodySize": 16,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.04,
+    "voidBox": {
+     "x": 0,
+     "y": 120,
+     "w": 60,
+     "h": 780
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.69,
+    0.66,
+    0.46,
+    0.76
+   ],
+   "motion": {
+    "elements": 9,
+    "css": 1,
+    "transitions": 8,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 3825,
+     "screens": 3.7,
+     "words": 360,
+     "img": 5,
+     "video": 0,
+     "canvas": 0,
+     "svg": 9,
+     "sections": 2,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 5,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "cupang-halfmoon.jpg",
+      "cupang-plakat.jpg",
+      "channa-maru.jpg",
+      "guppy-afr.jpg",
+      "neon-tetra.jpg"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+     "words": 8,
+     "chars": 49,
+     "lines": 2,
+     "size": 35.4,
+     "vw": 4.6,
+     "font": "Hanken Grotesk",
+     "weight": 500,
+     "tracking": -0.035,
+     "leading": 1,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.88,
+     "top": 187,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+     "words": 8,
+     "lines": 2,
+     "size": 35.4,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+      "words": 8,
+      "chars": 49,
+      "lines": 2,
+      "size": 35.4,
+      "vw": 4.6,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 187,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Rp 175.000",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 44,
+      "vw": 5.7,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.03,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.27,
+      "top": 1285,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "Produk terkait",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 35.4,
+      "vw": 4.6,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 2165,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 57.1,
+      "vw": 7.4,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.36,
+      "top": 3351,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "Temukan ikan berikutnya.",
+      "words": 3,
+      "chars": 24,
+      "lines": 2,
+      "size": 28,
+      "vw": 3.6,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.29,
+      "top": 3529,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 5,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 3,
+     "centered": 1,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      13,
+      16,
+      20,
+      28,
+      35,
+      44,
+      57
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": -0.005,
+      "contrast": 11.5
+     },
+     "measureChars": 84,
+     "max": {
+      "size": 57.1,
+      "vw": 7.4,
+      "font": "Hanken Grotesk",
+      "text": "DUNIA IKAN"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0.02,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#e2dccf",
+     "bodyBgHsl": {
+      "h": 41,
+      "s": 0.25,
+      "l": 0.85
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#e2dccf",
+       "top": 0,
+       "hsl": {
+        "h": 41,
+        "s": 0.25,
+        "l": 0.85
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2a1110",
+       "share": 0.81
+      },
+      {
+       "color": "#6b524c",
+       "share": 0.16
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.02
+      },
+      {
+       "color": "#e2dccf",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#2a1110",
+      "hsl": {
+       "h": 2,
+       "s": 0.45,
+       "l": 0.11
+      },
+      "fg": "#e2dccf"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 1,
+     "radius": 6,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Daftar"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 1,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 2829
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.62
+     }
+    ],
+    "nav": {
+     "links": 9,
+     "fixed": true,
+     "height": 104,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 3825,
+    "margins": {
+     "left": 47,
+     "right": 47
+    },
+    "sections": [
+     {
+      "sel": "section.container-page.pt-6",
+      "tag": "section",
+      "top": 104,
+      "height": 1965,
+      "words": 154,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+       "size": 35,
+       "tag": "h1"
+      },
+      "left": 38,
+      "right": 38,
+      "textLeft": 47,
+      "textRight": 57,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page.py-20",
+      "tag": "section",
+      "top": 2069,
+      "height": 697,
+      "words": 113,
+      "media": 4,
+      "middle": 16,
+      "heading": {
+       "text": "Produk terkait",
+       "size": 35,
+       "tag": "h2"
+      },
+      "left": 47,
+      "right": 47,
+      "textLeft": 47,
+      "textRight": 57,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.container-page.pb-2",
+      "tag": "footer",
+      "top": 2765,
+      "height": 1060,
+      "words": 81,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 63,
+      "right": 78,
+      "textLeft": 63,
+      "textRight": 78,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+      "size": 35,
+      "top": 187,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 47,
+      "n": 5
+     },
+     {
+      "x": 67,
+      "n": 1
+     },
+     {
+      "x": 392,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 7,
+    "bodySize": 16,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 6,
+   "filled": [
+    0.7,
+    0.58,
+    0.54,
+    0.64,
+    0.84,
+    0.87
+   ],
+   "motion": {
+    "elements": 9,
+    "css": 1,
+    "transitions": 8,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 4497,
+     "screens": 5.3,
+     "words": 350,
+     "img": 5,
+     "video": 0,
+     "canvas": 0,
+     "svg": 9,
+     "sections": 2,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 5,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "cupang-halfmoon.jpg",
+      "cupang-plakat.jpg",
+      "channa-maru.jpg",
+      "guppy-afr.jpg",
+      "neon-tetra.jpg"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Rp 175.000",
+     "words": 2,
+     "chars": 10,
+     "lines": 1,
+     "size": 44,
+     "vw": 11.3,
+     "font": "Hanken Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.54,
+     "top": 791,
+     "tag": "p",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+     "words": 8,
+     "lines": 2,
+     "size": 28.6,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+      "words": 8,
+      "chars": 49,
+      "lines": 2,
+      "size": 28.6,
+      "vw": 7.3,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 140,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Rp 175.000",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 44,
+      "vw": 11.3,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.03,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.54,
+      "top": 791,
+      "tag": "p",
+      "kind": "heading"
+     },
+     {
+      "text": "Produk terkait",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 28.6,
+      "vw": 7.3,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 1996,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 41.2,
+      "vw": 10.6,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.52,
+      "top": 4006,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "Temukan ikan berikutnya.",
+      "words": 3,
+      "chars": 24,
+      "lines": 2,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.56,
+      "top": 4177,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 5,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 2,
+     "centered": 1,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      13,
+      16,
+      20,
+      28,
+      29,
+      41,
+      44
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": -0.005,
+      "contrast": 11.5
+     },
+     "measureChars": 44,
+     "max": {
+      "size": 44,
+      "vw": 11.3,
+      "font": "Hanken Grotesk",
+      "text": "Rp 175.000"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0.02,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#e2dccf",
+     "bodyBgHsl": {
+      "h": 41,
+      "s": 0.25,
+      "l": 0.85
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#e2dccf",
+       "top": 0,
+       "hsl": {
+        "h": 41,
+        "s": 0.25,
+        "l": 0.85
+       }
+      },
+      {
+       "color": "#d7d0c1",
+       "top": 1423,
+       "hsl": {
+        "h": 41,
+        "s": 0.22,
+        "l": 0.8
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2a1110",
+       "share": 0.83
+      },
+      {
+       "color": "#6b524c",
+       "share": 0.13
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.02
+      },
+      {
+       "color": "#e2dccf",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#2a1110",
+      "hsl": {
+       "h": 2,
+       "s": 0.45,
+       "l": 0.11
+      },
+      "fg": "#e2dccf"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 1,
+     "radius": 6,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Daftar"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 1,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 5,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 3121
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.53
+     }
+    ],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 72,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 4497,
+    "margins": {
+     "left": 20,
+     "right": 20
+    },
+    "sections": [
+     {
+      "sel": "section.container-page.pt-6",
+      "tag": "section",
+      "top": 72,
+      "height": 1844,
+      "words": 154,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Rp 175.000",
+       "size": 44,
+       "tag": "p"
+      },
+      "left": 14,
+      "right": 0,
+      "textLeft": 20,
+      "textRight": -70,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page.py-20",
+      "tag": "section",
+      "top": 1916,
+      "height": 1141,
+      "words": 113,
+      "media": 4,
+      "middle": 13,
+      "heading": {
+       "text": "Produk terkait",
+       "size": 29,
+       "tag": "h2"
+      },
+      "left": 20,
+      "right": 20,
+      "textLeft": 20,
+      "textRight": 20,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.container-page.pb-2",
+      "tag": "footer",
+      "top": 3057,
+      "height": 1440,
+      "words": 81,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 36,
+      "right": 47,
+      "textLeft": 36,
+      "textRight": 47,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Cupang Halfmoon Rosetail Super Red (Male Grade A)",
+      "size": 29,
+      "top": 140,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 20,
+      "n": 6
+     },
+     {
+      "x": 40,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 7,
+    "bodySize": 16,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "WARN",
+   "id": "still-page",
+   "width": 1440,
+   "message": "Little motion: 9 element(s) moved while the page loaded and scrolled.",
+   "fix": "Give every section an entrance for its parts (not one fade of the whole block) and add one moving picture: a looping clip or a slow move on a photograph."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "D:\\gatauni\\.taste-skill\\after-product\\desktop-fold.jpg",
+   "pages": [
+    "D:\\gatauni\\.taste-skill\\after-product\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "D:\\gatauni\\.taste-skill\\after-product\\tablet-fold.jpg",
+   "pages": [
+    "D:\\gatauni\\.taste-skill\\after-product\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "D:\\gatauni\\.taste-skill\\after-product\\mobile-fold.jpg",
+   "pages": [
+    "D:\\gatauni\\.taste-skill\\after-product\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

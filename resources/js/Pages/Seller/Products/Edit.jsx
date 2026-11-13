@@ -4,7 +4,7 @@ import SellerLayout from '@/Layouts/SellerLayout';
 import { Fish, ArrowLeft, HeartPulse, Save } from 'lucide-react';
 
 export default function Edit({ product, categories }) {
-    const fish = product.fishDetail;
+    const fish = product.fish_detail;
 
     const { data, setData, post, processing, errors } = useForm({
         _method: 'PUT',

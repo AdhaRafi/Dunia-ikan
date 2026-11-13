@@ -13,18 +13,30 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['"Plus Jakarta Sans"', ...defaultTheme.fontFamily.sans],
+                sans: ['"Montserrat"', '"Plus Jakarta Sans"', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                dunia: {
-                    blue: '#0684E5',
-                    aqua: '#4AB8BD',
-                    marine: '#1E80A0',
-                    navy: '#0D2E92',
-                    soft: '#FBF8FF',
-                    cream: '#FFE4B0',
-                    mint: '#C0ECB8',
-                },
+                'wild-dark': '#0E1719',
+                'wild-panel': '#142224',
+                'wild-card': '#192C2E',
+                'wild-green': '#00C882',
+                'wild-green-light': '#34D399',
+                'wild-green-dark': '#059669',
+                'wild-teal': '#1E80A0',
+                'wild-muted': '#64748B',
+                'wild-light': '#F8FAF9',
+                'dunia-navy': '#0E1719',
+                'dunia-blue': '#00C882',
+                'dunia-marine': '#059669',
+                'dunia-aqua': '#10B981',
+                'dunia-cream': '#F8FAF9',
+                'dunia-soft': '#F1F5F9',
+            },
+            borderRadius: {
+                spec: '6px',
+            },
+            maxWidth: {
+                page: '1280px',
             },
         },
     },

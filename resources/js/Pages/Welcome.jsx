@@ -1,216 +1,356 @@
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
+import FishMandala from '@/Components/FishMandala';
 import { 
     Fish, 
     Sparkles, 
     ShieldCheck, 
     HeartPulse, 
-    Store, 
     ArrowRight, 
+    Play, 
     Thermometer, 
     Droplets, 
     Boxes,
-    Award
+    ChevronRight,
+    MapPin,
+    CheckCircle2
 } from 'lucide-react';
 
 export default function Welcome({ categories, featuredFish, careGuides, featuredStores, stats }) {
+    // 5 vertical showcase items inspired by reference image
+    const showcaseSpecimens = [
+        {
+            num: '01',
+            name: 'Cupang (Betta)',
+            slug: 'cupang-halfmoon-rosetail-super-red',
+            image: '/images/products/cupang-halfmoon.jpg',
+            trait: 'Rosetail Super Red',
+        },
+        {
+            num: '02',
+            name: 'Channa (Predator)',
+            slug: 'channa-maru-yellow-sentarum-prospek-bunga',
+            image: '/images/products/channa-maru.jpg',
+            trait: 'Yellow Sentarum',
+        },
+        {
+            num: '03',
+            name: 'Discus & Cichlid',
+            slug: 'discus-blue-diamond-high-body',
+            image: '/images/products/discus.jpg',
+            trait: 'Blue Diamond High Body',
+        },
+        {
+            num: '04',
+            name: 'Guppy & Tetra',
+            slug: 'guppy-albino-full-red-afr-trio',
+            image: '/images/products/neon-tetra.jpg',
+            trait: 'Neon & Albino Morph',
+        },
+        {
+            num: '05',
+            name: 'Aquascape Flora',
+            slug: 'anubias-nana-petite-aquascape',
+            image: '/images/products/bucephalandra.jpg',
+            trait: 'Rare Bucephalandra',
+        },
+    ];
+
     return (
         <AppLayout>
-            <Head title="Dunia Ikan - Marketplace Ikan Hias, Morph & Aquascape Terpercaya" />
+            <Head title="Dunia Ikan — Marketplace Ikan Hias, Morph & Aquascape Indonesia" />
 
-            {/* Hero Section (Coastal-Modern) */}
-            <section className="relative overflow-hidden bg-gradient-to-b from-sky-50/70 via-white to-white py-16 sm:py-24 border-b border-sky-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* 1. HERO SECTION (Wild World Style: Dark, Lush, Immersive) */}
+            <section className="relative bg-[#0E1719] text-white overflow-hidden border-b border-slate-800">
+                {/* Background Lush Aquatic Atmosphere with Gradient */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="/images/products/cupang-halfmoon.jpg"
+                        alt="Aquatic World Background"
+                        className="w-full h-full object-cover object-center opacity-35 scale-105 filter blur-xs"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#0E1719] via-[#0E1719]/85 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0E1719] via-transparent to-black/40" />
+                </div>
+
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-16 sm:py-24 lg:py-28">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                         {/* Hero Text */}
-                        <div className="lg:col-span-7 space-y-6 text-left">
-                            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-dunia-aqua/10 text-dunia-navy text-xs font-bold border border-dunia-aqua/20">
-                                <Sparkles className="w-3.5 h-3.5 text-dunia-aqua" />
-                                <span>Marketplace Ikan Hias & Mutasi Genetik (Morph) Pertama Bergaransi DOA</span>
-                            </div>
+                        <div className="lg:col-span-7 space-y-6">
+                            <p className="text-xl sm:text-2xl font-light text-emerald-400 tracking-wide font-sans">
+                                Fantastic
+                            </p>
 
-                            <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-dunia-navy leading-[1.15] tracking-tight">
-                                Temukan Ikan Hias Impian & Rawat Akuarium dengan{' '}
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-dunia-blue via-dunia-marine to-dunia-aqua">
-                                    Bantuan AI
-                                </span>
+                            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.05]">
+                                Aquatic World
                             </h1>
 
-                            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
-                                Jelajahi ragam spesies dan morfologi pilihan dari penangkar terpercaya di seluruh Indonesia. Dilengkapi spesifikasi biologi lengkap, kebijakan garansi hidup (D.O.A), dan asisten kesehatan ikan berbasis AI.
+                            <p className="text-sm sm:text-base text-slate-300 max-w-xl leading-relaxed">
+                                Standar penangkaran dan akreditasi spesimen ikan hias serta mutasi genetik (morph) terpercaya di Indonesia. Transaksi bergaransi hidup (D.O.A) dengan transparansi parameter biologi.
                             </p>
 
                             <div className="flex flex-wrap items-center gap-4 pt-2">
                                 <Link
                                     href="/products"
-                                    className="px-7 py-3.5 rounded-2xl bg-dunia-blue text-white font-bold text-sm shadow-lg shadow-dunia-blue/25 hover:bg-sky-600 hover:shadow-dunia-blue/40 transition flex items-center gap-2"
+                                    className="px-7 py-3 rounded-lg border-2 border-[#00C882] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#00C882] hover:text-slate-950 transition duration-300 flex items-center gap-2"
                                 >
-                                    <Fish className="w-4 h-4" />
-                                    Jelajahi Katalog Ikan
+                                    <span>Discover / Jelajahi</span>
+                                    <ChevronRight className="w-4 h-4" />
                                 </Link>
 
                                 <Link
                                     href="/guides"
-                                    className="px-6 py-3.5 rounded-2xl bg-white border border-slate-200 text-dunia-navy font-bold text-sm hover:border-dunia-aqua hover:bg-sky-50/50 transition flex items-center gap-2"
+                                    className="px-6 py-3 rounded-lg bg-[#142224]/80 backdrop-blur-xs border border-slate-700/80 text-slate-200 font-bold text-xs uppercase tracking-wider hover:border-[#00C882] hover:text-[#00C882] transition"
                                 >
-                                    <HeartPulse className="w-4 h-4 text-dunia-marine" />
-                                    Pusat Panduan Kesehatan
+                                    Panduan Kesehatan Ikan
                                 </Link>
-                            </div>
-
-                            {/* Trust badges (MorphMarket style) */}
-                            <div className="pt-6 grid grid-cols-3 gap-4 border-t border-slate-200/80 max-w-lg">
-                                <div>
-                                    <p className="text-xl sm:text-2xl font-extrabold text-dunia-navy">100%</p>
-                                    <p className="text-xs text-slate-500 font-medium">Garansi Hidup (DOA)</p>
-                                </div>
-                                <div>
-                                    <p className="text-xl sm:text-2xl font-extrabold text-dunia-navy">{stats?.totalFish || 100}+</p>
-                                    <p className="text-xs text-slate-500 font-medium">Stok Ikan Aktif</p>
-                                </div>
-                                <div>
-                                    <p className="text-xl sm:text-2xl font-extrabold text-dunia-navy">{stats?.totalStores || 10}+</p>
-                                    <p className="text-xs text-slate-500 font-medium">Toko Penangkar</p>
-                                </div>
                             </div>
                         </div>
 
-                        {/* Hero Visual Card (Showcase Morph) */}
-                        <div className="lg:col-span-5 relative">
-                            <div className="relative mx-auto max-w-md bg-white rounded-3xl p-3 shadow-2xl shadow-sky-900/10 border border-sky-100 transform lg:rotate-1 hover:rotate-0 transition duration-300">
-                                <div className="aspect-4/5 rounded-2xl overflow-hidden relative bg-slate-900">
+                        {/* Hero Visual Card / Focal Animal (like green tree python in reference) */}
+                        <div className="lg:col-span-5 relative flex justify-center">
+                            <div className="relative w-full max-w-sm rounded-2xl overflow-hidden border border-emerald-500/20 shadow-2xl shadow-emerald-950/50 bg-[#142224]/70 backdrop-blur-sm group">
+                                <div className="aspect-[4/4] overflow-hidden relative">
                                     <img
-                                        src="https://images.unsplash.com/photo-1544943910-4c1dc44a0b27?auto=format&fit=crop&w=800&q=80"
-                                        alt="Ikan Cupang Kontes Rosetail"
-                                        className="w-full h-full object-cover"
+                                        src="/images/products/cupang-halfmoon.jpg"
+                                        alt="Rosetail Betta Specimen"
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <span className="px-2.5 py-0.5 rounded-full bg-dunia-aqua text-dunia-navy text-xs font-bold">
-                                                Morph: Rosetail Super Red
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#0E1719] via-transparent to-transparent opacity-80" />
+                                    
+                                    <div className="absolute bottom-3 left-4 right-4">
+                                        <div className="flex items-center justify-between text-xs">
+                                            <span className="px-2.5 py-1 rounded-md bg-[#00C882] text-slate-950 font-bold text-[11px]">
+                                                Grade Kontes ♂
                                             </span>
-                                            <span className="px-2.5 py-0.5 rounded-full bg-blue-600/80 backdrop-blur-xs text-white text-xs font-semibold">
-                                                ♂ Jantan Grade A
+                                            <span className="text-emerald-300 font-semibold text-xs">
+                                                Garansi DOA 100%
                                             </span>
                                         </div>
-                                        <h3 className="font-extrabold text-xl leading-tight">
-                                            Cupang Halfmoon Rosetail Super Red
-                                        </h3>
-                                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/20 text-xs">
-                                            <span className="text-sky-200">Penangkar: Aquatic Heritage Farm</span>
-                                            <span className="font-bold text-dunia-cream text-sm">Rp 175.000</span>
-                                        </div>
+                                        <p className="font-extrabold text-base text-white mt-1.5">
+                                            Betta Halfmoon Rosetail Super Red
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
 
-            {/* MorphMarket Core Advantages Banner */}
-            <section className="py-10 bg-dunia-soft/60 border-b border-sky-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-sky-100 shadow-xs">
-                            <div className="w-12 h-12 rounded-xl bg-blue-50 text-dunia-blue flex items-center justify-center shrink-0">
-                                <ShieldCheck className="w-6 h-6" />
+                    {/* Bottom Floating Live Cam & Slider Bar (like reference) */}
+                    <div className="mt-12 pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                        {/* Live Cam / Video Unboxing Badge */}
+                        <div className="flex items-center gap-4 bg-[#142224]/90 border border-slate-700/60 rounded-xl p-2.5 pr-5 max-w-xs shadow-lg">
+                            <div className="relative w-16 h-12 rounded-lg overflow-hidden shrink-0 bg-slate-800">
+                                <img
+                                    src="/images/products/channa-maru.jpg"
+                                    alt="Live cam preview"
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                                    <div className="w-6 h-6 rounded-full bg-[#00C882] text-slate-950 flex items-center justify-center shadow-xs">
+                                        <Play className="w-3 h-3 fill-current ml-0.5" />
+                                    </div>
+                                </div>
                             </div>
                             <div>
-                                <h4 className="font-bold text-dunia-navy text-sm">Kebijakan D.O.A. Terverifikasi</h4>
-                                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                                    Setiap penjual menetapkan garansi ikan hidup sampai tujuan dengan kemasan standar oksigen bertekanan tinggi.
+                                <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                                    Live Cam & Video
+                                </p>
+                                <p className="text-[11px] text-slate-400">
+                                    Kamera Karantina Penangkar
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-sky-100 shadow-xs">
-                            <div className="w-12 h-12 rounded-xl bg-teal-50 text-dunia-aqua flex items-center justify-center shrink-0">
-                                <Thermometer className="w-6 h-6" />
+                        {/* Slider Controls (like 1/3 indicator in reference) */}
+                        <div className="flex items-center gap-4 self-end sm:self-auto text-xs font-medium text-slate-400">
+                            <div className="flex items-center gap-2">
+                                <span className="w-2.5 h-2.5 rounded-full border-2 border-[#00C882] bg-[#00C882]" />
+                                <span className="w-2 h-2 rounded-full bg-slate-600" />
+                                <span className="w-2 h-2 rounded-full bg-slate-600" />
                             </div>
-                            <div>
-                                <h4 className="font-bold text-dunia-navy text-sm">Parameter Air & Biologi Lengkap</h4>
-                                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                                    Informasi rentang suhu, pH, volume tank minimal, temperamen, dan jenis kelamin tercatat detail pada setiap ikan.
-                                </p>
+                            <div className="w-16 h-0.5 bg-slate-700 rounded-full overflow-hidden">
+                                <div className="w-1/3 h-full bg-[#00C882]" />
                             </div>
-                        </div>
-
-                        <div className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-sky-100 shadow-xs">
-                            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                                <HeartPulse className="w-6 h-6" />
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-dunia-navy text-sm">Konsultasi Kesehatan Ikan AI</h4>
-                                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                                    Asisten virtual siaga membantu konsultasi awal gejala sakit (White Spot, Fin Rot) berbasis panduan kurasi resmi.
-                                </p>
-                            </div>
+                            <span className="text-slate-300 font-bold">1/3</span>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Category Shortcut Grid */}
-            <section className="py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-end justify-between mb-8">
-                    <div>
-                        <span className="text-xs font-bold text-dunia-marine uppercase tracking-wider">Navigasi Cepat</span>
-                        <h2 className="text-2xl sm:text-3xl font-extrabold text-dunia-navy mt-1">Kategori Produk</h2>
-                    </div>
-                    <Link href="/products" className="text-xs font-bold text-dunia-blue hover:text-sky-700 flex items-center gap-1">
-                        Lihat Semua <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                </div>
+            {/* 2. MIDDLE SECTION: FANTASTIC AQUARIUM (White background with mandala art & 3 stats) */}
+            <section className="py-20 sm:py-28 bg-white border-b border-slate-200 relative overflow-hidden">
+                {/* Subtle Geometric Scale Watermark Texture */}
+                <div 
+                    className="absolute inset-0 opacity-[0.035] pointer-events-none"
+                    style={{
+                        backgroundImage: `radial-gradient(#00C882 1px, transparent 1px), radial-gradient(#00C882 1px, #ffffff 1px)`,
+                        backgroundSize: `24px 24px`,
+                        backgroundPosition: `0 0, 12px 12px`
+                    }}
+                />
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                    {categories?.map((cat) => (
-                        <Link
-                            key={cat.id}
-                            href={`/products?category=${cat.slug}`}
-                            className="p-5 rounded-2xl bg-white border border-sky-100 hover:border-dunia-aqua hover:shadow-md hover:shadow-sky-100 transition flex flex-col items-center text-center group"
-                        >
-                            <div className="w-14 h-14 rounded-2xl bg-sky-50 text-dunia-marine flex items-center justify-center group-hover:scale-110 group-hover:bg-dunia-blue group-hover:text-white transition duration-200 mb-3">
-                                <Fish className="w-7 h-7" />
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                        {/* Left: Artistic Mandala Fish Illustration (matches chameleon line-art in reference) */}
+                        <div className="lg:col-span-5 flex justify-center">
+                            <div className="w-full max-w-md p-4">
+                                <FishMandala className="w-full h-auto drop-shadow-sm" />
                             </div>
-                            <h3 className="font-bold text-sm text-slate-900 group-hover:text-dunia-blue transition">
-                                {cat.name}
-                            </h3>
-                            <p className="text-xs text-slate-400 mt-1">
-                                {cat.products_count ?? 0} Produk
+                        </div>
+
+                        {/* Right: Section Info, Description & 3 Stats */}
+                        <div className="lg:col-span-7 space-y-6">
+                            <div>
+                                <p className="text-xs font-bold text-[#00C882] uppercase tracking-widest flex items-center gap-2 mb-2">
+                                    <span className="w-6 h-0.5 bg-[#00C882] inline-block" />
+                                    About Aquarium & Farm
+                                </p>
+                                <h2 className="text-3xl sm:text-4xl tracking-tight text-slate-900">
+                                    <span className="font-extrabold">FANTASTIC</span>{' '}
+                                    <span className="font-light text-slate-500">AQUARIUM</span>
+                                </h2>
+                            </div>
+
+                            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                                Dunia Ikan menghubungkan penghobi akuarium dengan jaringan penangkar ikan hias terverifikasi di seluruh nusantara. Setiap spesimen dicatat dengan data biologi presisi: parameter suhu, rentang pH air, volume tangki minimal, temperamen, hingga mutasi genetika (morph).
                             </p>
-                        </Link>
-                    ))}
+                            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                                Pengiriman menggunakan prosedur karantina ketat, kantong oksigen ganda bertekanan tinggi, dan kemasan styrofoam tahan banting dengan garansi hidup 100% sampai tujuan (Live Arrival Guarantee).
+                            </p>
+
+                            {/* 3 Prominent Stat Counters (Green numbers like reference: 850, 230, 160.000) */}
+                            <div className="pt-4 grid grid-cols-3 gap-6 border-t border-slate-100">
+                                <div>
+                                    <p className="text-xs text-slate-500 font-medium mb-1">
+                                        Spesies & Morph
+                                    </p>
+                                    <p className="text-3xl sm:text-4xl font-extrabold text-[#00C882] tracking-tight">
+                                        850
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="text-xs text-slate-500 font-medium mb-1">
+                                        Penangkar Resmi
+                                    </p>
+                                    <p className="text-3xl sm:text-4xl font-extrabold text-[#00C882] tracking-tight">
+                                        230
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="text-xs text-slate-500 font-medium mb-1">
+                                        Komunitas Aktif
+                                    </p>
+                                    <p className="text-3xl sm:text-4xl font-extrabold text-[#00C882] tracking-tight">
+                                        160.000
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="pt-2">
+                                <Link
+                                    href="/guides"
+                                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg border-2 border-slate-900 text-slate-900 font-extrabold text-xs uppercase tracking-wider hover:bg-slate-900 hover:text-white transition duration-200"
+                                >
+                                    <span>Pelajari Standar D.O.A.</span>
+                                    <ArrowRight className="w-3.5 h-3.5" />
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            {/* Featured Fish Listing (MorphMarket Style) */}
-            <section className="py-14 bg-white border-t border-slate-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+            {/* 3. SHOWCASE STRIP (The 5 Vertical Photographic Cards side-by-side like reference) */}
+            <section className="py-16 sm:py-24 bg-white border-b border-slate-200">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                         <div>
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-dunia-blue text-xs font-bold mb-2">
-                                <Award className="w-3.5 h-3.5" />
-                                <span>Pilihan Penangkar Terkurasi</span>
-                            </div>
-                            <h2 className="text-2xl sm:text-3xl font-extrabold text-dunia-navy">
-                                Koleksi Ikan Hias & Mutasi Morph Terbaru
+                            <p className="text-xs font-bold text-[#00C882] uppercase tracking-widest flex items-center gap-2 mb-2">
+                                <span className="w-6 h-0.5 bg-[#00C882] inline-block" />
+                                Our Specimens
+                            </p>
+                            <h2 className="text-2xl sm:text-3xl tracking-tight text-slate-900">
+                                <span className="font-extrabold uppercase">IKAN & MORPH</span> <br className="hidden sm:inline" />
+                                <span className="font-light text-slate-500 uppercase">DI DUNIA IKAN</span>
                             </h2>
-                            <p className="text-sm text-slate-500 mt-1">
-                                Dapatkan ikan hias sehat dengan mutasi genetik berkualitas langsung dari pembudidaya.
+                        </div>
+
+                        {/* Dot Navigation on top-right (like reference) */}
+                        <div className="flex items-center gap-2">
+                            <span className="w-3 h-3 rounded-full border-2 border-[#00C882] flex items-center justify-center">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#00C882]" />
+                            </span>
+                            <span className="w-2 h-2 rounded-full bg-slate-300" />
+                            <span className="w-2 h-2 rounded-full bg-slate-300" />
+                            <span className="w-2 h-2 rounded-full bg-slate-300" />
+                            <span className="w-2 h-2 rounded-full bg-slate-300" />
+                        </div>
+                    </div>
+                </div>
+
+                {/* 5 Vertical Cards Strip */}
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
+                        {showcaseSpecimens.map((specimen) => (
+                            <Link
+                                key={specimen.num}
+                                href={`/products?q=${encodeURIComponent(specimen.name.split(' ')[0])}`}
+                                className="group relative aspect-[3/5] rounded-xl overflow-hidden bg-slate-900 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-end p-4"
+                            >
+                                <img
+                                    src={specimen.image}
+                                    alt={specimen.name}
+                                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-85 group-hover:opacity-75 transition-opacity" />
+
+                                <div className="relative z-10 text-white space-y-1">
+                                    <p className="text-xs font-mono font-bold text-emerald-400">
+                                        {specimen.num}
+                                    </p>
+                                    <h4 className="text-sm font-extrabold leading-tight text-white group-hover:text-[#00C882] transition-colors">
+                                        {specimen.name}
+                                    </h4>
+                                    <p className="text-[11px] text-slate-300 truncate">
+                                        {specimen.trait}
+                                    </p>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* 4. VERIFIED MARKETPLACE CATALOG (MorphMarket Trait Highlights) */}
+            <section className="py-16 sm:py-24 bg-[#F8FAF9] border-b border-slate-200">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
+                        <div>
+                            <span className="text-xs font-bold text-[#00C882] uppercase tracking-widest flex items-center gap-1.5 mb-1">
+                                <Sparkles className="w-3.5 h-3.5" />
+                                Katalog Terverifikasi
+                            </span>
+                            <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                                Spesimen & Produk Pilihan
+                            </h3>
+                            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                                Ikan hias berkualitas dari peternak terakreditasi dengan kebijakan D.O.A.
                             </p>
                         </div>
 
                         <Link
-                            href="/products?category=ikan-hias"
-                            className="inline-flex items-center gap-1.5 text-sm font-bold text-dunia-blue hover:text-sky-700 transition"
+                            href="/products"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#00C882] text-slate-950 font-extrabold text-xs uppercase tracking-wider hover:bg-emerald-400 shadow-sm transition"
                         >
-                            Lihat Semua Ikan <ArrowRight className="w-4 h-4" />
+                            <span>Lihat Semua Produk ({stats?.totalFish || 14})</span>
+                            <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
 
-                    {/* Products Grid */}
+                    {/* Product Cards Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
                         {featuredFish?.map((product) => (
                             <ProductCard key={product.id} product={product} />
@@ -219,79 +359,35 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                 </div>
             </section>
 
-            {/* Care Guides & Knowledge Base Preview */}
-            <section className="py-16 bg-dunia-soft/40 border-t border-sky-100">
+            {/* 5. SELLER PARTNERSHIP CTA BANNER (Dark wildlife panel) */}
+            <section className="py-16 bg-[#0E1719] text-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-end justify-between mb-10">
-                        <div>
-                            <span className="text-xs font-bold text-dunia-marine uppercase tracking-wider">Edukasi & Perawatan</span>
-                            <h2 className="text-2xl sm:text-3xl font-extrabold text-dunia-navy mt-1">
-                                Panduan Kesehatan Ikan & Kualitas Air
-                            </h2>
-                            <p className="text-sm text-slate-500 mt-1">
-                                Basis pengetahuan resmi yang juga menjadi rujukan Asisten AI Dunia Ikan.
+                    <div className="rounded-2xl bg-gradient-to-r from-[#142224] to-[#0E1719] border border-emerald-500/30 p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+                        <div className="space-y-3 max-w-xl text-left">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#00C882]/10 text-[#00C882] text-xs font-bold border border-[#00C882]/30">
+                                <ShieldCheck className="w-3.5 h-3.5" />
+                                Program Kemitraan Penangkar
+                            </div>
+                            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                                Buka Toko Penangkar Ikan Hias Anda
+                            </h3>
+                            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                Jangkau ribuan aquarist di seluruh Indonesia. Atur garansi D.O.A. toko Anda, catat morfologi genetika, dan nikmati sistem pembayaran aman serta rekonsiliasi resi instan.
                             </p>
                         </div>
-                        <Link href="/guides" className="text-xs font-bold text-dunia-blue hover:text-sky-700 flex items-center gap-1">
-                            Buka Semua Panduan <ArrowRight className="w-3.5 h-3.5" />
-                        </Link>
-                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {careGuides?.map((guide) => (
+                        <div className="flex flex-col sm:flex-row gap-3 shrink-0">
                             <Link
-                                key={guide.id}
-                                href={`/guides/${guide.id}`}
-                                className="bg-white p-6 rounded-2xl border border-sky-100 hover:border-dunia-aqua/60 hover:shadow-lg hover:shadow-sky-100/50 transition flex flex-col justify-between group"
+                                href="/register"
+                                className="px-7 py-3 rounded-lg bg-[#00C882] hover:bg-emerald-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/20 text-center transition"
                             >
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between text-xs">
-                                        <span className="px-2.5 py-1 rounded-md bg-sky-50 text-dunia-navy font-semibold">
-                                            {guide.category}
-                                        </span>
-                                        <span className="text-slate-400 font-medium">
-                                            {guide.fish_type}
-                                        </span>
-                                    </div>
-                                    <h3 className="font-bold text-base text-slate-900 group-hover:text-dunia-blue transition line-clamp-2">
-                                        {guide.title}
-                                    </h3>
-                                    <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed">
-                                        {guide.symptoms}
-                                    </p>
-                                </div>
-
-                                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-dunia-marine group-hover:text-dunia-blue">
-                                    <span>Baca Langkah Penanganan</span>
-                                    <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
-                                </div>
+                                Daftar Sebagai Penangkar
                             </Link>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Seller Call To Action */}
-            <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="rounded-3xl bg-gradient-to-r from-dunia-navy via-dunia-marine to-dunia-blue p-8 sm:p-12 text-white relative overflow-hidden shadow-xl">
-                    <div className="relative z-10 max-w-2xl space-y-4">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-dunia-cream text-xs font-bold border border-white/20">
-                            <Store className="w-3.5 h-3.5" />
-                            <span>Buka Toko Penangkar Ikan</span>
-                        </div>
-                        <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight">
-                            Apakah Anda Pembudidaya atau Penjual Ikan Hias?
-                        </h2>
-                        <p className="text-sm sm:text-base text-sky-100 leading-relaxed">
-                            Jangkau ribuan penghobi ikan dan aquarist di seluruh Indonesia. Atur garansi hidup (DOA) toko Anda sendiri, kelola stok morfologi secara presisi, dan nikmati sistem pesanan yang aman.
-                        </p>
-                        <div className="pt-2">
                             <Link
-                                href="/seller/register"
-                                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white text-dunia-navy font-bold text-sm shadow-md hover:bg-sky-50 transition"
+                                href="/guides"
+                                className="px-6 py-3 rounded-lg border border-slate-700 hover:border-[#00C882] text-slate-300 hover:text-white font-bold text-xs uppercase tracking-wider text-center transition"
                             >
-                                Daftarkan Toko Sekarang
-                                <ArrowRight className="w-4 h-4" />
+                                SOP Pengemasan Ikan
                             </Link>
                         </div>
                     </div>

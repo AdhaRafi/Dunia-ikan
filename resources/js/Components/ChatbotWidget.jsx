@@ -1,17 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from '@inertiajs/react';
-import { 
-    MessageSquare, 
-    X, 
-    Send, 
-    Image, 
-    Sparkles, 
-    AlertCircle, 
-    HeartPulse, 
-    Fish, 
-    CheckCircle2, 
+import {
+    AlertCircle,
     BookOpen,
-    Loader2
+    Image as ImageIcon,
+    Loader2,
+    MessageSquare,
+    Send,
+    X,
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -25,7 +21,6 @@ export default function ChatbotWidget({ isOpen, onClose }) {
     const messagesEndRef = useRef(null);
     const fileInputRef = useRef(null);
 
-    // Initial greeting if no history
     useEffect(() => {
         if (isOpen && messages.length === 0) {
             fetchHistory();
@@ -40,21 +35,27 @@ export default function ChatbotWidget({ isOpen, onClose }) {
         try {
             const token = localStorage.getItem('dunia_ikan_chat_token');
             const res = await axios.get('/chatbot/history', {
-                params: { session_token: token }
+                params: { session_token: token },
             });
+
             if (res.data.session_token) {
                 setSessionToken(res.data.session_token);
-                localStorage.setItem('dunia_ikan_chat_token', res.data.session_token);
+                localStorage.setItem(
+                    'dunia_ikan_chat_token',
+                    res.data.session_token,
+                );
             }
+
             if (res.data.messages && res.data.messages.length > 0) {
                 setMessages(res.data.messages);
             } else {
                 setMessages([
                     {
                         sender: 'assistant',
-                        message: 'Halo! Saya Asisten Virtual Dunia Ikan. Saya siap membantu konsultasi awal kesehatan ikan Anda (seperti gejala bintik putih/fin rot) dan memberikan rekomendasi ikan hias aktif langsung dari basis data katalog kami. Ada yang bisa saya bantu hari ini?',
-                        created_at: new Date().toISOString()
-                    }
+                        message:
+                            'Halo. Saya asisten Dunia Ikan. Tanyakan gejala penyakit ikan, parameter air, atau minta rekomendasi ikan yang sedang tersedia di katalog.',
+                        created_at: new Date().toISOString(),
+                    },
                 ]);
             }
         } catch (err) {
@@ -64,22 +65,24 @@ export default function ChatbotWidget({ isOpen, onClose }) {
 
     const handleImageSelect = (e) => {
         const file = e.target.files[0];
-        if (file) {
-            if (file.size > 3 * 1024 * 1024) {
-                alert('Ukuran gambar maksimal 3MB');
-                return;
-            }
-            setSelectedImage(file);
-            setImagePreview(URL.createObjectURL(file));
+
+        if (!file) {
+            return;
         }
+
+        if (file.size > 3 * 1024 * 1024) {
+            alert('Ukuran gambar maksimal 3MB');
+            return;
+        }
+
+        setSelectedImage(file);
+        setImagePreview(URL.createObjectURL(file));
     };
 
     const removeImage = () => {
         setSelectedImage(null);
-        if (imagePreview) {
-            URL.revokeObjectURL(imagePreview);
-            setImagePreview(null);
-        }
+        setImagePreview(null);
+
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
         }
@@ -87,232 +90,279 @@ export default function ChatbotWidget({ isOpen, onClose }) {
 
     const handleSendMessage = async (textToSend = null) => {
         const message = textToSend || inputText;
-        if ((!message || !message.trim()) && !selectedImage) return;
+
+        if ((!message || !message.trim()) && !selectedImage) {
+            return;
+        }
 
         const currentText = message.trim();
         const currentImgPreview = imagePreview;
 
-        // Optimistic UI for user message
-        const optimisticUserMessage = {
-            sender: 'user',
-            message: currentText,
-            image_path: currentImgPreview,
-            created_at: new Date().toISOString()
-        };
-
-        setMessages((prev) => [...prev, optimisticUserMessage]);
+        setMessages((prev) => [
+            ...prev,
+            {
+                sender: 'user',
+                message: currentText,
+                image_path: currentImgPreview,
+                created_at: new Date().toISOString(),
+            },
+        ]);
         setInputText('');
-        removeImage();
         setLoading(true);
 
         try {
             const formData = new FormData();
             formData.append('message', currentText);
+
             if (sessionToken) {
                 formData.append('session_token', sessionToken);
             }
+
             if (selectedImage) {
                 formData.append('image', selectedImage);
             }
 
+            removeImage();
+
             const response = await axios.post('/chatbot/message', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             if (response.data.session_token) {
                 setSessionToken(response.data.session_token);
-                localStorage.setItem('dunia_ikan_chat_token', response.data.session_token);
+                localStorage.setItem(
+                    'dunia_ikan_chat_token',
+                    response.data.session_token,
+                );
             }
 
-            const assistantMsg = response.data.assistant_message;
-            setMessages((prev) => [...prev, assistantMsg]);
+            setMessages((prev) => [...prev, response.data.assistant_message]);
         } catch (error) {
             console.error('Chat error:', error);
             setMessages((prev) => [
                 ...prev,
                 {
                     sender: 'assistant',
-                    message: 'Maaf, terjadi kesalahan saat menghubungi layanan. Silakan coba kembali atau cek koneksi internet Anda.',
-                    created_at: new Date().toISOString()
-                }
+                    message:
+                        'Maaf, layanan sedang tidak dapat dihubungi. Coba lagi beberapa saat atau periksa koneksi internet Anda.',
+                    created_at: new Date().toISOString(),
+                },
             ]);
         } finally {
             setLoading(false);
         }
     };
 
-    const handleQuickPrompt = (prompt) => {
-        handleSendMessage(prompt);
-    };
-
-    if (!isOpen) return null;
+    if (!isOpen) {
+        return null;
+    }
 
     return (
-        <div className="fixed inset-0 sm:inset-auto sm:right-6 sm:bottom-6 sm:w-[440px] sm:h-[620px] bg-white sm:rounded-2xl shadow-2xl border border-sky-100 flex flex-col z-50 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-dunia-navy to-dunia-marine text-white px-5 py-4 flex items-center justify-between shrink-0 shadow-sm">
+        <div className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white sm:inset-auto sm:bottom-6 sm:right-6 sm:h-[620px] sm:w-[420px] sm:rounded-2xl sm:border sm:border-slate-800 sm:shadow-2xl">
+            <div className="flex shrink-0 items-center justify-between bg-[#0E1719] px-5 py-4 text-white border-b border-slate-800">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-xs flex items-center justify-center text-dunia-aqua">
-                        <Sparkles className="w-5 h-5" />
+                    <div className="w-8 h-8 rounded-lg bg-[#00C882]/10 border border-[#00C882]/30 flex items-center justify-center">
+                        <MessageSquare className="h-4 w-4 text-[#00C882]" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-base flex items-center gap-2">
-                            Asisten Dunia Ikan
-                            <span className="text-[10px] bg-dunia-aqua/20 text-dunia-aqua px-2 py-0.5 rounded-full font-semibold border border-dunia-aqua/30">
-                                AI + DB
-                            </span>
+                        <h3 className="text-sm font-extrabold leading-tight text-white">
+                            Asisten Ikan AI
                         </h3>
-                        <p className="text-xs text-sky-200">Konsultasi Kesehatan & Rekomendasi Ikan</p>
+                        <p className="text-[11px] text-slate-400">
+                            Kesehatan ikan & rekomendasi katalog
+                        </p>
                     </div>
                 </div>
                 <button
+                    type="button"
                     onClick={onClose}
-                    className="p-1.5 rounded-lg text-sky-200 hover:text-white hover:bg-white/10 transition cursor-pointer"
+                    className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+                    aria-label="Tutup asisten"
                 >
-                    <X className="w-5 h-5" />
+                    <X className="h-5 w-5" />
                 </button>
             </div>
 
-            {/* Privacy Disclaimer Banner */}
-            <div className="bg-amber-50 border-b border-amber-200/60 px-4 py-1.5 text-[11px] text-amber-900 flex items-center gap-1.5 shrink-0">
-                <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                <span>Konsultasi awal non-medis. Foto & teks dapat diproses model Gemini AI.</span>
+            <div className="flex shrink-0 items-center gap-2 bg-[#142224] px-4 py-2 text-[11px] text-slate-300 border-b border-slate-800/60">
+                <AlertCircle className="h-3.5 w-3.5 shrink-0 text-[#00C882]" />
+                <span>
+                    Konsultasi awal & rekomendasi stok katalog berbasis AI.
+                </span>
             </div>
 
-            {/* Message Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-dunia-soft/30">
+            <div className="flex-1 space-y-4 overflow-y-auto bg-slate-50 p-4">
                 {messages.map((msg, index) => {
                     const isUser = msg.sender === 'user';
+
                     return (
                         <div
                             key={index}
-                            className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}
+                            className={`flex flex-col ${
+                                isUser ? 'items-end' : 'items-start'
+                            }`}
                         >
                             <div
-                                className={`max-w-[88%] rounded-2xl p-3.5 text-sm leading-relaxed ${
+                                className={`max-w-[88%] px-4 py-3 text-xs leading-relaxed ${
                                     isUser
-                                        ? 'bg-dunia-blue text-white rounded-br-xs'
-                                        : 'bg-white border border-sky-100 text-slate-800 shadow-xs rounded-bl-xs'
+                                        ? 'bg-[#0E1719] text-white rounded-2xl rounded-tr-xs shadow-xs'
+                                        : 'bg-white text-slate-800 rounded-2xl rounded-tl-xs border border-slate-200 shadow-xs'
                                 }`}
                             >
                                 {msg.image_path && (
-                                    <div className="mb-2 rounded-lg overflow-hidden border border-black/10">
+                                    <div className="mb-2 overflow-hidden">
                                         <img
-                                            src={msg.image_path.startsWith('blob:') ? msg.image_path : `/storage/${msg.image_path}`}
-                                            alt="Unggahan user"
+                                            src={
+                                                msg.image_path.startsWith('blob:')
+                                                    ? msg.image_path
+                                                    : `/storage/${msg.image_path}`
+                                            }
+                                            alt="Unggahan pengguna"
                                             className="max-h-48 w-full object-cover"
                                         />
                                     </div>
                                 )}
-                                <div className="whitespace-pre-wrap">{msg.message}</div>
 
-                                {/* Attached Guides (Relasi Pesan-Panduan) */}
-                                {msg.fish_guides && msg.fish_guides.length > 0 && (
-                                    <div className="mt-3 pt-2.5 border-t border-slate-100 space-y-1.5">
-                                        <p className="text-[11px] font-bold text-dunia-navy flex items-center gap-1">
-                                            <BookOpen className="w-3 h-3 text-dunia-marine" />
-                                            Rujukan Panduan Resmi Database:
-                                        </p>
-                                        {msg.fish_guides.map((guide) => (
-                                            <Link
-                                                key={guide.id}
-                                                href={`/guides/${guide.id}`}
-                                                className="block p-2 rounded-lg bg-sky-50/80 hover:bg-sky-100 text-xs text-dunia-navy font-medium border border-sky-100 transition"
-                                            >
-                                                📄 {guide.title} ({guide.fish_type})
-                                            </Link>
-                                        ))}
-                                    </div>
-                                )}
+                                <div className="whitespace-pre-wrap">
+                                    {msg.message}
+                                </div>
 
-                                {/* Attached Product Recommendations from DB */}
-                                {msg.recommended_products && msg.recommended_products.length > 0 && (
-                                    <div className="mt-3 pt-2.5 border-t border-slate-100 space-y-2">
-                                        <p className="text-[11px] font-bold text-dunia-navy flex items-center gap-1">
-                                            <Fish className="w-3 h-3 text-dunia-blue" />
-                                            Rekomendasi Ikan Tersedia di Katalog:
-                                        </p>
-                                        <div className="grid grid-cols-1 gap-2">
-                                            {msg.recommended_products.map((prod) => (
+                                {msg.fish_guides &&
+                                    msg.fish_guides.length > 0 && (
+                                        <div className="mt-3 space-y-2">
+                                            <p className="flex items-center gap-1.5 text-[13px] font-medium">
+                                                <BookOpen className="h-3.5 w-3.5" />
+                                                Rujukan panduan
+                                            </p>
+                                            {msg.fish_guides.map((guide) => (
                                                 <Link
-                                                    key={prod.id}
-                                                    href={`/products/${prod.slug}`}
-                                                    className="flex items-center gap-2.5 p-2 rounded-xl bg-white border border-sky-200 hover:border-dunia-blue transition shadow-xs group"
+                                                    key={guide.id}
+                                                    href={`/guides/${guide.id}`}
+                                                    className="block border-l-4 border-accent bg-bone px-3 py-2 text-[14px] hover:bg-field3/30"
                                                 >
-                                                    <img
-                                                        src={prod.image || 'https://images.unsplash.com/photo-1544943910-4c1dc44a0b27?auto=format&fit=crop&w=200&q=80'}
-                                                        alt={prod.name}
-                                                        className="w-12 h-12 rounded-lg object-cover"
-                                                    />
-                                                    <div className="flex-1 min-w-0 text-left">
-                                                        <p className="text-xs font-bold text-slate-900 group-hover:text-dunia-blue truncate">
-                                                            {prod.name}
-                                                        </p>
-                                                        <p className="text-xs font-extrabold text-dunia-blue">
-                                                            Rp {new Intl.NumberFormat('id-ID').format(prod.price)}
-                                                        </p>
-                                                        <p className="text-[10px] text-slate-500 truncate">
-                                                            {prod.store_name} • Stok {prod.stock}
-                                                        </p>
-                                                    </div>
+                                                    {guide.title}
                                                 </Link>
                                             ))}
                                         </div>
-                                    </div>
-                                )}
+                                    )}
+
+                                {msg.recommended_products &&
+                                    msg.recommended_products.length > 0 && (
+                                        <div className="mt-3 space-y-2">
+                                            <p className="text-[13px] font-medium">
+                                                Tersedia di katalog
+                                            </p>
+                                            {msg.recommended_products.map(
+                                                (prod) => (
+                                                    <Link
+                                                        key={prod.id}
+                                                        href={`/products/${prod.slug}`}
+                                                        className="flex items-center gap-3 bg-bone p-2 hover:bg-field3/30"
+                                                    >
+                                                        <img
+                                                            src={prod.image}
+                                                            alt={prod.name}
+                                                            className="h-12 w-12 shrink-0 object-cover"
+                                                        />
+                                                        <div className="min-w-0 flex-1">
+                                                            <p className="truncate text-[14px] font-medium">
+                                                                {prod.name}
+                                                            </p>
+                                                            <p className="text-[14px] tabular-nums">
+                                                                Rp{' '}
+                                                                {new Intl.NumberFormat(
+                                                                    'id-ID',
+                                                                ).format(
+                                                                    prod.price,
+                                                                )}
+                                                            </p>
+                                                            <p className="truncate text-[13px] text-muted">
+                                                                {
+                                                                    prod.store_name
+                                                                }{' '}
+                                                                · Stok{' '}
+                                                                {prod.stock}
+                                                            </p>
+                                                        </div>
+                                                    </Link>
+                                                ),
+                                            )}
+                                        </div>
+                                    )}
                             </div>
                         </div>
                     );
                 })}
 
                 {loading && (
-                    <div className="flex items-center gap-2 text-slate-500 text-xs bg-white p-3 rounded-xl border border-sky-100 w-fit">
-                        <Loader2 className="w-4 h-4 animate-spin text-dunia-blue" />
-                        <span>Asisten sedang menganalisis gejala & mengecek stok database...</span>
+                    <div className="flex w-fit items-center gap-2 bg-surface px-4 py-3 text-[14px] text-muted">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Memeriksa gejala dan stok katalog...
                     </div>
                 )}
+
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* Quick Action Suggestion Chips */}
-            <div className="px-4 py-2 border-t border-slate-100 bg-white flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0 text-xs">
+            <div className="flex shrink-0 gap-2 overflow-x-auto border-t border-slate-200 bg-white px-3 py-2 text-xs">
                 <button
-                    onClick={() => handleQuickPrompt('Ikan cupang saya ada bintik putih di sirip, bagaimana penanganannya?')}
-                    className="px-2.5 py-1 rounded-full bg-sky-50 text-dunia-navy hover:bg-sky-100 whitespace-nowrap transition cursor-pointer font-medium border border-sky-100"
+                    type="button"
+                    onClick={() =>
+                        handleSendMessage(
+                            'Ikan cupang saya ada bintik putih di sirip, bagaimana penanganannya?',
+                        )
+                    }
+                    className="whitespace-nowrap rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 transition"
                 >
-                    ⚪ Bintik Putih (Ich)
+                    Bintik putih
                 </button>
                 <button
-                    onClick={() => handleQuickPrompt('Ekor ikan saya robek dan membusuk (fin rot), apa yang harus dilakukan?')}
-                    className="px-2.5 py-1 rounded-full bg-sky-50 text-dunia-navy hover:bg-sky-100 whitespace-nowrap transition cursor-pointer font-medium border border-sky-100"
+                    type="button"
+                    onClick={() =>
+                        handleSendMessage(
+                            'Ekor ikan saya robek dan membusuk, apa yang harus dilakukan?',
+                        )
+                    }
+                    className="whitespace-nowrap rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 transition"
                 >
-                    🩹 Busuk Sirip (Fin Rot)
+                    Busuk sirip
                 </button>
                 <button
-                    onClick={() => handleQuickPrompt('Rekomendasi ikan hias air tawar yang mudah dipelihara untuk pemula.')}
-                    className="px-2.5 py-1 rounded-full bg-sky-50 text-dunia-navy hover:bg-sky-100 whitespace-nowrap transition cursor-pointer font-medium border border-sky-100"
+                    type="button"
+                    onClick={() =>
+                        handleSendMessage(
+                            'Rekomendasi ikan air tawar yang mudah dipelihara untuk pemula.',
+                        )
+                    }
+                    className="whitespace-nowrap rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 transition"
                 >
-                    🐠 Ikan Ramah Pemula
+                    Ikan untuk pemula
                 </button>
             </div>
 
-            {/* Image Preview if selected */}
             {imagePreview && (
-                <div className="px-4 py-2 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
-                    <div className="flex items-center gap-2">
-                        <img src={imagePreview} alt="Preview" className="w-10 h-10 object-cover rounded-md border" />
-                        <span className="text-xs text-slate-600 truncate max-w-[200px]">
+                <div className="flex shrink-0 items-center justify-between bg-slate-100 px-4 py-2 border-t border-slate-200">
+                    <div className="flex min-w-0 items-center gap-2">
+                        <img
+                            src={imagePreview}
+                            alt="Pratinjau"
+                            className="h-9 w-9 object-cover rounded-md"
+                        />
+                        <span className="truncate text-xs text-slate-600">
                             {selectedImage?.name}
                         </span>
                     </div>
-                    <button onClick={removeImage} className="text-slate-400 hover:text-rose-500">
-                        <X className="w-4 h-4" />
+                    <button
+                        type="button"
+                        onClick={removeImage}
+                        className="p-1 text-slate-400 hover:text-rose-500"
+                        aria-label="Hapus gambar"
+                    >
+                        <X className="h-4 w-4" />
                     </button>
                 </div>
             )}
 
-            {/* Input Form */}
-            <div className="p-3 bg-white border-t border-slate-100 shrink-0">
+            <div className="shrink-0 bg-white border-t border-slate-200 p-3">
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
@@ -330,10 +380,10 @@ export default function ChatbotWidget({ isOpen, onClose }) {
                     <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="p-2.5 rounded-xl text-slate-500 hover:text-dunia-blue hover:bg-sky-50 transition cursor-pointer"
-                        title="Unggah Foto Kondisi Ikan"
+                        className="p-2 text-slate-400 hover:text-[#00C882] rounded-lg hover:bg-slate-100 transition"
+                        title="Unggah foto kondisi ikan"
                     >
-                        <Image className="w-5 h-5" />
+                        <ImageIcon className="h-5 w-5" />
                     </button>
 
                     <input
@@ -341,15 +391,16 @@ export default function ChatbotWidget({ isOpen, onClose }) {
                         placeholder="Tanya kesehatan atau rekomendasi ikan..."
                         value={inputText}
                         onChange={(e) => setInputText(e.target.value)}
-                        className="flex-1 px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:outline-hidden focus:border-dunia-aqua focus:ring-2 focus:ring-dunia-aqua/20"
+                        className="h-10 min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#00C882] focus:bg-white transition"
                     />
 
                     <button
                         type="submit"
                         disabled={loading || (!inputText.trim() && !selectedImage)}
-                        className="p-2.5 rounded-xl bg-dunia-blue text-white hover:bg-sky-600 disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer shadow-xs"
+                        className="h-10 w-10 flex items-center justify-center rounded-xl bg-[#00C882] text-slate-950 font-bold hover:bg-emerald-400 transition disabled:cursor-not-allowed disabled:opacity-40 shrink-0"
+                        aria-label="Kirim pesan"
                     >
-                        <Send className="w-4 h-4" />
+                        <Send className="h-4 w-4" />
                     </button>
                 </form>
             </div>

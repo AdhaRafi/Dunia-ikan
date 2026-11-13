@@ -104,9 +104,9 @@ export default function Index({ groupedCart, totalItems, grandTotal }) {
                                                         {formatPrice(item.product?.price)}
                                                     </p>
 
-                                                    {item.product?.fishDetail?.morph_trait && (
+                                                    {item.product?.fish_detail?.morph_trait && (
                                                         <span className="inline-block mt-1 text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md font-semibold">
-                                                            Morph: {item.product.fishDetail.morph_trait}
+                                                            Morph: {item.product.fish_detail.morph_trait}
                                                         </span>
                                                     )}
                                                 </div>

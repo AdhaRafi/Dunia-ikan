@@ -1,6 +1,5 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
@@ -23,9 +22,14 @@ export default function ResetPassword({ token, email }) {
 
     return (
         <GuestLayout>
-            <Head title="Reset Password" />
+            <Head title="Password baru — Dunia Ikan" />
 
-            <form onSubmit={submit}>
+            <h1 className="display-type">Password baru</h1>
+            <p className="mt-4 max-w-[40ch] text-[20px] leading-snug">
+                Buat password baru untuk {email}.
+            </p>
+
+            <form onSubmit={submit} className="mt-6 space-y-4">
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 
@@ -34,15 +38,15 @@ export default function ResetPassword({ token, email }) {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="mt-1 w-full"
                         autoComplete="username"
                         onChange={(e) => setData('email', e.target.value)}
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.email} className="mt-1" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel htmlFor="password" value="Password" />
 
                     <TextInput
@@ -50,19 +54,19 @@ export default function ResetPassword({ token, email }) {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="mt-1 w-full"
                         autoComplete="new-password"
                         isFocused={true}
                         onChange={(e) => setData('password', e.target.value)}
                     />
 
-                    <InputError message={errors.password} className="mt-2" />
+                    <InputError message={errors.password} className="mt-1" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value="Konfirmasi password"
                     />
 
                     <TextInput
@@ -70,7 +74,7 @@ export default function ResetPassword({ token, email }) {
                         id="password_confirmation"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        className="mt-1 block w-full"
+                        className="mt-1 w-full"
                         autoComplete="new-password"
                         onChange={(e) =>
                             setData('password_confirmation', e.target.value)
@@ -79,15 +83,17 @@ export default function ResetPassword({ token, email }) {
 
                     <InputError
                         message={errors.password_confirmation}
-                        className="mt-2"
+                        className="mt-1"
                     />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Reset Password
-                    </PrimaryButton>
-                </div>
+                <button
+                    type="submit"
+                    disabled={processing}
+                    className="press w-full bg-ink px-4 py-3 text-[16px] font-medium text-bone hover:bg-accent disabled:opacity-50"
+                >
+                    {processing ? 'Menyimpan' : 'Simpan password'}
+                </button>
             </form>
         </GuestLayout>
     );

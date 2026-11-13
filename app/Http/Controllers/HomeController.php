@@ -18,8 +18,17 @@ class HomeController extends Controller
         $featuredFish = Product::with(['store', 'category', 'fishDetail'])
             ->where('is_active', true)
             ->where('stock', '>', 0)
+            ->whereHas('category', fn ($query) => $query->where('slug', 'ikan-hias'))
             ->latest()
             ->take(8)
+            ->get();
+
+        $featuredSupplies = Product::with(['store', 'category'])
+            ->where('is_active', true)
+            ->where('stock', '>', 0)
+            ->whereHas('category', fn ($query) => $query->where('slug', '!=', 'ikan-hias'))
+            ->latest()
+            ->take(2)
             ->get();
 
         $careGuides = FishGuide::where('is_active', true)
@@ -35,6 +44,7 @@ class HomeController extends Controller
         return Inertia::render('Welcome', [
             'categories' => $categories,
             'featuredFish' => $featuredFish,
+            'featuredSupplies' => $featuredSupplies,
             'careGuides' => $careGuides,
             'featuredStores' => $featuredStores,
             'stats' => [

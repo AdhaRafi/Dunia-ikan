@@ -82,9 +82,18 @@ class ProductController extends Controller
             'products' => $products,
             'categories' => $categories,
             'cities' => $cities,
-            'filters' => $request->only([
-                'q', 'category', 'water_type', 'sex', 'care_level', 'temperament', 'min_price', 'max_price', 'city', 'sort',
-            ]),
+            'filters' => [
+                'q' => $request->input('q', ''),
+                'category' => $request->input('category', ''),
+                'water_type' => $request->input('water_type', ''),
+                'sex' => $request->input('sex', ''),
+                'care_level' => $request->input('care_level', ''),
+                'temperament' => $request->input('temperament', ''),
+                'min_price' => $request->input('min_price', ''),
+                'max_price' => $request->input('max_price', ''),
+                'city' => $request->input('city', ''),
+                'sort' => $request->input('sort', 'newest'),
+            ],
         ]);
     }
 

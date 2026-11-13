@@ -1,120 +1,143 @@
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
-import { Store as StoreIcon, MapPin, Phone, ShieldCheck, ArrowLeft, PackageCheck } from 'lucide-react';
+import Reveal from '@/Components/Reveal';
+
+function formatPrice(price) {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        maximumFractionDigits: 0,
+    }).format(price);
+}
 
 export default function Show({ store, products }) {
+    const featured = products?.data?.[0];
+
     return (
         <AppLayout>
-            <Head title={`${store.name} - Toko Penangkar Ikan`} />
+            <Head title={`${store.name} — Toko Penangkar`} />
 
-            {/* Store Header Banner */}
-            <div className="bg-gradient-to-r from-dunia-navy via-dunia-marine to-dunia-blue text-white py-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <Link href="/products" className="inline-flex items-center gap-1 text-xs font-semibold text-sky-200 hover:text-white mb-6 transition">
-                        <ArrowLeft className="w-3.5 h-3.5" />
-                        Kembali ke Katalog
-                    </Link>
+            <section className="bg-field4 text-white">
+                <div className="container-page grid gap-8 py-12 md:py-16 lg:grid-cols-12 lg:items-end">
+                    <div className="lg:col-span-7">
+                        <h1 className="display-type max-w-[16ch]">
+                            {store.name}
+                        </h1>
 
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-                        <div className="w-20 h-20 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white font-extrabold text-2xl shadow-lg">
-                            {store.logo ? (
-                                <img src={`/storage/${store.logo}`} alt={store.name} className="w-full h-full object-cover rounded-3xl" />
-                            ) : (
-                                <StoreIcon className="w-10 h-10 text-dunia-aqua" />
-                            )}
+                        <p className="mt-5 max-w-[48ch] text-[20px] leading-snug">
+                            Penangkar ikan hias di {store.city},{' '}
+                            {store.province}. Setiap produk membawa kebijakan
+                            garansi hidup toko ini.
+                        </p>
+
+                        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[16px] text-white/80">
+                            <span>{store.phone}</span>
+                            <Link
+                                href="/products"
+                                className="press underline decoration-2 underline-offset-4 hover:text-white"
+                            >
+                                Katalog
+                            </Link>
                         </div>
+                    </div>
 
-                        <div className="space-y-1.5 flex-1">
-                            <div className="flex items-center gap-2 flex-wrap">
-                                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-                                    {store.name}
-                                </h1>
-                                <span className="px-2.5 py-0.5 rounded-full bg-dunia-aqua/20 text-dunia-aqua text-xs font-bold border border-dunia-aqua/30">
-                                    Penangkar Terverifikasi
+                    {featured && (
+                        <Link
+                            href={`/products/${featured.slug}`}
+                            className="press block min-w-0 lg:col-span-5"
+                        >
+                            <img
+                                src={featured.image}
+                                alt={featured.name}
+                                width="800"
+                                height="600"
+                                className="aspect-[4/3] w-full object-cover"
+                            />
+                            <div className="mt-2 flex min-w-0 items-baseline justify-between gap-3 text-[16px] text-white/90">
+                                <span className="min-w-0 truncate">
+                                    {featured.name}
+                                </span>
+                                <span className="shrink-0 tabular-nums">
+                                    {formatPrice(featured.price)}
                                 </span>
                             </div>
+                        </Link>
+                    )}
+                </div>
+            </section>
 
-                            <p className="text-xs sm:text-sm text-sky-100 flex items-center gap-2 flex-wrap">
-                                <span className="flex items-center gap-1">
-                                    <MapPin className="w-3.5 h-3.5 text-dunia-aqua" /> {store.city}, {store.province}
-                                </span>
-                                <span>•</span>
-                                <span className="flex items-center gap-1">
-                                    <Phone className="w-3.5 h-3.5 text-dunia-aqua" /> {store.phone}
-                                </span>
+            <section className="container-page py-14 md:py-20">
+                <div className="grid gap-8 lg:grid-cols-12">
+                    <Reveal className="lg:col-span-7">
+                        <h2 className="text-[20px] font-medium tracking-[-0.02em]">
+                            Tentang toko
+                        </h2>
+                        <p className="mt-3 max-w-[62ch] whitespace-pre-line text-[16px] leading-relaxed">
+                            {store.description ||
+                                'Belum ada deskripsi untuk toko ini.'}
+                        </p>
+                    </Reveal>
+
+                    <Reveal className="lg:col-span-5" delay={80}>
+                        <div className="bg-surface p-6">
+                            <h2 className="text-[20px] font-medium tracking-[-0.02em]">
+                                Garansi hidup
+                            </h2>
+                            <p className="mt-3 text-[16px] leading-relaxed">
+                                {store.doa_policy ||
+                                    'Garansi hidup standar berlaku dengan video unboxing tanpa jeda.'}
                             </p>
                         </div>
-                    </div>
+                    </Reveal>
                 </div>
-            </div>
+            </section>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-                {/* Store Policies & Description */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="md:col-span-2 bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-3">
-                        <h2 className="font-bold text-sm text-dunia-navy uppercase tracking-wider">
-                            Tentang Toko Penangkar
-                        </h2>
-                        <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
-                            {store.description || 'Belum ada deskripsi yang ditambahkan untuk toko ini.'}
-                        </p>
+            <section className="container-page pb-24">
+                <Reveal className="flex flex-wrap items-end justify-between gap-3">
+                    <h2 className="head-type">Produk toko</h2>
+                    <p className="text-[16px] tabular-nums text-muted">
+                        {products?.total ?? 0} produk
+                    </p>
+                </Reveal>
+
+                {products?.data?.length > 0 ? (
+                    <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+                        {products.data.map((product, index) => (
+                            <Reveal key={product.id} delay={index * 40}>
+                                <ProductCard product={product} />
+                            </Reveal>
+                        ))}
                     </div>
+                ) : (
+                    <p className="mt-6 bg-surface p-6 text-[16px]">
+                        Toko ini belum memiliki produk aktif.
+                    </p>
+                )}
 
-                    <div className="bg-sky-50/70 p-6 rounded-2xl border border-sky-100 shadow-xs space-y-2">
-                        <h3 className="font-bold text-sm text-dunia-navy uppercase tracking-wider flex items-center gap-1.5">
-                            <ShieldCheck className="w-4 h-4 text-dunia-aqua" />
-                            Garansi Hidup (DOA) Toko
-                        </h3>
-                        <p className="text-xs text-slate-600 leading-relaxed">
-                            {store.doa_policy || 'Garansi hidup standar berlaku dengan melampirkan rekaman video unboxing tanpa cut.'}
-                        </p>
-                    </div>
-                </div>
-
-                {/* Products List from Store */}
-                <div className="space-y-6">
-                    <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-                        <h2 className="text-xl font-extrabold text-dunia-navy flex items-center gap-2">
-                            <PackageCheck className="w-5 h-5 text-dunia-blue" />
-                            Katalog Produk Toko Ini ({products?.total || 0})
-                        </h2>
-                    </div>
-
-                    {products?.data?.length > 0 ? (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-                            {products.data.map((product) => (
-                                <ProductCard key={product.id} product={product} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="p-12 text-center bg-white rounded-2xl border border-slate-100 text-slate-500 text-sm">
-                            Toko ini belum memiliki produk aktif untuk dijual saat ini.
-                        </div>
-                    )}
-
-                    {/* Pagination */}
-                    {products?.links?.length > 3 && (
-                        <div className="pt-6 flex justify-center gap-1.5">
-                            {products.links.map((link, idx) => (
-                                <Link
-                                    key={idx}
-                                    href={link.url || '#'}
-                                    preserveScroll
-                                    dangerouslySetInnerHTML={{ __html: link.label }}
-                                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
-                                        link.active
-                                            ? 'bg-dunia-blue text-white'
-                                            : link.url
-                                            ? 'bg-white border border-slate-200 text-slate-700 hover:bg-sky-50'
-                                            : 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                                    }`}
-                                />
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </div>
+                {products?.links?.length > 3 && (
+                    <nav
+                        className="mt-12 flex flex-wrap gap-1.5"
+                        aria-label="Halaman produk toko"
+                    >
+                        {products.links.map((link, index) => (
+                            <Link
+                                key={index}
+                                href={link.url || '#'}
+                                preserveScroll
+                                dangerouslySetInnerHTML={{ __html: link.label }}
+                                className={`flex h-10 min-w-10 items-center justify-center px-2 text-[13px] ${
+                                    link.active
+                                        ? 'bg-ink text-bone'
+                                        : link.url
+                                          ? 'bg-surface text-ink hover:bg-field3'
+                                          : 'cursor-not-allowed bg-surface text-muted/40'
+                                }`}
+                            />
+                        ))}
+                    </nav>
+                )}
+            </section>
         </AppLayout>
     );
 }

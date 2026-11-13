@@ -1,0 +1,1305 @@
+{
+ "url": "http://localhost:8000/products",
+ "at": "2026-11-13T15:31:20.205Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.44,
+    0.54,
+    0.45,
+    0.55
+   ],
+   "motion": {
+    "elements": 13,
+    "css": 0,
+    "transitions": 13,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 3467,
+     "screens": 3.9,
+     "words": 441,
+     "img": 12,
+     "video": 0,
+     "canvas": 0,
+     "svg": 18,
+     "sections": 1,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 12,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "cupang-halfmoon.jpg",
+      "cupang-plakat.jpg",
+      "channa-maru.jpg",
+      "guppy-afr.jpg",
+      "neon-tetra.jpg",
+      "discus.jpg",
+      "aquarium-rimless.jpg",
+      "canister-filter.jpg"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Katalog",
+     "words": 1,
+     "chars": 7,
+     "lines": 1,
+     "size": 85.3,
+     "vw": 5.9,
+     "font": "Hanken Grotesk",
+     "weight": 500,
+     "tracking": -0.05,
+     "leading": 0.92,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.42,
+     "top": 168,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Katalog",
+     "words": 1,
+     "lines": 1,
+     "size": 85.3,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Katalog",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 85.3,
+      "vw": 5.9,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.42,
+      "top": 168,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Temukan ikan berikutnya.",
+      "words": 3,
+      "chars": 24,
+      "lines": 2,
+      "size": 28,
+      "vw": 1.9,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.15,
+      "top": 3171,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 85.3,
+      "vw": 5.9,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.29,
+      "top": 3228,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 3,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 2,
+     "centered": 1,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      13,
+      16,
+      20,
+      28,
+      85
+     ],
+     "sizeCount": 5,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 16,
+      "leading": 1.38,
+      "weight": 400,
+      "tracking": -0.005,
+      "contrast": 13
+     },
+     "measureChars": 84,
+     "max": {
+      "size": 85.3,
+      "vw": 5.9,
+      "font": "Hanken Grotesk",
+      "text": "Katalog"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0.03,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#e2dccf",
+     "bodyBgHsl": {
+      "h": 41,
+      "s": 0.25,
+      "l": 0.85
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#e2dccf",
+       "top": 0,
+       "hsl": {
+        "h": 41,
+        "s": 0.25,
+        "l": 0.85
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2a1110",
+       "share": 0.85
+      },
+      {
+       "color": "#6b524c",
+       "share": 0.12
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.02
+      },
+      {
+       "color": "#e2dccf",
+       "share": 0.01
+      },
+      {
+       "color": "#6b524b",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#d7d0c1",
+      "hsl": {
+       "h": 41,
+       "s": 0.22,
+       "l": 0.8
+      },
+      "fg": "#2a1110"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 7,
+     "inHero": 5,
+     "radius": 0,
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Daftar",
+      "Jantan",
+      "Betina",
+      "Sepasang",
+      "Unsexed"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 12,
+     "mediaRadius": 2,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 11,
+     "fixed": true,
+     "height": 104,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 3467,
+    "margins": {
+     "left": 112,
+     "right": 112
+    },
+    "sections": [
+     {
+      "sel": "section.container-page.pt-10",
+      "tag": "section",
+      "top": 104,
+      "height": 209,
+      "words": 14,
+      "media": 0,
+      "middle": 605,
+      "heading": {
+       "text": "Katalog",
+       "size": 85,
+       "tag": "h1"
+      },
+      "left": 112,
+      "right": 112,
+      "textLeft": 112,
+      "textRight": 112,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.container-page.pb-24",
+      "tag": "div",
+      "top": 313,
+      "height": 2552,
+      "words": 288,
+      "media": 12,
+      "middle": 40,
+      "heading": null,
+      "left": 112,
+      "right": 112,
+      "textLeft": 112,
+      "textRight": 119,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": true
+     },
+     {
+      "sel": "footer.container-page.pb-2",
+      "tag": "footer",
+      "top": 2865,
+      "height": 602,
+      "words": 81,
+      "media": 0,
+      "middle": 121,
+      "heading": {
+       "text": "DUNIA IKAN",
+       "size": 85,
+       "tag": "p"
+      },
+      "left": 128,
+      "right": 148,
+      "textLeft": 128,
+      "textRight": 148,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Katalog",
+      "size": 85,
+      "top": 168,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 112,
+      "n": 2
+     },
+     {
+      "x": 412,
+      "n": 1
+     },
+     {
+      "x": 1033,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 4,
+    "bodySize": 20,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0.09,
+    "voidBox": {
+     "x": 420,
+     "y": 120,
+     "w": 1020,
+     "h": 120
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.39,
+    0.5,
+    0.56,
+    0.76
+   ],
+   "motion": {
+    "elements": 13,
+    "css": 0,
+    "transitions": 13,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 3561,
+     "screens": 3.5,
+     "words": 383,
+     "img": 12,
+     "video": 0,
+     "canvas": 0,
+     "svg": 18,
+     "sections": 1,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 12,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "cupang-halfmoon.jpg",
+      "cupang-plakat.jpg",
+      "channa-maru.jpg",
+      "guppy-afr.jpg",
+      "neon-tetra.jpg",
+      "discus.jpg",
+      "aquarium-rimless.jpg",
+      "canister-filter.jpg"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Katalog",
+     "words": 1,
+     "chars": 7,
+     "lines": 1,
+     "size": 57.1,
+     "vw": 7.4,
+     "font": "Hanken Grotesk",
+     "weight": 500,
+     "tracking": -0.05,
+     "leading": 0.92,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.76,
+     "top": 168,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Katalog",
+     "words": 1,
+     "lines": 1,
+     "size": 57.1,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Katalog",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 57.1,
+      "vw": 7.4,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.76,
+      "top": 168,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 57.1,
+      "vw": 7.4,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.36,
+      "top": 3087,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "Temukan ikan berikutnya.",
+      "words": 3,
+      "chars": 24,
+      "lines": 2,
+      "size": 28,
+      "vw": 3.6,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.29,
+      "top": 3265,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 3,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 2,
+     "centered": 1,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      13,
+      16,
+      20,
+      28,
+      57
+     ],
+     "sizeCount": 5,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 16,
+      "leading": 1.38,
+      "weight": 400,
+      "tracking": -0.005,
+      "contrast": 13
+     },
+     "measureChars": 84,
+     "max": {
+      "size": 57.1,
+      "vw": 7.4,
+      "font": "Hanken Grotesk",
+      "text": "Katalog"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#e2dccf",
+     "bodyBgHsl": {
+      "h": 41,
+      "s": 0.25,
+      "l": 0.85
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#e2dccf",
+       "top": 0,
+       "hsl": {
+        "h": 41,
+        "s": 0.25,
+        "l": 0.85
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2a1110",
+       "share": 0.84
+      },
+      {
+       "color": "#6b524c",
+       "share": 0.13
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.02
+      },
+      {
+       "color": "#e2dccf",
+       "share": 0.01
+      },
+      {
+       "color": "#6b524b",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#2a1110",
+      "hsl": {
+       "h": 2,
+       "s": 0.45,
+       "l": 0.11
+      },
+      "fg": "#e2dccf"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 2,
+     "radius": 0,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Daftar",
+      "Buka filter"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 2565
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 9,
+     "fixed": true,
+     "height": 104,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 3561,
+    "margins": {
+     "left": 47,
+     "right": 47
+    },
+    "sections": [
+     {
+      "sel": "section.container-page.pt-10",
+      "tag": "section",
+      "top": 104,
+      "height": 183,
+      "words": 14,
+      "media": 0,
+      "middle": 65,
+      "heading": {
+       "text": "Katalog",
+       "size": 57,
+       "tag": "h1"
+      },
+      "left": 47,
+      "right": 67,
+      "textLeft": 47,
+      "textRight": 67,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.container-page.pb-24",
+      "tag": "div",
+      "top": 287,
+      "height": 2214,
+      "words": 270,
+      "media": 12,
+      "middle": 0,
+      "heading": null,
+      "left": 47,
+      "right": 47,
+      "textLeft": 47,
+      "textRight": 51,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.container-page.pb-2",
+      "tag": "footer",
+      "top": 2501,
+      "height": 1060,
+      "words": 81,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 63,
+      "right": 78,
+      "textLeft": 63,
+      "textRight": 78,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Katalog",
+      "size": 57,
+      "top": 168,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 47,
+      "n": 3
+     },
+     {
+      "x": 507,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 4,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 6,
+   "filled": [
+    0.44,
+    0.57,
+    0.69,
+    0.5,
+    0.91,
+    0.87
+   ],
+   "motion": {
+    "elements": 13,
+    "css": 0,
+    "transitions": 13,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 4756,
+     "screens": 5.6,
+     "words": 373,
+     "img": 12,
+     "video": 0,
+     "canvas": 0,
+     "svg": 18,
+     "sections": 1,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 12,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "cupang-halfmoon.jpg",
+      "cupang-plakat.jpg",
+      "channa-maru.jpg",
+      "guppy-afr.jpg",
+      "neon-tetra.jpg",
+      "discus.jpg",
+      "aquarium-rimless.jpg",
+      "canister-filter.jpg"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Katalog",
+     "words": 1,
+     "chars": 7,
+     "lines": 1,
+     "size": 41.2,
+     "vw": 10.6,
+     "font": "Hanken Grotesk",
+     "weight": 500,
+     "tracking": -0.05,
+     "leading": 0.92,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.9,
+     "top": 112,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Katalog",
+     "words": 1,
+     "lines": 1,
+     "size": 41.2,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Katalog",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 41.2,
+      "vw": 10.6,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 112,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 41.2,
+      "vw": 10.6,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.52,
+      "top": 4265,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "Temukan ikan berikutnya.",
+      "words": 3,
+      "chars": 24,
+      "lines": 2,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.56,
+      "top": 4436,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 3,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 2,
+     "centered": 1,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      13,
+      16,
+      20,
+      28,
+      41
+     ],
+     "sizeCount": 5,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 16,
+      "leading": 1.38,
+      "weight": 400,
+      "tracking": -0.005,
+      "contrast": 13
+     },
+     "measureChars": 44,
+     "max": {
+      "size": 41.2,
+      "vw": 10.6,
+      "font": "Hanken Grotesk",
+      "text": "Katalog"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#e2dccf",
+     "bodyBgHsl": {
+      "h": 41,
+      "s": 0.25,
+      "l": 0.85
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#e2dccf",
+       "top": 0,
+       "hsl": {
+        "h": 41,
+        "s": 0.25,
+        "l": 0.85
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2a1110",
+       "share": 0.86
+      },
+      {
+       "color": "#6b524c",
+       "share": 0.1
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.02
+      },
+      {
+       "color": "#e2dccf",
+       "share": 0.01
+      },
+      {
+       "color": "#6b524b",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#2a1110",
+      "hsl": {
+       "h": 2,
+       "s": 0.45,
+       "l": 0.11
+      },
+      "fg": "#e2dccf"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 2,
+     "radius": 0,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Daftar",
+      "Buka filter"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 5,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 3380
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 72,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 4756,
+    "margins": {
+     "left": 20,
+     "right": 20
+    },
+    "sections": [
+     {
+      "sel": "section.container-page.pt-10",
+      "tag": "section",
+      "top": 72,
+      "height": 212,
+      "words": 14,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Katalog",
+       "size": 41,
+       "tag": "h1"
+      },
+      "left": 20,
+      "right": 98,
+      "textLeft": 20,
+      "textRight": 98,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.container-page.pb-24",
+      "tag": "div",
+      "top": 284,
+      "height": 3032,
+      "words": 270,
+      "media": 12,
+      "middle": 0,
+      "heading": null,
+      "left": 20,
+      "right": 20,
+      "textLeft": 20,
+      "textRight": 21,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.container-page.pb-2",
+      "tag": "footer",
+      "top": 3316,
+      "height": 1440,
+      "words": 81,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 36,
+      "right": 47,
+      "textLeft": 36,
+      "textRight": 47,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Katalog",
+      "size": 41,
+      "top": 112,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 20,
+      "n": 2
+     },
+     {
+      "x": 203,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 4,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "WARN",
+   "id": "still-page",
+   "width": 1440,
+   "message": "Little motion: 13 element(s) moved while the page loaded and scrolled.",
+   "fix": "Give every section an entrance for its parts (not one fade of the whole block) and add one moving picture: a looping clip or a slow move on a photograph."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "D:\\gatauni\\.taste-skill\\after-products\\desktop-fold.jpg",
+   "pages": [
+    "D:\\gatauni\\.taste-skill\\after-products\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "D:\\gatauni\\.taste-skill\\after-products\\tablet-fold.jpg",
+   "pages": [
+    "D:\\gatauni\\.taste-skill\\after-products\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "D:\\gatauni\\.taste-skill\\after-products\\mobile-fold.jpg",
+   "pages": [
+    "D:\\gatauni\\.taste-skill\\after-products\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

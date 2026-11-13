@@ -143,7 +143,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Ikan Cupang Halfmoon dengan mutasi ekor rosetail bertingkat yang sangat rapat dan warna merah menyala solid. Sirip bukaan 180 derajat sempurna, lincah, aktif flaring, dan dirawat dengan daun ketapang olahan.',
             'price' => 175000,
             'stock' => 12,
-            'image' => 'https://images.unsplash.com/photo-1544943910-4c1dc44a0b27?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/cupang-halfmoon.jpg',
             'is_active' => true,
         ]);
 
@@ -173,7 +173,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Plakat Avatar Gordon corak galaksi sisik metalik dengan kombinasi warna hitam pekat, biru metalik, dan titik hijau tosca. Tubuh tegap, lincah, dan memiliki mental petarung show grade.',
             'price' => 220000,
             'stock' => 8,
-            'image' => 'https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/cupang-plakat.jpg',
             'is_active' => true,
         ]);
 
@@ -203,7 +203,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Ikan predator hias Channa Maru varian Yellow Sentarum asli Danau Sentarum Kalimantan. Bunga sirip sudah mulai naik rapi, dorsal tegak, mental bar flaring mantap, dan sudah terbiasa makan udang kering serta pelet premium.',
             'price' => 350000,
             'stock' => 5,
-            'image' => 'https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/channa-maru.jpg',
             'is_active' => true,
         ]);
 
@@ -233,7 +233,7 @@ class DatabaseSeeder extends Seeder
             'description' => '1 Pasang (1 Jantan + 1 Betina Siap Pijah) Guppy Albino Full Red grade murni. Mata merah terang (albino), dorsal lebar mengembang, ekor delta merah rata tanpa noda. Sangat cocok untuk aquascape atau breeding.',
             'price' => 85000,
             'stock' => 15,
-            'image' => 'https://images.unsplash.com/photo-1520302630591-fd1c66edc19d?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/guppy-afr.jpg',
             'is_active' => true,
         ]);
 
@@ -263,7 +263,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Paket 10 ekor Neon Tetra sehat dan lincah berenang bersama (schooling). Garis biru neon berpendar kontras dengan ekor merah menyala. Sangat aman dan mempesona untuk akuarium aquascape bertanaman lebat.',
             'price' => 45000,
             'stock' => 25,
-            'image' => 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/neon-tetra.jpg',
             'is_active' => true,
         ]);
 
@@ -293,7 +293,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Ikan Discus varian Pigeon Blood Red dengan bintik merah cerah dan warna dasar kuning keemasan. Ikan sudah adaptasi air tawar Bandung/Jakarta, makan lancar burger discus dan cacing beku.',
             'price' => 195000,
             'stock' => 6,
-            'image' => 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/discus.jpg',
             'is_active' => true,
         ]);
 
@@ -324,7 +324,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Akuarium kaca tanpa bingkai (rimless) menggunakan kaca Ultra Clear Optic White ketebalan 6mm. Sambungan lem silikon transparan presisi buatan pabrik Jerman. Tingkat kejernihan hingga 92%.',
             'price' => 290000,
             'stock' => 10,
-            'image' => 'https://images.unsplash.com/photo-1517420704952-d9f39e95b43e?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/aquarium-rimless.jpg',
             'is_active' => true,
         ]);
 
@@ -336,7 +336,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Filter canister eksternal hemat daya 12W dengan debit air 800 Liter/Jam. Sudah dilengkapi 3 keranjang media biologis (ceramic ring & bioball), selang in/out, dan lily pipe akrilik elegan.',
             'price' => 380000,
             'stock' => 7,
-            'image' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/canister-filter.jpg',
             'is_active' => true,
         ]);
 
@@ -348,7 +348,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Pakan butiran terapung mikro (0.8mm) dengan kandungan protein 48%, ekstrak spirulina, astaxanthin, dan vitamin C untuk mempercepat mutasi warna dan memperkuat daya tahan tubuh ikan.',
             'price' => 32000,
             'stock' => 40,
-            'image' => 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/pelet.jpg',
             'is_active' => true,
         ]);
 
@@ -360,7 +360,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Cacing darah segar yang disterilisasi sinar UV dan dibekukan cepat dalam tray 28 kubus kecil. Bebas bakteri patogen dan parasit, kaya nutrisi pembentukan massa otot ikan hias.',
             'price' => 18000,
             'stock' => 50,
-            'image' => 'https://images.unsplash.com/photo-1524704654690-b56c05c78a00?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/bloodworm.jpg',
             'is_active' => true,
         ]);
 
@@ -372,7 +372,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Garam kristal murni murni tanpa yodium (NaCl 99%) untuk menyeimbangkan osmoregulasi cairan tubuh ikan pasca transportasi, mencegah infeksi jamur, dan menetralkan racun nitrit.',
             'price' => 10000,
             'stock' => 80,
-            'image' => 'https://images.unsplash.com/photo-1506869640319-fe1a24fd76dc?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/garam.jpg',
             'is_active' => true,
         ]);
 
@@ -384,7 +384,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Ekstrak fermentasi daun ketapang laut tua yang telah disaring bersih dari minyak dan kotoran. Mengandung tanin alami untuk menstabilkan pH air, antibakteri alami, dan menenangkan ikan yang stres.',
             'price' => 25000,
             'stock' => 35,
-            'image' => 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/ketapang-leaf2.jpg',
             'is_active' => true,
         ]);
 
@@ -396,7 +396,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Tanaman anubias daun kuning cerah (golden) yang sudah menempel kuat pada lempengan batu lava hitam alami. Sangat mudah dirawat, minim kebutuhan CO2, dan tahan terhadap gigitan ikan kecil.',
             'price' => 45000,
             'stock' => 18,
-            'image' => 'https://images.unsplash.com/photo-1508873696983-2df5293cb32f?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/anubias.jpg',
             'is_active' => true,
         ]);
 
@@ -408,7 +408,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Tanaman endemik Kalimantan asli daun kecil berwarna hijau gelap dengan kemilau biru metalik (velvet) saat disinari cahaya lampu akuarium. Sudah adaptasi air tawar (submersed).',
             'price' => 60000,
             'stock' => 14,
-            'image' => 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
+            'image' => '/images/products/bucephalandra.jpg',
             'is_active' => true,
         ]);
 

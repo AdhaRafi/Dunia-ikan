@@ -1,6 +1,5 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
@@ -20,15 +19,15 @@ export default function ConfirmPassword() {
 
     return (
         <GuestLayout>
-            <Head title="Confirm Password" />
+            <Head title="Konfirmasi password — Dunia Ikan" />
 
-            <div className="mb-4 text-sm text-gray-600">
-                This is a secure area of the application. Please confirm your
-                password before continuing.
-            </div>
+            <h1 className="display-type">Konfirmasi</h1>
+            <p className="mt-4 max-w-[40ch] text-[20px] leading-snug">
+                Area ini terlindungi. Masukkan password Anda untuk melanjutkan.
+            </p>
 
-            <form onSubmit={submit}>
-                <div className="mt-4">
+            <form onSubmit={submit} className="mt-6 space-y-4">
+                <div>
                     <InputLabel htmlFor="password" value="Password" />
 
                     <TextInput
@@ -36,19 +35,21 @@ export default function ConfirmPassword() {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="mt-1 w-full"
                         isFocused={true}
                         onChange={(e) => setData('password', e.target.value)}
                     />
 
-                    <InputError message={errors.password} className="mt-2" />
+                    <InputError message={errors.password} className="mt-1" />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Confirm
-                    </PrimaryButton>
-                </div>
+                <button
+                    type="submit"
+                    disabled={processing}
+                    className="press w-full bg-ink px-4 py-3 text-[16px] font-medium text-bone hover:bg-accent disabled:opacity-50"
+                >
+                    {processing ? 'Memeriksa' : 'Lanjutkan'}
+                </button>
             </form>
         </GuestLayout>
     );

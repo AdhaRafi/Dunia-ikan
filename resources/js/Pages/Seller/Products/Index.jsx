@@ -70,9 +70,9 @@ export default function Index({ store, products }) {
                                                         <p className="font-bold text-slate-900 truncate max-w-[200px] text-xs">
                                                             {product.name}
                                                         </p>
-                                                        {product.fishDetail?.species_name && (
+                                                        {product.fish_detail?.species_name && (
                                                             <p className="text-[10px] italic text-slate-400 truncate">
-                                                                {product.fishDetail.species_name}
+                                                                {product.fish_detail.species_name}
                                                             </p>
                                                         )}
                                                     </div>
@@ -84,9 +84,9 @@ export default function Index({ store, products }) {
                                             </td>
 
                                             <td className="p-4">
-                                                {product.fishDetail?.morph_trait ? (
+                                                {product.fish_detail?.morph_trait ? (
                                                     <span className="px-2 py-0.5 rounded-md bg-sky-50 text-dunia-marine font-bold text-[10px]">
-                                                        {product.fishDetail.morph_trait}
+                                                        {product.fish_detail.morph_trait}
                                                     </span>
                                                 ) : (
                                                     <span className="text-slate-400">-</span>

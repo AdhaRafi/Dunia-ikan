@@ -1,4 +1,3 @@
-import PrimaryButton from '@/Components/PrimaryButton';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
@@ -13,37 +12,37 @@ export default function VerifyEmail({ status }) {
 
     return (
         <GuestLayout>
-            <Head title="Email Verification" />
+            <Head title="Verifikasi email — Dunia Ikan" />
 
-            <div className="mb-4 text-sm text-gray-600">
-                Thanks for signing up! Before getting started, could you verify
-                your email address by clicking on the link we just emailed to
-                you? If you didn't receive the email, we will gladly send you
-                another.
-            </div>
+            <h1 className="display-type">Verifikasi email</h1>
+            <p className="mt-4 max-w-[40ch] text-[20px] leading-snug">
+                Kami mengirim tautan verifikasi ke email Anda. Buka tautan itu
+                untuk mengaktifkan akun.
+            </p>
 
             {status === 'verification-link-sent' && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
-                </div>
+                <p className="mt-5 bg-field4 px-4 py-3 text-[16px] text-white">
+                    Tautan verifikasi baru sudah dikirim ke email Anda.
+                </p>
             )}
 
-            <form onSubmit={submit}>
-                <div className="mt-4 flex items-center justify-between">
-                    <PrimaryButton disabled={processing}>
-                        Resend Verification Email
-                    </PrimaryButton>
+            <form onSubmit={submit} className="mt-6 space-y-4">
+                <button
+                    type="submit"
+                    disabled={processing}
+                    className="press w-full bg-ink px-4 py-3 text-[16px] font-medium text-bone hover:bg-accent disabled:opacity-50"
+                >
+                    {processing ? 'Mengirim' : 'Kirim ulang email'}
+                </button>
 
-                    <Link
-                        href={route('logout')}
-                        method="post"
-                        as="button"
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Log Out
-                    </Link>
-                </div>
+                <Link
+                    href={route('logout')}
+                    method="post"
+                    as="button"
+                    className="press block w-full bg-surface px-4 py-3 text-center text-[16px] font-medium text-ink hover:bg-field3"
+                >
+                    Keluar
+                </Link>
             </form>
         </GuestLayout>
     );

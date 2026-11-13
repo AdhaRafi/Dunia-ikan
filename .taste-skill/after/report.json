@@ -1,0 +1,2191 @@
+{
+ "url": "http://localhost:8000/",
+ "at": "2026-11-13T15:04:25.035Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.45,
+    0.32,
+    0.44,
+    0.52,
+    0.51,
+    0.54,
+    0.8,
+    0.72
+   ],
+   "motion": {
+    "elements": 23,
+    "css": 1,
+    "transitions": 22,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 6527,
+     "screens": 7.3,
+     "words": 645,
+     "img": 17,
+     "video": 0,
+     "canvas": 0,
+     "svg": 16,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 17,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "cupang-halfmoon.jpg",
+      "cupang-halfmoon.jpg",
+      "aquarium-rimless.jpg",
+      "pelet.jpg",
+      "ketapang-leaf2.jpg",
+      "anubias.jpg",
+      "aquarium-rimless.jpg",
+      "canister-filter.jpg"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "DUNIA IKAN",
+     "words": 2,
+     "chars": 10,
+     "lines": 1,
+     "size": 85.3,
+     "vw": 5.9,
+     "font": "Hanken Grotesk",
+     "weight": 500,
+     "tracking": -0.05,
+     "leading": 0.92,
+     "upper": true,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.84,
+     "top": 168,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "DUNIA IKAN",
+     "words": 2,
+     "lines": 1,
+     "size": 85.3,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 85.3,
+      "vw": 5.9,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.84,
+      "top": 168,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Kategori",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 44,
+      "vw": 3.1,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.11,
+      "top": 1244,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Untuk akuarium",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 44,
+      "vw": 3.1,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.21,
+      "top": 1781,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Katalog",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 44,
+      "vw": 3.1,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.32,
+      "top": 2475,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Garansi hidup",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 44,
+      "vw": 3.1,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.45,
+      "top": 4238,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Panduan",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 44,
+      "vw": 3.1,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.3,
+      "top": 4678,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jual ikan Anda di Dunia Ikan.",
+      "words": 6,
+      "chars": 29,
+      "lines": 2,
+      "size": 44,
+      "vw": 3.1,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.31,
+      "top": 5577,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Temukan ikan berikutnya.",
+      "words": 3,
+      "chars": 24,
+      "lines": 2,
+      "size": 28,
+      "vw": 1.9,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.15,
+      "top": 6231,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 85.3,
+      "vw": 5.9,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.29,
+      "top": 6288,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 9,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 2,
+     "centered": 1,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      13,
+      16,
+      20,
+      28,
+      44,
+      85
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": -0.005,
+      "contrast": 13
+     },
+     "measureChars": 81,
+     "max": {
+      "size": 85.3,
+      "vw": 5.9,
+      "font": "Hanken Grotesk",
+      "text": "DUNIA IKAN"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0.02,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#e2dccf",
+     "bodyBgHsl": {
+      "h": 41,
+      "s": 0.25,
+      "l": 0.85
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#e2dccf",
+       "top": 0,
+       "hsl": {
+        "h": 41,
+        "s": 0.25,
+        "l": 0.85
+       }
+      },
+      {
+       "color": "#4a6f84",
+       "top": 4086,
+       "hsl": {
+        "h": 202,
+        "s": 0.28,
+        "l": 0.4
+       }
+      },
+      {
+       "color": "#dc1928",
+       "top": 5497,
+       "hsl": {
+        "h": 355,
+        "s": 0.8,
+        "l": 0.48
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2a1110",
+       "share": 0.75
+      },
+      {
+       "color": "#6b524c",
+       "share": 0.18
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.06
+      },
+      {
+       "color": "#e2dccf",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#2a1110",
+      "hsl": {
+       "h": 2,
+       "s": 0.45,
+       "l": 0.11
+      },
+      "fg": "#2a1110"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 5,
+     "inHero": 2,
+     "radius": 0,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Daftar",
+      "Halfmoon Rosetail Super Red Betta splend"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 5,
+     "roundedMedia": 12,
+     "mediaRadius": 2,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.17
+     }
+    ],
+    "nav": {
+     "links": 11,
+     "fixed": true,
+     "height": 104,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 6527,
+    "margins": {
+     "left": 112,
+     "right": 123
+    },
+    "sections": [
+     {
+      "sel": "section.container-page.pb-16",
+      "tag": "section",
+      "top": 104,
+      "height": 1141,
+      "words": 102,
+      "media": 1,
+      "middle": 78,
+      "heading": {
+       "text": "DUNIA IKAN",
+       "size": 85,
+       "tag": "h1"
+      },
+      "left": 112,
+      "right": 142,
+      "textLeft": 112,
+      "textRight": 142,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page.pb-20",
+      "tag": "section",
+      "top": 1244,
+      "height": 497,
+      "words": 11,
+      "media": 5,
+      "middle": 28,
+      "heading": null,
+      "left": 112,
+      "right": 128,
+      "textLeft": 112,
+      "textRight": 134,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page",
+      "tag": "section",
+      "top": 1741,
+      "height": 638,
+      "words": 40,
+      "media": 2,
+      "middle": 90,
+      "heading": {
+       "text": "Untuk akuarium",
+       "size": 44,
+       "tag": "h2"
+      },
+      "left": 152,
+      "right": 168,
+      "textLeft": 152,
+      "textRight": 168,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page.py-20",
+      "tag": "section",
+      "top": 2379,
+      "height": 1708,
+      "words": 187,
+      "media": 6,
+      "middle": 16,
+      "heading": {
+       "text": "Katalog",
+       "size": 44,
+       "tag": "h2"
+      },
+      "left": 112,
+      "right": 112,
+      "textLeft": 112,
+      "textRight": 123,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.overflow-hidden.bg-field4",
+      "tag": "section",
+      "top": 4086,
+      "height": 496,
+      "words": 49,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Garansi hidup",
+       "size": 44,
+       "tag": "h2"
+      },
+      "left": 396,
+      "right": 396,
+      "textLeft": 396,
+      "textRight": 396,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page.py-20",
+      "tag": "section",
+      "top": 4582,
+      "height": 609,
+      "words": 141,
+      "media": 0,
+      "middle": 50,
+      "heading": {
+       "text": "Panduan",
+       "size": 44,
+       "tag": "h2"
+      },
+      "left": 112,
+      "right": 134,
+      "textLeft": 112,
+      "textRight": 134,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section",
+      "tag": "section",
+      "top": 5191,
+      "height": 734,
+      "words": 29,
+      "media": 3,
+      "middle": 0,
+      "heading": {
+       "text": "Jual ikan Anda di Dunia Ikan.",
+       "size": 44,
+       "tag": "h2"
+      },
+      "left": 15,
+      "right": 15,
+      "textLeft": 112,
+      "textRight": 865,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.container-page.pb-2",
+      "tag": "footer",
+      "top": 5925,
+      "height": 602,
+      "words": 81,
+      "media": 0,
+      "middle": 121,
+      "heading": {
+       "text": "DUNIA IKAN",
+       "size": 85,
+       "tag": "p"
+      },
+      "left": 128,
+      "right": 148,
+      "textLeft": 128,
+      "textRight": 148,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "DUNIA IKAN",
+      "size": 85,
+      "top": 168,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 112,
+      "n": 10
+     },
+     {
+      "x": 1026,
+      "n": 3
+     },
+     {
+      "x": 396,
+      "n": 2
+     },
+     {
+      "x": 152,
+      "n": 1
+     },
+     {
+      "x": 430,
+      "n": 1
+     },
+     {
+      "x": 933,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 18,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0.12,
+    "voidBox": {
+     "x": 780,
+     "y": 120,
+     "w": 660,
+     "h": 240
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.45,
+    0.62,
+    0.41,
+    0.47,
+    0.42,
+    0.58,
+    0.8,
+    0.76
+   ],
+   "motion": {
+    "elements": 23,
+    "css": 1,
+    "transitions": 22,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 7742,
+     "screens": 7.6,
+     "words": 640,
+     "img": 17,
+     "video": 0,
+     "canvas": 0,
+     "svg": 16,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 17,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "cupang-halfmoon.jpg",
+      "cupang-halfmoon.jpg",
+      "aquarium-rimless.jpg",
+      "pelet.jpg",
+      "ketapang-leaf2.jpg",
+      "anubias.jpg",
+      "aquarium-rimless.jpg",
+      "canister-filter.jpg"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "DUNIA IKAN",
+     "words": 2,
+     "chars": 10,
+     "lines": 1,
+     "size": 57.1,
+     "vw": 7.4,
+     "font": "Hanken Grotesk",
+     "weight": 500,
+     "tracking": -0.05,
+     "leading": 0.92,
+     "upper": true,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.88,
+     "top": 168,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "DUNIA IKAN",
+     "words": 2,
+     "lines": 1,
+     "size": 57.1,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 57.1,
+      "vw": 7.4,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 168,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Kategori",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 35.4,
+      "vw": 4.6,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.16,
+      "top": 1912,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Untuk akuarium",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 35.4,
+      "vw": 4.6,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.31,
+      "top": 2754,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Katalog",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 35.4,
+      "vw": 4.6,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.61,
+      "top": 3591,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Garansi hidup",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 44,
+      "vw": 5.7,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 4919,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Panduan",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 35.4,
+      "vw": 4.6,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.56,
+      "top": 5358,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jual ikan Anda di Dunia Ikan.",
+      "words": 6,
+      "chars": 29,
+      "lines": 2,
+      "size": 44,
+      "vw": 5.7,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.58,
+      "top": 6334,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 57.1,
+      "vw": 7.4,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.36,
+      "top": 7268,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "Temukan ikan berikutnya.",
+      "words": 3,
+      "chars": 24,
+      "lines": 2,
+      "size": 28,
+      "vw": 3.6,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.29,
+      "top": 7446,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 9,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 2,
+     "centered": 1,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      13,
+      16,
+      20,
+      28,
+      35,
+      44,
+      57
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": -0.005,
+      "contrast": 13
+     },
+     "measureChars": 70,
+     "max": {
+      "size": 57.1,
+      "vw": 7.4,
+      "font": "Hanken Grotesk",
+      "text": "DUNIA IKAN"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0.02,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#e2dccf",
+     "bodyBgHsl": {
+      "h": 41,
+      "s": 0.25,
+      "l": 0.85
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#e2dccf",
+       "top": 0,
+       "hsl": {
+        "h": 41,
+        "s": 0.25,
+        "l": 0.85
+       }
+      },
+      {
+       "color": "#d7d0c1",
+       "top": 1319,
+       "hsl": {
+        "h": 41,
+        "s": 0.22,
+        "l": 0.8
+       }
+      },
+      {
+       "color": "#4a6f84",
+       "top": 4767,
+       "hsl": {
+        "h": 202,
+        "s": 0.28,
+        "l": 0.4
+       }
+      },
+      {
+       "color": "#dc1928",
+       "top": 6254,
+       "hsl": {
+        "h": 355,
+        "s": 0.8,
+        "l": 0.48
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2a1110",
+       "share": 0.76
+      },
+      {
+       "color": "#6b524c",
+       "share": 0.18
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.06
+      },
+      {
+       "color": "#e2dccf",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#2a1110",
+      "hsl": {
+       "h": 2,
+       "s": 0.45,
+       "l": 0.11
+      },
+      "fg": "#2a1110"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 5,
+     "inHero": 2,
+     "radius": 0,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Daftar",
+      "Halfmoon Rosetail Super Red"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 5,
+     "roundedMedia": 1,
+     "mediaRadius": 2,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 6746
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.28
+     }
+    ],
+    "nav": {
+     "links": 9,
+     "fixed": true,
+     "height": 104,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 7742,
+    "margins": {
+     "left": 47,
+     "right": 47
+    },
+    "sections": [
+     {
+      "sel": "div.reveal.is-visible",
+      "tag": "div",
+      "top": 168,
+      "height": 127,
+      "words": 20,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 47,
+      "right": 96,
+      "textLeft": 47,
+      "textRight": 96,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.mt-12.grid",
+      "tag": "div",
+      "top": 343,
+      "height": 1409,
+      "words": 74,
+      "media": 1,
+      "middle": 0,
+      "heading": null,
+      "left": 47,
+      "right": 47,
+      "textLeft": 59,
+      "textRight": 77,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page.pb-20",
+      "tag": "section",
+      "top": 1912,
+      "height": 802,
+      "words": 11,
+      "media": 5,
+      "middle": 27,
+      "heading": null,
+      "left": 47,
+      "right": 62,
+      "textLeft": 47,
+      "textRight": 69,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page",
+      "tag": "section",
+      "top": 2714,
+      "height": 781,
+      "words": 40,
+      "media": 2,
+      "middle": 94,
+      "heading": {
+       "text": "Untuk akuarium",
+       "size": 35,
+       "tag": "h2"
+      },
+      "left": 87,
+      "right": 100,
+      "textLeft": 87,
+      "textRight": 100,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page.py-20",
+      "tag": "section",
+      "top": 3495,
+      "height": 1271,
+      "words": 187,
+      "media": 6,
+      "middle": 16,
+      "heading": {
+       "text": "Katalog",
+       "size": 35,
+       "tag": "h2"
+      },
+      "left": 47,
+      "right": 47,
+      "textLeft": 47,
+      "textRight": 51,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.overflow-hidden.bg-field4",
+      "tag": "section",
+      "top": 4767,
+      "height": 496,
+      "words": 49,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Garansi hidup",
+       "size": 44,
+       "tag": "h2"
+      },
+      "left": 103,
+      "right": 134,
+      "textLeft": 103,
+      "textRight": 134,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page.py-20",
+      "tag": "section",
+      "top": 5262,
+      "height": 643,
+      "words": 120,
+      "media": 0,
+      "middle": 24,
+      "heading": {
+       "text": "Panduan",
+       "size": 35,
+       "tag": "h2"
+      },
+      "left": 47,
+      "right": 69,
+      "textLeft": 47,
+      "textRight": 69,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section",
+      "tag": "section",
+      "top": 5906,
+      "height": 777,
+      "words": 29,
+      "media": 3,
+      "middle": 0,
+      "heading": {
+       "text": "Jual ikan Anda di Dunia Ikan.",
+       "size": 44,
+       "tag": "h2"
+      },
+      "left": 15,
+      "right": 15,
+      "textLeft": 47,
+      "textRight": 258,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.container-page.pb-2",
+      "tag": "footer",
+      "top": 6682,
+      "height": 1060,
+      "words": 81,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 63,
+      "right": 78,
+      "textLeft": 63,
+      "textRight": 78,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "DUNIA IKAN",
+      "size": 57,
+      "top": 168,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 47,
+      "n": 10
+     },
+     {
+      "x": 555,
+      "n": 3
+     },
+     {
+      "x": 103,
+      "n": 2
+     },
+     {
+      "x": 87,
+      "n": 1
+     },
+     {
+      "x": 230,
+      "n": 1
+     },
+     {
+      "x": 507,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 18,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 12,
+   "filled": [
+    0.52,
+    0.72,
+    0.55,
+    0.44,
+    0.54,
+    0.59,
+    0.55,
+    0.47,
+    0.9,
+    0.87,
+    0.84,
+    0.87
+   ],
+   "motion": {
+    "elements": 23,
+    "css": 1,
+    "transitions": 22,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 9441,
+     "screens": 11.2,
+     "words": 630,
+     "img": 17,
+     "video": 0,
+     "canvas": 0,
+     "svg": 16,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 17,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "cupang-halfmoon.jpg",
+      "cupang-halfmoon.jpg",
+      "aquarium-rimless.jpg",
+      "pelet.jpg",
+      "ketapang-leaf2.jpg",
+      "anubias.jpg",
+      "aquarium-rimless.jpg",
+      "canister-filter.jpg"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "DUNIA IKAN",
+     "words": 2,
+     "chars": 10,
+     "lines": 1,
+     "size": 41.2,
+     "vw": 10.6,
+     "font": "Hanken Grotesk",
+     "weight": 500,
+     "tracking": -0.05,
+     "leading": 0.92,
+     "upper": true,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.9,
+     "top": 112,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "DUNIA IKAN",
+     "words": 2,
+     "lines": 1,
+     "size": 41.2,
+     "font": "Hanken Grotesk"
+    },
+    "headings": [
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 41.2,
+      "vw": 10.6,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 112,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Kategori",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 28.6,
+      "vw": 7.3,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.26,
+      "top": 1743,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Untuk akuarium",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 28.6,
+      "vw": 7.3,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.49,
+      "top": 2722,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Katalog",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 28.6,
+      "vw": 7.3,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 3968,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Garansi hidup",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.73,
+      "top": 5727,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Panduan",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 28.6,
+      "vw": 7.3,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.035,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 6208,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jual ikan Anda di Dunia Ikan.",
+      "words": 6,
+      "chars": 29,
+      "lines": 2,
+      "size": 44,
+      "vw": 11.3,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 7642,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "DUNIA IKAN",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 41.2,
+      "vw": 10.6,
+      "font": "Hanken Grotesk",
+      "weight": 500,
+      "tracking": -0.05,
+      "leading": 0.92,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.52,
+      "top": 8950,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "Temukan ikan berikutnya.",
+      "words": 3,
+      "chars": 24,
+      "lines": 2,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Hanken Grotesk",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.56,
+      "top": 9121,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 9,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 2,
+     "centered": 1,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Hanken Grotesk",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      13,
+      16,
+      20,
+      28,
+      29,
+      41,
+      44
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Hanken Grotesk",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": -0.005,
+      "contrast": 13
+     },
+     "measureChars": 36,
+     "max": {
+      "size": 44,
+      "vw": 11.3,
+      "font": "Hanken Grotesk",
+      "text": "Jual ikan Anda di Dunia Ikan."
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0.02,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#e2dccf",
+     "bodyBgHsl": {
+      "h": 41,
+      "s": 0.25,
+      "l": 0.85
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#e2dccf",
+       "top": 0,
+       "hsl": {
+        "h": 41,
+        "s": 0.25,
+        "l": 0.85
+       }
+      },
+      {
+       "color": "#d7d0c1",
+       "top": 1182,
+       "hsl": {
+        "h": 41,
+        "s": 0.22,
+        "l": 0.8
+       }
+      },
+      {
+       "color": "#4a6f84",
+       "top": 5615,
+       "hsl": {
+        "h": 202,
+        "s": 0.28,
+        "l": 0.4
+       }
+      },
+      {
+       "color": "#dc1928",
+       "top": 7578,
+       "hsl": {
+        "h": 355,
+        "s": 0.8,
+        "l": 0.48
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#2a1110",
+       "share": 0.77
+      },
+      {
+       "color": "#6b524c",
+       "share": 0.16
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.06
+      },
+      {
+       "color": "#e2dccf",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#2a1110",
+      "hsl": {
+       "h": 2,
+       "s": 0.45,
+       "l": 0.11
+      },
+      "fg": "#e2dccf"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 1,
+     "radius": 0,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Daftar"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 3,
+     "roundedMedia": 1,
+     "mediaRadius": 2,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 5,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 8065
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.22
+     }
+    ],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 72,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "hanken grotesk"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 9441,
+    "margins": {
+     "left": 20,
+     "right": 20
+    },
+    "sections": [
+     {
+      "sel": "div.reveal.is-visible",
+      "tag": "div",
+      "top": 112,
+      "height": 168,
+      "words": 20,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 20,
+      "right": 25,
+      "textLeft": 20,
+      "textRight": 25,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.mt-12.grid",
+      "tag": "div",
+      "top": 328,
+      "height": 1287,
+      "words": 74,
+      "media": 1,
+      "middle": 0,
+      "heading": null,
+      "left": 20,
+      "right": 20,
+      "textLeft": 32,
+      "textRight": 40,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page.pb-20",
+      "tag": "section",
+      "top": 1743,
+      "height": 955,
+      "words": 11,
+      "media": 5,
+      "middle": 24,
+      "heading": null,
+      "left": 20,
+      "right": 32,
+      "textLeft": 20,
+      "textRight": 42,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page",
+      "tag": "section",
+      "top": 2698,
+      "height": 1190,
+      "words": 40,
+      "media": 2,
+      "middle": 0,
+      "heading": {
+       "text": "Untuk akuarium",
+       "size": 29,
+       "tag": "h2"
+      },
+      "left": 44,
+      "right": 46,
+      "textLeft": 44,
+      "textRight": 46,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.reveal.is-visible",
+      "tag": "div",
+      "top": 3968,
+      "height": 125,
+      "words": 14,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 20,
+      "right": 48,
+      "textLeft": 20,
+      "textRight": 48,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.mt-8.grid",
+      "tag": "div",
+      "top": 4124,
+      "height": 1411,
+      "words": 172,
+      "media": 6,
+      "middle": 16,
+      "heading": null,
+      "left": 20,
+      "right": 20,
+      "textLeft": 20,
+      "textRight": 21,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.overflow-hidden.bg-field4",
+      "tag": "section",
+      "top": 5615,
+      "height": 513,
+      "words": 49,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Garansi hidup",
+       "size": 28,
+       "tag": "h2"
+      },
+      "left": 52,
+      "right": 54,
+      "textLeft": 52,
+      "textRight": 54,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.container-page.py-20",
+      "tag": "section",
+      "top": 6128,
+      "height": 963,
+      "words": 141,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Panduan",
+       "size": 29,
+       "tag": "h2"
+      },
+      "left": 20,
+      "right": 40,
+      "textLeft": 20,
+      "textRight": 40,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section",
+      "tag": "section",
+      "top": 7091,
+      "height": 910,
+      "words": 29,
+      "media": 3,
+      "middle": 0,
+      "heading": null,
+      "left": 0,
+      "right": 0,
+      "textLeft": 20,
+      "textRight": 51,
+      "fullBleed": true,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.container-page.pb-2",
+      "tag": "footer",
+      "top": 8001,
+      "height": 1440,
+      "words": 81,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 36,
+      "right": 47,
+      "textLeft": 36,
+      "textRight": 47,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "DUNIA IKAN",
+      "size": 41,
+      "top": 112,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 20,
+      "n": 9
+     },
+     {
+      "x": 40,
+      "n": 5
+     },
+     {
+      "x": 52,
+      "n": 2
+     },
+     {
+      "x": 203,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 18,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "D:\\gatauni\\.taste-skill\\after\\desktop-fold.jpg",
+   "pages": [
+    "D:\\gatauni\\.taste-skill\\after\\desktop-page-01.jpg",
+    "D:\\gatauni\\.taste-skill\\after\\desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "D:\\gatauni\\.taste-skill\\after\\tablet-fold.jpg",
+   "pages": [
+    "D:\\gatauni\\.taste-skill\\after\\tablet-page-01.jpg",
+    "D:\\gatauni\\.taste-skill\\after\\tablet-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "D:\\gatauni\\.taste-skill\\after\\mobile-fold.jpg",
+   "pages": [
+    "D:\\gatauni\\.taste-skill\\after\\mobile-page-01.jpg",
+    "D:\\gatauni\\.taste-skill\\after\\mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

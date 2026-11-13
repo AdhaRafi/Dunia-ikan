@@ -1,129 +1,213 @@
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { 
-    HeartPulse, 
-    ArrowLeft, 
-    AlertTriangle, 
-    CheckCircle2, 
-    ShieldCheck, 
-    BookOpen,
-    HelpCircle
-} from 'lucide-react';
+import Reveal from '@/Components/Reveal';
+
+const GUIDE_IMAGES = {
+    'Penyakit Parasit': '/images/products/cupang-halfmoon.jpg',
+    'Infeksi Bakteri / Jamur': '/images/products/cupang-plakat.jpg',
+    'Gangguan Pencernaan & Organ': '/images/products/discus.jpg',
+    'Kualitas Air & Filter': '/images/products/aquarium-rimless.jpg',
+};
+
+const SPECIES = [
+    {
+        name: 'Cupang',
+        image: '/images/products/cupang-plakat.jpg',
+        tone: 'field1',
+    },
+    {
+        name: 'Guppy',
+        image: '/images/products/guppy-afr.jpg',
+        tone: 'field4',
+    },
+    {
+        name: 'Channa',
+        image: '/images/products/channa-maru.jpg',
+        tone: 'field3',
+    },
+    {
+        name: 'Neon tetra',
+        image: '/images/products/neon-tetra.jpg',
+        tone: 'field2',
+    },
+];
+
+const SECTIONS = [
+    { key: 'symptoms', title: 'Gejala' },
+    { key: 'possible_causes', title: 'Kemungkinan penyebab' },
+    { key: 'care_instructions', title: 'Penanganan' },
+    { key: 'prevention', title: 'Pencegahan' },
+];
 
 export default function Show({ guide, relatedGuides }) {
+    const heroImage =
+        GUIDE_IMAGES[guide.category] ?? '/images/products/aquarium-rimless.jpg';
+
     return (
         <AppLayout>
-            <Head title={`${guide.title} - Panduan Kesehatan Dunia Ikan`} />
+            <Head title={`${guide.title} — Panduan Dunia Ikan`} />
 
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-                {/* Back button */}
-                <Link href="/guides" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-dunia-blue transition">
-                    <ArrowLeft className="w-4 h-4" />
-                    Kembali ke Pusat Panduan
-                </Link>
+            <article className="container-page pb-24 pt-8 md:pt-12">
+                <Reveal>
+                    <h1 className="head-type">{guide.title}</h1>
 
-                {/* Article Header */}
-                <div className="space-y-3 pb-6 border-b border-slate-100">
-                    <div className="flex items-center gap-2 flex-wrap text-xs">
-                        <span className="px-3 py-1 rounded-full bg-sky-100 text-dunia-navy font-bold">
-                            {guide.category}
-                        </span>
-                        <span className="text-slate-500 font-medium">
-                            Jenis Ikan: <strong className="text-slate-800">{guide.fish_type}</strong>
-                        </span>
-                    </div>
+                    <p className="mt-4 text-[16px] text-ink/80">
+                        {guide.category} · {guide.fish_type}
+                    </p>
+                </Reveal>
 
-                    <h1 className="text-3xl sm:text-4xl font-extrabold text-dunia-navy leading-tight">
-                        {guide.title}
-                    </h1>
+                <div className="mt-8 grid gap-8 lg:grid-cols-12 lg:items-start lg:gap-12">
+                    <Reveal className="min-w-0 lg:col-span-5">
+                        <nav aria-label="Di halaman ini">
+                            <p className="text-[16px] font-medium">
+                                Di halaman ini
+                            </p>
+                            <ul className="mt-2 space-y-1 text-[16px]">
+                                {SECTIONS.filter(
+                                    (section) => guide[section.key],
+                                ).map((section) => (
+                                    <li key={section.key}>
+                                        <a
+                                            href={`#${section.key}`}
+                                            className="underline decoration-1 underline-offset-4 hover:text-accent"
+                                        >
+                                            {section.title}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
 
-                    {guide.source && (
-                        <p className="text-xs text-slate-400">
-                            Sumber Rujukan: {guide.source}
-                        </p>
-                    )}
-                </div>
-
-                {/* Medical Disclaimer Alert */}
-                <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200/70 text-xs text-amber-900 flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                    <div>
-                        <p className="font-bold">Disclaimer Konsultasi Awal:</p>
-                        <p className="mt-0.5 leading-relaxed text-amber-800">
-                            Panduan ini merupakan tindakan pertolongan pertama berbasis praktik terbaik komunitas aquarist. Jika kondisi ikan sangat lemah, mengalami pendarahan internal, atau menyebar ke seluruh populasi akuarium, segera konsultasikan dengan dokter hewan akuatik.
-                        </p>
-                    </div>
-                </div>
-
-                {/* Section 1: Gejala Fisik & Perilaku */}
-                <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-3">
-                    <h2 className="text-base font-bold text-dunia-navy flex items-center gap-2 uppercase tracking-wider text-xs">
-                        <HeartPulse className="w-4 h-4 text-rose-500" />
-                        1. Gejala Fisik & Perilaku yang Teramati
-                    </h2>
-                    <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line bg-rose-50/40 p-4 rounded-xl border border-rose-100/60">
-                        {guide.symptoms}
-                    </div>
-                </div>
-
-                {/* Section 2: Kemungkinan Penyebab */}
-                <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-3">
-                    <h2 className="text-base font-bold text-dunia-navy flex items-center gap-2 uppercase tracking-wider text-xs">
-                        <HelpCircle className="w-4 h-4 text-amber-500" />
-                        2. Kemungkinan Penyebab Utama
-                    </h2>
-                    <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line bg-amber-50/40 p-4 rounded-xl border border-amber-100/60">
-                        {guide.possible_causes}
-                    </div>
-                </div>
-
-                {/* Section 3: Langkah Penanganan Awal */}
-                <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-3">
-                    <h2 className="text-base font-bold text-dunia-navy flex items-center gap-2 uppercase tracking-wider text-xs">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                        3. Langkah Penanganan / Pertolongan Pertama
-                    </h2>
-                    <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line bg-emerald-50/40 p-4 rounded-xl border border-emerald-100/60">
-                        {guide.care_instructions}
-                    </div>
-                </div>
-
-                {/* Section 4: Langkah Pencegahan */}
-                {guide.prevention && (
-                    <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-3">
-                        <h2 className="text-base font-bold text-dunia-navy flex items-center gap-2 uppercase tracking-wider text-xs">
-                            <ShieldCheck className="w-4 h-4 text-dunia-aqua" />
-                            4. Tindakan Pencegahan Jangka Panjang
-                        </h2>
-                        <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line bg-sky-50/40 p-4 rounded-xl border border-sky-100/60">
-                            {guide.prevention}
+                        <div className="mt-8 max-w-[56ch] border-l-4 border-field3 bg-surface p-5">
+                            <p className="text-[16px] font-medium">
+                                Konsultasi awal, bukan diagnosis medis
+                            </p>
+                            <p className="mt-1 text-[16px] leading-relaxed">
+                                Jika ikan sangat lemah, mengalami pendarahan,
+                                atau gejala menyebar ke seluruh akuarium, hubungi
+                                dokter hewan akuatik.
+                            </p>
                         </div>
-                    </div>
-                )}
+                    </Reveal>
 
-                {/* Related Guides */}
-                {relatedGuides && relatedGuides.length > 0 && (
-                    <div className="pt-8 border-t border-slate-100 space-y-4">
-                        <h3 className="font-bold text-base text-dunia-navy">
-                            Panduan Terkait Lainnya
-                        </h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            {relatedGuides.map((rel) => (
-                                <Link
-                                    key={rel.id}
-                                    href={`/guides/${rel.id}`}
-                                    className="p-4 rounded-xl bg-white border border-slate-200 hover:border-dunia-blue transition shadow-xs group"
-                                >
-                                    <p className="text-[11px] font-bold text-dunia-marine">{rel.category}</p>
-                                    <p className="font-bold text-xs text-slate-900 group-hover:text-dunia-blue mt-1 line-clamp-2">
-                                        {rel.title}
-                                    </p>
-                                </Link>
+                    <Reveal className="min-w-0 lg:col-span-7" delay={80}>
+                        <div className="specimen-tile specimen-tile--bleed aspect-[4/5] field4">
+                            <img
+                                src={heroImage}
+                                alt={guide.fish_type}
+                                className="drift"
+                                width="800"
+                                height="1000"
+                            />
+                        </div>
+                        <p className="mt-2 text-[13px] text-muted">
+                            Spesimen air tawar dari katalog Dunia Ikan.
+                        </p>
+                    </Reveal>
+                </div>
+
+                <div className="mt-14 grid gap-10 lg:grid-cols-12 lg:gap-12">
+                    <div className="min-w-0 lg:col-span-8">
+                        {SECTIONS.map((section, index) => {
+                            const body = guide[section.key];
+
+                            if (!body) {
+                                return null;
+                            }
+
+                            return (
+                                <Reveal key={section.key} delay={index * 50}>
+                                    <section
+                                        id={section.key}
+                                        className="mt-10 max-w-[68ch] scroll-mt-24 first:mt-0"
+                                    >
+                                        <h2 className="text-[20px] font-medium tracking-[-0.02em]">
+                                            {section.title}
+                                        </h2>
+                                        <p className="mt-3 whitespace-pre-line text-[16px] leading-relaxed">
+                                            {body}
+                                        </p>
+                                    </section>
+                                </Reveal>
+                            );
+                        })}
+
+                        {guide.source && (
+                            <Reveal>
+                                <p className="mt-10 max-w-[68ch] text-[13px] text-muted">
+                                    Sumber: {guide.source}
+                                </p>
+                            </Reveal>
+                        )}
+
+                        <Reveal>
+                            <Link
+                                href="/guides"
+                                className="press mt-10 inline-block text-[16px] underline decoration-1 underline-offset-4 hover:text-accent"
+                            >
+                                Semua panduan
+                            </Link>
+                        </Reveal>
+                    </div>
+
+                    <aside className="min-w-0 lg:col-span-4">
+                        <p className="text-[16px] font-medium">
+                            Spesies yang perlu dipantau
+                        </p>
+                        <div className="mt-3 grid grid-cols-2 gap-x-2 gap-y-4">
+                            {SPECIES.map((species, index) => (
+                                <Reveal key={species.name} delay={index * 50}>
+                                    <Link
+                                        href={`/guides?q=${encodeURIComponent(species.name)}`}
+                                        className="block"
+                                    >
+                                        <div
+                                            className={`specimen-tile aspect-[4/5] ${species.tone}`}
+                                        >
+                                            <img
+                                                src={species.image}
+                                                alt={species.name}
+                                                loading="lazy"
+                                                width="600"
+                                                height="750"
+                                                className="drift"
+                                            />
+                                        </div>
+                                        <p className="pt-2 text-[16px] font-medium">
+                                            {species.name}
+                                        </p>
+                                    </Link>
+                                </Reveal>
                             ))}
                         </div>
-                    </div>
+                    </aside>
+                </div>
+
+                {relatedGuides?.length > 0 && (
+                    <section className="mt-16">
+                        <h2 className="text-[20px] font-medium tracking-[-0.02em]">
+                            Panduan terkait
+                        </h2>
+                        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                            {relatedGuides.map((related, index) => (
+                                <Reveal key={related.id} delay={index * 50}>
+                                    <Link
+                                        href={`/guides/${related.id}`}
+                                        className="block h-full bg-surface p-4 hover:bg-field3/50"
+                                    >
+                                        <p className="text-[13px] text-muted">
+                                            {related.category}
+                                        </p>
+                                        <p className="mt-2 text-[16px] font-medium leading-snug">
+                                            {related.title}
+                                        </p>
+                                    </Link>
+                                </Reveal>
+                            ))}
+                        </div>
+                    </section>
                 )}
-            </div>
+            </article>
         </AppLayout>
     );
 }
