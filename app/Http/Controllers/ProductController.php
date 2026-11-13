@@ -1,0 +1,112 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Store;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
+
+class ProductController extends Controller
+{
+    public function index(Request $request): Response
+    {
+        $query = Product::with(['store', 'category', 'fishDetail'])
+            ->where('is_active', true);
+
+        // Pencarian kata kunci
+        if ($search = $request->input('q')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('fishDetail', function ($fq) use ($search) {
+                        $fq->where('species_name', 'like', "%{$search}%")
+                            ->orWhere('morph_trait', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        // Filter Kategori
+        if ($categorySlug = $request->input('category')) {
+            $query->whereHas('category', fn ($q) => $q->where('slug', $categorySlug));
+        }
+
+        // Filter Parametrik Morfologi Ikan (MorphMarket inspired)
+        if ($waterType = $request->input('water_type')) {
+            $query->whereHas('fishDetail', fn ($q) => $q->where('water_type', $waterType));
+        }
+
+        if ($sex = $request->input('sex')) {
+            $query->whereHas('fishDetail', fn ($q) => $q->where('sex', $sex));
+        }
+
+        if ($careLevel = $request->input('care_level')) {
+            $query->whereHas('fishDetail', fn ($q) => $q->where('care_level', $careLevel));
+        }
+
+        if ($temperament = $request->input('temperament')) {
+            $query->whereHas('fishDetail', fn ($q) => $q->where('temperament', $temperament));
+        }
+
+        // Filter Rentang Harga
+        if ($minPrice = $request->input('min_price')) {
+            $query->where('price', '>=', (float) $minPrice);
+        }
+
+        if ($maxPrice = $request->input('max_price')) {
+            $query->where('price', '<=', (float) $maxPrice);
+        }
+
+        // Filter Kota Penjual
+        if ($city = $request->input('city')) {
+            $query->whereHas('store', fn ($q) => $q->where('city', 'like', "%{$city}%"));
+        }
+
+        // Sorting
+        $sort = $request->input('sort', 'newest');
+        match ($sort) {
+            'price_asc' => $query->orderBy('price', 'asc'),
+            'price_desc' => $query->orderBy('price', 'desc'),
+            'popular' => $query->orderBy('views', 'desc'),
+            default => $query->latest(),
+        };
+
+        $products = $query->paginate(12)->withQueryString();
+
+        $categories = Category::select('id', 'name', 'slug')->get();
+        $cities = Store::where('is_active', true)->distinct()->pluck('city');
+
+        return Inertia::render('Products/Index', [
+            'products' => $products,
+            'categories' => $categories,
+            'cities' => $cities,
+            'filters' => $request->only([
+                'q', 'category', 'water_type', 'sex', 'care_level', 'temperament', 'min_price', 'max_price', 'city', 'sort',
+            ]),
+        ]);
+    }
+
+    public function show(string $slug): Response
+    {
+        $product = Product::with(['store', 'category', 'fishDetail'])
+            ->where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        $product->increment('views');
+
+        $relatedProducts = Product::with(['store', 'category', 'fishDetail'])
+            ->where('id', '!=', $product->id)
+            ->where('category_id', $product->category_id)
+            ->where('is_active', true)
+            ->take(4)
+            ->get();
+
+        return Inertia::render('Products/Show', [
+            'product' => $product,
+            'relatedProducts' => $relatedProducts,
+        ]);
+    }
+}

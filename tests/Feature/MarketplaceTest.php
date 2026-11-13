@@ -1,0 +1,127 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Address;
+use App\Models\Product;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class MarketplaceTest extends TestCase
+{
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
+    public function test_homepage_loads_successfully_with_data(): void
+    {
+        $response = $this->get('/');
+        $response->assertStatus(200);
+    }
+
+    public function test_catalog_can_be_filtered(): void
+    {
+        $response = $this->get('/products?category=ikan-hias&water_type=freshwater&sex=male');
+        $response->assertStatus(200);
+    }
+
+    public function test_product_detail_page_loads_with_fish_morph_details(): void
+    {
+        $product = Product::whereHas('fishDetail')->first();
+        $response = $this->get("/products/{$product->slug}");
+        $response->assertStatus(200);
+    }
+
+    public function test_buyer_can_add_item_to_cart_with_stock_validation(): void
+    {
+        $buyer = User::where('role', 'buyer')->first();
+        $product = Product::where('stock', '>', 2)->first();
+
+        $response = $this->actingAs($buyer)->post('/cart', [
+            'product_id' => $product->id,
+            'quantity' => 2,
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('cart_items', [
+            'user_id' => $buyer->id,
+            'product_id' => $product->id,
+            'quantity' => 2,
+        ]);
+
+        // Attempt to exceed stock
+        $excessResponse = $this->actingAs($buyer)->post('/cart', [
+            'product_id' => $product->id,
+            'quantity' => 9999,
+        ]);
+        $excessResponse->assertSessionHas('error');
+    }
+
+    public function test_checkout_creates_orders_per_store_and_decrements_stock(): void
+    {
+        $buyer = User::where('role', 'buyer')->first();
+        $address = Address::where('user_id', $buyer->id)->first();
+        $product = Product::where('stock', '>', 5)->first();
+        $initialStock = $product->stock;
+
+        $this->actingAs($buyer)->post('/cart', [
+            'product_id' => $product->id,
+            'quantity' => 2,
+        ]);
+
+        $checkoutResponse = $this->actingAs($buyer)->post('/checkout', [
+            'address_id' => $address->id,
+            'payment_method' => 'bank_transfer',
+            'shipping_notes' => 'Tolong box styrofoam tebal',
+        ]);
+
+        $this->assertDatabaseHas('orders', [
+            'buyer_id' => $buyer->id,
+            'store_id' => $product->store_id,
+            'payment_method' => 'bank_transfer',
+            'status' => 'pending_payment',
+        ]);
+
+        // Assert stock decremented
+        $this->assertEquals($initialStock - 2, $product->fresh()->stock);
+
+        // Assert cart cleared
+        $this->assertDatabaseMissing('cart_items', [
+            'user_id' => $buyer->id,
+        ]);
+    }
+
+    public function test_chatbot_returns_guides_and_recommendations(): void
+    {
+        $response = $this->postJson('/chatbot/message', [
+            'message' => 'Ikan cupang saya ada bintik putih di sirip',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'status',
+            'session_token',
+            'assistant_message',
+            'matching_guides',
+            'recommended_products',
+        ]);
+    }
+
+    public function test_unauthorized_user_cannot_access_seller_or_admin_routes(): void
+    {
+        $buyer = User::where('role', 'buyer')->first();
+
+        // Buyer trying to access admin
+        $adminResponse = $this->actingAs($buyer)->get('/admin');
+        $adminResponse->assertStatus(403);
+
+        // Buyer trying to access seller products
+        $sellerResponse = $this->actingAs($buyer)->get('/seller/products');
+        $sellerResponse->assertStatus(403);
+    }
+}
