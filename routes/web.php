@@ -21,6 +21,7 @@ use App\Http\Controllers\Seller\StoreProfileController as SellerStoreProfileCont
 use App\Http\Controllers\StoreController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,7 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function (Request $request) {
         $user = $request->user();
         if ($user->isAdmin()) {
-            return redirect('/admin');
+            return Inertia::location(url('/admin'));
         }
         if ($user->isSeller()) {
             return redirect()->route('seller.products.index');

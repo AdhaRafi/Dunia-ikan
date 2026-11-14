@@ -36,7 +36,7 @@ export default function Login({ status, canResetPassword }) {
 
             <div className="mt-6 bg-bone p-4">
                 <p className="text-[13px] font-medium">Akun demo</p>
-                <div className="mt-3 grid grid-cols-3 gap-2">
+                <div className="mt-3 grid grid-cols-2 gap-2">
                     <button
                         type="button"
                         onClick={() => fillDemo('pembeli@duniaikan.test')}
@@ -50,13 +50,6 @@ export default function Login({ status, canResetPassword }) {
                         className="press bg-surface py-2 text-[16px] font-medium hover:bg-field3"
                     >
                         Penjual
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => fillDemo('admin@duniaikan.test')}
-                        className="press bg-surface py-2 text-[16px] font-medium hover:bg-field3"
-                    >
-                        Admin
                     </button>
                 </div>
                 <p className="mt-3 text-[16px] text-muted">

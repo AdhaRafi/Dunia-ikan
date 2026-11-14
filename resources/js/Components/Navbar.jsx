@@ -191,20 +191,6 @@ export default function Navbar({ onOpenChat }) {
                                                 </div>
                                             )}
 
-                                            {user.role === 'admin' && (
-                                                <div className="border-t border-slate-800 my-1 pt-1">
-                                                    <span className="px-4 text-[10px] font-bold text-emerald-400 uppercase tracking-wider block mb-1">
-                                                        Panel Admin
-                                                    </span>
-                                                    <Link href="/admin" className="block px-4 py-1.5 hover:bg-[#00C882]/10 hover:text-[#00C882] transition">
-                                                        Dashboard Admin
-                                                    </Link>
-                                                    <Link href="/admin/guides" className="block px-4 py-1.5 hover:bg-[#00C882]/10 hover:text-[#00C882] transition">
-                                                        Kelola Panduan
-                                                    </Link>
-                                                </div>
-                                            )}
-
                                             <div className="border-t border-slate-800 mt-1 pt-1">
                                                 <Link
                                                     href="/logout"

@@ -199,21 +199,6 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                                         </div>
                                     )}
 
-                                    {user.role === 'admin' && (
-                                        <div className="border-t border-[#1E80A0]/10 dark:border-neutral-800 my-1 pt-1">
-                                            <span className="px-4 text-[10px] font-bold text-[#1E80A0] dark:text-[#4AB8BD] uppercase tracking-wider block mb-1">
-                                                Admin
-                                            </span>
-                                            <a
-                                                href="/admin"
-                                                className="flex items-center gap-2 px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition font-medium"
-                                            >
-                                                <ShieldCheck className="w-3.5 h-3.5 text-[#0684E5]" />
-                                                <span>Panel Admin (Filament)</span>
-                                            </a>
-                                        </div>
-                                    )}
-
                                     <div className="border-t border-[#1E80A0]/10 dark:border-neutral-800 mt-1 pt-1">
                                         <Link
                                             href="/logout"
