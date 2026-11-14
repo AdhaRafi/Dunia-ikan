@@ -335,14 +335,23 @@ export default function Show({ product, relatedProducts }) {
 
                         <div className="mt-8 bg-surface p-5">
                             <div className="flex flex-wrap items-start justify-between gap-4">
-                                <div>
-                                    <p className="text-[16px] font-medium">
-                                        {store?.name}
-                                    </p>
-                                    <p className="mt-1 text-[13px] text-muted">
-                                        {store?.city}, {store?.province} ·{' '}
-                                        {store?.phone}
-                                    </p>
+                                <div className="flex items-center gap-3">
+                                    {store?.logo_url && (
+                                        <img
+                                            src={store.logo_url}
+                                            alt={store.name}
+                                            className="w-10 h-10 rounded-full object-cover border border-black/10 shrink-0"
+                                        />
+                                    )}
+                                    <div>
+                                        <p className="text-[16px] font-medium">
+                                            {store?.name}
+                                        </p>
+                                        <p className="mt-1 text-[13px] text-muted">
+                                            {store?.city}, {store?.province} ·{' '}
+                                            {store?.phone}
+                                        </p>
+                                    </div>
                                 </div>
                                 <Link
                                     href={`/stores/${store?.slug}`}

@@ -241,9 +241,17 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                     href={`/stores/${store.slug}`}
                                     className="group p-5 rounded-2xl bg-white dark:bg-[#0f172a] border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] transition-colors flex items-start gap-4"
                                 >
-                                    <div className="w-11 h-11 rounded-full bg-slate-100 dark:bg-[#162240] flex items-center justify-center font-bold text-[#001454] dark:text-white text-sm shrink-0 group-hover:bg-[#001454] group-hover:text-white dark:group-hover:bg-[#4AB8BD] dark:group-hover:text-[#001454] transition">
-                                        {store.name.charAt(0)}
-                                    </div>
+                                    {store.logo_url ? (
+                                        <img
+                                            src={store.logo_url}
+                                            alt={store.name}
+                                            className="w-11 h-11 rounded-full object-cover border border-slate-200/80 dark:border-neutral-700 shrink-0"
+                                        />
+                                    ) : (
+                                        <div className="w-11 h-11 rounded-full bg-slate-100 dark:bg-[#162240] flex items-center justify-center font-bold text-[#001454] dark:text-white text-sm shrink-0 group-hover:bg-[#001454] group-hover:text-white dark:group-hover:bg-[#4AB8BD] dark:group-hover:text-[#001454] transition">
+                                            {store.name.charAt(0)}
+                                        </div>
+                                    )}
                                     <div className="min-w-0 flex-1 space-y-1">
                                         <div className="flex items-baseline justify-between gap-2">
                                             <h3 className="font-bold text-sm text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] truncate transition">

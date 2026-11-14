@@ -21,6 +21,22 @@ export default function Show({ store, products }) {
             <section className="bg-field4 text-white">
                 <div className="container-page grid gap-8 py-12 md:py-16 lg:grid-cols-12 lg:items-end">
                     <div className="lg:col-span-7">
+                        <div className="flex items-center gap-4 mb-4">
+                            {store.logo_url ? (
+                                <img
+                                    src={store.logo_url}
+                                    alt={store.name}
+                                    className="w-14 h-14 rounded-full object-cover border-2 border-white/25 shrink-0"
+                                />
+                            ) : (
+                                <div className="w-14 h-14 rounded-full bg-white/15 flex items-center justify-center font-bold text-xl text-white shrink-0">
+                                    {store.name.charAt(0)}
+                                </div>
+                            )}
+                            <span className="text-sm text-white/75">
+                                {store.city}, {store.province}
+                            </span>
+                        </div>
                         <h1 className="display-type max-w-[16ch]">
                             {store.name}
                         </h1>

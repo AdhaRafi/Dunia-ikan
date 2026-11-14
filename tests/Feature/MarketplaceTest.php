@@ -6,6 +6,8 @@ use App\Models\Address;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class MarketplaceTest extends TestCase
@@ -135,5 +137,61 @@ class MarketplaceTest extends TestCase
                 ->where('products.total', fn ($total) => $total > 0)
             );
         }
+    }
+
+    public function test_seller_can_upload_preserve_and_remove_store_profile_photo(): void
+    {
+        Storage::fake('public');
+
+        $seller = User::where('role', 'seller')->first();
+        $store = $seller->store;
+
+        $payload = [
+            'name' => $store->name,
+            'city' => $store->city,
+            'province' => $store->province,
+            'address' => $store->address,
+            'phone' => $store->phone,
+            'description' => $store->description,
+        ];
+
+        $this->actingAs($seller)->post('/seller/store', [
+            ...$payload,
+            'logo' => UploadedFile::fake()->image('store-logo.png', 300, 300),
+        ])->assertRedirect();
+
+        $store->refresh();
+        $this->assertNotNull($store->logo);
+        Storage::disk('public')->assertExists($store->logo);
+        $this->assertEquals('/storage/'.$store->logo, $store->logo_url);
+
+        // Updating other fields without a new logo must keep the uploaded logo
+        $savedPath = $store->logo;
+        $this->actingAs($seller)->post('/seller/store', [
+            ...$payload,
+            'description' => 'Deskripsi diperbarui',
+        ])->assertRedirect();
+
+        $store->refresh();
+        $this->assertEquals($savedPath, $store->logo);
+
+        // Homepage exposes logo_url for featured stores
+        $this->get('/')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->component('Welcome')
+                ->where('featuredStores.0.logo_url', '/storage/'.$savedPath)
+            );
+
+        // Removing logo clears it cleanly
+        $this->actingAs($seller)->post('/seller/store', [
+            ...$payload,
+            'remove_logo' => true,
+        ])->assertRedirect();
+
+        $store->refresh();
+        $this->assertNull($store->logo);
+        $this->assertNull($store->logo_url);
+        Storage::disk('public')->assertMissing($savedPath);
     }
 }

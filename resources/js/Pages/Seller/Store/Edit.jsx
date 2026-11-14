@@ -1,6 +1,7 @@
+import { useState, useEffect } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import SellerLayout from '@/Layouts/SellerLayout';
-import { Store, ShieldCheck, Upload, Save } from 'lucide-react';
+import { Store, ShieldCheck, Upload, Save, Trash2 } from 'lucide-react';
 
 export default function Edit({ store }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -15,12 +16,48 @@ export default function Edit({ store }) {
         bank_account_number: store.bank_account_number || '',
         bank_account_name: store.bank_account_name || '',
         logo: null,
+        remove_logo: false,
         qris_image: null,
     });
 
+    const [logoPreview, setLogoPreview] = useState(null);
+
+    useEffect(() => {
+        return () => {
+            if (logoPreview) {
+                URL.revokeObjectURL(logoPreview);
+            }
+        };
+    }, [logoPreview]);
+
+    const handleLogoChange = (e) => {
+        const file = e.target.files?.[0];
+        if (!file) {
+            return;
+        }
+        if (logoPreview) {
+            URL.revokeObjectURL(logoPreview);
+        }
+        setData((prev) => ({ ...prev, logo: file, remove_logo: false }));
+        setLogoPreview(URL.createObjectURL(file));
+    };
+
+    const handleRemoveLogo = () => {
+        if (logoPreview) {
+            URL.revokeObjectURL(logoPreview);
+        }
+        setLogoPreview(null);
+        setData((prev) => ({ ...prev, logo: null, remove_logo: true }));
+    };
+
+    const displayedLogo = data.remove_logo ? null : logoPreview || store.logo_url;
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        post('/seller/store');
+        post('/seller/store', {
+            forceFormData: true,
+            preserveScroll: true,
+        });
     };
 
     return (
@@ -33,11 +70,58 @@ export default function Edit({ store }) {
                         Profil Toko & Kebijakan Garansi Hidup (DOA)
                     </h1>
                     <p className="text-xs text-slate-500 mt-1">
-                        Atur profil toko penangkar Anda, rekening pembayaran, dan ketentuan garansi hidup ikan.
+                        Atur foto profil toko, informasi penangkar, rekening pembayaran, dan ketentuan garansi hidup ikan.
                     </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5 text-xs">
+                    {/* Foto Profil / Logo Toko */}
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
+                        <div className="shrink-0">
+                            {displayedLogo ? (
+                                <img
+                                    src={displayedLogo}
+                                    alt={data.name || store.name}
+                                    className="w-16 h-16 rounded-full object-cover border border-slate-200 bg-white"
+                                />
+                            ) : (
+                                <div className="w-16 h-16 rounded-full bg-white border border-slate-200 flex items-center justify-center font-bold text-lg text-dunia-navy">
+                                    {(data.name || store.name || 'T').charAt(0).toUpperCase()}
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex-1 space-y-2">
+                            <div>
+                                <p className="font-bold text-slate-700 uppercase">Foto Profil Toko</p>
+                                <p className="text-[11px] text-slate-500">
+                                    Ditampilkan di halaman utama &ldquo;Toko Pilihan&rdquo; dan profil toko. Format JPG/PNG/WebP, maks 2 MB.
+                                </p>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2">
+                                <label className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 hover:border-dunia-blue text-slate-700 font-semibold cursor-pointer transition">
+                                    <Upload className="w-3.5 h-3.5" />
+                                    <span>{displayedLogo ? 'Ganti Foto' : 'Upload Foto Toko'}</span>
+                                    <input
+                                        type="file"
+                                        accept="image/png,image/jpeg,image/webp"
+                                        onChange={handleLogoChange}
+                                        className="hidden"
+                                    />
+                                </label>
+                                {displayedLogo && (
+                                    <button
+                                        type="button"
+                                        onClick={handleRemoveLogo}
+                                        className="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 font-semibold transition"
+                                    >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                        <span>Hapus Foto</span>
+                                    </button>
+                                )}
+                            </div>
+                            {errors.logo && <p className="text-rose-600">{errors.logo}</p>}
+                        </div>
+                    </div>
                     <div>
                         <label className="block font-bold text-slate-700 uppercase mb-1">Nama Toko</label>
                         <input

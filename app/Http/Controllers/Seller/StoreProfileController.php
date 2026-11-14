@@ -94,6 +94,7 @@ class StoreProfileController extends Controller
             'bank_account_number' => 'nullable|string|max:50',
             'bank_account_name' => 'nullable|string|max:100',
             'logo' => 'nullable|image|max:2048',
+            'remove_logo' => 'nullable|boolean',
             'qris_image' => 'nullable|image|max:2048',
         ]);
 
@@ -102,13 +103,24 @@ class StoreProfileController extends Controller
                 Storage::disk('public')->delete($store->logo);
             }
             $validated['logo'] = $request->file('logo')->store('stores/logos', 'public');
+        } elseif ($request->boolean('remove_logo')) {
+            if ($store->logo && Storage::disk('public')->exists($store->logo)) {
+                Storage::disk('public')->delete($store->logo);
+            }
+            $validated['logo'] = null;
+        } else {
+            unset($validated['logo']);
         }
+
+        unset($validated['remove_logo']);
 
         if ($request->hasFile('qris_image')) {
             if ($store->qris_image && Storage::disk('public')->exists($store->qris_image)) {
                 Storage::disk('public')->delete($store->qris_image);
             }
             $validated['qris_image'] = $request->file('qris_image')->store('stores/qris', 'public');
+        } else {
+            unset($validated['qris_image']);
         }
 
         $validated['slug'] = Str::slug($validated['name']);

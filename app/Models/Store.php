@@ -30,11 +30,28 @@ class Store extends Model
         'is_active',
     ];
 
+    protected $appends = [
+        'logo_url',
+    ];
+
     protected function casts(): array
     {
         return [
             'is_active' => 'boolean',
         ];
+    }
+
+    public function getLogoUrlAttribute(): ?string
+    {
+        if (! $this->logo) {
+            return null;
+        }
+
+        if (str_starts_with($this->logo, 'http') || str_starts_with($this->logo, '/')) {
+            return $this->logo;
+        }
+
+        return '/storage/'.ltrim($this->logo, '/');
     }
 
     public function user(): BelongsTo
