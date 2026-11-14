@@ -22,55 +22,37 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
         return true;
     }) || [];
 
-    // MorphMarket Species Groups for Explorer Grid
+    // MorphMarket-style clean species grid
     const speciesGroups = [
         {
-            title: 'Cupang (Betta)',
-            subtitle: 'Betta splendens',
-            desc: 'Halfmoon, Plakat Avatar, Crowntail, Giant Multi',
-            image: '/images/products/cupang-halfmoon.jpg',
-            badge: 'Show Grade Morphs',
+            title: 'Cupang',
+            image: '/images/categories/cat-cupang.jpg',
             link: '/products?category=ikan-hias&q=cupang',
         },
         {
-            title: 'Channa / Gabus Hias',
-            subtitle: 'Channa marulioides & auranti',
-            desc: 'Yellow Sentarum, Bunga Bar, Pulchra, Limbata',
-            image: '/images/products/channa-maru.jpg',
-            badge: 'Predator Eksotis',
+            title: 'Channa',
+            image: '/images/categories/cat-channa.jpg',
             link: '/products?category=ikan-hias&q=channa',
         },
         {
-            title: 'Ikan Discus',
-            subtitle: 'Symphysodon aequifasciatus',
-            desc: 'Pigeon Blood Red, Blue Diamond, Red Melon',
-            image: '/images/products/discus.jpg',
-            badge: 'King of Freshwater',
+            title: 'Discus',
+            image: '/images/categories/cat-discus.jpg',
             link: '/products?category=ikan-hias&q=discus',
         },
         {
-            title: 'Guppy Galur Murni',
-            subtitle: 'Poecilia reticulata',
-            desc: 'Albino Full Red (AFR), Moscow Blue, Dumbo Ear',
-            image: '/images/products/guppy-afr.jpg',
-            badge: 'Pure Lineage Pairs',
+            title: 'Guppy',
+            image: '/images/categories/cat-guppy.jpg',
             link: '/products?category=ikan-hias&q=guppy',
         },
         {
-            title: 'Aquascape & Flora',
-            subtitle: 'Tanaman Air & Hardscape',
-            desc: 'Bucephalandra, Anubias Nana, Moss Higienis',
-            image: '/images/products/anubias.jpg',
-            badge: 'Bebas Hama',
-            link: '/products?category=aquascape',
+            title: 'Neon Tetra',
+            image: '/images/categories/cat-tetra.jpg',
+            link: '/products?water_type=freshwater&q=tetra',
         },
         {
-            title: 'Nano Fish & Schooling',
-            subtitle: 'Tetra & Rasbora',
-            desc: 'Neon Tetra Schooling, Cardinal, Harlequin',
-            image: '/images/products/neon-tetra.jpg',
-            badge: 'Schooling Community',
-            link: '/products?water_type=freshwater',
+            title: 'Aquascape',
+            image: '/images/categories/cat-aquascape.jpg',
+            link: '/products?category=aquascape',
         },
     ];
 
@@ -138,56 +120,38 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
             </section>
 
             <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
-                {/* 2. KATEGORI IKAN (Category Tiles) */}
-                <section className="space-y-6">
-                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
-                        <div>
-                            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454] dark:text-white">
-                                Kategori Ikan
-                            </h2>
-                        </div>
+                {/* 2. KATEGORI IKAN (Clean MorphMarket Studio Cutout Cards) */}
+                <section className="space-y-4">
+                    <div className="flex items-center justify-between gap-2">
+                        <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
+                            Kategori Ikan
+                        </h2>
                         <Link
                             href="/products"
-                            className="text-xs font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:text-[#0060aa] flex items-center gap-1 transition"
+                            className="text-xs font-semibold text-neutral-500 hover:text-[#001454] dark:text-neutral-400 dark:hover:text-white transition"
                         >
-                            <span>Lihat semua kategori</span>
-                            <ArrowRight className="w-3.5 h-3.5" />
+                            Lihat Semua
                         </Link>
                     </div>
 
-                    {/* 6 Visual Morph Tiles */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                    {/* 6 Clean White-Backdrop Category Tiles */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
                         {speciesGroups.map((group) => (
                             <Link
                                 key={group.title}
                                 href={group.link}
-                                className="group relative rounded-2xl overflow-hidden bg-white dark:bg-[#0f172a] border border-[#1E80A0]/10 dark:border-neutral-800 hover:border-[#4AB8BD] hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+                                className="group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 flex flex-col items-center overflow-hidden p-3"
                             >
-                                <div className="relative aspect-[16/10] bg-[#f3f2ff] dark:bg-[#162240] overflow-hidden">
+                                <div className="w-full aspect-square bg-white rounded-xl overflow-hidden flex items-center justify-center p-1">
                                     <img
                                         src={group.image}
                                         alt={group.title}
-                                        className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
+                                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-[#001454]/80 via-transparent to-transparent" />
-                                    <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-white/90 dark:bg-[#070b14]/90 backdrop-blur-xs text-[#001454] dark:text-[#4AB8BD] text-[10px] font-bold shadow-xs border border-transparent dark:border-[#4AB8BD]/25">
-                                        {group.badge}
-                                    </span>
-                                    <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white">
-                                        <h3 className="font-extrabold text-sm sm:text-base leading-tight group-hover:text-[#4AB8BD] transition">
-                                            {group.title}
-                                        </h3>
-                                        <p className="text-[10px] text-[#dde1ff] italic truncate">
-                                            {group.subtitle}
-                                        </p>
-                                    </div>
                                 </div>
-                                <div className="p-3 bg-white dark:bg-[#111a30] flex items-center justify-between text-xs border-t border-[#1E80A0]/10 dark:border-neutral-800">
-                                    <span className="text-[11px] text-[#6d797a] dark:text-neutral-300 truncate font-medium">
-                                        {group.desc}
-                                    </span>
-                                    <ArrowRight className="w-3.5 h-3.5 text-[#0684E5] dark:text-[#4AB8BD] group-hover:translate-x-1 transition shrink-0 ml-1" />
-                                </div>
+                                <h3 className="mt-2.5 text-center font-bold text-xs sm:text-[13px] text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] transition truncate w-full">
+                                    {group.title}
+                                </h3>
                             </Link>
                         ))}
                     </div>
