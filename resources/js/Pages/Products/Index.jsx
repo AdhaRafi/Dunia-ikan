@@ -18,6 +18,20 @@ const WATER_OPTIONS = [
     { id: 'brackish', label: 'Air Payau' },
 ];
 
+const WATER_BANNERS = {
+    saltwater: '/images/banners/air-laut.jpg',
+    freshwater: '/images/products/neon-tetra.jpg',
+    brackish: '/images/banners/air-payau.jpg',
+};
+
+const CATEGORY_BANNERS = {
+    'ikan-hias': '/images/products/cupang-halfmoon.jpg',
+    'perlengkapan-aquarium': '/images/products/aquarium-rimless.jpg',
+    'pakan-ikan': '/images/products/pelet.jpg',
+    'perawatan-ikan': '/images/banners/aquascape.jpg',
+    aquascape: '/images/banners/aquascape.jpg',
+};
+
 const SEX_OPTIONS = [
     { id: '', label: 'Semua' },
     { id: 'male', label: 'Jantan' },
@@ -117,27 +131,33 @@ export default function Index({ products, categories, cities, filters }) {
         activeCategoryName && activeWaterLabel
             ? `${activeCategoryName} · ${activeWaterLabel}`
             : activeCategoryName || activeWaterLabel || (appliedSearch ? `Hasil: "${appliedSearch}"` : 'Semua Produk');
+    const bannerImage =
+        appliedWaterType && (!appliedCategorySlug || appliedCategorySlug === 'ikan-hias')
+            ? WATER_BANNERS[appliedWaterType]
+            : CATEGORY_BANNERS[appliedCategorySlug] ||
+              WATER_BANNERS[appliedWaterType] ||
+              '/images/hero-fish-poster.webp';
     const bannerSizeClass =
         bannerTitle.length > 14
-            ? 'text-[36px] sm:text-[64px] lg:text-[84px]'
+            ? 'text-3xl sm:text-5xl lg:text-6xl'
             : bannerTitle.length > 9
-            ? 'text-[52px] sm:text-[88px] lg:text-[112px]'
-            : 'text-[68px] sm:text-[112px] lg:text-[136px]';
+            ? 'text-4xl sm:text-6xl lg:text-7xl'
+            : 'text-5xl sm:text-7xl lg:text-8xl';
 
     return (
         <AppLayout>
             <Head title={`${bannerTitle} — Dunia Ikan`} />
 
             {/* Editorial Top Banner */}
-            <section className="relative h-44 sm:h-56 w-full overflow-hidden bg-[#0b1320]">
+            <section className="relative h-48 sm:h-60 w-full overflow-hidden bg-[#0b1320]">
                 <img
-                    src="/images/hero-fish-poster.webp"
+                    src={bannerImage}
                     alt={`${bannerTitle} Dunia Ikan`}
-                    className="w-full h-full object-cover object-center opacity-70"
+                    className="w-full h-full object-cover object-center opacity-80 transition-opacity duration-300"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 flex justify-center overflow-hidden pointer-events-none px-4">
-                    <span className={`${bannerSizeClass} font-black tracking-tight text-white/95 leading-[0.82] select-none translate-y-2 text-center whitespace-nowrap`}>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-black/30" />
+                <div className="absolute inset-0 pb-6 flex items-center justify-center pointer-events-none px-6">
+                    <span className={`${bannerSizeClass} font-black tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.45)] leading-none select-none text-center`}>
                         {bannerTitle}
                     </span>
                 </div>
