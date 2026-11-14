@@ -11,7 +11,6 @@ import {
     Store,
     BookOpen,
     CheckCircle2,
-    Search,
     Dna,
     PackageCheck,
     Truck,
@@ -20,14 +19,6 @@ import {
 
 export default function Welcome({ categories, featuredFish, careGuides, featuredStores, stats }) {
     const [selectedTab, setSelectedTab] = useState('all');
-    const [heroSearch, setHeroSearch] = useState('');
-
-    const handleHeroSearch = (e) => {
-        e.preventDefault();
-        if (heroSearch.trim()) {
-            window.location.href = `/products?q=${encodeURIComponent(heroSearch.trim())}`;
-        }
-    };
 
     // Filter items based on quick chips
     const displayedProducts = featuredFish?.filter((item) => {
@@ -109,7 +100,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent sm:hidden" />
 
                 {/* Hero Content Overlay: Center-aligned within standard content width */}
-                <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+                <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24">
                     <div className="max-w-2xl text-white space-y-6">
                         <div className="space-y-3">
                             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
@@ -121,59 +112,19 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                         </div>
 
                         {/* MorphMarket Two Action Buttons */}
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 pt-2">
                             <Link 
                                 href="/products" 
-                                className="px-6 py-2.5 rounded-full bg-white text-black font-bold text-xs sm:text-sm hover:bg-neutral-200 transition shadow-sm"
+                                className="px-7 py-3 rounded-full bg-white text-black font-bold text-xs sm:text-sm hover:bg-neutral-200 transition shadow-sm"
                             >
                                 Jelajahi Katalog
                             </Link>
                             <Link 
                                 href="/register" 
-                                className="px-6 py-2.5 rounded-full border border-neutral-600 text-white font-semibold text-xs sm:text-sm hover:bg-white/10 hover:border-neutral-400 transition"
+                                className="px-7 py-3 rounded-full border border-neutral-600 text-white font-semibold text-xs sm:text-sm hover:bg-white/10 hover:border-neutral-400 transition"
                             >
                                 Buat Akun
                             </Link>
-                        </div>
-
-                        {/* Direct MorphMarket Search Box */}
-                        <form onSubmit={handleHeroSearch} className="pt-2 flex items-center gap-2 max-w-lg">
-                            <div className="relative flex-1">
-                                <input
-                                    type="search"
-                                    placeholder="Cari spesies (Cupang, Channa, Discus...), morph, atau penangkar..."
-                                    value={heroSearch}
-                                    onChange={(e) => setHeroSearch(e.target.value)}
-                                    className="w-full h-11 rounded-full bg-neutral-900/90 border border-neutral-700 text-xs text-white placeholder:text-neutral-400 pl-11 pr-4 focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition shadow-lg"
-                                />
-                                <Search className="w-4 h-4 text-neutral-400 absolute left-4 top-3.5 pointer-events-none" />
-                            </div>
-                            <button
-                                type="submit"
-                                className="h-11 px-5 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition shrink-0"
-                            >
-                                Cari
-                            </button>
-                        </form>
-
-                        {/* Quick Morph Selector Chips */}
-                        <div className="flex items-center gap-2 flex-wrap text-xs text-neutral-400">
-                            <span className="font-semibold text-neutral-300">Populer:</span>
-                            {[
-                                { label: 'Cupang Rosetail', q: 'cupang' },
-                                { label: 'Channa Maru', q: 'channa' },
-                                { label: 'Discus Pigeon', q: 'discus' },
-                                { label: 'Guppy AFR', q: 'guppy' },
-                                { label: 'Aquascape', q: 'aquascape' },
-                            ].map((chip) => (
-                                <Link
-                                    key={chip.label}
-                                    href={`/products?q=${chip.q}`}
-                                    className="px-3 py-1 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white hover:border-neutral-600 transition"
-                                >
-                                    {chip.label}
-                                </Link>
-                            ))}
                         </div>
                     </div>
                 </div>
