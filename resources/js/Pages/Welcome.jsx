@@ -78,10 +78,10 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
         <AppLayout>
             <Head title="Dunia Ikan : Marketplace Ikan Hias & Mutasi Genetik (Morph) Captive-Bred" />
 
-            {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner (MorphMarket Authentic Dark Aesthetic) */}
-            <section className="relative w-full overflow-hidden bg-black min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex items-center border-b border-neutral-800">
-                {/* Live Aquarium Fish Video (2-Minute Aquatic Ecosystem Clip) */}
-                <div className="absolute right-0 top-0 bottom-0 w-full sm:w-3/4 lg:w-2/3 flex items-center justify-end pointer-events-none overflow-hidden">
+            {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner (Living Aquarium Habitat) */}
+            <section className="relative w-full overflow-hidden bg-black min-h-[460px] sm:min-h-[500px] lg:min-h-[540px] flex items-center border-b border-neutral-800">
+                {/* Full-Bleed Background Video (Edge-to-Edge Aquarium Footage) */}
+                <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
                     <video
                         autoPlay
                         loop
@@ -89,21 +89,22 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                         playsInline
                         preload="auto"
                         poster="/images/hero-fish-poster.webp"
-                        className="h-full w-full object-cover object-center select-none opacity-85 sm:opacity-95"
+                        className="w-full h-full object-cover object-center select-none"
                     >
                         <source src="/videos/hero-fish.webm" type="video/webm" />
                         <source src="/videos/hero-fish.mp4" type="video/mp4" />
                         <img
                             src="/images/hero-fish-poster.webp"
                             alt="Akuarium Ikan Hias Dunia Ikan"
-                            className="h-full w-full object-cover object-center select-none opacity-85 sm:opacity-95"
+                            className="w-full h-full object-cover object-center select-none"
                         />
                     </video>
                 </div>
 
-                {/* Left vignette gradient for seamless typography readability and edge blending */}
-                <div className="absolute inset-y-0 left-0 w-full sm:w-3/5 bg-gradient-to-r from-black via-black/85 via-40% to-transparent pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent sm:hidden pointer-events-none" />
+                {/* Cinematic Ambient Dark Scrim & Text Readability Gradients */}
+                <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent sm:w-3/4 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent sm:hidden pointer-events-none" />
 
                 {/* Hero Content Overlay: Center-aligned within standard content width */}
                 <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24">
