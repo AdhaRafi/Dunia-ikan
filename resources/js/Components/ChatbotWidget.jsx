@@ -154,39 +154,37 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
 
     return (
         <>
-            <style>{`
-                @keyframes kikoFloat {
-                    0%, 100% { transform: translateY(0px); }
-                    50% { transform: translateY(-6px); }
-                }
-                .animate-kiko-float {
-                    animation: kikoFloat 3s ease-in-out infinite;
-                }
-            `}</style>
-
             {/* 1. FLOATING TRIGGER BUTTON (WHEN CHAT CLOSED) */}
             {!isOpen && (
-                <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end select-none">
-                    {/* Pill Trigger with Kiko Mascot popping out */}
+                <div className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 select-none">
                     <button
                         type="button"
                         onClick={onOpen}
-                        className="group relative flex h-13 items-center rounded-full bg-[#cfe2fe] dark:bg-[#131d33] pl-5 pr-14 text-[#001454] dark:text-white border border-[#9ec5fe] dark:border-cyan-500/40 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.03]"
+                        className="group flex items-center gap-3 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0d2e92]/60 focus-visible:ring-offset-2"
                         title="Buka Chatbot Kiko"
                         aria-label="Tanya Kiko"
                     >
-                        <span className="text-sm font-extrabold tracking-tight text-[#001454] dark:text-white leading-none">
-                            Tanya Kiko
+                        {/* Clean speech-bubble pill pointing to the mascot orb */}
+                        <span className="relative hidden sm:inline-flex items-center gap-2 rounded-full bg-white dark:bg-[#131d33] px-4 py-2 text-[13px] font-bold tracking-tight text-[#001454] dark:text-white border border-slate-200/90 dark:border-slate-700/80 shadow-[0_8px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 group-hover:-translate-x-0.5">
+                            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                            <span>Tanya Kiko</span>
+                            <span
+                                aria-hidden="true"
+                                className="absolute -right-1.5 top-1/2 -translate-y-1/2 h-3 w-3 rotate-45 rounded-[2px] bg-white dark:bg-[#131d33] border-t border-r border-slate-200/90 dark:border-slate-700/80"
+                            />
                         </span>
 
-                        {/* Kiko Mascot popping out of the pill container */}
-                        <div className="absolute -top-5 sm:-top-6 right-0.5 w-14 h-14 sm:w-16 sm:h-16 pointer-events-none drop-shadow-lg animate-kiko-float">
-                            <img
-                                src="/images/kiko/kiko-wave.png"
-                                alt="Kiko Maskot"
-                                className="w-full h-full object-contain"
-                            />
-                        </div>
+                        {/* Circular framed Kiko avatar FAB */}
+                        <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#0d2e92] via-[#092265] to-[#001454] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_28px_rgba(0,20,84,0.3)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
+                            <span className="h-full w-full overflow-hidden rounded-full bg-[#092265]">
+                                <img
+                                    src="/images/kiko/kiko-avatar.png"
+                                    alt="Kiko"
+                                    className="h-full w-full object-cover object-top scale-110 translate-y-0.5"
+                                />
+                            </span>
+                            <span className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-[#070b14]" />
+                        </span>
                     </button>
                 </div>
             )}

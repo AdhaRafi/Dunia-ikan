@@ -20,7 +20,7 @@ const WATER_OPTIONS = [
 
 const WATER_BANNERS = {
     saltwater: '/images/banners/air-laut.jpg',
-    freshwater: '/images/products/neon-tetra.jpg',
+    freshwater: '/images/banners/air-tawar.jpg',
     brackish: '/images/banners/air-payau.jpg',
 };
 
@@ -149,7 +149,7 @@ export default function Index({ products, categories, cities, filters }) {
             <Head title={`${bannerTitle} — Dunia Ikan`} />
 
             {/* Editorial Top Banner */}
-            <section className="relative h-48 sm:h-60 w-full overflow-hidden bg-[#0b1320]">
+            <section className="relative h-60 sm:h-72 lg:h-80 w-full overflow-hidden bg-[#0b1320]">
                 <img
                     src={bannerImage}
                     alt={`${bannerTitle} Dunia Ikan`}
