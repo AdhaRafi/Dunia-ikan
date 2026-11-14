@@ -38,7 +38,7 @@ const Trigger = ({ children }) => {
 const Content = ({
     align = 'right',
     width = '48',
-    contentClasses = 'py-1 bg-white',
+    contentClasses = 'py-1 bg-white dark:bg-[#0f172a] text-[#001454] dark:text-neutral-200 border border-transparent dark:border-neutral-800',
     children,
 }) => {
     const { open, setOpen } = useContext(DropDownContext);

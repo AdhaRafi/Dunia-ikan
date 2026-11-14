@@ -158,7 +158,7 @@ export default function ChatbotWidget({ isOpen, onClose }) {
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white sm:inset-auto sm:bottom-6 sm:right-6 sm:h-[620px] sm:w-[420px] sm:rounded-2xl sm:border sm:border-slate-800 sm:shadow-2xl">
+        <div className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white dark:bg-[#070b14] sm:inset-auto sm:bottom-6 sm:right-6 sm:h-[620px] sm:w-[420px] sm:rounded-2xl sm:border border-slate-200 dark:border-neutral-800 sm:shadow-2xl">
             <div className="flex shrink-0 items-center justify-between bg-[#0E1719] px-5 py-4 text-white border-b border-slate-800">
                 <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-[#00C882]/10 border border-[#00C882]/30 flex items-center justify-center">
@@ -190,7 +190,7 @@ export default function ChatbotWidget({ isOpen, onClose }) {
                 </span>
             </div>
 
-            <div className="flex-1 space-y-4 overflow-y-auto bg-slate-50 p-4">
+            <div className="flex-1 space-y-4 overflow-y-auto bg-slate-50 dark:bg-[#0b1325] p-4">
                 {messages.map((msg, index) => {
                     const isUser = msg.sender === 'user';
 
@@ -204,8 +204,8 @@ export default function ChatbotWidget({ isOpen, onClose }) {
                             <div
                                 className={`max-w-[88%] px-4 py-3 text-xs leading-relaxed ${
                                     isUser
-                                        ? 'bg-[#0E1719] text-white rounded-2xl rounded-tr-xs shadow-xs'
-                                        : 'bg-white text-slate-800 rounded-2xl rounded-tl-xs border border-slate-200 shadow-xs'
+                                        ? 'bg-[#0E1719] dark:bg-[#1E80A0] text-white rounded-2xl rounded-tr-xs shadow-xs'
+                                        : 'bg-white dark:bg-[#111a30] text-slate-800 dark:text-neutral-200 rounded-2xl rounded-tl-xs border border-slate-200 dark:border-neutral-700 shadow-xs'
                                 }`}
                             >
                                 {msg.image_path && (
@@ -303,7 +303,7 @@ export default function ChatbotWidget({ isOpen, onClose }) {
                 <div ref={messagesEndRef} />
             </div>
 
-            <div className="flex shrink-0 gap-2 overflow-x-auto border-t border-slate-200 bg-white px-3 py-2 text-xs">
+            <div className="flex shrink-0 gap-2 overflow-x-auto border-t border-slate-200 dark:border-neutral-800 bg-white dark:bg-[#070b14] px-3 py-2 text-xs">
                 <button
                     type="button"
                     onClick={() =>
@@ -311,7 +311,7 @@ export default function ChatbotWidget({ isOpen, onClose }) {
                             'Ikan cupang saya ada bintik putih di sirip, bagaimana penanganannya?',
                         )
                     }
-                    className="whitespace-nowrap rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 transition"
+                    className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-emerald-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
                 >
                     Bintik putih
                 </button>
@@ -322,7 +322,7 @@ export default function ChatbotWidget({ isOpen, onClose }) {
                             'Ekor ikan saya robek dan membusuk, apa yang harus dilakukan?',
                         )
                     }
-                    className="whitespace-nowrap rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 transition"
+                    className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-emerald-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
                 >
                     Busuk sirip
                 </button>
@@ -333,21 +333,21 @@ export default function ChatbotWidget({ isOpen, onClose }) {
                             'Rekomendasi ikan air tawar yang mudah dipelihara untuk pemula.',
                         )
                     }
-                    className="whitespace-nowrap rounded-full bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 transition"
+                    className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-emerald-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
                 >
                     Ikan untuk pemula
                 </button>
             </div>
 
             {imagePreview && (
-                <div className="flex shrink-0 items-center justify-between bg-slate-100 px-4 py-2 border-t border-slate-200">
+                <div className="flex shrink-0 items-center justify-between bg-slate-100 dark:bg-[#111a30] px-4 py-2 border-t border-slate-200 dark:border-neutral-800">
                     <div className="flex min-w-0 items-center gap-2">
                         <img
                             src={imagePreview}
                             alt="Pratinjau"
                             className="h-9 w-9 object-cover rounded-md"
                         />
-                        <span className="truncate text-xs text-slate-600">
+                        <span className="truncate text-xs text-slate-600 dark:text-neutral-300">
                             {selectedImage?.name}
                         </span>
                     </div>
@@ -362,7 +362,7 @@ export default function ChatbotWidget({ isOpen, onClose }) {
                 </div>
             )}
 
-            <div className="shrink-0 bg-white border-t border-slate-200 p-3">
+            <div className="shrink-0 bg-white dark:bg-[#070b14] border-t border-slate-200 dark:border-neutral-800 p-3">
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
@@ -380,7 +380,7 @@ export default function ChatbotWidget({ isOpen, onClose }) {
                     <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="p-2 text-slate-400 hover:text-[#00C882] rounded-lg hover:bg-slate-100 transition"
+                        className="p-2 text-slate-400 hover:text-[#00C882] rounded-lg hover:bg-slate-100 dark:hover:bg-neutral-800 transition"
                         title="Unggah foto kondisi ikan"
                     >
                         <ImageIcon className="h-5 w-5" />
@@ -391,7 +391,7 @@ export default function ChatbotWidget({ isOpen, onClose }) {
                         placeholder="Tanya kesehatan atau rekomendasi ikan..."
                         value={inputText}
                         onChange={(e) => setInputText(e.target.value)}
-                        className="h-10 min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#00C882] focus:bg-white transition"
+                        className="h-10 min-w-0 flex-1 rounded-xl border border-slate-200 dark:border-neutral-700 bg-slate-50 dark:bg-[#111a30] px-3 text-xs text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-[#00C882] focus:bg-white dark:focus:bg-[#162240] transition"
                     />
 
                     <button

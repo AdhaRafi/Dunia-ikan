@@ -121,13 +121,13 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                         <div className="flex items-center gap-3 pt-2">
                             <Link 
                                 href="/products" 
-                                className="px-7 py-3 rounded-full bg-white text-black font-bold text-xs sm:text-sm hover:bg-neutral-200 transition shadow-sm"
+                                className="px-7 py-3 rounded-full bg-white text-black dark:bg-[#4AB8BD] dark:text-[#001454] font-bold text-xs sm:text-sm hover:bg-neutral-200 dark:hover:bg-[#38a2a7] transition shadow-sm"
                             >
                                 Jelajahi Katalog
                             </Link>
                             <Link 
                                 href="/register" 
-                                className="px-7 py-3 rounded-full border border-neutral-600 text-white font-semibold text-xs sm:text-sm hover:bg-white/10 hover:border-neutral-400 transition"
+                                className="px-7 py-3 rounded-full border border-neutral-600 dark:border-neutral-700 text-white font-semibold text-xs sm:text-sm hover:bg-white/10 hover:border-neutral-400 transition"
                             >
                                 Buat Akun
                             </Link>
@@ -169,7 +169,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                         className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#001454]/80 via-transparent to-transparent" />
-                                    <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-xs text-[#001454] text-[10px] font-bold shadow-xs">
+                                    <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-white/90 dark:bg-[#070b14]/90 backdrop-blur-xs text-[#001454] dark:text-[#4AB8BD] text-[10px] font-bold shadow-xs border border-transparent dark:border-[#4AB8BD]/25">
                                         {group.badge}
                                     </span>
                                     <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white">

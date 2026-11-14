@@ -99,8 +99,8 @@ export default function ProductCard({ product }) {
 
                 {/* Stock Out Overlay */}
                 {product.stock <= 0 && (
-                    <div className="absolute inset-0 bg-[#001454]/65 backdrop-blur-xs flex items-center justify-center z-20">
-                        <span className="px-3 py-1 bg-white text-[#ba1a1a] font-extrabold text-xs rounded-full uppercase tracking-wider shadow-sm">
+                    <div className="absolute inset-0 bg-[#001454]/65 dark:bg-black/75 backdrop-blur-xs flex items-center justify-center z-20">
+                        <span className="px-3 py-1 bg-white dark:bg-[#111a30] text-[#ba1a1a] dark:text-[#ffb4ab] border border-transparent dark:border-red-500/30 font-extrabold text-xs rounded-full uppercase tracking-wider shadow-sm">
                             Habis Terjual
                         </span>
                     </div>

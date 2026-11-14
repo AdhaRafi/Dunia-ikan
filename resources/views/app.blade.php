@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-white dark:bg-[#070b14]">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,8 +18,10 @@
                     var theme = localStorage.getItem('theme');
                     if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                         document.documentElement.classList.add('dark');
+                        document.documentElement.style.colorScheme = 'dark';
                     } else {
                         document.documentElement.classList.remove('dark');
+                        document.documentElement.style.colorScheme = 'light';
                     }
                 } catch (e) {}
             })();
