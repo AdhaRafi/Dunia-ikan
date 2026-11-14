@@ -175,10 +175,28 @@ export default function Footer() {
                 </div>
 
                 {/* 4. MONUMENTAL TYPOGRAPHIC HERO: Giant "Duniaikan" Bleeding Off Bottom Edge */}
-                <div className="w-full overflow-hidden select-none pointer-events-none -mb-3 sm:-mb-6 md:-mb-10 lg:-mb-14 text-center">
-                    <h2 className="text-[15.5vw] sm:text-[17vw] lg:text-[18.2vw] font-black tracking-tighter leading-[0.74] text-neutral-900 dark:text-white font-['Montserrat',sans-serif] block whitespace-nowrap">
-                        Duniaikan
-                    </h2>
+                <div className="w-full overflow-hidden select-none pointer-events-none -mb-2 sm:-mb-4 md:-mb-6 text-center text-neutral-900 dark:text-white">
+                    <svg
+                        viewBox="0 0 1400 200"
+                        className="w-full h-auto block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                    >
+                        <text
+                            x="50%"
+                            y="185"
+                            textAnchor="middle"
+                            fill="currentColor"
+                            className="font-black font-['Montserrat',sans-serif]"
+                            style={{
+                                fontSize: '225px',
+                                fontWeight: 900,
+                                letterSpacing: '-0.04em',
+                            }}
+                        >
+                            Duniaikan
+                        </text>
+                    </svg>
                 </div>
             </div>
         </footer>
