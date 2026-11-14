@@ -25,6 +25,17 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
+        Address::create([
+            'user_id' => $admin->id,
+            'recipient_name' => 'Administrator Dunia Ikan',
+            'phone' => '081234567890',
+            'city' => 'Kota Bandung',
+            'province' => 'Jawa Barat',
+            'postal_code' => '40287',
+            'full_address' => 'Gedung Agro Aquatic Park Lt. 3, Jl. Soekarno-Hatta No. 450',
+            'is_primary' => true,
+        ]);
+
         // 2. Akun Penjual 1 & Toko
         $seller1 = User::create([
             'name' => 'Budi Hartono',

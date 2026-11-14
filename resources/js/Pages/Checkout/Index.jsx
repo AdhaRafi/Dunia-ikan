@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { useState, useEffect } from 'react';
+import { Head, Link, useForm, router, usePage } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import { 
     ShieldCheck, 
@@ -11,10 +11,13 @@ import {
     ArrowLeft, 
     CheckCircle2, 
     PlusCircle,
-    Zap 
+    Zap,
+    X 
 } from 'lucide-react';
 
-export default function Index({ groupedCart, addresses, totalProducts, totalShipping, grandTotal }) {
+export default function Index({ groupedCart, addresses = [], totalProducts, totalShipping, grandTotal }) {
+    const { auth } = usePage().props;
+    const currentUser = auth?.user;
     const primaryAddress = addresses?.find((a) => a.is_primary) || addresses?.[0];
 
     const { data, setData, post, processing, errors } = useForm({
@@ -23,8 +26,61 @@ export default function Index({ groupedCart, addresses, totalProducts, totalShip
         shipping_notes: '',
     });
 
+    const [showAddressModal, setShowAddressModal] = useState(false);
+    const [savingAddress, setSavingAddress] = useState(false);
+    const [addressError, setAddressError] = useState('');
+    const [addressForm, setAddressForm] = useState({
+        recipient_name: currentUser?.name || 'Administrator Dunia Ikan',
+        phone: currentUser?.phone || '081234567890',
+        city: 'Kota Bandung',
+        province: 'Jawa Barat',
+        postal_code: '40287',
+        full_address: '',
+    });
+
+    useEffect(() => {
+        if (currentUser?.name) {
+            setAddressForm((prev) => ({
+                ...prev,
+                recipient_name: prev.recipient_name || currentUser.name,
+                phone: (prev.phone && prev.phone !== '08') ? prev.phone : (currentUser.phone || '081234567890'),
+            }));
+        }
+    }, [currentUser]);
+
+    // Auto-select address when newly created
+    useEffect(() => {
+        if (!data.address_id && addresses?.length > 0) {
+            setData('address_id', addresses[0].id);
+        }
+    }, [addresses]);
+
+    const handleSaveAddress = (e) => {
+        e.preventDefault();
+        setSavingAddress(true);
+        setAddressError('');
+        router.post('/addresses', addressForm, {
+            preserveScroll: true,
+            onSuccess: (page) => {
+                setShowAddressModal(false);
+                const updated = page.props.addresses || [];
+                if (updated.length > 0) {
+                    setData('address_id', updated[0].id);
+                }
+            },
+            onError: (errs) => {
+                setAddressError(Object.values(errs)[0] || 'Gagal menyimpan alamat. Mohon lengkapi formulir.');
+            },
+            onFinish: () => setSavingAddress(false),
+        });
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!data.address_id) {
+            setShowAddressModal(true);
+            return;
+        }
         post('/checkout');
     };
 
@@ -57,17 +113,26 @@ export default function Index({ groupedCart, addresses, totalProducts, totalShip
                         <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-4">
                             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                                 <h2 className="font-bold text-sm text-dunia-navy uppercase tracking-wider flex items-center gap-2">
-                                    <MapPin className="w-4 h-4 text-dunia-blue" />
+                                    <MapPin className="w-4 h-4 text-[#0684E5]" />
                                     1. Alamat Tujuan Pengiriman Ikan
                                 </h2>
 
-                                <Link
-                                    href="/addresses"
-                                    className="text-xs font-bold text-dunia-blue hover:text-sky-700 flex items-center gap-1"
-                                >
-                                    <PlusCircle className="w-3.5 h-3.5" />
-                                    Kelola Alamat
-                                </Link>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowAddressModal(true)}
+                                        className="text-xs font-bold text-[#0684E5] hover:text-[#006783] flex items-center gap-1 cursor-pointer bg-blue-50 px-2.5 py-1.5 rounded-xl transition"
+                                    >
+                                        <PlusCircle className="w-3.5 h-3.5" />
+                                        + Tambah Alamat Baru
+                                    </button>
+                                    <Link
+                                        href="/addresses"
+                                        className="text-xs font-semibold text-slate-400 hover:text-slate-600 hidden sm:inline"
+                                    >
+                                        Kelola
+                                    </Link>
+                                </div>
                             </div>
 
                             {addresses?.length > 0 ? (
@@ -77,7 +142,7 @@ export default function Index({ groupedCart, addresses, totalProducts, totalShip
                                             key={addr.id}
                                             className={`block p-4 rounded-xl border cursor-pointer transition ${
                                                 data.address_id === addr.id
-                                                    ? 'bg-sky-50/60 border-dunia-blue ring-1 ring-dunia-blue'
+                                                    ? 'bg-sky-50/60 border-[#0684E5] ring-2 ring-[#0684E5]/30'
                                                     : 'border-slate-200 hover:bg-slate-50'
                                             }`}
                                         >
@@ -88,14 +153,14 @@ export default function Index({ groupedCart, addresses, totalProducts, totalShip
                                                     value={addr.id}
                                                     checked={data.address_id === addr.id}
                                                     onChange={() => setData('address_id', addr.id)}
-                                                    className="mt-1 text-dunia-blue focus:ring-dunia-aqua"
+                                                    className="mt-1 text-[#0684E5] focus:ring-[#0684E5]"
                                                 />
                                                 <div className="text-xs space-y-1">
                                                     <div className="flex items-center gap-2">
                                                         <span className="font-bold text-slate-900 text-sm">{addr.recipient_name}</span>
                                                         <span className="text-slate-500">({addr.phone})</span>
                                                         {addr.is_primary && (
-                                                            <span className="px-2 py-0.5 rounded-full bg-blue-100 text-dunia-blue font-bold text-[10px]">
+                                                            <span className="px-2 py-0.5 rounded-full bg-blue-100 text-[#0684E5] font-bold text-[10px]">
                                                                 Utama
                                                             </span>
                                                         )}
@@ -109,14 +174,21 @@ export default function Index({ groupedCart, addresses, totalProducts, totalShip
                                     ))}
                                 </div>
                             ) : (
-                                <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center justify-between">
-                                    <span>Anda belum memiliki alamat pengiriman. Silakan tambahkan terlebih dahulu.</span>
-                                    <Link
-                                        href="/addresses"
-                                        className="px-3 py-1.5 rounded-lg bg-amber-600 text-white font-bold hover:bg-amber-700 transition"
-                                    >
-                                        Tambah Alamat
-                                    </Link>
+                                <div className="p-5 rounded-2xl bg-amber-50/90 border border-amber-200 text-amber-950 text-xs space-y-3">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                        <div>
+                                            <p className="font-extrabold text-sm text-amber-900">Anda belum memiliki alamat pengiriman</p>
+                                            <p className="text-amber-700 mt-0.5">Ikan hidup memerlukan alamat pengiriman yang lengkap untuk kurir dan packing box beroksigen.</p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowAddressModal(true)}
+                                            className="px-4 py-2.5 rounded-xl bg-[#0684E5] hover:bg-[#006783] text-white font-extrabold text-xs shadow-md shadow-blue-500/20 transition flex items-center gap-1.5 shrink-0 cursor-pointer"
+                                        >
+                                            <PlusCircle className="w-4 h-4" />
+                                            Tambah Alamat Sekarang
+                                        </button>
+                                    </div>
                                 </div>
                             )}
 
@@ -316,13 +388,18 @@ export default function Index({ groupedCart, addresses, totalProducts, totalShip
                             <button
                                 type="submit"
                                 disabled={processing || !data.address_id}
-                                className="w-full py-3.5 px-6 rounded-2xl bg-dunia-blue hover:bg-sky-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-sm shadow-lg shadow-dunia-blue/20 transition flex items-center justify-center gap-2 cursor-pointer"
+                                className="w-full py-3.5 px-6 rounded-2xl bg-[#0684E5] hover:bg-[#006783] disabled:bg-slate-200 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-extrabold text-sm shadow-lg shadow-blue-500/25 transition flex items-center justify-center gap-2 cursor-pointer"
                             >
-                                {processing ? 'Memproses Pesanan...' : 'Buat & Konfirmasi Pesanan'}
+                                <CheckCircle2 className="w-4 h-4" />
+                                {processing 
+                                    ? 'Memproses Pesanan...' 
+                                    : !data.address_id 
+                                        ? 'Pilih / Tambah Alamat untuk Lanjut' 
+                                        : 'Buat & Konfirmasi Pesanan'}
                             </button>
 
                             <div className="p-3 rounded-xl bg-sky-50 text-[11px] text-sky-900 flex items-start gap-2">
-                                <ShieldCheck className="w-4 h-4 text-dunia-aqua shrink-0 mt-0.5" />
+                                <ShieldCheck className="w-4 h-4 text-[#4AB8BD] shrink-0 mt-0.5" />
                                 <p>
                                     Stok dikunci otomatis saat pesanan dibuat. Anda dapat melihat detail rekening dan mengunggah bukti transfer setelah ini.
                                 </p>
@@ -330,6 +407,126 @@ export default function Index({ groupedCart, addresses, totalProducts, totalShip
                         </div>
                     </div>
                 </form>
+
+                {/* Modal Tambah Alamat Cepat Langsung di Checkout */}
+                {showAddressModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+                        <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95">
+                            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                                <h3 className="font-extrabold text-base text-slate-900 flex items-center gap-2">
+                                    <MapPin className="w-5 h-5 text-[#0684E5]" />
+                                    Tambah Alamat Pengiriman Baru
+                                </h3>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowAddressModal(false)}
+                                    className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {addressError && (
+                                <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-bold text-rose-700">
+                                    {addressError}
+                                </div>
+                            )}
+
+                            <form onSubmit={handleSaveAddress} className="space-y-3.5 text-xs">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div>
+                                        <label className="block font-bold text-slate-700 uppercase mb-1">Nama Penerima</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            placeholder="Contoh: Budi Santoso"
+                                            value={addressForm.recipient_name}
+                                            onChange={(e) => setAddressForm({ ...addressForm, recipient_name: e.target.value })}
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block font-bold text-slate-700 uppercase mb-1">No. WhatsApp / HP</label>
+                                        <input
+                                            type="tel"
+                                            required
+                                            placeholder="Contoh: 081234567890"
+                                            value={addressForm.phone}
+                                            onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })}
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <div className="sm:col-span-2">
+                                        <label className="block font-bold text-slate-700 uppercase mb-1">Kota / Kabupaten</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            placeholder="Contoh: Kota Bandung"
+                                            value={addressForm.city}
+                                            onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block font-bold text-slate-700 uppercase mb-1">Kode Pos</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            placeholder="40287"
+                                            value={addressForm.postal_code}
+                                            onChange={(e) => setAddressForm({ ...addressForm, postal_code: e.target.value })}
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">Provinsi</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        placeholder="Contoh: Jawa Barat"
+                                        value={addressForm.province}
+                                        onChange={(e) => setAddressForm({ ...addressForm, province: e.target.value })}
+                                        className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">Alamat Lengkap (Jalan, RT/RW, No. Rumah)</label>
+                                    <textarea
+                                        rows={2}
+                                        required
+                                        placeholder="Contoh: Jl. Soekarno Hatta No. 45, RT 02 / RW 05, Kel. Batununggal"
+                                        value={addressForm.full_address}
+                                        onChange={(e) => setAddressForm({ ...addressForm, full_address: e.target.value })}
+                                        className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                    />
+                                </div>
+
+                                <div className="pt-2 flex justify-end gap-2.5">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowAddressModal(false)}
+                                        className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition cursor-pointer"
+                                    >
+                                        Batal
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={savingAddress}
+                                        className="px-5 py-2.5 rounded-xl bg-[#0684E5] hover:bg-[#006783] text-white font-extrabold shadow-md shadow-blue-500/20 transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                                    >
+                                        {savingAddress ? 'Menyimpan...' : 'Simpan & Gunakan Alamat'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
             </div>
         </AppLayout>
     );

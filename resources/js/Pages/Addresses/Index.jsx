@@ -79,7 +79,7 @@ export default function Index({ addresses }) {
                         <button
                             type="button"
                             onClick={openCreate}
-                            className="px-4 py-2.5 rounded-xl bg-dunia-blue text-white font-bold text-xs hover:bg-sky-600 transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+                            className="px-4 py-2.5 rounded-xl bg-[#0684E5] hover:bg-[#006783] text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-md shadow-blue-500/20"
                         >
                             <Plus className="w-4 h-4" />
                             Tambah Alamat Baru
@@ -199,7 +199,7 @@ export default function Index({ addresses }) {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="px-5 py-2 rounded-xl bg-dunia-blue text-white font-bold hover:bg-sky-600"
+                                    className="px-5 py-2 rounded-xl bg-[#0684E5] hover:bg-[#006783] text-white font-bold transition cursor-pointer shadow-md shadow-blue-500/20"
                                 >
                                     {processing ? 'Menyimpan...' : 'Simpan Alamat'}
                                 </button>

@@ -42,6 +42,10 @@ export default {
                     'outline-variant': '#bcc9c9',
                 },
                 // Backwards compatibility aliases
+                'dunia-navy': '#001454',
+                'dunia-blue': '#0684E5',
+                'dunia-aqua': '#4AB8BD',
+                'dunia-marine': '#0D2E92',
                 'wild-dark': '#001454',
                 'wild-panel': '#0D2E92',
                 'wild-card': '#192C2E',

@@ -76,7 +76,8 @@ class MidtransController extends Controller
         ];
 
         try {
-            $response = Http::withBasicAuth($serverKey, '')
+            $response = Http::withoutVerifying()
+                ->withBasicAuth($serverKey, '')
                 ->acceptJson()
                 ->post($baseUrl, $payload);
 
@@ -153,7 +154,8 @@ class MidtransController extends Controller
             ? 'https://api.midtrans.com/v2/'
             : 'https://api.sandbox.midtrans.com/v2/';
 
-        $response = Http::withBasicAuth($serverKey, '')
+        $response = Http::withoutVerifying()
+            ->withBasicAuth($serverKey, '')
             ->acceptJson()
             ->get($baseUrl.$order->order_number.'/status');
 
