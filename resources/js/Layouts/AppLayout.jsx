@@ -18,16 +18,121 @@ export default function AppLayout({ children }) {
         }
     }, [flash?.success, flash?.error]);
 
+    useEffect(() => {
+        if (
+            typeof window === 'undefined' ||
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+            window.matchMedia('(pointer: coarse)').matches
+        ) {
+            return;
+        }
+
+        let targetY = window.scrollY;
+        let currentY = window.scrollY;
+        let rafId = null;
+        let lastTime = 0;
+
+        const hasScrollableAncestor = (target, deltaY) => {
+            let el = target instanceof Element ? target : null;
+            while (el && el !== document.body && el !== document.documentElement) {
+                if (el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
+                    return true;
+                }
+                const overflowY = window.getComputedStyle(el).overflowY;
+                if ((overflowY === 'auto' || overflowY === 'scroll') && el.scrollHeight > el.clientHeight + 1) {
+                    const atTop = el.scrollTop <= 0;
+                    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+                    if ((deltaY < 0 && !atTop) || (deltaY > 0 && !atBottom)) {
+                        return true;
+                    }
+                }
+                el = el.parentElement;
+            }
+            return false;
+        };
+
+        const tick = (now) => {
+            const dt = lastTime ? Math.min((now - lastTime) / 1000, 0.05) : 0.016;
+            lastTime = now;
+
+            // Exponential damping keeps glide consistent across 60Hz, 120Hz, and 144Hz displays.
+            const factor = 1 - Math.exp(-11 * dt);
+            const diff = targetY - currentY;
+
+            if (Math.abs(diff) < 0.5) {
+                currentY = targetY;
+                window.scrollTo({ top: currentY, behavior: 'instant' });
+                rafId = null;
+                lastTime = 0;
+                return;
+            }
+
+            currentY += diff * factor;
+            window.scrollTo({ top: currentY, behavior: 'instant' });
+            rafId = requestAnimationFrame(tick);
+        };
+
+        const onWheel = (e) => {
+            if (e.ctrlKey || e.defaultPrevented || Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+                return;
+            }
+
+            let delta = e.deltaY;
+            if (e.deltaMode === 1) {
+                delta *= 32;
+            } else if (e.deltaMode === 2) {
+                delta *= window.innerHeight;
+            }
+
+            if (delta === 0 || hasScrollableAncestor(e.target, delta)) {
+                return;
+            }
+
+            e.preventDefault();
+
+            if (!rafId) {
+                currentY = window.scrollY;
+                targetY = window.scrollY;
+            }
+
+            const maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+            targetY = Math.min(maxY, Math.max(0, targetY + delta));
+
+            if (!rafId) {
+                lastTime = 0;
+                rafId = requestAnimationFrame(tick);
+            }
+        };
+
+        const onNativeScroll = () => {
+            if (!rafId) {
+                currentY = window.scrollY;
+                targetY = window.scrollY;
+            }
+        };
+
+        window.addEventListener('wheel', onWheel, { passive: false });
+        window.addEventListener('scroll', onNativeScroll, { passive: true });
+
+        return () => {
+            window.removeEventListener('wheel', onWheel);
+            window.removeEventListener('scroll', onNativeScroll);
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+            }
+        };
+    }, []);
+
     return (
-        <div className="h-screen w-full flex overflow-hidden bg-[#fbf8ff] dark:bg-[#070b14] text-[#001454] dark:text-[#e4e7ff] antialiased selection:bg-[#001454] selection:text-white transition-colors duration-200">
-            {/* Left Sidebar (Docked on desktop, sliding drawer on mobile) */}
+        <div className="min-h-screen w-full flex overflow-x-clip bg-[#fbf8ff] dark:bg-[#070b14] text-[#001454] dark:text-[#e4e7ff] antialiased selection:bg-[#001454] selection:text-white transition-colors duration-200">
+            {/* Left Sidebar (Sticky rail on desktop, sliding drawer on mobile) */}
             <Sidebar
                 isOpen={mobileSidebarOpen}
                 onClose={() => setMobileSidebarOpen(false)}
             />
 
-            {/* Main Area: TopHeader + Page Canvas + Footer (Independent Clean Scroll) */}
-            <div className="flex-1 h-full min-w-0 flex flex-col overflow-y-auto overflow-x-hidden">
+            {/* Main Area: TopHeader + Page Canvas + Footer (Native Window Scroll) */}
+            <div className="flex-1 min-w-0 flex flex-col">
                 <TopHeader 
                     onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
                     onOpenChat={() => setChatOpen(true)}

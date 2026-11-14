@@ -81,7 +81,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
             {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner (Living Aquarium Habitat) */}
             <section className="relative w-full overflow-hidden bg-black min-h-[460px] sm:min-h-[500px] lg:min-h-[540px] flex items-center border-b border-neutral-800">
                 {/* Full-Bleed Background Video (Edge-to-Edge Aquarium Footage) */}
-                <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+                <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden transform-gpu">
                     <video
                         autoPlay
                         loop

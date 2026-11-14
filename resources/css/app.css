@@ -36,6 +36,7 @@
     html {
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
+        scroll-behavior: smooth;
     }
 
     html.dark {
@@ -248,6 +249,10 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+
         .reveal,
         .reveal-delay-1,
         .reveal-delay-2,

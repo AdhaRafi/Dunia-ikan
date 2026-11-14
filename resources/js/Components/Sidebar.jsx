@@ -181,7 +181,7 @@ export default function Sidebar({ isOpen, onClose }) {
     return (
         <>
             {/* Desktop Sidebar: Hover-Responsive Rail (No clicking required!) */}
-            <div className="hidden md:block relative shrink-0 h-full z-40 select-none group/sidebar">
+            <div className="hidden md:block sticky top-0 shrink-0 h-screen z-40 select-none group/sidebar">
                 {/* Fixed Spacer (Holds page layout stable at w-20) */}
                 <div className="h-full w-20 transition-all duration-300 ease-in-out" />
 
