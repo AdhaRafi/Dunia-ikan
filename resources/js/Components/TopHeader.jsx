@@ -204,12 +204,13 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                                             <span className="px-4 text-[10px] font-bold text-[#1E80A0] dark:text-[#4AB8BD] uppercase tracking-wider block mb-1">
                                                 Admin
                                             </span>
-                                            <Link href="/admin" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
-                                                Dashboard Admin
-                                            </Link>
-                                            <Link href="/admin/guides" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
-                                                Kelola Panduan
-                                            </Link>
+                                            <a
+                                                href="/admin"
+                                                className="flex items-center gap-2 px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition font-medium"
+                                            >
+                                                <ShieldCheck className="w-3.5 h-3.5 text-[#0684E5]" />
+                                                <span>Panel Admin (Filament)</span>
+                                            </a>
                                         </div>
                                     )}
 

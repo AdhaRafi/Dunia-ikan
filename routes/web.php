@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function (Request $request) {
         $user = $request->user();
         if ($user->isAdmin()) {
-            return redirect()->route('admin.dashboard');
+            return redirect('/admin');
         }
         if ($user->isSeller()) {
             return redirect()->route('seller.products.index');
