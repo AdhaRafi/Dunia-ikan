@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
 import { 
-    Sparkles, 
+    TrendingUp, 
     ArrowRight, 
     ShieldCheck, 
     Thermometer, 
@@ -93,61 +93,72 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
 
     return (
         <AppLayout>
-            <Head title="Dunia Ikan — Marketplace Ikan Hias & Mutasi Genetik (Morph) Captive-Bred" />
+            <Head title="Dunia Ikan : Marketplace Ikan Hias & Mutasi Genetik (Morph) Captive-Bred" />
 
-            {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner */}
-            <section className="relative w-full overflow-hidden bg-[#001454] min-h-[440px] sm:min-h-[480px] lg:min-h-[500px] flex items-center border-b border-[#1E80A0]/15">
+            {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner (MorphMarket Authentic Dark Aesthetic) */}
+            <section className="relative w-full overflow-hidden bg-black min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex items-center border-b border-neutral-800">
                 {/* Background Nature / Aquatic Landscape */}
                 <img
                     src="/images/products/cupang-halfmoon.jpg"
                     alt="MorphMarket Dunia Ikan"
-                    className="absolute inset-0 w-full h-full object-cover object-right sm:object-center"
+                    className="absolute right-0 top-0 h-full w-full sm:w-3/5 lg:w-1/2 object-cover object-center"
                 />
 
-                {/* Gradient Overlay for Text Readability */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#001454]/95 via-[#0D2E92]/75 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#001454]/90 via-transparent to-transparent" />
+                {/* Pure Black to Transparent Gradient Overlay (Seamless high contrast) */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black via-black/95 via-35% sm:via-45% to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent sm:hidden" />
 
                 {/* Hero Content Overlay: Center-aligned within standard content width */}
-                <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-14">
-                    <div className="max-w-2xl text-white space-y-5">
-                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-[#C0ECB8] text-[11px] font-bold border border-white/20">
-                            <Sparkles className="w-3.5 h-3.5 text-[#4AB8BD]" />
-                            <span>Pusat Mutasi Genetik & Ikan Hias Captive-Bred</span>
+                <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+                    <div className="max-w-2xl text-white space-y-6">
+                        <div className="space-y-3">
+                            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
+                                Join Dunia Ikan
+                            </h1>
+                            <p className="text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
+                                Akses langsung ke peternak bersertifikasi di seluruh Indonesia. Temukan mutasi morph langka, lelang galur murni, dan garansi hidup D.O.A. 100%!
+                            </p>
                         </div>
 
-                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.12] text-white">
-                            Marketplace Ikan Hias & <br />
-                            Mutasi Genetik (Morph)
-                        </h1>
-
-                        <p className="text-xs sm:text-sm text-[#dde1ff] leading-relaxed max-w-xl">
-                            Beli spesimen ikan hias kontes dan mutasi morph langka langsung dari penangkar bersertifikasi di seluruh Indonesia. Bergaransi hidup D.O.A. 100% dengan parameter biologi akurat.
-                        </p>
+                        {/* MorphMarket Two Action Buttons */}
+                        <div className="flex items-center gap-3">
+                            <Link 
+                                href="/products" 
+                                className="px-6 py-2.5 rounded-full bg-white text-black font-bold text-xs sm:text-sm hover:bg-neutral-200 transition shadow-sm"
+                            >
+                                Jelajahi Katalog
+                            </Link>
+                            <Link 
+                                href="/register" 
+                                className="px-6 py-2.5 rounded-full border border-neutral-600 text-white font-semibold text-xs sm:text-sm hover:bg-white/10 hover:border-neutral-400 transition"
+                            >
+                                Buat Akun
+                            </Link>
+                        </div>
 
                         {/* Direct MorphMarket Search Box */}
-                        <form onSubmit={handleHeroSearch} className="pt-1 flex items-center gap-2 max-w-lg">
+                        <form onSubmit={handleHeroSearch} className="pt-2 flex items-center gap-2 max-w-lg">
                             <div className="relative flex-1">
                                 <input
                                     type="search"
                                     placeholder="Cari spesies (Cupang, Channa, Discus...), morph, atau penangkar..."
                                     value={heroSearch}
                                     onChange={(e) => setHeroSearch(e.target.value)}
-                                    className="w-full h-12 rounded-full bg-white/95 backdrop-blur-md pl-11 pr-4 text-xs text-[#001454] placeholder:text-[#6d797a] border-0 focus:ring-2 focus:ring-[#4AB8BD] focus:bg-white shadow-lg transition"
+                                    className="w-full h-11 rounded-full bg-neutral-900/90 border border-neutral-700 text-xs text-white placeholder:text-neutral-400 pl-11 pr-4 focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition shadow-lg"
                                 />
-                                <Search className="w-4 h-4 text-[#1E80A0] absolute left-4 top-4 pointer-events-none" />
+                                <Search className="w-4 h-4 text-neutral-400 absolute left-4 top-3.5 pointer-events-none" />
                             </div>
                             <button
                                 type="submit"
-                                className="h-12 px-6 rounded-full bg-[#0684E5] text-white font-bold text-xs hover:bg-[#0060aa] hover:scale-105 shadow-lg shadow-[#0684E5]/30 transition shrink-0"
+                                className="h-11 px-5 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition shrink-0"
                             >
                                 Cari
                             </button>
                         </form>
 
                         {/* Quick Morph Selector Chips */}
-                        <div className="pt-1 flex items-center gap-1.5 flex-wrap text-[11px]">
-                            <span className="text-[#C0ECB8] font-bold">Populer:</span>
+                        <div className="flex items-center gap-2 flex-wrap text-xs text-neutral-400">
+                            <span className="font-semibold text-neutral-300">Populer:</span>
                             {[
                                 { label: 'Cupang Rosetail', q: 'cupang' },
                                 { label: 'Channa Maru', q: 'channa' },
@@ -158,7 +169,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                 <Link
                                     key={chip.label}
                                     href={`/products?q=${chip.q}`}
-                                    className="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-[#dde1ff] hover:text-white border border-white/15 transition"
+                                    className="px-3 py-1 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white hover:border-neutral-600 transition"
                                 >
                                     {chip.label}
                                 </Link>
@@ -275,12 +286,11 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                 <section className="space-y-6 pt-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                            <div className="flex items-center gap-2 text-xs font-bold text-[#1E80A0] uppercase tracking-wider">
-                                <Sparkles className="w-3.5 h-3.5 text-[#4AB8BD]" />
-                                <span>Spesimen Pilihan</span>
-                            </div>
+                            <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">
+                                Katalog Terverifikasi
+                            </p>
                             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454] mt-1">
-                                Mutasi Trending & Rilisan Terbaru
+                                Mutasi Pilihan & Rilisan Terbaru
                             </h2>
                         </div>
 

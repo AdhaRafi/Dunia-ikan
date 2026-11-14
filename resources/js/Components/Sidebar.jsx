@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { 
-    Sparkles, 
+    TrendingUp, 
     Fish, 
     Waves, 
     Store, 
@@ -15,6 +15,7 @@ import {
     ChevronRight,
     Dna
 } from 'lucide-react';
+import BrandLogo from '@/Components/BrandLogo';
 
 const TIPS = [
     {
@@ -49,7 +50,7 @@ export default function Sidebar({ isOpen, onClose }) {
         {
             label: 'Trends',
             sublabel: 'Spesimen Trending',
-            icon: Sparkles,
+            icon: TrendingUp,
             href: '/products?sort=popular',
             active: url.includes('sort=popular'),
             badge: 'Hot',
@@ -177,22 +178,18 @@ export default function Sidebar({ isOpen, onClose }) {
                             <div className="w-full flex justify-center group-hover/sidebar:hidden">
                                 <Link 
                                     href="/" 
-                                    className="w-10 h-10 rounded-xl bg-[#0D2E92] text-white flex items-center justify-center shadow-xs hover:scale-105 transition"
-                                    title="Dunia Ikan — MorphMarket Aquatic"
+                                    className="w-10 h-10 rounded-xl bg-[#0a0a0a] text-white flex items-center justify-center shadow-xs hover:scale-105 border border-neutral-800 transition"
+                                    title="Dunia Ikan : MorphMarket Aquatic"
                                 >
-                                    <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2">
-                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                                    </svg>
+                                    <BrandLogo className="w-5 h-5 text-white" />
                                 </Link>
                             </div>
 
                             {/* Expanded header (revealed automatically on hover) */}
                             <div className="w-full hidden group-hover/sidebar:flex items-center">
                                 <Link href="/" className="flex items-center gap-3 group min-w-0">
-                                    <div className="w-9 h-9 rounded-xl bg-[#0D2E92] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition shrink-0">
-                                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
-                                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                                        </svg>
+                                    <div className="w-9 h-9 rounded-xl bg-[#0a0a0a] text-white flex items-center justify-center shadow-xs group-hover:scale-105 border border-neutral-800 transition shrink-0">
+                                        <BrandLogo className="w-5 h-5 text-white" />
                                     </div>
                                     <div className="flex flex-col min-w-0">
                                         <span className="text-sm font-extrabold tracking-widest text-[#001454] uppercase leading-none truncate">
@@ -393,10 +390,8 @@ export default function Sidebar({ isOpen, onClose }) {
                     <div className="p-5 flex-1 flex flex-col overflow-y-auto">
                         <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10">
                             <Link href="/" onClick={onClose} className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-[#0D2E92] text-white flex items-center justify-center shadow-xs">
-                                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
-                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                                    </svg>
+                                <div className="w-8 h-8 rounded-lg bg-[#0a0a0a] text-white flex items-center justify-center shadow-xs border border-neutral-800">
+                                    <BrandLogo className="w-4 h-4 text-white" />
                                 </div>
                                 <div className="flex flex-col">
                                     <span className="text-sm font-extrabold tracking-widest text-[#001454] uppercase leading-none">

@@ -10,6 +10,7 @@ import {
     Menu, 
     ChevronDown
 } from 'lucide-react';
+import BrandLogo from '@/Components/BrandLogo';
 
 export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
     const { auth, cartCount } = usePage().props;
@@ -42,10 +43,8 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
 
                     {/* Mobile Brand Mark */}
                     <Link href="/" className="md:hidden flex items-center gap-2 shrink-0">
-                        <div className="w-7 h-7 rounded-lg bg-[#0D2E92] text-white flex items-center justify-center shadow-xs">
-                            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-none stroke-current stroke-2">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                            </svg>
+                        <div className="w-8 h-8 rounded-lg bg-[#0a0a0a] text-white flex items-center justify-center shadow-xs border border-neutral-800">
+                            <BrandLogo className="w-4 h-4 text-white" />
                         </div>
                     </Link>
 
