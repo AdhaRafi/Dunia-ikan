@@ -10,8 +10,26 @@ export default function AppLayout({ children }) {
     const { flash } = usePage().props;
     const [chatOpen, setChatOpen] = useState(false);
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const saved = localStorage.getItem('duniaikan_sidebar_collapsed');
+            if (saved !== null) {
+                return saved === 'true';
+            }
+        }
+        return false;
+    });
     const [showFlash, setShowFlash] = useState(true);
+
+    const handleToggleCollapse = () => {
+        setSidebarCollapsed((prev) => {
+            const next = !prev;
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('duniaikan_sidebar_collapsed', String(next));
+            }
+            return next;
+        });
+    };
 
     useEffect(() => {
         if (flash?.success || flash?.error) {
@@ -26,7 +44,7 @@ export default function AppLayout({ children }) {
                 isOpen={mobileSidebarOpen}
                 onClose={() => setMobileSidebarOpen(false)}
                 isCollapsed={sidebarCollapsed}
-                onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+                onToggleCollapse={handleToggleCollapse}
             />
 
             {/* Main Area: TopHeader + Page Canvas + Footer (Independent Clean Scroll) */}
@@ -35,7 +53,7 @@ export default function AppLayout({ children }) {
                     onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
                     onOpenChat={() => setChatOpen(true)}
                     isCollapsed={sidebarCollapsed}
-                    onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+                    onToggleCollapse={handleToggleCollapse}
                 />
 
                 {/* Flash Messages */}
