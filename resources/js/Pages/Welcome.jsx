@@ -187,35 +187,29 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                     </div>
                 </section>
 
-                {/* 4. RECENT SPECIMEN LISTINGS & MORPHMARKET GRID */}
-                <section className="space-y-6 pt-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <p className="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                                Katalog Terverifikasi
-                            </p>
-                            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454] dark:text-white mt-1">
-                                Mutasi Pilihan & Rilisan Terbaru
-                            </h2>
-                        </div>
+                {/* 4. PRODUCT GRID */}
+                <section className="space-y-5 pt-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
+                            Produk Terbaru
+                        </h2>
 
-                        {/* Parametric Biology Filters */}
                         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 text-xs font-semibold">
                             {[
-                                { id: 'all', label: 'Semua Spesimen' },
+                                { id: 'all', label: 'Semua' },
                                 { id: 'freshwater', label: 'Air Tawar' },
                                 { id: 'saltwater', label: 'Air Laut' },
-                                { id: 'male', label: '♂ Jantan' },
-                                { id: 'female', label: '♀ Betina' },
+                                { id: 'male', label: 'Jantan' },
+                                { id: 'female', label: 'Betina' },
                             ].map((tab) => (
                                 <button
                                     key={tab.id}
                                     type="button"
                                     onClick={() => setSelectedTab(tab.id)}
-                                    className={`px-3.5 py-1.5 rounded-full transition whitespace-nowrap ${
+                                    className={`px-3 py-1.5 rounded-lg transition whitespace-nowrap ${
                                         selectedTab === tab.id
-                                            ? 'bg-[#4AB8BD] text-white font-bold shadow-xs'
-                                            : 'bg-white dark:bg-[#111a30] text-[#001454] dark:text-neutral-200 border border-[#1E80A0]/20 dark:border-neutral-700 hover:border-[#4AB8BD] hover:bg-[#f3f2ff] dark:hover:bg-neutral-800'
+                                            ? 'bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] font-bold'
+                                            : 'bg-white dark:bg-[#111a30] text-slate-600 dark:text-neutral-300 border border-slate-200 dark:border-neutral-700 hover:border-[#4AB8BD]'
                                     }`}
                                 >
                                     {tab.label}
@@ -224,8 +218,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                         </div>
                     </div>
 
-                    {/* Specimen Product Grid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
                         {displayedProducts.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
