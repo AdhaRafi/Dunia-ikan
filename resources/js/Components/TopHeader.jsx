@@ -50,8 +50,8 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
     return (
         <header className="sticky top-0 z-30 bg-white/90 dark:bg-[#070b14]/90 backdrop-blur-md border-b border-[#1E80A0]/10 dark:border-neutral-800 px-4 sm:px-6 lg:px-8 py-3 transition-colors">
             <div className="w-full flex items-center justify-between gap-3 sm:gap-6">
-                {/* Left: Mobile Menu Trigger + Brand (Mobile) + Search Bar */}
-                <div className="flex items-center gap-3 flex-1 min-w-0 max-w-xl">
+                {/* Left: Mobile Menu Trigger + Brand + Search Bar */}
+                <div className="flex items-center gap-2.5 sm:gap-4 flex-1 min-w-0 max-w-3xl">
                     {/* Mobile Hamburger Trigger */}
                     <button
                         type="button"
@@ -62,16 +62,16 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                         <Menu className="w-5 h-5" />
                     </button>
 
-                    {/* Mobile Brand Mark */}
-                    <Link href="/" className="md:hidden flex items-center shrink-0">
-                        <BrandWordmark className="h-7" />
+                    {/* Brand Mark (Always visible next to search bar like MorphMarket) */}
+                    <Link href="/" className="flex items-center shrink-0 hover:opacity-90 transition pr-1 sm:pr-2">
+                        <BrandWordmark className="h-7 sm:h-9" />
                     </Link>
 
                     {/* Search Form (Aquatic Coastal Pill Search) */}
-                    <form onSubmit={handleSearchSubmit} className="relative w-full min-w-0">
+                    <form onSubmit={handleSearchSubmit} className="relative w-full min-w-0 flex-1">
                         <input
                             type="search"
-                            placeholder="Cari spesimen, morph, penangkar..."
+                            placeholder="Cari di Dunia Ikan..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full h-10 rounded-full bg-[#f3f2ff] dark:bg-[#111a30] pl-10 pr-4 text-xs text-[#001454] dark:text-white placeholder:text-[#6d797a] dark:placeholder:text-neutral-400 border border-[#1E80A0]/10 dark:border-neutral-700 focus:ring-2 focus:ring-[#4AB8BD] focus:bg-white dark:focus:bg-[#152038] transition"
@@ -81,7 +81,7 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                 </div>
 
                 {/* Right: Quick Action Icons (Sun/Moon, Heart, Cart, User/Auth) */}
-                <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+                <div className="flex items-center gap-1 sm:gap-3 shrink-0">
                     {/* Theme Toggle Icon (Sun / Moon) */}
                     <button
                         type="button"
@@ -93,10 +93,10 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                         {darkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
                     </button>
 
-                    {/* Wishlist Icon (Heart) */}
+                    {/* Wishlist Icon (Heart) - Hidden on extra small mobile to give search bar breathing space */}
                     <Link
                         href="/products?sort=popular"
-                        className="relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#0684E5] dark:hover:text-[#4AB8BD] rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
+                        className="hidden sm:flex relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#0684E5] dark:hover:text-[#4AB8BD] rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
                         title="Daftar Keinginan"
                         aria-label="Daftar Keinginan"
                     >
