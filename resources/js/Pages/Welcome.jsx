@@ -3,17 +3,9 @@ import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
 import { 
-    TrendingUp, 
     ArrowRight, 
-    ShieldCheck, 
-    Thermometer, 
-    Droplets, 
-    Store,
     BookOpen,
     CheckCircle2,
-    Dna,
-    PackageCheck,
-    Truck,
     BadgeCheck
 } from 'lucide-react';
 
@@ -131,59 +123,12 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
             </section>
 
             <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
-                {/* 2. TRUST PILLARS STRIP (MorphMarket Standards) */}
-                <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#1E80A0]/10 shadow-xs flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-[#f3f2ff] text-[#00696D] flex items-center justify-center shrink-0">
-                            <ShieldCheck className="w-5 h-5 text-[#00696D]" />
-                        </div>
-                        <div className="min-w-0">
-                            <h4 className="text-xs font-bold text-[#001454] leading-tight">Garansi Ikan Hidup 100%</h4>
-                            <p className="text-[11px] text-[#6d797a] truncate mt-0.5">Ikan hidup sampai tujuan</p>
-                        </div>
-                    </div>
-
-                    <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#1E80A0]/10 shadow-xs flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-[#f3f2ff] text-[#4AB8BD] flex items-center justify-center shrink-0">
-                            <Dna className="w-5 h-5 text-[#4AB8BD]" />
-                        </div>
-                        <div className="min-w-0">
-                            <h4 className="text-xs font-bold text-[#001454] leading-tight">Mutasi & Genetik Valid</h4>
-                            <p className="text-[11px] text-[#6d797a] truncate mt-0.5">Morfologi & galur terverifikasi</p>
-                        </div>
-                    </div>
-
-                    <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#1E80A0]/10 shadow-xs flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-[#f3f2ff] text-[#0684E5] flex items-center justify-center shrink-0">
-                            <Store className="w-5 h-5 text-[#0684E5]" />
-                        </div>
-                        <div className="min-w-0">
-                            <h4 className="text-xs font-bold text-[#001454] leading-tight">Penangkar Terakreditasi</h4>
-                            <p className="text-[11px] text-[#6d797a] truncate mt-0.5">Langsung dari farm resmi</p>
-                        </div>
-                    </div>
-
-                    <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#1E80A0]/10 shadow-xs flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-[#f3f2ff] text-[#1E80A0] flex items-center justify-center shrink-0">
-                            <PackageCheck className="w-5 h-5 text-[#1E80A0]" />
-                        </div>
-                        <div className="min-w-0">
-                            <h4 className="text-xs font-bold text-[#001454] leading-tight">Packing Oksigen Khusus</h4>
-                            <p className="text-[11px] text-[#6d797a] truncate mt-0.5">Aman perjalanan 48-72 jam</p>
-                        </div>
-                    </div>
-                </section>
-
-                {/* 3. MORPHMARKET SPECIES EXPLORER (Category Tiles) */}
+                {/* 2. KATEGORI IKAN (Category Tiles) */}
                 <section className="space-y-6">
                     <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                         <div>
-                            <div className="flex items-center gap-2 text-xs font-bold text-[#1E80A0] uppercase tracking-wider">
-                                <Dna className="w-4 h-4 text-[#4AB8BD]" />
-                                <span>Katalog Spesies & Morfologi</span>
-                            </div>
-                            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454] mt-1">
-                                Jelajahi Berdasarkan Garis Keturunan & Strain
+                            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454]">
+                                Kategori Ikan
                             </h2>
                         </div>
                         <Link
