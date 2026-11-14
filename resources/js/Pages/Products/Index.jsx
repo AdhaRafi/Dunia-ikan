@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
@@ -36,6 +36,24 @@ export default function Index({ products, categories, cities, filters }) {
     const [city, setCity] = useState(typeof filterObj.city === 'string' ? filterObj.city : '');
     const [sortBy, setSortBy] = useState(typeof filterObj.sort === 'string' && filterObj.sort ? filterObj.sort : 'newest');
     const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+    useEffect(() => {
+        setSearch(typeof filterObj.q === 'string' ? filterObj.q : '');
+        setCategory(typeof filterObj.category === 'string' ? filterObj.category : '');
+        setWaterType(typeof filterObj.water_type === 'string' ? filterObj.water_type : '');
+        setSex(typeof filterObj.sex === 'string' ? filterObj.sex : '');
+        setMinPrice(typeof filterObj.min_price === 'string' ? filterObj.min_price : '');
+        setMaxPrice(typeof filterObj.max_price === 'string' ? filterObj.max_price : '');
+        setCity(typeof filterObj.city === 'string' ? filterObj.city : '');
+        setSortBy(typeof filterObj.sort === 'string' && filterObj.sort ? filterObj.sort : 'newest');
+        setOpenSections((prev) => ({
+            ...prev,
+            water: prev.water || Boolean(filterObj.water_type),
+            sex: prev.sex || Boolean(filterObj.sex),
+            city: prev.city || Boolean(filterObj.city),
+            price: prev.price || Boolean(filterObj.min_price || filterObj.max_price),
+        }));
+    }, [filters]);
 
     const [openSections, setOpenSections] = useState({
         categories: true,
@@ -87,23 +105,40 @@ export default function Index({ products, categories, cities, filters }) {
     };
 
     const hasActiveFilters = Boolean(search || category || waterType || sex || minPrice || maxPrice || city || (sortBy && sortBy !== 'newest'));
-    const activeCategoryName = categories?.find((item) => item.slug === category)?.name;
+    const appliedCategorySlug = typeof filterObj.category === 'string' ? filterObj.category : '';
+    const appliedWaterType = typeof filterObj.water_type === 'string' ? filterObj.water_type : '';
+    const appliedSearch = typeof filterObj.q === 'string' ? filterObj.q.trim() : '';
+
+    const activeCategoryName = categories?.find((item) => item.slug === appliedCategorySlug)?.name;
+    const activeWaterLabel = WATER_OPTIONS.find((item) => item.id && item.id === appliedWaterType)?.label;
+
+    const bannerTitle = activeCategoryName || activeWaterLabel || 'Katalog';
+    const sectionTitle =
+        activeCategoryName && activeWaterLabel
+            ? `${activeCategoryName} · ${activeWaterLabel}`
+            : activeCategoryName || activeWaterLabel || (appliedSearch ? `Hasil: "${appliedSearch}"` : 'Semua Produk');
+    const bannerSizeClass =
+        bannerTitle.length > 14
+            ? 'text-[36px] sm:text-[64px] lg:text-[84px]'
+            : bannerTitle.length > 9
+            ? 'text-[52px] sm:text-[88px] lg:text-[112px]'
+            : 'text-[68px] sm:text-[112px] lg:text-[136px]';
 
     return (
         <AppLayout>
-            <Head title="Katalog — Dunia Ikan" />
+            <Head title={`${bannerTitle} — Dunia Ikan`} />
 
             {/* Editorial Top Banner */}
             <section className="relative h-44 sm:h-56 w-full overflow-hidden bg-[#0b1320]">
                 <img
                     src="/images/hero-fish-poster.webp"
-                    alt="Katalog Dunia Ikan"
+                    alt={`${bannerTitle} Dunia Ikan`}
                     className="w-full h-full object-cover object-center opacity-70"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 flex justify-center overflow-hidden pointer-events-none">
-                    <span className="text-[72px] sm:text-[116px] lg:text-[136px] font-black tracking-tight text-white/95 leading-[0.82] select-none translate-y-2">
-                        Katalog
+                <div className="absolute inset-x-0 bottom-0 flex justify-center overflow-hidden pointer-events-none px-4">
+                    <span className={`${bannerSizeClass} font-black tracking-tight text-white/95 leading-[0.82] select-none translate-y-2 text-center whitespace-nowrap`}>
+                        {bannerTitle}
                     </span>
                 </div>
             </section>
@@ -115,7 +150,7 @@ export default function Index({ products, categories, cities, filters }) {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200/80 dark:border-neutral-800">
                         <div>
                             <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#001454] dark:text-white">
-                                {activeCategoryName || 'Semua Produk'}
+                                {sectionTitle}
                             </h1>
                             <p className="text-xs text-slate-500 dark:text-neutral-400 mt-0.5">
                                 Menampilkan {products?.data?.length ?? 0} dari {products?.total ?? 0} produk tersedia

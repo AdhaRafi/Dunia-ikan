@@ -25,7 +25,7 @@ const PIN_STORAGE_KEY = 'duniaikan_sidebar_pinned';
 function NavRow({ item, collapsed = false, onNavigate }) {
     const Icon = item.icon;
 
-    const baseClasses = `relative group/item w-full h-9 flex items-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0267C1] ${
+    const baseClasses = `relative group/item w-full h-8 flex items-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0267C1] ${
         collapsed ? 'justify-center px-0' : 'gap-3 px-6 hover:bg-slate-50/90 dark:hover:bg-slate-800/40'
     } ${
         item.active
@@ -247,10 +247,10 @@ export default function Sidebar({
 
     const renderSidebarInner = ({ collapsed, isMobile = false }) => (
         <div className="flex flex-col justify-between h-full">
-            <div className="flex flex-col min-h-0">
+            <div className="flex flex-col min-h-0 flex-1">
                 {/* Brand Header + Collapse Toggle */}
                 {collapsed ? (
-                    <div className="pt-6 pb-4 flex flex-col items-center gap-3.5">
+                    <div className="pt-5 pb-3 flex flex-col items-center gap-3 shrink-0">
                         <Link
                             href="/"
                             className="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800/70 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
@@ -269,7 +269,7 @@ export default function Sidebar({
                         </button>
                     </div>
                 ) : (
-                    <div className="pt-6 pb-5 px-6 flex items-center justify-between gap-2">
+                    <div className="pt-5 pb-3 px-6 flex items-center justify-between gap-2 shrink-0">
                         <Link
                             href="/"
                             onClick={isMobile ? onClose : undefined}
@@ -308,9 +308,9 @@ export default function Sidebar({
                 {/* Navigation Groups */}
                 <nav
                     aria-label="Navigasi utama"
-                    className={`mt-2 flex-1 ${isMobile ? 'overflow-y-auto' : 'overflow-visible'}`}
+                    className={`mt-1 flex-1 ${isMobile || !collapsed ? 'overflow-y-auto' : 'overflow-visible'}`}
                 >
-                    <div className="space-y-1">
+                    <div className="space-y-0.5">
                         {primaryItems.map((item) => (
                             <NavRow
                                 key={item.label}
@@ -322,12 +322,12 @@ export default function Sidebar({
                     </div>
 
                     <div
-                        className={`my-4 border-t border-slate-100 dark:border-slate-800/80 ${
+                        className={`my-2.5 border-t border-slate-100 dark:border-slate-800/80 ${
                             collapsed ? 'mx-4' : 'mx-6'
                         }`}
                     />
 
-                    <div className="space-y-1">
+                    <div className="space-y-0.5">
                         {utilityItems.map((item) => (
                             <NavRow
                                 key={item.label}
@@ -341,7 +341,7 @@ export default function Sidebar({
             </div>
 
             {/* Footer: Profile Summary + Theme Switch */}
-            <div className="pt-3 pb-5 border-t border-slate-100 dark:border-slate-800/80 space-y-3">
+            <div className="pt-2.5 pb-4 border-t border-slate-100 dark:border-slate-800/80 space-y-2 shrink-0">
                 {user && (
                     <Link
                         href="/profile"
