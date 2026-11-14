@@ -54,7 +54,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                     {
                         sender: 'assistant',
                         message:
-                            'Halo! Aku Kiko 🐟, maskot & asisten virtual resmi Dunia Ikan. Ada yang bisa kubantu seputar pemilihan jenis ikan hias, mutasi morph, parameter air, atau cara klaim garansi pengiriman (D.O.A)?',
+                            'Halo! Aku Kiko 🐟, asisten virtual Dunia Ikan. Ada yang bisa kubantu seputar ikan hias atau produk katalog hari ini?',
                         created_at: new Date().toISOString(),
                     },
                 ]);
@@ -201,7 +201,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                             <div className="space-y-1.5 text-[11px] leading-snug text-slate-300">
                                 <p className="flex items-start gap-1.5">
                                     <span className="text-[#00C882] font-bold">✓</span>
-                                    <span>Konsultasi kesehatan & diagnosa penyakit ikan.</span>
+                                    <span>Panduan kesehatan & perawatan ikan.</span>
                                 </p>
                                 <p className="flex items-start gap-1.5">
                                     <span className="text-[#00C882] font-bold">✓</span>
@@ -255,15 +255,6 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
             {/* 2. CHATBOT WINDOW (WHEN OPEN) */}
             {isOpen && (
                 <div className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 flex flex-col sm:w-[420px] sm:h-[640px] max-h-[92vh]">
-                    {/* Cheering Mascot beside the window on Desktop (matching Lena reference video) */}
-                    <div className="hidden sm:block absolute -left-16 bottom-4 pointer-events-none z-20 animate-kiko-float">
-                        <img
-                            src="/images/kiko/kiko-wave.png"
-                            alt="Kiko Waving"
-                            className="w-16 h-20 object-contain drop-shadow-2xl"
-                        />
-                    </div>
-
                     {/* Chat Modal Container */}
                     <div className="w-full h-full flex flex-col bg-white dark:bg-[#070b14] sm:rounded-2xl sm:border border-slate-200 dark:border-neutral-800 shadow-2xl overflow-hidden transition-all duration-200">
                         {/* Header */}
@@ -299,15 +290,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                             </button>
                         </div>
 
-                    {/* Secondary Info Banner */}
-                    <div className="flex shrink-0 items-center gap-2 bg-[#0c182c] dark:bg-[#091122] px-4 py-2 text-[11px] text-cyan-200/90 border-b border-cyan-500/10">
-                        <AlertCircle className="h-3.5 w-3.5 shrink-0 text-[#00C882]" />
-                        <span>
-                            Konsultasi kesehatan ikan, rekomendasi katalog & klaim garansi D.O.A.
-                        </span>
-                    </div>
-
-                    {/* Messages Body */}
+                        {/* Messages Body */}
                     <div className="flex-1 space-y-4 overflow-y-auto bg-slate-50 dark:bg-[#070b14] p-4">
                         {messages.map((msg, index) => {
                             const isUser = msg.sender === 'user';
@@ -528,14 +511,14 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                 type="button"
                                 onClick={() => fileInputRef.current?.click()}
                                 className="p-2 text-slate-400 hover:text-[#00C882] rounded-lg hover:bg-slate-100 dark:hover:bg-neutral-800 transition"
-                                title="Unggah foto kondisi ikan"
+                                title="Unggah foto ikan"
                             >
                                 <ImageIcon className="h-5 w-5" />
                             </button>
 
                             <input
                                 type="text"
-                                placeholder="Tanya Kiko atau ketik gejala ikan..."
+                                placeholder="Tanya Kiko..."
                                 value={inputText}
                                 onChange={(e) => setInputText(e.target.value)}
                                 className="h-10 min-w-0 flex-1 rounded-xl border border-slate-200 dark:border-neutral-700 bg-slate-50 dark:bg-[#111a30] px-3 text-xs text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-[#00C882] focus:bg-white dark:focus:bg-[#162240] transition"
