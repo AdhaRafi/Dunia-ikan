@@ -29,6 +29,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('Dunia Ikan Admin')
+            ->brandLogo(fn () => asset('images/logo-dunia-ikan.png'))
+            ->darkModeBrandLogo(fn () => asset('images/logo-dunia-ikan-white.png'))
+            ->brandLogoHeight('2.6rem')
             ->colors([
                 'primary' => Color::Sky,
             ])
