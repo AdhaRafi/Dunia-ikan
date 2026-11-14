@@ -1,6 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
-import { Check, ShoppingCart, ShieldCheck, Heart } from 'lucide-react';
+import { Check, ShoppingCart, ShieldCheck, Heart, Store, Dna, Thermometer, Droplets } from 'lucide-react';
 
 function sexLabel(sex) {
     switch (sex) {
@@ -58,9 +58,9 @@ export default function ProductCard({ product }) {
     const sexBadge = fish?.sex ? sexLabel(fish.sex) : null;
 
     return (
-        <article className="group flex flex-col select-none">
-            {/* Studio Card Image Container */}
-            <div className="relative aspect-[3/4] rounded-2xl bg-[#f3f2ff] overflow-hidden border border-[#1E80A0]/10 shadow-xs group-hover:shadow-md transition-all duration-300">
+        <article className="group flex flex-col select-none bg-white rounded-2xl border border-[#1E80A0]/10 overflow-hidden hover:border-[#4AB8BD]/50 hover:shadow-lg transition-all duration-300">
+            {/* MorphMarket Specimen Image Container */}
+            <div className="relative aspect-[4/5] sm:aspect-[3/4] bg-[#f3f2ff] overflow-hidden">
                 <Link href={`/products/${product.slug}`} className="block w-full h-full">
                     <img
                         src={product.image || fallbackFish}
@@ -74,7 +74,7 @@ export default function ProductCard({ product }) {
                     />
                 </Link>
 
-                {/* Top Right: Wishlist Heart Button */}
+                {/* Top Right: Wishlist Heart */}
                 <button
                     type="button"
                     onClick={(e) => {
@@ -82,76 +82,128 @@ export default function ProductCard({ product }) {
                         e.stopPropagation();
                         setIsFavorite(!isFavorite);
                     }}
-                    className="absolute top-3 right-3 p-2 rounded-full bg-white/90 backdrop-blur-xs text-[#1E80A0] hover:text-[#0684E5] transition shadow-xs"
+                    className="absolute top-2.5 right-2.5 p-2 rounded-full bg-white/90 backdrop-blur-xs text-[#1E80A0] hover:text-[#0684E5] transition shadow-xs z-10"
                     title="Simpan ke Favorit"
                     aria-label="Simpan ke Favorit"
                 >
                     <Heart className={`w-3.5 h-3.5 ${isFavorite ? 'fill-[#0684E5] text-[#0684E5]' : ''}`} />
                 </button>
 
-                {/* Top Left: Live Arrival Guarantee (DOA) Badge with Pastel Green & Deep Navy */}
+                {/* Top Left: DOA 100% Guarantee Badge */}
                 {product.store?.doa_policy && (
-                    <div className="absolute top-3 left-3 bg-[#C0ECB8] text-[#0D2E92] text-[10px] font-extrabold tracking-wider px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-xs uppercase">
+                    <div className="absolute top-2.5 left-2.5 bg-[#C0ECB8] text-[#0D2E92] text-[10px] font-extrabold tracking-wider px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-xs uppercase z-10">
                         <ShieldCheck className="w-3 h-3 text-[#0D2E92]" />
                         <span>DOA 100%</span>
                     </div>
                 )}
 
-                {/* Stock Out Badge */}
+                {/* Stock Out Overlay */}
                 {product.stock <= 0 && (
-                    <div className="absolute inset-0 bg-[#001454]/60 backdrop-blur-xs flex items-center justify-center">
+                    <div className="absolute inset-0 bg-[#001454]/65 backdrop-blur-xs flex items-center justify-center z-20">
                         <span className="px-3 py-1 bg-white text-[#ba1a1a] font-extrabold text-xs rounded-full uppercase tracking-wider shadow-sm">
-                            Habis
+                            Habis Terjual
                         </span>
                     </div>
                 )}
 
-                {/* Bottom Left on Image: Sex Badge */}
+                {/* Bottom Left: Sex Badge (♂ / ♀) */}
                 {sexBadge && (
-                    <div className="absolute bottom-3 left-3">
+                    <div className="absolute bottom-2.5 left-2.5 z-10">
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs ${sexBadge.bg}`}>
                             {sexBadge.label}
                         </span>
                     </div>
                 )}
+
+                {/* Bottom Right: Captive-Bred / F1 Tag */}
+                {fish?.breeding_origin === 'captive_bred' && (
+                    <div className="absolute bottom-2.5 right-2.5 z-10">
+                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-xs text-[#00696D] shadow-xs">
+                            Captive-Bred
+                        </span>
+                    </div>
+                )}
             </div>
 
-            {/* Product Meta (Modern Aquatic Typography) */}
-            <div className="pt-3 space-y-1">
-                <div className="flex items-center justify-between text-xs text-[#1E80A0]">
-                    <span className="truncate font-medium">{fish?.morph_trait || product.category?.name}</span>
-                    <span className="text-[11px] text-[#6d797a] shrink-0">{product.store?.city}</span>
-                </div>
+            {/* Specimen Details & Morph Taxonomy (MorphMarket Style) */}
+            <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between space-y-2.5">
+                <div className="space-y-1">
+                    {/* Morph Gene Trait Pill */}
+                    {fish?.morph_trait ? (
+                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#ececff] text-[#001454] text-[10px] font-bold tracking-tight">
+                            <Dna className="w-3 h-3 text-[#4AB8BD]" />
+                            <span className="truncate max-w-[170px]">{fish.morph_trait}</span>
+                        </div>
+                    ) : (
+                        <span className="text-[10px] font-bold text-[#1E80A0] uppercase tracking-wider">
+                            {product.category?.name}
+                        </span>
+                    )}
 
-                <div className="flex items-start justify-between gap-2">
+                    {/* Specimen Name */}
                     <Link
                         href={`/products/${product.slug}`}
-                        className="text-xs sm:text-sm font-bold text-[#0D2E92] hover:text-[#0684E5] transition leading-snug line-clamp-1"
+                        className="block text-xs sm:text-sm font-bold text-[#001454] hover:text-[#0684E5] transition leading-snug line-clamp-1"
+                        title={product.name}
                     >
                         {product.name}
                     </Link>
+
+                    {/* Scientific Name (Latin) */}
+                    {fish?.species_name && (
+                        <p className="text-[11px] italic text-[#6d797a] truncate">
+                            {fish.species_name}
+                        </p>
+                    )}
+                </div>
+
+                {/* Biological Parameter Chips (Water, pH, Temp) */}
+                {fish && (
+                    <div className="pt-1 flex items-center gap-2 text-[10px] text-[#3d4949] font-medium border-t border-[#1E80A0]/10">
+                        <span className="flex items-center gap-0.5">
+                            <Droplets className="w-3 h-3 text-[#1E80A0]" />
+                            <span>pH {fish.ph_min || 6.5}-{fish.ph_max || 7.5}</span>
+                        </span>
+                        <span>•</span>
+                        <span className="flex items-center gap-0.5">
+                            <Thermometer className="w-3 h-3 text-[#0684E5]" />
+                            <span>{fish.temp_min || 24}-{fish.temp_max || 29}°C</span>
+                        </span>
+                    </div>
+                )}
+
+                {/* Breeder / Farm Info */}
+                <div className="flex items-center justify-between text-[11px] text-[#1E80A0] pt-1">
+                    <span className="flex items-center gap-1 truncate font-semibold">
+                        <Store className="w-3 h-3 shrink-0 text-[#4AB8BD]" />
+                        <span className="truncate">{product.store?.name}</span>
+                    </span>
+                    <span className="text-[10px] text-[#6d797a] shrink-0">{product.store?.city}</span>
+                </div>
+
+                {/* Price & Action Button */}
+                <div className="pt-2 border-t border-[#1E80A0]/10 flex items-center justify-between gap-2">
+                    <p className="text-sm sm:text-base font-extrabold text-[#0684E5] tabular-nums">
+                        {formatPrice(product.price)}
+                    </p>
 
                     {product.stock > 0 && (
                         <button
                             type="button"
                             onClick={handleQuickAdd}
                             disabled={adding}
-                            className={`p-1.5 rounded-full transition shrink-0 ${
+                            className={`p-2 rounded-xl transition-all shadow-xs flex items-center justify-center ${
                                 added
-                                    ? 'bg-[#00696D] text-white'
+                                    ? 'bg-[#00696D] text-white scale-105'
                                     : 'bg-[#f3f2ff] text-[#0684E5] hover:bg-[#0684E5] hover:text-white'
                             }`}
-                            title="Tambah ke Keranjang"
+                            title="Beli / Tambah ke Keranjang"
                             aria-label="Tambah ke Keranjang"
                         >
-                            {added ? <Check className="w-3.5 h-3.5" /> : <ShoppingCart className="w-3.5 h-3.5" />}
+                            {added ? <Check className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
                         </button>
                     )}
                 </div>
-
-                <p className="text-xs sm:text-sm font-extrabold text-[#0684E5] tabular-nums">
-                    {formatPrice(product.price)}
-                </p>
             </div>
         </article>
     );
