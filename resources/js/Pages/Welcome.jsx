@@ -22,8 +22,8 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
         return true;
     }) || [];
 
-    // MorphMarket-style clean species grid
-    const speciesGroups = [
+    // MorphMarket-style clean shop categories grid (fish species, aquarium tools, care & aquatic plants)
+    const shopCategories = [
         {
             title: 'Cupang',
             image: '/images/categories/cat-cupang.jpg',
@@ -50,8 +50,38 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
             link: '/products?water_type=freshwater&q=tetra',
         },
         {
-            title: 'Aquascape',
+            title: 'Filter Aquarium',
+            image: '/images/categories/cat-filter.jpg',
+            link: '/products?category=perlengkapan-aquarium&q=filter',
+        },
+        {
+            title: 'Tank Aquarium',
+            image: '/images/categories/cat-tank.jpg',
+            link: '/products?category=perlengkapan-aquarium&q=aquarium',
+        },
+        {
+            title: 'Pakan & Pelet',
+            image: '/images/categories/cat-pakan.jpg',
+            link: '/products?category=pakan-ikan',
+        },
+        {
+            title: 'Perawatan Air',
+            image: '/images/categories/cat-perawatan.jpg',
+            link: '/products?category=perawatan-ikan',
+        },
+        {
+            title: 'Anubias',
             image: '/images/categories/cat-aquascape.jpg',
+            link: '/products?category=aquascape&q=anubias',
+        },
+        {
+            title: 'Bucephalandra',
+            image: '/images/categories/cat-buce.jpg',
+            link: '/products?category=aquascape&q=bucephalandra',
+        },
+        {
+            title: 'Tanaman Hias',
+            image: '/images/categories/cat-tanaman.jpg',
             link: '/products?category=aquascape',
         },
     ];
@@ -120,11 +150,11 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
             </section>
 
             <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
-                {/* 2. KATEGORI IKAN (Clean MorphMarket Studio Cutout Cards) */}
+                {/* 2. KATEGORI TOKO (Clean MorphMarket Studio Cutout Cards) */}
                 <section className="space-y-4">
                     <div className="flex items-center justify-between gap-2">
                         <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
-                            Kategori Ikan
+                            Kategori Toko
                         </h2>
                         <Link
                             href="/products"
@@ -134,9 +164,9 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                         </Link>
                     </div>
 
-                    {/* 6 Clean White-Backdrop Category Tiles */}
+                    {/* 12 Clean White-Backdrop Category Tiles (2x6 MorphMarket Grid) */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
-                        {speciesGroups.map((group) => (
+                        {shopCategories.map((group) => (
                             <Link
                                 key={group.title}
                                 href={group.link}

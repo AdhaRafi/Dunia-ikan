@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Link, usePage } from '@inertiajs/react';
+import { useState, useEffect, useRef } from 'react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { 
     Search, 
     Sun, 
@@ -15,11 +15,43 @@ import {
 import BrandLogo from '@/Components/BrandLogo';
 import BrandWordmark from '@/Components/BrandWordmark';
 
+const SEARCH_GROUPS = [
+    {
+        label: 'Jenis Ikan',
+        items: [
+            { title: 'Cupang', href: '/products?category=ikan-hias&q=cupang' },
+            { title: 'Channa', href: '/products?category=ikan-hias&q=channa' },
+            { title: 'Discus', href: '/products?category=ikan-hias&q=discus' },
+            { title: 'Guppy', href: '/products?category=ikan-hias&q=guppy' },
+            { title: 'Neon Tetra', href: '/products?water_type=freshwater&q=tetra' },
+        ],
+    },
+    {
+        label: 'Alat & Kebutuhan',
+        items: [
+            { title: 'Filter Aquarium', href: '/products?category=perlengkapan-aquarium&q=filter' },
+            { title: 'Tank Aquarium', href: '/products?category=perlengkapan-aquarium&q=aquarium' },
+            { title: 'Pakan & Pelet', href: '/products?category=pakan-ikan' },
+            { title: 'Perawatan Air', href: '/products?category=perawatan-ikan' },
+        ],
+    },
+    {
+        label: 'Tumbuhan & Hiasan',
+        items: [
+            { title: 'Tanaman Hias', href: '/products?category=aquascape' },
+            { title: 'Anubias', href: '/products?category=aquascape&q=anubias' },
+            { title: 'Bucephalandra', href: '/products?category=aquascape&q=bucephalandra' },
+        ],
+    },
+];
+
 export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
     const { auth, cartCount } = usePage().props;
     const user = auth?.user;
     const [searchQuery, setSearchQuery] = useState('');
+    const [searchFocused, setSearchFocused] = useState(false);
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+    const searchBoxRef = useRef(null);
     const [darkMode, setDarkMode] = useState(() => {
         if (typeof window !== 'undefined') {
             return document.documentElement.classList.contains('dark') || 
@@ -27,6 +59,16 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
         }
         return false;
     });
+
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            if (searchBoxRef.current && !searchBoxRef.current.contains(event.target)) {
+                setSearchFocused(false);
+            }
+        };
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => document.removeEventListener('mousedown', handleOutsideClick);
+    }, []);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -45,9 +87,22 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (searchQuery.trim()) {
-            window.location.href = `/products?q=${encodeURIComponent(searchQuery.trim())}`;
+            setSearchFocused(false);
+            router.get('/products', { q: searchQuery.trim() });
         }
     };
+
+    const normalizedSearch = searchQuery.trim().toLowerCase();
+    const filteredGroups = SEARCH_GROUPS.map((group) => ({
+        ...group,
+        items: normalizedSearch
+            ? group.items.filter(
+                  (item) =>
+                      item.title.toLowerCase().includes(normalizedSearch) ||
+                      group.label.toLowerCase().includes(normalizedSearch),
+              )
+            : group.items,
+    })).filter((group) => group.items.length > 0);
 
     return (
         <header className="sticky top-0 z-30 transform-gpu bg-white/90 dark:bg-[#070b14]/90 backdrop-blur-md border-b border-[#1E80A0]/10 dark:border-neutral-800 px-4 sm:px-6 lg:px-8 py-3 transition-colors">
@@ -69,17 +124,63 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                         <BrandWordmark className="h-7 sm:h-9" />
                     </Link>
 
-                    {/* Search Form (Aquatic Coastal Pill Search) */}
-                    <form onSubmit={handleSearchSubmit} className="relative w-full min-w-0 flex-1">
-                        <input
-                            type="search"
-                            placeholder="Cari di Dunia Ikan..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-10 rounded-full bg-[#f3f2ff] dark:bg-[#111a30] pl-10 pr-4 text-xs text-[#001454] dark:text-white placeholder:text-[#6d797a] dark:placeholder:text-neutral-400 border border-[#1E80A0]/10 dark:border-neutral-700 focus:ring-2 focus:ring-[#4AB8BD] focus:bg-white dark:focus:bg-[#152038] transition"
-                        />
-                        <Search className="w-4 h-4 text-[#1E80A0] dark:text-[#4AB8BD] absolute left-3.5 top-3 pointer-events-none" />
-                    </form>
+                    {/* Search Form (Aquatic Coastal Pill Search + Quick Category Dropdown) */}
+                    <div ref={searchBoxRef} className="relative w-full min-w-0 flex-1">
+                        <form onSubmit={handleSearchSubmit} className="relative w-full">
+                            <input
+                                type="search"
+                                placeholder="Cari ikan, filter, aquascape, tanaman..."
+                                value={searchQuery}
+                                onFocus={() => setSearchFocused(true)}
+                                onChange={(e) => {
+                                    setSearchQuery(e.target.value);
+                                    setSearchFocused(true);
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Escape') {
+                                        setSearchFocused(false);
+                                    }
+                                }}
+                                className="w-full h-10 rounded-full bg-[#f3f2ff] dark:bg-[#111a30] pl-10 pr-4 text-xs text-[#001454] dark:text-white placeholder:text-[#6d797a] dark:placeholder:text-neutral-400 border border-[#1E80A0]/10 dark:border-neutral-700 focus:ring-2 focus:ring-[#4AB8BD] focus:bg-white dark:focus:bg-[#152038] transition"
+                            />
+                            <Search className="w-4 h-4 text-[#1E80A0] dark:text-[#4AB8BD] absolute left-3.5 top-3 pointer-events-none" />
+                        </form>
+
+                        {searchFocused && (
+                            <div className="absolute left-0 right-0 mt-2 rounded-2xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-neutral-700 shadow-xl p-3.5 z-50 space-y-3">
+                                {searchQuery.trim() && (
+                                    <button
+                                        type="button"
+                                        onClick={handleSearchSubmit}
+                                        className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl bg-[#f3f2ff] dark:bg-[#152038] text-xs font-bold text-[#001454] dark:text-white hover:bg-[#4AB8BD]/15 transition text-left"
+                                    >
+                                        <Search className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
+                                        <span>Cari &ldquo;{searchQuery.trim()}&rdquo; di seluruh toko</span>
+                                    </button>
+                                )}
+
+                                {filteredGroups.map((group) => (
+                                    <div key={group.label} className="space-y-1.5">
+                                        <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 px-1">
+                                            {group.label}
+                                        </p>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {group.items.map((item) => (
+                                                <Link
+                                                    key={item.title}
+                                                    href={item.href}
+                                                    onClick={() => setSearchFocused(false)}
+                                                    className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-neutral-800 hover:bg-[#4AB8BD] hover:text-white dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] text-[11px] font-semibold text-[#001454] dark:text-neutral-200 transition"
+                                                >
+                                                    {item.title}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Right: Quick Action Icons (Sun/Moon, Heart, Cart, User/Auth) */}

@@ -124,4 +124,16 @@ class MarketplaceTest extends TestCase
         $sellerResponse = $this->actingAs($buyer)->get('/seller/products');
         $sellerResponse->assertStatus(403);
     }
+
+    public function test_catalog_search_supports_fish_tools_and_plants(): void
+    {
+        foreach (['cupang', 'filter', 'alat', 'tumbuhan'] as $term) {
+            $response = $this->get("/products?q={$term}");
+            $response->assertStatus(200);
+            $response->assertInertia(fn ($page) => $page
+                ->component('Products/Index')
+                ->where('products.total', fn ($total) => $total > 0)
+            );
+        }
+    }
 }

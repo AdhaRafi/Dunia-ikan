@@ -16,15 +16,32 @@ class ProductController extends Controller
         $query = Product::with(['store', 'category', 'fishDetail'])
             ->where('is_active', true);
 
-        // Pencarian kata kunci
-        if ($search = $request->input('q')) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%")
-                    ->orWhereHas('fishDetail', function ($fq) use ($search) {
-                        $fq->where('species_name', 'like', "%{$search}%")
-                            ->orWhere('morph_trait', 'like', "%{$search}%");
-                    });
+        // Pencarian kata kunci (termasuk kategori dan padanan umum seperti alat/tumbuhan/hiasan)
+        if ($search = trim((string) $request->input('q'))) {
+            $normalized = mb_strtolower($search);
+            $aliases = [
+                'tumbuhan' => 'tanaman',
+                'hiasan' => 'hias',
+                'alat' => 'perlengkapan',
+                'peralatan' => 'perlengkapan',
+                'makanan' => 'pakan',
+                'obat' => 'perawatan',
+            ];
+            $terms = array_unique(array_filter([$search, $aliases[$normalized] ?? null]));
+
+            $query->where(function ($q) use ($terms) {
+                foreach ($terms as $term) {
+                    $q->orWhere('name', 'like', "%{$term}%")
+                        ->orWhere('description', 'like', "%{$term}%")
+                        ->orWhereHas('fishDetail', function ($fq) use ($term) {
+                            $fq->where('species_name', 'like', "%{$term}%")
+                                ->orWhere('morph_trait', 'like', "%{$term}%");
+                        })
+                        ->orWhereHas('category', function ($cq) use ($term) {
+                            $cq->where('name', 'like', "%{$term}%")
+                                ->orWhere('description', 'like', "%{$term}%");
+                        });
+                }
             });
         }
 
