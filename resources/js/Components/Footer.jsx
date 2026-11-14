@@ -1,109 +1,101 @@
 import { Link } from '@inertiajs/react';
-import { Fish, ShieldCheck, HeartPulse, Sparkles, MapPin, Phone, Mail } from 'lucide-react';
+import { ShieldCheck, Heart, Sparkles } from 'lucide-react';
 
 export default function Footer() {
     return (
-        <footer className="bg-[#0A1214] text-slate-400 text-xs border-t border-slate-800/80">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
-                    {/* Brand Column */}
-                    <div className="lg:col-span-4 space-y-4">
-                        <Link href="/" className="flex items-center gap-3 group">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#00C882] to-emerald-400 flex items-center justify-center text-slate-950 shadow-md shadow-emerald-500/20 group-hover:scale-105 transition">
-                                <Fish className="w-6 h-6 text-[#0A1214]" />
+        <footer className="mt-16 border-t border-slate-200/80 bg-white text-xs text-slate-500">
+            <div className="max-w-7xl mx-auto px-4 sm:px-8 py-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                    {/* Brand */}
+                    <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-md bg-slate-950 text-white flex items-center justify-center">
+                                <svg 
+                                    viewBox="0 0 24 24" 
+                                    className="w-3.5 h-3.5 fill-none stroke-current stroke-2"
+                                >
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                </svg>
                             </div>
-                            <div className="flex flex-col">
-                                <span className="text-xl font-extrabold tracking-tight text-white leading-tight">
-                                    DUNIA <span className="text-[#00C882]">IKAN</span>
-                                </span>
-                                <span className="text-[10px] tracking-widest font-semibold text-slate-400 uppercase">
-                                    Aquatic Morph & Care
-                                </span>
-                            </div>
-                        </Link>
-
-                        <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-                            Platform ekosistem jual-beli ikan hias, mutasi genetik (morph), dan perlengkapan aquascape pertama di Indonesia dengan standar parameter biologi dan garansi hidup (Live Arrival Guarantee).
-                        </p>
-
-                        <div className="flex items-center gap-3 pt-2 text-slate-300">
-                            <span className="hover:text-[#00C882] cursor-pointer transition">Facebook</span>
-                            <span>•</span>
-                            <span className="hover:text-[#00C882] cursor-pointer transition">Instagram</span>
-                            <span>•</span>
-                            <span className="hover:text-[#00C882] cursor-pointer transition">YouTube</span>
-                            <span>•</span>
-                            <span className="hover:text-[#00C882] cursor-pointer transition">Discord</span>
+                            <span className="font-extrabold tracking-widest text-slate-950 uppercase">
+                                CATALYST
+                            </span>
                         </div>
+                        <p className="text-[11px] text-slate-400 leading-relaxed">
+                            Marketplace ikan hias & mutasi genetik (morph) terakreditasi Indonesia.
+                        </p>
                     </div>
 
-                    {/* Nav Column: Jelajahi */}
-                    <div className="lg:col-span-3 space-y-3">
-                        <p className="text-white font-extrabold uppercase tracking-wider text-xs">
-                            Jelajahi Ekosistem
+                    {/* Nav 1 */}
+                    <div className="space-y-2">
+                        <p className="font-bold text-slate-900 uppercase tracking-wider text-[11px]">
+                            Koleksi
                         </p>
-                        <ul className="space-y-2 text-xs">
+                        <ul className="space-y-1.5 text-[11px]">
                             <li>
-                                <Link href="/products" className="hover:text-[#00C882] transition">
-                                    Katalog Ikan & Morph
+                                <Link href="/products?sort=popular" className="hover:text-slate-900 transition">
+                                    The Most Trending
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/guides" className="hover:text-[#00C882] transition">
-                                    Pusat Panduan Kesehatan
+                                <Link href="/products?water_type=freshwater" className="hover:text-slate-900 transition">
+                                    Air Tawar (Freshwater)
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/cart" className="hover:text-[#00C882] transition">
-                                    Keranjang Belanja
+                                <Link href="/products?water_type=saltwater" className="hover:text-slate-900 transition">
+                                    Air Laut & Terumbu
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/seller/register" className="hover:text-[#00C882] transition">
-                                    Pendaftaran Penangkar
+                                <Link href="/products?category=aquascape" className="hover:text-slate-900 transition">
+                                    Aquascape & Flora
                                 </Link>
                             </li>
                         </ul>
                     </div>
 
-                    {/* Policy Column: D.O.A. */}
-                    <div className="lg:col-span-2 space-y-3">
-                        <p className="text-white font-extrabold uppercase tracking-wider text-xs flex items-center gap-1.5">
-                            <ShieldCheck className="w-4 h-4 text-[#00C882]" />
-                            Garansi D.O.A.
+                    {/* Nav 2 */}
+                    <div className="space-y-2">
+                        <p className="font-bold text-slate-900 uppercase tracking-wider text-[11px]">
+                            Layanan
                         </p>
-                        <p className="text-xs text-slate-400 leading-relaxed">
-                            Ikan dijamin tiba hidup dengan standar pengemasan beroksigen tinggi. Klaim retur/refund melalui bukti video unboxing tanpa jeda.
-                        </p>
+                        <ul className="space-y-1.5 text-[11px]">
+                            <li>
+                                <Link href="/guides" className="hover:text-slate-900 transition">
+                                    Panduan Perawatan Ikan
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/products" className="hover:text-slate-900 transition">
+                                    Garansi D.O.A. 100%
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/seller/register" className="hover:text-slate-900 transition">
+                                    Buka Toko Penangkar
+                                </Link>
+                            </li>
+                        </ul>
                     </div>
 
-                    {/* Mitra Penangkar */}
-                    <div className="lg:col-span-3 space-y-3">
-                        <p className="text-white font-extrabold uppercase tracking-wider text-xs">
-                            Hubungi Kami
+                    {/* Policy */}
+                    <div className="space-y-2 text-[11px]">
+                        <p className="font-bold text-slate-900 uppercase tracking-wider">
+                            Akreditasi D.O.A.
                         </p>
-                        <p className="text-xs text-slate-400">
-                            Layanan bantuan penghobi & penangkar aktif:
+                        <p className="text-slate-400 leading-relaxed">
+                            Setiap pembelian dilindungi garansi hidup sampai tujuan dengan kemasan beroksigen tinggi.
                         </p>
-                        <div className="space-y-1.5 text-xs text-slate-300">
-                            <p className="flex items-center gap-2">
-                                <Phone className="w-3.5 h-3.5 text-[#00C882]" />
-                                +62 812-8864-4725
-                            </p>
-                            <p className="flex items-center gap-2">
-                                <Mail className="w-3.5 h-3.5 text-[#00C882]" />
-                                cs@duniaikan.id
-                            </p>
-                        </div>
                     </div>
                 </div>
 
-                <div className="mt-12 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-                    <p>© 2026 Dunia Ikan. Seluruh hak cipta dilindungi undang-undang.</p>
+                <div className="mt-10 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
+                    <p>© 2026 Dunia Ikan (Catalyst Style). Seluruh hak cipta dilindungi.</p>
                     <p>
-                        Foto spesimen: Wikimedia Commons (CC0, CC BY, CC BY-SA).{' '}
-                        <a href="/images/products/credits.json" className="text-slate-400 hover:text-[#00C882] underline">
-                            Atribusi Lisensi
+                        Spesimen foto: Wikimedia Commons (CC-BY / CC0).{' '}
+                        <a href="/images/products/credits.json" className="underline hover:text-slate-600">
+                            credits.json
                         </a>
                     </p>
                 </div>
