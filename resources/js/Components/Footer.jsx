@@ -145,7 +145,7 @@ export default function Footer() {
                                 </li>
                                 <li>
                                     <Link href="/guides" className="hover:text-black dark:hover:text-white transition">
-                                        Garansi D.O.A
+                                        Garansi Ikan Hidup
                                     </Link>
                                 </li>
                                 <li>

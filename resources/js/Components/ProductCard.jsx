@@ -93,7 +93,7 @@ export default function ProductCard({ product }) {
                 {product.store?.doa_policy && (
                     <div className="absolute top-2.5 left-2.5 bg-[#C0ECB8] text-[#0D2E92] text-[10px] font-extrabold tracking-wider px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-xs uppercase z-10">
                         <ShieldCheck className="w-3 h-3 text-[#0D2E92]" />
-                        <span>DOA 100%</span>
+                        <span>Garansi Hidup 100%</span>
                     </div>
                 )}
 

@@ -77,7 +77,7 @@ export default function Index({ groupedCart, totalItems, grandTotal }) {
 
                                         {group.store.doa_policy && (
                                             <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
-                                                <ShieldCheck className="w-3.5 h-3.5" /> Garansi DOA Aktif
+                                                <ShieldCheck className="w-3.5 h-3.5" /> Garansi Ikan Hidup 100%
                                             </span>
                                         )}
                                     </div>

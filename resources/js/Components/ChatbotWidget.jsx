@@ -171,23 +171,13 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                     <button
                         type="button"
                         onClick={onOpen}
-                        className="group relative flex h-14 items-center rounded-full bg-[#cfe2fe] dark:bg-[#131d33] pl-4 sm:pl-5 pr-14 sm:pr-16 text-[#001454] dark:text-white border border-[#9ec5fe] dark:border-cyan-500/40 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.03]"
+                        className="group relative flex h-13 items-center rounded-full bg-[#cfe2fe] dark:bg-[#131d33] pl-5 pr-14 text-[#001454] dark:text-white border border-[#9ec5fe] dark:border-cyan-500/40 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.03]"
                         title="Buka Chatbot Kiko"
-                        aria-label="Tanya Kiko Virtual Assistant"
+                        aria-label="Tanya Kiko"
                     >
-                        {/* Text and Online Badge */}
-                        <div className="flex flex-col text-left">
-                            <span className="text-xs sm:text-sm font-black tracking-tight leading-none text-[#001454] dark:text-white">
-                                Tanya Kiko
-                            </span>
-                            <span className="mt-1 flex items-center text-[10px] font-semibold text-slate-600 dark:text-cyan-300/90 leading-none">
-                                <span className="relative flex h-2 w-2 mr-1.5">
-                                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-                                </span>
-                                Virtual Assistant
-                            </span>
-                        </div>
+                        <span className="text-sm font-extrabold tracking-tight text-[#001454] dark:text-white leading-none">
+                            Tanya Kiko
+                        </span>
 
                         {/* Kiko Mascot popping out of the pill container */}
                         <div className="absolute -top-5 sm:-top-6 right-0.5 w-14 h-14 sm:w-16 sm:h-16 pointer-events-none drop-shadow-lg animate-kiko-float">
@@ -213,19 +203,15 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                     <img
                                         src="/images/kiko/kiko-avatar.png"
                                         alt="Kiko"
-                                        className="w-10 h-10 rounded-full border-2 border-[#00C882] bg-slate-900 object-contain p-0.5 shadow-md"
+                                        className="w-10 h-10 rounded-full border border-white/20 bg-slate-900 object-contain p-0.5 shadow-md"
                                     />
-                                    <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-slate-900"></span>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-black leading-tight text-white flex items-center gap-1.5">
+                                    <h3 className="text-sm font-bold leading-tight text-white">
                                         Kiko ChatBot
-                                        <span className="text-[9px] uppercase font-black px-1.5 py-0.5 rounded-full bg-[#00C882]/20 text-[#00C882] border border-[#00C882]/40 tracking-wider">
-                                            AI
-                                        </span>
                                     </h3>
                                     <p className="text-[11px] text-cyan-200/80">
-                                        Asisten Dunia Ikan · AI Aktif
+                                        Asisten Dunia Ikan
                                     </p>
                                 </div>
                             </div>
@@ -268,7 +254,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                         }`}
                                     >
                                         {!isUser && (
-                                            <p className="text-[10px] font-bold text-[#00C882] uppercase tracking-wider mb-1">
+                                            <p className="text-[10px] font-bold text-sky-600 dark:text-cyan-400 uppercase tracking-wider mb-1">
                                                 Kiko
                                             </p>
                                         )}
@@ -295,14 +281,14 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                             msg.fish_guides.length > 0 && (
                                                 <div className="mt-3 space-y-2 border-t border-slate-200 dark:border-neutral-700/60 pt-2.5">
                                                     <p className="flex items-center gap-1.5 text-[11px] font-bold text-[#001454] dark:text-cyan-300">
-                                                        <BookOpen className="h-3.5 w-3.5 text-[#00C882]" />
+                                                        <BookOpen className="h-3.5 w-3.5 text-sky-500" />
                                                         Rujukan panduan resmi
                                                     </p>
                                                     {msg.fish_guides.map((guide) => (
                                                         <Link
                                                             key={guide.id}
                                                             href={`/guides/${guide.id}`}
-                                                            className="block border-l-2 border-[#00C882] bg-slate-100 dark:bg-[#162240] px-3 py-2 text-[11px] font-medium text-slate-800 dark:text-neutral-200 hover:text-[#00C882] transition rounded-r-md"
+                                                            className="block border-l-2 border-sky-500 bg-slate-100 dark:bg-[#162240] px-3 py-2 text-[11px] font-medium text-slate-800 dark:text-neutral-200 hover:text-sky-600 dark:hover:text-cyan-400 transition rounded-r-md"
                                                         >
                                                             {guide.title}
                                                         </Link>
@@ -332,7 +318,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                                                     <p className="truncate text-[11px] font-bold text-slate-800 dark:text-white">
                                                                         {prod.name}
                                                                     </p>
-                                                                    <p className="text-[11px] font-extrabold text-[#00C882] tabular-nums">
+                                                                    <p className="text-[11px] font-extrabold text-sky-600 dark:text-cyan-400 tabular-nums">
                                                                         Rp{' '}
                                                                         {new Intl.NumberFormat(
                                                                             'id-ID',
@@ -377,7 +363,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                     'Ikan cupang saya ada bintik putih di sirip, bagaimana penanganannya?',
                                 )
                             }
-                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-emerald-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
+                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-sky-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-cyan-400 px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
                         >
                             Bintik putih
                         </button>
@@ -388,7 +374,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                     'Ekor ikan saya robek dan membusuk, apa yang harus dilakukan?',
                                 )
                             }
-                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-emerald-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
+                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-sky-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-cyan-400 px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
                         >
                             Busuk sirip
                         </button>
@@ -399,7 +385,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                     'Rekomendasi ikan air tawar yang mudah dipelihara untuk pemula.',
                                 )
                             }
-                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-emerald-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
+                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-sky-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-cyan-400 px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
                         >
                             Ikan pemula
                         </button>
@@ -407,12 +393,12 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                             type="button"
                             onClick={() =>
                                 handleSendMessage(
-                                    'Bagaimana syarat dan cara klaim garansi ikan hidup 100% sampai tujuan (D.O.A)?',
+                                    'Bagaimana syarat dan cara klaim garansi ikan hidup 100% sampai tujuan?',
                                 )
                             }
-                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-emerald-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-[#00C882] px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
+                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-sky-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-cyan-400 px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
                         >
-                            Garansi D.O.A
+                            Garansi Ikan Hidup
                         </button>
                     </div>
 
@@ -459,7 +445,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                             <button
                                 type="button"
                                 onClick={() => fileInputRef.current?.click()}
-                                className="p-2 text-slate-400 hover:text-[#00C882] rounded-lg hover:bg-slate-100 dark:hover:bg-neutral-800 transition"
+                                className="p-2 text-slate-400 hover:text-[#0684E5] rounded-lg hover:bg-slate-100 dark:hover:bg-neutral-800 transition"
                                 title="Unggah foto ikan"
                             >
                                 <ImageIcon className="h-5 w-5" />
@@ -470,13 +456,13 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                 placeholder="Tanya Kiko..."
                                 value={inputText}
                                 onChange={(e) => setInputText(e.target.value)}
-                                className="h-10 min-w-0 flex-1 rounded-xl border border-slate-200 dark:border-neutral-700 bg-slate-50 dark:bg-[#111a30] px-3 text-xs text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-[#00C882] focus:bg-white dark:focus:bg-[#162240] transition"
+                                className="h-10 min-w-0 flex-1 rounded-xl border border-slate-200 dark:border-neutral-700 bg-slate-50 dark:bg-[#111a30] px-3 text-xs text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-[#0684E5] focus:bg-white dark:focus:bg-[#162240] transition"
                             />
 
                             <button
                                 type="submit"
                                 disabled={loading || (!inputText.trim() && !selectedImage)}
-                                className="h-10 w-10 flex items-center justify-center rounded-xl bg-[#00C882] text-slate-950 font-bold hover:bg-emerald-400 transition disabled:cursor-not-allowed disabled:opacity-40 shrink-0"
+                                className="h-10 w-10 flex items-center justify-center rounded-xl bg-[#0684E5] text-white font-bold hover:bg-[#0060aa] transition disabled:cursor-not-allowed disabled:opacity-40 shrink-0"
                                 aria-label="Kirim pesan"
                             >
                                 <Send className="h-4 w-4" />
