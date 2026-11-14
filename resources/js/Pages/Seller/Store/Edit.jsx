@@ -99,7 +99,7 @@ export default function Edit({ store }) {
                     <div className="p-4 rounded-2xl bg-sky-50/80 border border-sky-100 space-y-2">
                         <label className="block font-bold text-dunia-navy uppercase flex items-center gap-1.5">
                             <ShieldCheck className="w-4 h-4 text-dunia-aqua" />
-                            Kebijakan Garansi Ikan Hidup (D.O.A. - Death On Arrival Policy)
+                            Kebijakan Garansi Ikan Hidup (Live Arrival Policy)
                         </label>
                         <textarea
                             rows={3}

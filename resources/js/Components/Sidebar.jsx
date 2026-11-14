@@ -27,7 +27,7 @@ const TIPS = [
         text: 'pH stabil jauh lebih aman bagi ikan daripada memaksakan angka tertentu dengan bahan kimia drastis.',
     },
     {
-        title: 'Klaim Garansi D.O.A.',
+        title: 'Klaim Garansi Ikan Hidup',
         text: 'Rekam video unboxing utuh tanpa jeda dari paket tersegel untuk klaim garansi ikan hidup 100%.',
     },
     {
@@ -61,7 +61,7 @@ export default function Sidebar({ isOpen, onClose }) {
                     { label: 'The Most Trending 100', href: '/products?sort=popular', badge: '100+' },
                     { label: 'Mutasi Rilis Terbaru', href: '/products?sort=newest', badge: 'Baru' },
                     { label: 'Spesimen Show Grade Kontes', href: '/products?category=ikan-hias' },
-                    { label: 'Ikan Bergaransi D.O.A. 100%', href: '/products?sort=popular' },
+                    { label: 'Ikan Bergaransi Hidup 100%', href: '/products?sort=popular' },
                 ],
                 footerLink: { label: 'Lihat Semua Koleksi Tren', href: '/products?sort=popular' }
             }
@@ -123,18 +123,18 @@ export default function Sidebar({ isOpen, onClose }) {
         },
         {
             label: 'Discounts',
-            sublabel: 'Garansi D.O.A.',
+            sublabel: 'Ikan Hidup 100%',
             badge: 'to 70%',
             icon: Tag,
             href: '/products?min_price=1',
             active: url.includes('min_price'),
             flyout: {
                 title: 'Promo & Diskon Spesimen',
-                description: 'Penawaran harga terbaik langsung dari breeder dengan jaminan D.O.A.',
+                description: 'Penawaran harga terbaik langsung dari breeder dengan jaminan ikan hidup.',
                 links: [
                     { label: 'Spesimen Diskon Hingga 70%', href: '/products?min_price=1', badge: 'To 70%' },
                     { label: 'Paket Schooling Hemat (Multi-Pack)', href: '/products?q=paket' },
-                    { label: 'Garansi D.O.A. 100% Hidup Sampai Tujuan', href: '/products?category=ikan-hias' },
+                    { label: 'Garansi 100% Ikan Hidup Sampai Tujuan', href: '/products?category=ikan-hias' },
                 ],
                 footerLink: { label: 'Buka Semua Produk Promo', href: '/products?min_price=1' }
             }
@@ -151,7 +151,7 @@ export default function Sidebar({ isOpen, onClose }) {
                 links: [
                     { label: 'Aklimatisasi Suhu & Pelepasan Ikan Baru', href: '/guides' },
                     { label: 'Menjaga Stabilitas pH Air & Siklus Nitrogen', href: '/guides' },
-                    { label: 'Prosedur Video Unboxing & Klaim D.O.A.', href: '/guides' },
+                    { label: 'Prosedur Video Unboxing & Klaim Garansi', href: '/guides' },
                     { label: 'Pencegahan & Pengobatan White Spot (Ich)', href: '/guides' },
                 ],
                 footerLink: { label: 'Buka Seluruh Artikel Fishpedia', href: '/guides' }
@@ -323,7 +323,7 @@ export default function Sidebar({ isOpen, onClose }) {
                                 className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff] transition"
                             >
                                 <ShieldCheck className="w-4 h-4 text-[#0684E5] shrink-0" />
-                                <span>Garansi D.O.A. 100%</span>
+                                <span>Garansi Ikan Hidup 100%</span>
                             </Link>
                         </div>
                     </div>
@@ -459,7 +459,7 @@ export default function Sidebar({ isOpen, onClose }) {
                                 className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff] transition"
                             >
                                 <ShieldCheck className="w-4 h-4 text-[#0684E5] shrink-0" />
-                                <span>Garansi D.O.A. 100%</span>
+                                <span>Garansi Ikan Hidup 100%</span>
                             </Link>
                         </div>
                     </div>

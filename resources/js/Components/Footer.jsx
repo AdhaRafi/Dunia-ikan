@@ -68,7 +68,7 @@ export default function Footer() {
                             </li>
                             <li>
                                 <Link href="/products" className="hover:text-white transition">
-                                    Garansi D.O.A. 100% Hidup
+                                    Garansi Ikan Hidup 100%
                                 </Link>
                             </li>
                             <li>
@@ -87,21 +87,21 @@ export default function Footer() {
                     {/* Policy / Certified Seal */}
                     <div className="space-y-3 text-[11px]">
                         <p className="font-bold text-white uppercase tracking-wider">
-                            Akreditasi D.O.A. 100%
+                            Garansi Pengiriman Aman
                         </p>
-                        <p className="text-[#dde1ff] leading-relaxed">
+                        <p className="text-neutral-400 leading-relaxed">
                             Setiap pembelian dilindungi garansi hidup sampai tujuan dengan kemasan beroksigen tinggi dan pengiriman khusus hewan hidup.
                         </p>
-                        <div className="flex items-center gap-2 text-[#4AB8BD] font-semibold text-[11px]">
-                            <ShieldCheck className="w-4 h-4 text-[#C0ECB8]" />
+                        <div className="flex items-center gap-2 text-white font-semibold text-[11px]">
+                            <ShieldCheck className="w-4 h-4 text-emerald-400" />
                             <span>100% Verified Breeders</span>
                         </div>
                     </div>
                 </div>
 
                 {/* Bottom Legal bar */}
-                <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#dde1ff]">
-                    <p>© 2026 Dunia Ikan — Modern Aquatic Lifestyle. Seluruh hak cipta dilindungi.</p>
+                <div className="mt-12 pt-6 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-neutral-400">
+                    <p>© 2026 Dunia Ikan : Modern Aquatic Lifestyle. Seluruh hak cipta dilindungi.</p>
                     <p className="text-[#4AB8BD]">
                         Spesimen foto: Wikimedia Commons (CC-BY / CC0).{' '}
                         <a href="/images/products/credits.json" className="underline hover:text-white text-white">

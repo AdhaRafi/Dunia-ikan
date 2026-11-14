@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             'address' => 'Jl. Terusan Buah Batu No. 45, Bojongsoang',
             'phone' => '082123456781',
             'description' => 'Penangkar resmi ikan hias kontes jenis Cupang (Betta) ekor ganda & rosetail serta Channa maru asal Kalimantan. Berpengalaman sejak 2018.',
-            'doa_policy' => 'Garansi 100% ikan hidup (D.O.A. - Death On Arrival) untuk pengiriman pulau Jawa & Bali. Syarat klaim wajib menyertakan video unboxing utuh tanpa jeda/cut maksimal 2 jam setelah paket tiba.',
+            'doa_policy' => 'Garansi 100% ikan hidup sampai tujuan untuk pengiriman pulau Jawa & Bali. Syarat klaim wajib menyertakan video unboxing utuh tanpa jeda/cut maksimal 2 jam setelah paket tiba.',
             'bank_name' => 'BCA',
             'bank_account_number' => '7820192837',
             'bank_account_name' => 'Budi Hartono',

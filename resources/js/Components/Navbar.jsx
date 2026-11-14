@@ -52,7 +52,7 @@ export default function Navbar({ onOpenChat }) {
                         </Link>
                         <span className="text-slate-700 hidden md:inline">•</span>
                         <span className="text-emerald-400/90 font-medium hidden sm:inline">
-                            Garansi D.O.A. 100%
+                            Garansi Ikan Hidup 100%
                         </span>
                         <span className="text-slate-700 hidden sm:inline">•</span>
                         <Link href={user ? (user.role === 'seller' ? '/seller/products' : '/seller/register') : '/register'} className="text-[#00C882] hover:text-white font-semibold transition">

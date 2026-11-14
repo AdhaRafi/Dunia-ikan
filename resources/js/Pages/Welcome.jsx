@@ -107,7 +107,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                 Join Dunia Ikan
                             </h1>
                             <p className="text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
-                                Akses langsung ke peternak bersertifikasi di seluruh Indonesia. Temukan mutasi morph langka, lelang galur murni, dan garansi hidup D.O.A. 100%!
+                                Akses langsung ke peternak bersertifikasi di seluruh Indonesia. Temukan mutasi morph langka, lelang galur murni, dan garansi ikan hidup 100% sampai tujuan!
                             </p>
                         </div>
 
@@ -138,7 +138,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                             <ShieldCheck className="w-5 h-5 text-[#00696D]" />
                         </div>
                         <div className="min-w-0">
-                            <h4 className="text-xs font-bold text-[#001454] leading-tight">Garansi D.O.A. 100%</h4>
+                            <h4 className="text-xs font-bold text-[#001454] leading-tight">Garansi Ikan Hidup 100%</h4>
                             <p className="text-[11px] text-[#6d797a] truncate mt-0.5">Ikan hidup sampai tujuan</p>
                         </div>
                     </div>
@@ -291,7 +291,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                     Farm Ikan Hias & Breeder Terakreditasi
                                 </h3>
                                 <p className="text-xs text-[#3d4949] mt-0.5">
-                                    Beli langsung dari peternak terverifikasi dengan kebijakan garansi D.O.A. transparan.
+                                    Beli langsung dari peternak terverifikasi dengan jaminan ikan hidup sampai tujuan.
                                 </p>
                             </div>
                             <Link
@@ -332,7 +332,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                     <div className="pt-2 border-t border-[#1E80A0]/10 flex items-center justify-between text-[11px]">
                                         <div className="flex items-center gap-1 font-bold text-[#00696D]">
                                             <CheckCircle2 className="w-3.5 h-3.5" />
-                                            <span>Garansi D.O.A. Aktif</span>
+                                            <span>Garansi Ikan Hidup</span>
                                         </div>
                                         <span className="text-[#0684E5] font-semibold group-hover:underline">
                                             Kunjungi Farm →
