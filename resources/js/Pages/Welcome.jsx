@@ -95,22 +95,22 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
         <AppLayout>
             <Head title="Dunia Ikan — Marketplace Ikan Hias & Mutasi Genetik (Morph) Captive-Bred" />
 
-            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-12 sm:space-y-16">
-                {/* 1. HERO SECTION: MorphMarket Aquatic Marketplace Banner */}
-                <section className="relative rounded-3xl overflow-hidden border border-[#1E80A0]/15 shadow-sm bg-[#001454] min-h-[440px] sm:min-h-[480px] flex items-center">
-                    {/* Background Nature / Aquatic Landscape */}
-                    <img
-                        src="/images/products/cupang-halfmoon.jpg"
-                        alt="MorphMarket Dunia Ikan"
-                        className="absolute inset-0 w-full h-full object-cover object-right sm:object-center"
-                    />
+            {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner */}
+            <section className="relative w-full overflow-hidden bg-[#001454] min-h-[440px] sm:min-h-[480px] lg:min-h-[500px] flex items-center border-b border-[#1E80A0]/15">
+                {/* Background Nature / Aquatic Landscape */}
+                <img
+                    src="/images/products/cupang-halfmoon.jpg"
+                    alt="MorphMarket Dunia Ikan"
+                    className="absolute inset-0 w-full h-full object-cover object-right sm:object-center"
+                />
 
-                    {/* Gradient Overlay for Text Readability */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#001454]/95 via-[#0D2E92]/75 to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#001454]/90 via-transparent to-transparent" />
+                {/* Gradient Overlay for Text Readability */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#001454]/95 via-[#0D2E92]/75 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#001454]/90 via-transparent to-transparent" />
 
-                    {/* Hero Content Overlay */}
-                    <div className="relative z-10 p-6 sm:p-12 lg:p-14 max-w-2xl text-white space-y-5">
+                {/* Hero Content Overlay: Center-aligned within standard content width */}
+                <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-14">
+                    <div className="max-w-2xl text-white space-y-5">
                         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-[#C0ECB8] text-[11px] font-bold border border-white/20">
                             <Sparkles className="w-3.5 h-3.5 text-[#4AB8BD]" />
                             <span>Pusat Mutasi Genetik & Ikan Hias Captive-Bred</span>
@@ -165,8 +165,10 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                             ))}
                         </div>
                     </div>
-                </section>
+                </div>
+            </section>
 
+            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
                 {/* 2. TRUST PILLARS STRIP (MorphMarket Standards) */}
                 <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#1E80A0]/10 shadow-xs flex items-center gap-3">
