@@ -80,16 +80,18 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
 
             {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner (MorphMarket Authentic Dark Aesthetic) */}
             <section className="relative w-full overflow-hidden bg-black min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex items-center border-b border-neutral-800">
-                {/* Background Nature / Aquatic Landscape */}
-                <img
-                    src="/images/products/cupang-halfmoon.jpg"
-                    alt="MorphMarket Dunia Ikan"
-                    className="absolute right-0 top-0 h-full w-full sm:w-3/5 lg:w-1/2 object-cover object-center"
-                />
+                {/* Floating Studio Fish (Seamless Pure Black Background ala MorphMarket) */}
+                <div className="absolute right-0 top-0 bottom-0 w-full sm:w-3/4 lg:w-3/5 flex items-center justify-end pointer-events-none overflow-hidden">
+                    <img
+                        src="/images/hero-fish.webp"
+                        alt="Show Grade Betta Morph Dunia Ikan"
+                        className="h-full w-full object-cover sm:object-contain object-right select-none"
+                    />
+                </div>
 
-                {/* Pure Black to Transparent Gradient Overlay (Seamless high contrast) */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black via-black/95 via-35% sm:via-45% to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent sm:hidden" />
+                {/* Left vignette gradient for seamless typography readability */}
+                <div className="absolute inset-y-0 left-0 w-full sm:w-1/2 bg-gradient-to-r from-black via-black/90 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent sm:hidden pointer-events-none" />
 
                 {/* Hero Content Overlay: Center-aligned within standard content width */}
                 <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24">
