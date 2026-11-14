@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { 
     Search, 
@@ -18,7 +18,25 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
     const user = auth?.user;
     const [searchQuery, setSearchQuery] = useState('');
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return document.documentElement.classList.contains('dark') || 
+                   localStorage.getItem('theme') === 'dark';
+        }
+        return false;
+    });
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            if (darkMode) {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+    }, [darkMode]);
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
@@ -28,7 +46,7 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
     };
 
     return (
-        <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-[#1E80A0]/10 px-4 sm:px-6 lg:px-8 py-3">
+        <header className="sticky top-0 z-30 bg-white/90 dark:bg-[#070b14]/90 backdrop-blur-md border-b border-[#1E80A0]/10 dark:border-neutral-800 px-4 sm:px-6 lg:px-8 py-3 transition-colors">
             <div className="w-full flex items-center justify-between gap-3 sm:gap-6">
                 {/* Left: Mobile Menu Trigger + Brand (Mobile) + Search Bar */}
                 <div className="flex items-center gap-3 flex-1 min-w-0 max-w-xl">
@@ -36,7 +54,7 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                     <button
                         type="button"
                         onClick={onOpenMobileSidebar}
-                        className="md:hidden p-2 text-[#1E80A0] hover:text-[#001454] rounded-xl hover:bg-[#f3f2ff] transition shrink-0"
+                        className="md:hidden p-2 text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white rounded-xl hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition shrink-0"
                         aria-label="Buka Menu Navigasi"
                     >
                         <Menu className="w-5 h-5" />
@@ -54,19 +72,19 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                             placeholder="Cari spesimen, morph, penangkar..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-10 rounded-full bg-[#f3f2ff] pl-10 pr-4 text-xs text-[#001454] placeholder:text-[#6d797a] border border-[#1E80A0]/10 focus:ring-2 focus:ring-[#4AB8BD] focus:bg-white transition"
+                            className="w-full h-10 rounded-full bg-[#f3f2ff] dark:bg-[#111a30] pl-10 pr-4 text-xs text-[#001454] dark:text-white placeholder:text-[#6d797a] dark:placeholder:text-neutral-400 border border-[#1E80A0]/10 dark:border-neutral-700 focus:ring-2 focus:ring-[#4AB8BD] focus:bg-white dark:focus:bg-[#152038] transition"
                         />
-                        <Search className="w-4 h-4 text-[#1E80A0] absolute left-3.5 top-3 pointer-events-none" />
+                        <Search className="w-4 h-4 text-[#1E80A0] dark:text-[#4AB8BD] absolute left-3.5 top-3 pointer-events-none" />
                     </form>
                 </div>
 
-                {/* Right: Quick Action Icons (Sun, Heart, Cart, User/Auth) */}
+                {/* Right: Quick Action Icons (Sun/Moon, Heart, Cart, User/Auth) */}
                 <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-                    {/* Theme Toggle Icon (Sun) */}
+                    {/* Theme Toggle Icon (Sun / Moon) */}
                     <button
                         type="button"
-                        onClick={() => setDarkMode(!darkMode)}
-                        className="p-2 text-[#1E80A0] hover:text-[#001454] rounded-full hover:bg-[#f3f2ff] transition"
+                        onClick={() => setDarkMode(prev => !prev)}
+                        className="p-2 text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
                         title={darkMode ? 'Tema Terang' : 'Tema Gelap'}
                         aria-label="Ubah Tema"
                     >
@@ -76,7 +94,7 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                     {/* Wishlist Icon (Heart) */}
                     <Link
                         href="/products?sort=popular"
-                        className="relative p-2 text-[#1E80A0] hover:text-[#0684E5] rounded-full hover:bg-[#f3f2ff] transition"
+                        className="relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#0684E5] dark:hover:text-[#4AB8BD] rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
                         title="Daftar Keinginan"
                         aria-label="Daftar Keinginan"
                     >
@@ -87,7 +105,7 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                     {/* Shopping Cart Icon */}
                     <Link
                         href="/cart"
-                        className="relative p-2 text-[#1E80A0] hover:text-[#001454] rounded-full hover:bg-[#f3f2ff] transition"
+                        className="relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
                         title="Keranjang Belanja"
                         aria-label="Keranjang Belanja"
                     >
@@ -111,74 +129,74 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                                 <div className="w-8 h-8 rounded-full bg-[#0D2E92] text-white font-bold text-xs flex items-center justify-center">
                                     {user.name.charAt(0).toUpperCase()}
                                 </div>
-                                <span className="hidden lg:inline text-xs font-semibold text-[#001454] max-w-[110px] truncate">
+                                <span className="hidden lg:inline text-xs font-semibold text-[#001454] dark:text-white max-w-[110px] truncate">
                                     {user.name}
                                 </span>
-                                <ChevronDown className="w-3.5 h-3.5 text-[#1E80A0] hidden sm:inline" />
+                                <ChevronDown className="w-3.5 h-3.5 text-[#1E80A0] dark:text-neutral-400 hidden sm:inline" />
                             </button>
 
                             {userDropdownOpen && (
                                 <div
-                                    className="absolute right-0 z-50 mt-2 w-56 rounded-2xl bg-white border border-[#1E80A0]/15 shadow-xl py-2 text-xs"
+                                    className="absolute right-0 z-50 mt-2 w-56 rounded-2xl bg-white dark:bg-[#0f172a] border border-[#1E80A0]/15 dark:border-neutral-700 shadow-xl py-2 text-xs"
                                     onClick={() => setUserDropdownOpen(false)}
                                 >
-                                    <div className="px-4 py-2 border-b border-[#1E80A0]/10">
-                                        <p className="font-extrabold text-[#001454] truncate">{user.name}</p>
-                                        <p className="text-[11px] text-[#3d4949] truncate">{user.email}</p>
+                                    <div className="px-4 py-2 border-b border-[#1E80A0]/10 dark:border-neutral-800">
+                                        <p className="font-extrabold text-[#001454] dark:text-white truncate">{user.name}</p>
+                                        <p className="text-[11px] text-[#3d4949] dark:text-neutral-400 truncate">{user.email}</p>
                                     </div>
 
-                                    <Link href="/orders" className="block px-4 py-2 hover:bg-[#f3f2ff] text-[#001454] transition">
+                                    <Link href="/orders" className="block px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
                                         Pesanan Saya
                                     </Link>
-                                    <Link href="/addresses" className="block px-4 py-2 hover:bg-[#f3f2ff] text-[#001454] transition">
+                                    <Link href="/addresses" className="block px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
                                         Buku Alamat
                                     </Link>
 
                                     {user.role === 'seller' && (
-                                        <div className="border-t border-[#1E80A0]/10 my-1 pt-1">
-                                            <span className="px-4 text-[10px] font-bold text-[#1E80A0] uppercase tracking-wider block mb-1">
+                                        <div className="border-t border-[#1E80A0]/10 dark:border-neutral-800 my-1 pt-1">
+                                            <span className="px-4 text-[10px] font-bold text-[#1E80A0] dark:text-[#4AB8BD] uppercase tracking-wider block mb-1">
                                                 Toko Saya
                                             </span>
-                                            <Link href="/seller/products" className="block px-4 py-1.5 hover:bg-[#f3f2ff] text-[#001454] transition">
+                                            <Link href="/seller/products" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
                                                 Produk Toko
                                             </Link>
-                                            <Link href="/seller/orders" className="block px-4 py-1.5 hover:bg-[#f3f2ff] text-[#001454] transition">
+                                            <Link href="/seller/orders" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
                                                 Pesanan Masuk
                                             </Link>
-                                            <Link href="/seller/store" className="block px-4 py-1.5 hover:bg-[#f3f2ff] text-[#001454] transition">
+                                            <Link href="/seller/store" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
                                                 Profil Toko
                                             </Link>
                                         </div>
                                     )}
 
                                     {user.role === 'buyer' && (
-                                        <div className="border-t border-[#1E80A0]/10 my-1 pt-1">
-                                            <Link href="/seller/register" className="block px-4 py-2 hover:bg-[#f3f2ff] text-[#0684E5] font-bold transition">
+                                        <div className="border-t border-[#1E80A0]/10 dark:border-neutral-800 my-1 pt-1">
+                                            <Link href="/seller/register" className="block px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#0684E5] dark:text-cyan-400 font-bold transition">
                                                 Buka Toko Penangkar
                                             </Link>
                                         </div>
                                     )}
 
                                     {user.role === 'admin' && (
-                                        <div className="border-t border-[#1E80A0]/10 my-1 pt-1">
-                                            <span className="px-4 text-[10px] font-bold text-[#1E80A0] uppercase tracking-wider block mb-1">
+                                        <div className="border-t border-[#1E80A0]/10 dark:border-neutral-800 my-1 pt-1">
+                                            <span className="px-4 text-[10px] font-bold text-[#1E80A0] dark:text-[#4AB8BD] uppercase tracking-wider block mb-1">
                                                 Admin
                                             </span>
-                                            <Link href="/admin" className="block px-4 py-1.5 hover:bg-[#f3f2ff] text-[#001454] transition">
+                                            <Link href="/admin" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
                                                 Dashboard Admin
                                             </Link>
-                                            <Link href="/admin/guides" className="block px-4 py-1.5 hover:bg-[#f3f2ff] text-[#001454] transition">
+                                            <Link href="/admin/guides" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
                                                 Kelola Panduan
                                             </Link>
                                         </div>
                                     )}
 
-                                    <div className="border-t border-[#1E80A0]/10 mt-1 pt-1">
+                                    <div className="border-t border-[#1E80A0]/10 dark:border-neutral-800 mt-1 pt-1">
                                         <Link
                                             href="/logout"
                                             method="post"
                                             as="button"
-                                            className="block w-full text-left px-4 py-2 text-[#ba1a1a] hover:bg-[#ffdad6]/40 transition font-medium"
+                                            className="block w-full text-left px-4 py-2 text-[#ba1a1a] dark:text-red-400 hover:bg-[#ffdad6]/40 dark:hover:bg-red-950/40 transition font-medium"
                                         >
                                             Keluar
                                         </Link>
@@ -190,7 +208,7 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                         <div className="flex items-center gap-1.5 sm:gap-2 ml-1">
                             <Link
                                 href="/login"
-                                className="sm:hidden p-2 text-[#001454] hover:text-[#0684E5] rounded-full hover:bg-[#f3f2ff] transition"
+                                className="sm:hidden p-2 text-[#001454] dark:text-white hover:text-[#0684E5] dark:hover:text-[#4AB8BD] rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
                                 title="Masuk Akun"
                                 aria-label="Masuk Akun"
                             >
@@ -198,7 +216,7 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                             </Link>
                             <Link
                                 href="/login"
-                                className="hidden sm:inline-block text-xs font-bold text-[#001454] hover:text-[#0684E5] px-2.5 py-1.5 transition"
+                                className="hidden sm:inline-block text-xs font-bold text-[#001454] dark:text-neutral-200 hover:text-[#0684E5] dark:hover:text-[#4AB8BD] px-2.5 py-1.5 transition"
                             >
                                 Masuk
                             </Link>

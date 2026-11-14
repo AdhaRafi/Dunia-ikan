@@ -58,9 +58,9 @@ export default function ProductCard({ product }) {
     const sexBadge = fish?.sex ? sexLabel(fish.sex) : null;
 
     return (
-        <article className="group flex flex-col select-none bg-white rounded-2xl border border-[#1E80A0]/10 overflow-hidden hover:border-[#4AB8BD]/50 hover:shadow-lg transition-all duration-300">
+        <article className="group flex flex-col select-none bg-white dark:bg-[#0f172a] rounded-2xl border border-[#1E80A0]/10 dark:border-neutral-800 overflow-hidden hover:border-[#4AB8BD]/50 hover:shadow-lg transition-all duration-300">
             {/* MorphMarket Specimen Image Container */}
-            <div className="relative aspect-[4/5] sm:aspect-[3/4] bg-[#f3f2ff] overflow-hidden">
+            <div className="relative aspect-[4/5] sm:aspect-[3/4] bg-[#f3f2ff] dark:bg-[#162240] overflow-hidden">
                 <Link href={`/products/${product.slug}`} className="block w-full h-full">
                     <img
                         src={product.image || fallbackFish}
@@ -82,7 +82,7 @@ export default function ProductCard({ product }) {
                         e.stopPropagation();
                         setIsFavorite(!isFavorite);
                     }}
-                    className="absolute top-2.5 right-2.5 p-2 rounded-full bg-white/90 backdrop-blur-xs text-[#1E80A0] hover:text-[#0684E5] transition shadow-xs z-10"
+                    className="absolute top-2.5 right-2.5 p-2 rounded-full bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xs text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#0684E5] transition shadow-xs z-10"
                     title="Simpan ke Favorit"
                     aria-label="Simpan ke Favorit"
                 >
@@ -118,7 +118,7 @@ export default function ProductCard({ product }) {
                 {/* Bottom Right: Captive-Bred / F1 Tag */}
                 {fish?.breeding_origin === 'captive_bred' && (
                     <div className="absolute bottom-2.5 right-2.5 z-10">
-                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-xs text-[#00696D] shadow-xs">
+                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-md bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xs text-[#00696D] dark:text-[#4AB8BD] shadow-xs">
                             Captive-Bred
                         </span>
                     </div>
@@ -130,12 +130,12 @@ export default function ProductCard({ product }) {
                 <div className="space-y-1">
                     {/* Morph Gene Trait Pill */}
                     {fish?.morph_trait ? (
-                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#ececff] text-[#001454] text-[10px] font-bold tracking-tight">
+                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#ececff] dark:bg-[#162240] text-[#001454] dark:text-cyan-300 text-[10px] font-bold tracking-tight">
                             <Dna className="w-3 h-3 text-[#4AB8BD]" />
                             <span className="truncate max-w-[170px]">{fish.morph_trait}</span>
                         </div>
                     ) : (
-                        <span className="text-[10px] font-bold text-[#1E80A0] uppercase tracking-wider">
+                        <span className="text-[10px] font-bold text-[#1E80A0] dark:text-[#4AB8BD] uppercase tracking-wider">
                             {product.category?.name}
                         </span>
                     )}
@@ -143,7 +143,7 @@ export default function ProductCard({ product }) {
                     {/* Specimen Name */}
                     <Link
                         href={`/products/${product.slug}`}
-                        className="block text-xs sm:text-sm font-bold text-[#001454] hover:text-[#0684E5] transition leading-snug line-clamp-1"
+                        className="block text-xs sm:text-sm font-bold text-[#001454] dark:text-white hover:text-[#0684E5] dark:hover:text-[#4AB8BD] transition leading-snug line-clamp-1"
                         title={product.name}
                     >
                         {product.name}
@@ -151,7 +151,7 @@ export default function ProductCard({ product }) {
 
                     {/* Scientific Name (Latin) */}
                     {fish?.species_name && (
-                        <p className="text-[11px] italic text-[#6d797a] truncate">
+                        <p className="text-[11px] italic text-[#6d797a] dark:text-neutral-400 truncate">
                             {fish.species_name}
                         </p>
                     )}
@@ -159,31 +159,31 @@ export default function ProductCard({ product }) {
 
                 {/* Biological Parameter Chips (Water, pH, Temp) */}
                 {fish && (
-                    <div className="pt-1 flex items-center gap-2 text-[10px] text-[#3d4949] font-medium border-t border-[#1E80A0]/10">
+                    <div className="pt-1 flex items-center gap-2 text-[10px] text-[#3d4949] dark:text-neutral-300 font-medium border-t border-[#1E80A0]/10 dark:border-neutral-800">
                         <span className="flex items-center gap-0.5">
-                            <Droplets className="w-3 h-3 text-[#1E80A0]" />
+                            <Droplets className="w-3 h-3 text-[#1E80A0] dark:text-[#4AB8BD]" />
                             <span>pH {fish.ph_min || 6.5}-{fish.ph_max || 7.5}</span>
                         </span>
                         <span>•</span>
                         <span className="flex items-center gap-0.5">
-                            <Thermometer className="w-3 h-3 text-[#0684E5]" />
+                            <Thermometer className="w-3 h-3 text-[#0684E5] dark:text-cyan-400" />
                             <span>{fish.temp_min || 24}-{fish.temp_max || 29}°C</span>
                         </span>
                     </div>
                 )}
 
                 {/* Breeder / Farm Info */}
-                <div className="flex items-center justify-between text-[11px] text-[#1E80A0] pt-1">
+                <div className="flex items-center justify-between text-[11px] text-[#1E80A0] dark:text-[#4AB8BD] pt-1">
                     <span className="flex items-center gap-1 truncate font-semibold">
                         <Store className="w-3 h-3 shrink-0 text-[#4AB8BD]" />
                         <span className="truncate">{product.store?.name}</span>
                     </span>
-                    <span className="text-[10px] text-[#6d797a] shrink-0">{product.store?.city}</span>
+                    <span className="text-[10px] text-[#6d797a] dark:text-neutral-400 shrink-0">{product.store?.city}</span>
                 </div>
 
                 {/* Price & Action Button */}
-                <div className="pt-2 border-t border-[#1E80A0]/10 flex items-center justify-between gap-2">
-                    <p className="text-sm sm:text-base font-extrabold text-[#0684E5] tabular-nums">
+                <div className="pt-2 border-t border-[#1E80A0]/10 dark:border-neutral-800 flex items-center justify-between gap-2">
+                    <p className="text-sm sm:text-base font-extrabold text-[#0684E5] dark:text-cyan-400 tabular-nums">
                         {formatPrice(product.price)}
                     </p>
 
@@ -195,7 +195,7 @@ export default function ProductCard({ product }) {
                             className={`p-2 rounded-xl transition-all shadow-xs flex items-center justify-center ${
                                 added
                                     ? 'bg-[#00696D] text-white scale-105'
-                                    : 'bg-[#f3f2ff] text-[#0684E5] hover:bg-[#0684E5] hover:text-white'
+                                    : 'bg-[#f3f2ff] dark:bg-[#162240] text-[#0684E5] dark:text-cyan-400 hover:bg-[#0684E5] hover:text-white dark:hover:bg-[#4AB8BD] dark:hover:text-black'
                             }`}
                             title="Beli / Tambah ke Keranjang"
                             aria-label="Tambah ke Keranjang"

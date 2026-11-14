@@ -141,13 +141,13 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                 <section className="space-y-6">
                     <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                         <div>
-                            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454]">
+                            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454] dark:text-white">
                                 Kategori Ikan
                             </h2>
                         </div>
                         <Link
                             href="/products"
-                            className="text-xs font-bold text-[#0684E5] hover:text-[#0060aa] flex items-center gap-1 transition"
+                            className="text-xs font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:text-[#0060aa] flex items-center gap-1 transition"
                         >
                             <span>Lihat semua kategori</span>
                             <ArrowRight className="w-3.5 h-3.5" />
@@ -160,9 +160,9 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                             <Link
                                 key={group.title}
                                 href={group.link}
-                                className="group relative rounded-2xl overflow-hidden bg-white border border-[#1E80A0]/10 hover:border-[#4AB8BD] hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+                                className="group relative rounded-2xl overflow-hidden bg-white dark:bg-[#0f172a] border border-[#1E80A0]/10 dark:border-neutral-800 hover:border-[#4AB8BD] hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
                             >
-                                <div className="relative aspect-[16/10] bg-[#f3f2ff] overflow-hidden">
+                                <div className="relative aspect-[16/10] bg-[#f3f2ff] dark:bg-[#162240] overflow-hidden">
                                     <img
                                         src={group.image}
                                         alt={group.title}
@@ -181,11 +181,11 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                         </p>
                                     </div>
                                 </div>
-                                <div className="p-3 bg-white flex items-center justify-between text-xs border-t border-[#1E80A0]/10">
-                                    <span className="text-[11px] text-[#6d797a] truncate font-medium">
+                                <div className="p-3 bg-white dark:bg-[#111a30] flex items-center justify-between text-xs border-t border-[#1E80A0]/10 dark:border-neutral-800">
+                                    <span className="text-[11px] text-[#6d797a] dark:text-neutral-300 truncate font-medium">
                                         {group.desc}
                                     </span>
-                                    <ArrowRight className="w-3.5 h-3.5 text-[#0684E5] group-hover:translate-x-1 transition shrink-0 ml-1" />
+                                    <ArrowRight className="w-3.5 h-3.5 text-[#0684E5] dark:text-[#4AB8BD] group-hover:translate-x-1 transition shrink-0 ml-1" />
                                 </div>
                             </Link>
                         ))}
@@ -196,10 +196,10 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                 <section className="space-y-6 pt-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                            <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider">
+                            <p className="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
                                 Katalog Terverifikasi
                             </p>
-                            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454] mt-1">
+                            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454] dark:text-white mt-1">
                                 Mutasi Pilihan & Rilisan Terbaru
                             </h2>
                         </div>
@@ -220,7 +220,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                     className={`px-3.5 py-1.5 rounded-full transition whitespace-nowrap ${
                                         selectedTab === tab.id
                                             ? 'bg-[#4AB8BD] text-white font-bold shadow-xs'
-                                            : 'bg-white text-[#001454] border border-[#1E80A0]/20 hover:border-[#4AB8BD] hover:bg-[#f3f2ff]'
+                                            : 'bg-white dark:bg-[#111a30] text-[#001454] dark:text-neutral-200 border border-[#1E80A0]/20 dark:border-neutral-700 hover:border-[#4AB8BD] hover:bg-[#f3f2ff] dark:hover:bg-neutral-800'
                                     }`}
                                 >
                                     {tab.label}
@@ -239,23 +239,23 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
 
                 {/* 5. VERIFIED BREEDER NETWORK (MorphMarket Breeder Directory) */}
                 {featuredStores && featuredStores.length > 0 && (
-                    <section className="space-y-6 border-t border-[#1E80A0]/10 pt-10">
+                    <section className="space-y-6 border-t border-[#1E80A0]/10 dark:border-neutral-800 pt-10">
                         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                             <div>
-                                <div className="flex items-center gap-2 text-xs font-bold text-[#1E80A0] uppercase tracking-wider">
-                                    <BadgeCheck className="w-4 h-4 text-[#00696D]" />
+                                <div className="flex items-center gap-2 text-xs font-bold text-[#1E80A0] dark:text-[#4AB8BD] uppercase tracking-wider">
+                                    <BadgeCheck className="w-4 h-4 text-[#00696D] dark:text-[#4AB8BD]" />
                                     <span>Direktori Penangkar Resmi</span>
                                 </div>
-                                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454] mt-1">
+                                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454] dark:text-white mt-1">
                                     Farm Ikan Hias & Breeder Terakreditasi
                                 </h3>
-                                <p className="text-xs text-[#3d4949] mt-0.5">
+                                <p className="text-xs text-[#3d4949] dark:text-neutral-400 mt-0.5">
                                     Beli langsung dari peternak terverifikasi dengan jaminan ikan hidup sampai tujuan.
                                 </p>
                             </div>
                             <Link
                                 href="/products"
-                                className="text-xs font-bold text-[#0684E5] hover:text-[#0060aa] flex items-center gap-1 transition"
+                                className="text-xs font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:text-[#0060aa] flex items-center gap-1 transition"
                             >
                                 <span>Lihat semua penangkar</span>
                                 <ArrowRight className="w-3.5 h-3.5" />
@@ -267,33 +267,33 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                 <Link
                                     key={store.id}
                                     href={`/stores/${store.slug}`}
-                                    className="p-5 rounded-2xl bg-white border border-[#1E80A0]/10 hover:border-[#4AB8BD] hover:shadow-lg transition-all space-y-3 group"
+                                    className="p-5 rounded-2xl bg-white dark:bg-[#0f172a] border border-[#1E80A0]/10 dark:border-neutral-800 hover:border-[#4AB8BD] hover:shadow-lg transition-all space-y-3 group"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className="w-12 h-12 rounded-xl bg-[#f3f2ff] flex items-center justify-center font-extrabold text-[#001454] text-base group-hover:bg-[#001454] group-hover:text-white transition shadow-xs">
+                                        <div className="w-12 h-12 rounded-xl bg-[#f3f2ff] dark:bg-[#162240] flex items-center justify-center font-extrabold text-[#001454] dark:text-white text-base group-hover:bg-[#001454] group-hover:text-white transition shadow-xs">
                                             {store.name.charAt(0)}
                                         </div>
                                         <div className="min-w-0 flex-1">
                                             <div className="flex items-center gap-1">
-                                                <h4 className="font-bold text-sm text-[#001454] truncate">
+                                                <h4 className="font-bold text-sm text-[#001454] dark:text-white truncate">
                                                     {store.name}
                                                 </h4>
-                                                <BadgeCheck className="w-4 h-4 text-[#00696D] shrink-0" />
+                                                <BadgeCheck className="w-4 h-4 text-[#00696D] dark:text-[#4AB8BD] shrink-0" />
                                             </div>
-                                            <p className="text-xs text-[#6d797a] truncate">
+                                            <p className="text-xs text-[#6d797a] dark:text-neutral-400 truncate">
                                                 {store.city} • {store.province}
                                             </p>
                                         </div>
                                     </div>
-                                    <p className="text-xs text-[#3d4949] line-clamp-2 leading-relaxed">
+                                    <p className="text-xs text-[#3d4949] dark:text-neutral-300 line-clamp-2 leading-relaxed">
                                         {store.description || 'Penangkar resmi mutasi ikan hias genetik kontes bersertifikat.'}
                                     </p>
-                                    <div className="pt-2 border-t border-[#1E80A0]/10 flex items-center justify-between text-[11px]">
-                                        <div className="flex items-center gap-1 font-bold text-[#00696D]">
+                                    <div className="pt-2 border-t border-[#1E80A0]/10 dark:border-neutral-800 flex items-center justify-between text-[11px]">
+                                        <div className="flex items-center gap-1 font-bold text-[#00696D] dark:text-[#4AB8BD]">
                                             <CheckCircle2 className="w-3.5 h-3.5" />
                                             <span>Garansi Ikan Hidup</span>
                                         </div>
-                                        <span className="text-[#0684E5] font-semibold group-hover:underline">
+                                        <span className="text-[#0684E5] dark:text-cyan-400 font-semibold group-hover:underline">
                                             Kunjungi Farm →
                                         </span>
                                     </div>
@@ -326,23 +326,23 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
 
                 {/* 6. FISHPEDIA / CARE GUIDES (Morphpedia Style) */}
                 {careGuides && careGuides.length > 0 && (
-                    <section className="space-y-6 border-t border-[#1E80A0]/10 pt-10">
+                    <section className="space-y-6 border-t border-[#1E80A0]/10 dark:border-neutral-800 pt-10">
                         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                             <div>
-                                <div className="flex items-center gap-2 text-xs font-bold text-[#1E80A0] uppercase tracking-wider">
+                                <div className="flex items-center gap-2 text-xs font-bold text-[#1E80A0] dark:text-[#4AB8BD] uppercase tracking-wider">
                                     <BookOpen className="w-4 h-4 text-[#4AB8BD]" />
                                     <span>Fishpedia & Panduan Genetik</span>
                                 </div>
-                                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454] mt-1">
+                                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#001454] dark:text-white mt-1">
                                     Edukasi Perawatan & Parameter Air
                                 </h3>
-                                <p className="text-xs text-[#3d4949] mt-0.5">
+                                <p className="text-xs text-[#3d4949] dark:text-neutral-400 mt-0.5">
                                     Protokol karantina, aklimatisasi, dan pemahaman mutasi genetik ikan hias.
                                 </p>
                             </div>
                             <Link
                                 href="/guides"
-                                className="text-xs font-bold text-[#0684E5] hover:text-[#0060aa] flex items-center gap-1 transition"
+                                className="text-xs font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:text-[#0060aa] flex items-center gap-1 transition"
                             >
                                 <span>Semua panduan</span>
                                 <ArrowRight className="w-3.5 h-3.5" />
@@ -354,21 +354,21 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                 <Link
                                     key={guide.id}
                                     href={`/guides/${guide.slug}`}
-                                    className="p-5 rounded-2xl bg-white border border-[#1E80A0]/10 hover:border-[#4AB8BD] hover:shadow-lg transition-all space-y-2.5 group flex flex-col justify-between"
+                                    className="p-5 rounded-2xl bg-white dark:bg-[#0f172a] border border-[#1E80A0]/10 dark:border-neutral-800 hover:border-[#4AB8BD] hover:shadow-lg transition-all space-y-2.5 group flex flex-col justify-between"
                                 >
                                     <div className="space-y-2">
-                                        <div className="flex items-center gap-2 text-[10px] font-bold text-[#1E80A0] uppercase tracking-wider">
+                                        <div className="flex items-center gap-2 text-[10px] font-bold text-[#1E80A0] dark:text-[#4AB8BD] uppercase tracking-wider">
                                             <BookOpen className="w-3.5 h-3.5" />
                                             <span>{guide.category || 'Panduan Perawatan'}</span>
                                         </div>
-                                        <h4 className="font-bold text-sm text-[#001454] group-hover:text-[#0684E5] transition leading-snug line-clamp-2">
+                                        <h4 className="font-bold text-sm text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] transition leading-snug line-clamp-2">
                                             {guide.title}
                                         </h4>
-                                        <p className="text-xs text-[#3d4949] line-clamp-2 leading-relaxed">
+                                        <p className="text-xs text-[#3d4949] dark:text-neutral-300 line-clamp-2 leading-relaxed">
                                             {guide.excerpt || guide.content?.substring(0, 100)}...
                                         </p>
                                     </div>
-                                    <div className="pt-2 text-[11px] font-semibold text-[#0684E5] flex items-center gap-1">
+                                    <div className="pt-2 text-[11px] font-semibold text-[#0684E5] dark:text-[#4AB8BD] flex items-center gap-1">
                                         <span>Baca panduan</span>
                                         <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition" />
                                     </div>

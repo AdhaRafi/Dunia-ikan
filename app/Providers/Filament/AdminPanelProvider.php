@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -32,6 +33,8 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn () => asset('images/logo-dunia-ikan.png'))
             ->darkModeBrandLogo(fn () => asset('images/logo-dunia-ikan-white.png'))
             ->brandLogoHeight('2.6rem')
+            ->darkMode(true)
+            ->defaultThemeMode(ThemeMode::Dark)
             ->colors([
                 'primary' => Color::Sky,
             ])

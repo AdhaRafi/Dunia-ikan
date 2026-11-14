@@ -1,16 +1,41 @@
 export default function BrandWordmark({ 
     className = "h-8", 
-    variant = "default", // 'default' or 'white'
+    variant = "auto", // 'auto', 'default', 'white'
     alt = "Dunia Ikan Aquatic" 
 }) {
-    const isWhite = variant === 'white';
-    const src = isWhite ? '/images/logo-dunia-ikan-white.png' : '/images/logo-dunia-ikan.png';
+    if (variant === 'white') {
+        return (
+            <img 
+                src="/images/logo-dunia-ikan-white.png" 
+                alt={alt} 
+                className={`w-auto object-contain select-none ${className}`} 
+            />
+        );
+    }
 
+    if (variant === 'default') {
+        return (
+            <img 
+                src="/images/logo-dunia-ikan.png" 
+                alt={alt} 
+                className={`w-auto object-contain select-none ${className}`} 
+            />
+        );
+    }
+
+    // auto mode: adapts to light/dark class
     return (
-        <img 
-            src={src} 
-            alt={alt} 
-            className={`w-auto object-contain select-none ${className}`} 
-        />
+        <>
+            <img 
+                src="/images/logo-dunia-ikan.png" 
+                alt={alt} 
+                className={`w-auto object-contain select-none dark:hidden ${className}`} 
+            />
+            <img 
+                src="/images/logo-dunia-ikan-white.png" 
+                alt={alt} 
+                className={`w-auto object-contain select-none hidden dark:block ${className}`} 
+            />
+        </>
     );
 }

@@ -169,12 +169,12 @@ export default function Sidebar({ isOpen, onClose }) {
 
                 {/* Floating Drawer Surface: Expands smoothly on hover */}
                 <aside
-                    className="absolute top-0 left-0 h-full bg-white border-r border-[#1E80A0]/10 flex flex-col justify-between transition-all duration-300 ease-in-out z-40 w-20 group-hover/sidebar:w-64 lg:group-hover/sidebar:w-72 group-hover/sidebar:shadow-2xl group-hover/sidebar:border-[#1E80A0]/25"
+                    className="absolute top-0 left-0 h-full bg-white dark:bg-[#0b1325] border-r border-[#1E80A0]/10 dark:border-neutral-800 flex flex-col justify-between transition-all duration-300 ease-in-out z-40 w-20 group-hover/sidebar:w-64 lg:group-hover/sidebar:w-72 group-hover/sidebar:shadow-2xl group-hover/sidebar:border-[#1E80A0]/25 dark:group-hover/sidebar:border-neutral-700"
                 >
                     {/* Top Section: Brand + Navigation */}
                     <div className="p-4 lg:p-5 flex-1 flex flex-col min-h-0 overflow-visible">
                         {/* Brand Header: Centered logo unhovered, expands on hover (No toggle button!) */}
-                        <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10">
+                        <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10 dark:border-neutral-800">
                             {/* Icon-only mode header (visible when unhovered) */}
                             <div className="w-full flex justify-center group-hover/sidebar:hidden">
                                 <Link 
@@ -210,14 +210,14 @@ export default function Sidebar({ isOpen, onClose }) {
                                             href={item.href}
                                             className={`flex items-center rounded-xl transition-all w-11 h-11 mx-auto justify-center group-hover/sidebar:w-full group-hover/sidebar:px-3.5 group-hover/sidebar:py-2.5 group-hover/sidebar:justify-between ${
                                                 isItemActive
-                                                    ? 'bg-[#001454] text-white shadow-xs'
-                                                    : 'text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff]'
+                                                    ? 'bg-[#001454] dark:bg-[#162240] text-white shadow-xs'
+                                                    : 'text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800'
                                             }`}
                                             title={item.label}
                                         >
                                             <div className="flex items-center gap-3 min-w-0">
                                                 <Icon className={`w-4 h-4 shrink-0 transition ${
-                                                    isItemActive ? 'text-[#4AB8BD]' : 'text-[#1E80A0] group-hover/nav:text-[#001454]'
+                                                    isItemActive ? 'text-[#4AB8BD]' : 'text-[#1E80A0] dark:text-[#4AB8BD] group-hover/nav:text-[#001454] dark:group-hover/nav:text-white'
                                                 }`} />
                                                 <span className="text-xs font-semibold truncate hidden group-hover/sidebar:inline">
                                                     {item.label}
@@ -231,7 +231,7 @@ export default function Sidebar({ isOpen, onClose }) {
                                                         {item.badge}
                                                     </span>
                                                 )}
-                                                <ChevronRight className="w-3.5 h-3.5 text-[#1E80A0]/60 group-hover/nav:text-[#001454] transition-transform group-hover/nav:translate-x-0.5" />
+                                                <ChevronRight className="w-3.5 h-3.5 text-[#1E80A0]/60 dark:text-neutral-400 group-hover/nav:text-[#001454] dark:group-hover/nav:text-white transition-transform group-hover/nav:translate-x-0.5" />
                                             </div>
                                         </Link>
 
@@ -240,12 +240,12 @@ export default function Sidebar({ isOpen, onClose }) {
                                             <div
                                                 className={`absolute left-full ${
                                                     isLowerItem ? 'bottom-0' : 'top-0'
-                                                } ml-2.5 z-50 w-72 sm:w-80 bg-white rounded-2xl shadow-2xl border border-[#1E80A0]/15 p-4 space-y-3 opacity-0 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:pointer-events-auto transition-all duration-200 transform translate-x-1 group-hover/nav:translate-x-0 before:absolute before:-left-3 before:top-0 before:bottom-0 before:w-4 before:content-['']`}
+                                                } ml-2.5 z-50 w-72 sm:w-80 bg-white dark:bg-[#0f172a] rounded-2xl shadow-2xl border border-[#1E80A0]/15 dark:border-neutral-700 p-4 space-y-3 opacity-0 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:pointer-events-auto transition-all duration-200 transform translate-x-1 group-hover/nav:translate-x-0 before:absolute before:-left-3 before:top-0 before:bottom-0 before:w-4 before:content-['']`}
                                             >
                                                 {/* Header */}
                                                 <div>
                                                     <div className="flex items-center justify-between gap-2">
-                                                        <h4 className="text-xs font-extrabold uppercase tracking-wider text-[#001454] flex items-center gap-1.5">
+                                                        <h4 className="text-xs font-extrabold uppercase tracking-wider text-[#001454] dark:text-white flex items-center gap-1.5">
                                                             <Dna className="w-3.5 h-3.5 text-[#4AB8BD]" />
                                                             <span>{item.flyout.title}</span>
                                                         </h4>
@@ -255,22 +255,22 @@ export default function Sidebar({ isOpen, onClose }) {
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <p className="text-[11px] text-[#6d797a] mt-1 leading-relaxed">
+                                                    <p className="text-[11px] text-[#6d797a] dark:text-neutral-400 mt-1 leading-relaxed">
                                                         {item.flyout.description}
                                                     </p>
                                                 </div>
 
                                                 {/* Sub-links */}
-                                                <div className="space-y-1 border-t border-[#1E80A0]/10 pt-2">
+                                                <div className="space-y-1 border-t border-[#1E80A0]/10 dark:border-neutral-800 pt-2">
                                                     {item.flyout.links.map((link) => (
                                                         <Link
                                                             key={link.label}
                                                             href={link.href}
-                                                            className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-[#001454] hover:bg-[#f3f2ff] hover:text-[#0684E5] transition group/sub"
+                                                            className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-[#001454] dark:text-neutral-200 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 hover:text-[#0684E5] dark:hover:text-[#4AB8BD] transition group/sub"
                                                         >
                                                             <span className="truncate">{link.label}</span>
                                                             {link.badge && (
-                                                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-[#ececff] text-[#1E80A0] shrink-0 ml-1">
+                                                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-[#ececff] dark:bg-neutral-800 text-[#1E80A0] dark:text-[#4AB8BD] shrink-0 ml-1">
                                                                     {link.badge}
                                                                 </span>
                                                             )}
@@ -280,10 +280,10 @@ export default function Sidebar({ isOpen, onClose }) {
 
                                                 {/* Footer link */}
                                                 {item.flyout.footerLink && (
-                                                    <div className="pt-2 border-t border-[#1E80A0]/10">
+                                                    <div className="pt-2 border-t border-[#1E80A0]/10 dark:border-neutral-800">
                                                         <Link
                                                             href={item.flyout.footerLink.href}
-                                                            className="text-[11px] font-bold text-[#0684E5] hover:text-[#0060aa] flex items-center justify-between"
+                                                            className="text-[11px] font-bold text-[#0684E5] dark:text-cyan-400 hover:text-[#0060aa] flex items-center justify-between"
                                                         >
                                                             <span>{item.flyout.footerLink.label}</span>
                                                             <ArrowRight className="w-3.5 h-3.5" />
@@ -298,20 +298,20 @@ export default function Sidebar({ isOpen, onClose }) {
                         </nav>
 
                         {/* Special Features Nav */}
-                        <div className="mt-6 pt-5 border-t border-[#1E80A0]/10 space-y-1.5 hidden group-hover/sidebar:block">
-                            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#1E80A0]">
+                        <div className="mt-6 pt-5 border-t border-[#1E80A0]/10 dark:border-neutral-800 space-y-1.5 hidden group-hover/sidebar:block">
+                            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#1E80A0] dark:text-[#4AB8BD]">
                                 Fitur Spesial
                             </p>
                             <Link
                                 href="/guides"
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff] transition"
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
                             >
                                 <HeartPulse className="w-4 h-4 text-[#4AB8BD] shrink-0" />
                                 <span>Pusat Kesehatan Ikan</span>
                             </Link>
                             <Link
                                 href="/products?category=ikan-hias"
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff] transition"
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
                             >
                                 <ShieldCheck className="w-4 h-4 text-[#0684E5] shrink-0" />
                                 <span>Garansi Ikan Hidup 100%</span>
@@ -321,35 +321,35 @@ export default function Sidebar({ isOpen, onClose }) {
 
                     {/* Bottom Section: TIPS OF THE DAY Widget */}
                     {/* Compact Icon (Visible when not hovered) */}
-                    <div className="p-3 border-t border-[#1E80A0]/10 flex justify-center group-hover/sidebar:hidden">
+                    <div className="p-3 border-t border-[#1E80A0]/10 dark:border-neutral-800 flex justify-center group-hover/sidebar:hidden">
                         <button
                             type="button"
                             onClick={nextTip}
-                            className="w-10 h-10 rounded-xl bg-[#f3f2ff] text-[#1E80A0] hover:text-[#0684E5] flex items-center justify-center border border-[#1E80A0]/20 hover:bg-[#ececff] transition"
+                            className="w-10 h-10 rounded-xl bg-[#f3f2ff] dark:bg-[#111a30] text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#0684E5] flex items-center justify-center border border-[#1E80A0]/20 dark:border-neutral-700 hover:bg-[#ececff] dark:hover:bg-neutral-800 transition"
                             title={`Tip: ${currentTip.title}`}
                         >
-                            <Lightbulb className="w-4 h-4 text-[#0684E5]" />
+                            <Lightbulb className="w-4 h-4 text-[#0684E5] dark:text-[#4AB8BD]" />
                         </button>
                     </div>
 
                     {/* Full Card (Revealed on hover) */}
-                    <div className="p-4 border-t border-[#1E80A0]/10 shrink-0 hidden group-hover/sidebar:block">
-                        <div className="bg-[#f3f2ff] rounded-2xl p-4 border border-[#1E80A0]/15 space-y-2">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#1E80A0]">
+                    <div className="p-4 border-t border-[#1E80A0]/10 dark:border-neutral-800 shrink-0 hidden group-hover/sidebar:block">
+                        <div className="bg-[#f3f2ff] dark:bg-[#111a30] rounded-2xl p-4 border border-[#1E80A0]/15 dark:border-neutral-700 space-y-2">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#1E80A0] dark:text-[#4AB8BD]">
                                 TIPS OF THE DAY
                             </p>
-                            <h5 className="text-xs font-extrabold text-[#001454] leading-tight">
+                            <h5 className="text-xs font-extrabold text-[#001454] dark:text-white leading-tight">
                                 {currentTip.title}
                             </h5>
-                            <p className="text-[11px] text-[#3d4949] leading-relaxed line-clamp-3">
+                            <p className="text-[11px] text-[#3d4949] dark:text-neutral-300 leading-relaxed line-clamp-3">
                                 {currentTip.text}
                             </p>
-                            <div className="pt-1 flex items-center justify-between text-[11px] font-medium text-[#1E80A0]">
+                            <div className="pt-1 flex items-center justify-between text-[11px] font-medium text-[#1E80A0] dark:text-neutral-400">
                                 <span>{tipIndex + 1} of {TIPS.length}</span>
                                 <button
                                     type="button"
                                     onClick={nextTip}
-                                    className="text-[#0684E5] hover:text-[#0060aa] font-bold flex items-center gap-1 transition"
+                                    className="text-[#0684E5] dark:text-cyan-400 hover:text-[#0060aa] font-bold flex items-center gap-1 transition"
                                 >
                                     <span>Next</span>
                                     <ArrowRight className="w-3 h-3" />
@@ -374,12 +374,12 @@ export default function Sidebar({ isOpen, onClose }) {
 
                 {/* Sliding Drawer */}
                 <aside 
-                    className={`fixed inset-y-0 left-0 w-72 max-w-[85vw] h-full bg-white shadow-2xl flex flex-col justify-between z-50 transform transition-transform duration-300 ease-in-out ${
+                    className={`fixed inset-y-0 left-0 w-72 max-w-[85vw] h-full bg-white dark:bg-[#0b1325] text-[#001454] dark:text-white shadow-2xl flex flex-col justify-between z-50 transform transition-transform duration-300 ease-in-out ${
                         isOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}
                 >
                     <div className="p-5 flex-1 flex flex-col overflow-y-auto">
-                        <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10">
+                        <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10 dark:border-neutral-800">
                             <Link href="/" onClick={onClose} className="flex items-center">
                                 <BrandWordmark className="h-9" />
                             </Link>
@@ -387,7 +387,7 @@ export default function Sidebar({ isOpen, onClose }) {
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="p-1.5 text-[#1E80A0] hover:text-[#001454] rounded-lg hover:bg-[#f3f2ff]"
+                                className="p-1.5 text-[#1E80A0] dark:text-neutral-400 hover:text-[#001454] dark:hover:text-white rounded-lg hover:bg-[#f3f2ff] dark:hover:bg-neutral-800"
                                 aria-label="Tutup Menu"
                             >
                                 <X className="w-5 h-5" />
@@ -404,12 +404,12 @@ export default function Sidebar({ isOpen, onClose }) {
                                         onClick={onClose}
                                         className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
                                             item.active
-                                                ? 'bg-[#001454] text-white shadow-xs'
-                                                : 'text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff]'
+                                                ? 'bg-[#001454] dark:bg-[#162240] text-white shadow-xs'
+                                                : 'text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800'
                                         }`}
                                     >
                                         <div className="flex items-center gap-3 min-w-0">
-                                            <Icon className={`w-4 h-4 shrink-0 ${item.active ? 'text-[#4AB8BD]' : 'text-[#1E80A0]'}`} />
+                                            <Icon className={`w-4 h-4 shrink-0 ${item.active ? 'text-[#4AB8BD]' : 'text-[#1E80A0] dark:text-[#4AB8BD]'}`} />
                                             <span className="truncate">{item.label}</span>
                                         </div>
                                         {item.badge && (
@@ -422,14 +422,14 @@ export default function Sidebar({ isOpen, onClose }) {
                             })}
                         </nav>
 
-                        <div className="mt-6 pt-5 border-t border-[#1E80A0]/10 space-y-1.5">
-                            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#1E80A0]">
+                        <div className="mt-6 pt-5 border-t border-[#1E80A0]/10 dark:border-neutral-800 space-y-1.5">
+                            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#1E80A0] dark:text-[#4AB8BD]">
                                 Fitur Spesial
                             </p>
                             <Link
                                 href="/guides"
                                 onClick={onClose}
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff] transition"
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
                             >
                                 <HeartPulse className="w-4 h-4 text-[#4AB8BD] shrink-0" />
                                 <span>Pusat Kesehatan Ikan</span>
@@ -437,7 +437,7 @@ export default function Sidebar({ isOpen, onClose }) {
                             <Link
                                 href="/products?category=ikan-hias"
                                 onClick={onClose}
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff] transition"
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
                             >
                                 <ShieldCheck className="w-4 h-4 text-[#0684E5] shrink-0" />
                                 <span>Garansi Ikan Hidup 100%</span>
@@ -445,15 +445,15 @@ export default function Sidebar({ isOpen, onClose }) {
                         </div>
                     </div>
 
-                    <div className="p-4 border-t border-[#1E80A0]/10">
-                        <div className="bg-[#f3f2ff] rounded-2xl p-4 border border-[#1E80A0]/15 space-y-2">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#1E80A0]">
+                    <div className="p-4 border-t border-[#1E80A0]/10 dark:border-neutral-800">
+                        <div className="bg-[#f3f2ff] dark:bg-[#111a30] rounded-2xl p-4 border border-[#1E80A0]/15 dark:border-neutral-700 space-y-2">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#1E80A0] dark:text-[#4AB8BD]">
                                 TIPS OF THE DAY
                             </p>
-                            <h5 className="text-xs font-extrabold text-[#001454] leading-tight">
+                            <h5 className="text-xs font-extrabold text-[#001454] dark:text-white leading-tight">
                                 {currentTip.title}
                             </h5>
-                            <p className="text-[11px] text-[#3d4949] leading-relaxed">
+                            <p className="text-[11px] text-[#3d4949] dark:text-neutral-300 leading-relaxed">
                                 {currentTip.text}
                             </p>
                         </div>

@@ -19,7 +19,7 @@ export default function AppLayout({ children }) {
     }, [flash?.success, flash?.error]);
 
     return (
-        <div className="h-screen w-full flex overflow-hidden bg-[#fbf8ff] text-[#001454] antialiased selection:bg-[#001454] selection:text-white">
+        <div className="h-screen w-full flex overflow-hidden bg-[#fbf8ff] dark:bg-[#070b14] text-[#001454] dark:text-[#e4e7ff] antialiased selection:bg-[#001454] selection:text-white transition-colors duration-200">
             {/* Left Sidebar (Docked on desktop, sliding drawer on mobile) */}
             <Sidebar
                 isOpen={mobileSidebarOpen}
