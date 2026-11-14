@@ -55,62 +55,62 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
     const shopCategories = [
         {
             title: 'Cupang',
-            image: '/images/categories/cat-cupang.jpg',
+            image: '/images/categories/cupang.jpg',
             link: '/products?category=ikan-hias&q=cupang',
         },
         {
             title: 'Channa',
-            image: '/images/categories/cat-channa.jpg',
+            image: '/images/categories/channa.jpg',
             link: '/products?category=ikan-hias&q=channa',
         },
         {
             title: 'Discus',
-            image: '/images/categories/cat-discus.jpg',
+            image: '/images/categories/discus.jpg',
             link: '/products?category=ikan-hias&q=discus',
         },
         {
             title: 'Guppy',
-            image: '/images/categories/cat-guppy.jpg',
+            image: '/images/categories/guppy.jpg',
             link: '/products?category=ikan-hias&q=guppy',
         },
         {
             title: 'Neon Tetra',
-            image: '/images/categories/cat-tetra.jpg',
+            image: '/images/categories/neon-tetra.jpg',
             link: '/products?water_type=freshwater&q=tetra',
         },
         {
             title: 'Filter Aquarium',
-            image: '/images/categories/cat-filter.jpg',
+            image: '/images/categories/filter-aquarium.jpg',
             link: '/products?category=perlengkapan-aquarium&q=filter',
         },
         {
             title: 'Tank Aquarium',
-            image: '/images/categories/cat-tank.jpg',
+            image: '/images/categories/tank-aquarium.jpg',
             link: '/products?category=perlengkapan-aquarium&q=aquarium',
         },
         {
             title: 'Pakan & Pelet',
-            image: '/images/categories/cat-pakan.jpg',
+            image: '/images/categories/pakan-ikan.jpg',
             link: '/products?category=pakan-ikan',
         },
         {
             title: 'Perawatan Air',
-            image: '/images/categories/cat-perawatan.jpg',
+            image: '/images/categories/perawatan-air.jpg',
             link: '/products?category=perawatan-ikan',
         },
         {
             title: 'Anubias',
-            image: '/images/categories/cat-aquascape.jpg',
+            image: '/images/categories/anubias.jpg',
             link: '/products?category=aquascape&q=anubias',
         },
         {
             title: 'Bucephalandra',
-            image: '/images/categories/cat-buce.jpg',
+            image: '/images/categories/bucephalandra.jpg',
             link: '/products?category=aquascape&q=bucephalandra',
         },
         {
             title: 'Tanaman Hias',
-            image: '/images/categories/cat-tanaman.jpg',
+            image: '/images/categories/tanaman-hias.jpg',
             link: '/products?category=aquascape',
         },
     ];
@@ -129,13 +129,13 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         muted
                         playsInline
                         preload="auto"
-                        poster="/images/hero-fish-poster.webp"
+                        poster="/images/hero/aquarium-poster.webp"
                         className="w-full h-full object-cover object-center select-none"
                     >
-                        <source src="/videos/hero-fish.webm" type="video/webm" />
-                        <source src="/videos/hero-fish.mp4" type="video/mp4" />
+                        <source src="/videos/aquarium-hero.webm" type="video/webm" />
+                        <source src="/videos/aquarium-hero.mp4" type="video/mp4" />
                         <img
-                            src="/images/hero-fish-poster.webp"
+                            src="/images/hero/aquarium-poster.webp"
                             alt="Akuarium Ikan Hias Dunia Ikan"
                             className="w-full h-full object-cover object-center select-none"
                         />

@@ -78,7 +78,7 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                                                     <img
                                                         src={
                                                             item.product?.image ||
-                                                            '/images/hero-fish-poster.webp'
+                                                            '/images/hero/aquarium-poster.webp'
                                                         }
                                                         alt={item.product?.name}
                                                         className="w-full h-full object-cover"

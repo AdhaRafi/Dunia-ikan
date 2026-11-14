@@ -13,7 +13,6 @@ import {
     MapPin,
     X
 } from 'lucide-react';
-import BrandLogo from '@/Components/BrandLogo';
 import BrandWordmark from '@/Components/BrandWordmark';
 import UserAvatar from '@/Components/UserAvatar';
 

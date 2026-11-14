@@ -27,7 +27,7 @@ const WATER_BANNERS = {
 const CATEGORY_BANNERS = {
     'ikan-hias': '/images/products/cupang-halfmoon.jpg',
     'perlengkapan-aquarium': '/images/products/aquarium-rimless.jpg',
-    'pakan-ikan': '/images/products/pelet.jpg',
+    'pakan-ikan': '/images/products/pelet-spirulina.jpg',
     'perawatan-ikan': '/images/banners/aquascape.jpg',
     aquascape: '/images/banners/aquascape.jpg',
 };
@@ -136,7 +136,7 @@ export default function Index({ products, categories, cities, filters }) {
             ? WATER_BANNERS[appliedWaterType]
             : CATEGORY_BANNERS[appliedCategorySlug] ||
               WATER_BANNERS[appliedWaterType] ||
-              '/images/hero-fish-poster.webp';
+              '/images/hero/aquarium-poster.webp';
     const bannerSizeClass =
         bannerTitle.length > 14
             ? 'text-3xl sm:text-5xl lg:text-6xl'

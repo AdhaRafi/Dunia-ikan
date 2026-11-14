@@ -5,7 +5,7 @@ import Reveal from '@/Components/Reveal';
 const GUIDE_IMAGES = {
     'Penyakit Parasit': '/images/products/cupang-halfmoon.jpg',
     'Infeksi Bakteri / Jamur': '/images/products/cupang-plakat.jpg',
-    'Gangguan Pencernaan & Organ': '/images/products/discus.jpg',
+    'Gangguan Pencernaan & Organ': '/images/products/discus-pigeon-blood.jpg',
     'Kualitas Air & Filter': '/images/products/aquarium-rimless.jpg',
 };
 
@@ -17,7 +17,7 @@ const SPECIES = [
     },
     {
         name: 'Guppy',
-        image: '/images/products/guppy-afr.jpg',
+        image: '/images/products/guppy-albino-full-red.jpg',
         tone: 'field4',
     },
     {

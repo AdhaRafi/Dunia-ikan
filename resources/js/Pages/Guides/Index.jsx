@@ -15,7 +15,7 @@ const SPECIES = [
     {
         label: 'Guppy',
         query: 'Guppy',
-        image: '/images/products/guppy-afr.jpg',
+        image: '/images/products/guppy-albino-full-red.jpg',
         alt: 'Guppy albino full red',
         tone: 'field4',
     },

@@ -10,7 +10,7 @@ const CATALOGUE = [
     },
     {
         name: 'Guppy albino full red',
-        image: '/images/products/guppy-afr.jpg',
+        image: '/images/products/guppy-albino-full-red.jpg',
         tone: 'field4',
     },
     {
@@ -20,7 +20,7 @@ const CATALOGUE = [
     },
     {
         name: 'Discus blue diamond',
-        image: '/images/products/discus.jpg',
+        image: '/images/products/discus-pigeon-blood.jpg',
         tone: 'field2',
     },
 ];

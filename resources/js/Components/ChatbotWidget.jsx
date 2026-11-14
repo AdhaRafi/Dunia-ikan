@@ -177,7 +177,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                         <span className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#133b9e] to-[#081c59] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_28px_rgba(0,20,84,0.3)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
                             <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#1642ad] to-[#081c59] p-1">
                                 <img
-                                    src="/images/kiko/kiko-avatar.png"
+                                    src="/images/kiko/avatar.png"
                                     alt="Kiko"
                                     className="h-full w-full object-contain -translate-y-0.5"
                                 />
@@ -198,7 +198,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                             <div className="flex items-center gap-3">
                                 <div className="relative shrink-0">
                                     <img
-                                        src="/images/kiko/kiko-avatar.png"
+                                        src="/images/kiko/avatar.png"
                                         alt="Kiko"
                                         className="w-10 h-10 rounded-full border border-white/20 bg-slate-900 object-contain p-0.5 shadow-md"
                                     />
@@ -237,7 +237,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                     {/* Avatar for assistant */}
                                     {!isUser && (
                                         <img
-                                            src="/images/kiko/kiko-avatar.png"
+                                            src="/images/kiko/avatar.png"
                                             alt="Kiko"
                                             className="w-7 h-7 rounded-full border border-cyan-500/40 bg-slate-900 object-contain shrink-0 shadow-xs mt-1"
                                         />
@@ -340,7 +340,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                         {loading && (
                             <div className="flex items-center gap-2.5 rounded-2xl bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-4 py-3 text-xs text-slate-600 dark:text-neutral-300 w-fit">
                                 <img
-                                    src="/images/kiko/kiko-avatar.png"
+                                    src="/images/kiko/avatar.png"
                                     alt="Kiko"
                                     className="w-5 h-5 rounded-full object-contain shrink-0 animate-spin"
                                 />

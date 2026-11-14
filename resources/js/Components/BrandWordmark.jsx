@@ -6,7 +6,7 @@ export default function BrandWordmark({
     if (variant === 'white') {
         return (
             <img 
-                src="/images/logo-dunia-ikan-white.png" 
+                src="/images/brand/logo-dunia-ikan-white.png" 
                 alt={alt} 
                 className={`w-auto object-contain select-none ${className}`} 
             />
@@ -16,7 +16,7 @@ export default function BrandWordmark({
     if (variant === 'default') {
         return (
             <img 
-                src="/images/logo-dunia-ikan.png" 
+                src="/images/brand/logo-dunia-ikan.png" 
                 alt={alt} 
                 className={`w-auto object-contain select-none ${className}`} 
             />
@@ -27,12 +27,12 @@ export default function BrandWordmark({
     return (
         <>
             <img 
-                src="/images/logo-dunia-ikan.png" 
+                src="/images/brand/logo-dunia-ikan.png" 
                 alt={alt} 
                 className={`w-auto object-contain select-none dark:hidden ${className}`} 
             />
             <img 
-                src="/images/logo-dunia-ikan-white.png" 
+                src="/images/brand/logo-dunia-ikan-white.png" 
                 alt={alt} 
                 className={`w-auto object-contain select-none hidden dark:block ${className}`} 
             />

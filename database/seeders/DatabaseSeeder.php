@@ -244,7 +244,7 @@ class DatabaseSeeder extends Seeder
             'description' => '1 Pasang (1 Jantan + 1 Betina Siap Pijah) Guppy Albino Full Red grade murni. Mata merah terang (albino), dorsal lebar mengembang, ekor delta merah rata tanpa noda. Sangat cocok untuk aquascape atau breeding.',
             'price' => 85000,
             'stock' => 15,
-            'image' => '/images/products/guppy-afr.jpg',
+            'image' => '/images/products/guppy-albino-full-red.jpg',
             'is_active' => true,
         ]);
 
@@ -304,7 +304,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Ikan Discus varian Pigeon Blood Red dengan bintik merah cerah dan warna dasar kuning keemasan. Ikan sudah adaptasi air tawar Bandung/Jakarta, makan lancar burger discus dan cacing beku.',
             'price' => 195000,
             'stock' => 6,
-            'image' => '/images/products/discus.jpg',
+            'image' => '/images/products/discus-pigeon-blood.jpg',
             'is_active' => true,
         ]);
 
@@ -359,7 +359,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Pakan butiran terapung mikro (0.8mm) dengan kandungan protein 48%, ekstrak spirulina, astaxanthin, dan vitamin C untuk mempercepat mutasi warna dan memperkuat daya tahan tubuh ikan.',
             'price' => 32000,
             'stock' => 40,
-            'image' => '/images/products/pelet.jpg',
+            'image' => '/images/products/pelet-spirulina.jpg',
             'is_active' => true,
         ]);
 
@@ -371,7 +371,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Cacing darah segar yang disterilisasi sinar UV dan dibekukan cepat dalam tray 28 kubus kecil. Bebas bakteri patogen dan parasit, kaya nutrisi pembentukan massa otot ikan hias.',
             'price' => 18000,
             'stock' => 50,
-            'image' => '/images/products/bloodworm.jpg',
+            'image' => '/images/products/cacing-darah-beku.jpg',
             'is_active' => true,
         ]);
 
@@ -383,7 +383,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Garam kristal murni murni tanpa yodium (NaCl 99%) untuk menyeimbangkan osmoregulasi cairan tubuh ikan pasca transportasi, mencegah infeksi jamur, dan menetralkan racun nitrit.',
             'price' => 10000,
             'stock' => 80,
-            'image' => '/images/products/garam.jpg',
+            'image' => '/images/products/garam-ikan.jpg',
             'is_active' => true,
         ]);
 
@@ -395,7 +395,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Ekstrak fermentasi daun ketapang laut tua yang telah disaring bersih dari minyak dan kotoran. Mengandung tanin alami untuk menstabilkan pH air, antibakteri alami, dan menenangkan ikan yang stres.',
             'price' => 25000,
             'stock' => 35,
-            'image' => '/images/products/ketapang-leaf2.jpg',
+            'image' => '/images/products/ekstrak-ketapang.jpg',
             'is_active' => true,
         ]);
 
@@ -407,7 +407,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Tanaman anubias daun kuning cerah (golden) yang sudah menempel kuat pada lempengan batu lava hitam alami. Sangat mudah dirawat, minim kebutuhan CO2, dan tahan terhadap gigitan ikan kecil.',
             'price' => 45000,
             'stock' => 18,
-            'image' => '/images/products/anubias.jpg',
+            'image' => '/images/products/anubias-nana.jpg',
             'is_active' => true,
         ]);
 
