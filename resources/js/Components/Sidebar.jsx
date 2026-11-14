@@ -1,481 +1,439 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { 
-    TrendingUp, 
-    Fish, 
-    Waves, 
-    Store, 
-    ShieldCheck, 
-    BookOpen, 
+import {
+    ArrowLeft,
     ArrowRight,
-    Tag,
+    BookOpen,
+    Fish,
+    Home,
+    LayoutGrid,
+    LogIn,
+    LogOut,
+    MessageSquare,
+    Settings,
+    ShoppingBag,
+    Store,
+    UserPlus,
+    Waves,
     X,
-    HeartPulse,
-    Lightbulb,
-    ChevronRight,
-    Dna,
-    Package
 } from 'lucide-react';
 import BrandLogo from '@/Components/BrandLogo';
 import BrandWordmark from '@/Components/BrandWordmark';
 
-const TIPS = [
-    {
-        title: 'Aklimatisasi Suhu',
-        text: 'Apungkan kantong ikan di akuarium selama 15-20 menit sebelum dilepas agar suhu air menyesuaikan perlahan.',
-    },
-    {
-        title: 'Stabilitas pH Air',
-        text: 'pH stabil jauh lebih aman bagi ikan daripada memaksakan angka tertentu dengan bahan kimia drastis.',
-    },
-    {
-        title: 'Klaim Garansi Ikan Hidup',
-        text: 'Rekam video unboxing utuh tanpa jeda dari paket tersegel untuk klaim garansi ikan hidup 100%.',
-    },
-    {
-        title: 'Pemberian Pakan',
-        text: 'Beri pakan sedikit demi sedikit 1-2 kali sehari. Sisa pakan yang tenggelam memicu lonjakan amonia.',
-    },
-];
+const COLLAPSE_STORAGE_KEY = 'duniaikan_sidebar_collapsed';
 
-export default function Sidebar({ isOpen, onClose }) {
-    const { url } = usePage();
-    const [tipIndex, setTipIndex] = useState(0);
+function NavRow({ item, collapsed = false, onNavigate }) {
+    const Icon = item.icon;
 
-    const nextTip = () => {
-        setTipIndex((prev) => (prev + 1) % TIPS.length);
+    const baseClasses = `relative group/item w-full h-9 flex items-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0267C1] ${
+        collapsed ? 'justify-center px-0' : 'gap-3 px-6'
+    } ${
+        item.active
+            ? 'text-[#0267C1] dark:text-white font-semibold'
+            : 'text-slate-500 hover:text-[#001454] dark:text-slate-400 dark:hover:text-white font-medium'
+    }`;
+
+    const content = (
+        <>
+            {item.active && (
+                <span
+                    aria-hidden="true"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-l-full bg-[#0267C1] dark:bg-white"
+                />
+            )}
+
+            <Icon
+                strokeWidth={1.8}
+                className={`w-[18px] h-[18px] shrink-0 transition-colors ${
+                    item.active
+                        ? 'text-[#0267C1] dark:text-white'
+                        : 'text-slate-400 group-hover/item:text-[#001454] dark:text-slate-400 dark:group-hover/item:text-white'
+                }`}
+            />
+
+            {!collapsed && <span className="text-[13px] truncate">{item.label}</span>}
+
+            {collapsed && (
+                <span
+                    role="tooltip"
+                    className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-3 z-50 whitespace-nowrap rounded-lg bg-[#1e2433] dark:bg-slate-800 px-3 py-1.5 text-xs font-medium text-white shadow-lg opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 group-focus-within/item:opacity-100 group-focus-within/item:translate-x-0 transition-all duration-150 before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-4 before:border-transparent before:border-r-[#1e2433] dark:before:border-r-slate-800"
+                >
+                    {item.label}
+                </span>
+            )}
+        </>
+    );
+
+    if (item.onClick) {
+        return (
+            <button
+                type="button"
+                onClick={() => {
+                    item.onClick();
+                    onNavigate?.();
+                }}
+                aria-label={collapsed ? item.label : undefined}
+                className={baseClasses}
+            >
+                {content}
+            </button>
+        );
+    }
+
+    return (
+        <Link
+            href={item.href}
+            method={item.method}
+            as={item.as}
+            onClick={onNavigate}
+            aria-label={collapsed ? item.label : undefined}
+            aria-current={item.active ? 'page' : undefined}
+            className={baseClasses}
+        >
+            {content}
+        </Link>
+    );
+}
+
+export default function Sidebar({
+    isOpen,
+    onClose,
+    onOpenChat,
+    darkMode = false,
+    onToggleDarkMode,
+}) {
+    const { url, props } = usePage();
+    const user = props?.auth?.user;
+
+    const [isCollapsed, setIsCollapsed] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem(COLLAPSE_STORAGE_KEY) === 'true';
+        }
+        return false;
+    });
+
+    useEffect(() => {
+        if (!isOpen) {
+            return;
+        }
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                onClose?.();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen, onClose]);
+
+    const toggleCollapse = () => {
+        setIsCollapsed((prev) => {
+            const next = !prev;
+            if (typeof window !== 'undefined') {
+                localStorage.setItem(COLLAPSE_STORAGE_KEY, String(next));
+            }
+            return next;
+        });
     };
 
-    const currentTip = TIPS[tipIndex];
+    const [pathname, queryString = ''] = url.split('?');
+    const searchParams = new URLSearchParams(queryString);
+    const waterType = searchParams.get('water_type');
 
-    const navItems = [
+    const primaryItems = [
         {
-            label: 'Trends',
-            sublabel: 'Spesimen Trending',
-            icon: TrendingUp,
-            href: '/products?sort=popular',
-            active: url.includes('sort=popular'),
-            badge: 'Hot',
-            flyout: {
-                title: 'Spesimen Trending & Populer',
-                description: 'Koleksi mutasi genetik dan spesimen paling banyak diminati penghobi.',
-                links: [
-                    { label: 'The Most Trending 100', href: '/products?sort=popular', badge: '100+' },
-                    { label: 'Mutasi Rilis Terbaru', href: '/products?sort=newest', badge: 'Baru' },
-                    { label: 'Spesimen Show Grade Kontes', href: '/products?category=ikan-hias' },
-                    { label: 'Ikan Bergaransi Hidup 100%', href: '/products?sort=popular' },
-                ],
-                footerLink: { label: 'Lihat Semua Koleksi Tren', href: '/products?sort=popular' }
-            }
+            label: 'Beranda',
+            href: '/',
+            icon: Home,
+            active: pathname === '/',
+        },
+        {
+            label: 'Katalog',
+            href: '/products',
+            icon: LayoutGrid,
+            active: pathname.startsWith('/products') && !waterType,
         },
         {
             label: 'Air Tawar',
-            sublabel: 'Freshwater Morphs',
-            icon: Fish,
             href: '/products?water_type=freshwater',
-            active: url.includes('water_type=freshwater'),
-            badge: '5 Spesies',
-            flyout: {
-                title: 'Katalog Ikan Air Tawar & Mutasi',
-                description: 'Spesies captive-bred air tawar terpopuler dengan taksonomi morfologi.',
-                links: [
-                    { label: 'Cupang / Betta Morphs (Halfmoon, Plakat, Rosetail)', href: '/products?category=ikan-hias&q=cupang', badge: 'Show' },
-                    { label: 'Channa / Snakehead (Maru Yellow Sentarum, Auranti)', href: '/products?category=ikan-hias&q=channa', badge: 'Predator' },
-                    { label: 'Ikan Discus Cichlid (Pigeon Blood, Blue Diamond)', href: '/products?category=ikan-hias&q=discus', badge: 'Eksotis' },
-                    { label: 'Guppy Galur Murni (Albino Full Red / AFR, Moscow)', href: '/products?category=ikan-hias&q=guppy', badge: 'Pure' },
-                    { label: 'Neon Tetra & Nano Schooling Community', href: '/products?water_type=freshwater&q=tetra' },
-                ],
-                footerLink: { label: 'Jelajahi Semua Spesimen Air Tawar', href: '/products?water_type=freshwater' }
-            }
+            icon: Fish,
+            active: pathname.startsWith('/products') && waterType === 'freshwater',
         },
         {
             label: 'Air Laut',
-            sublabel: 'Saltwater & Reef',
-            icon: Waves,
             href: '/products?water_type=saltwater',
-            active: url.includes('water_type=saltwater'),
-            flyout: {
-                title: 'Katalog Air Laut & Marine Reef',
-                description: 'Spesimen biota laut teraklimatisasi dan aman untuk akuarium terumbu.',
-                links: [
-                    { label: 'Clownfish Captive-Bred (Amphiprion)', href: '/products?water_type=saltwater&q=clownfish', badge: 'Captive' },
-                    { label: 'Surgeonfish & Blue Tang', href: '/products?water_type=saltwater' },
-                    { label: 'Terumbu Karang & Coral Frags', href: '/products?water_type=saltwater' },
-                    { label: 'Invertebrata Pembersih Karang', href: '/products?water_type=saltwater' },
-                ],
-                footerLink: { label: 'Jelajahi Semua Biota Laut', href: '/products?water_type=saltwater' }
-            }
-        },
-        {
-            label: 'Penangkar',
-            sublabel: 'Verified Breeders',
-            icon: Store,
-            href: '/products',
-            active: url === '/products' && !url.includes('?'),
-            flyout: {
-                title: 'Direktori Penangkar Terakreditasi',
-                description: 'Beli langsung dari peternak dan farm resmi di seluruh nusantara.',
-                links: [
-                    { label: 'Aquatic Heritage Farm (Kota Bandung)', href: '/stores/aquatic-heritage-farm', badge: 'Verified' },
-                    { label: 'Nusantara Aquascape (Jakarta Barat)', href: '/stores/nusantara-aquascape', badge: 'Verified' },
-                    { label: 'Buka Toko Penangkar Baru (Daftarkan Farm)', href: '/seller/register', badge: 'Daftar' },
-                ],
-                footerLink: { label: 'Lihat Seluruh Direktori Penangkar', href: '/products' }
-            }
-        },
-        {
-            label: 'Discounts',
-            sublabel: 'Ikan Hidup 100%',
-            badge: 'to 70%',
-            icon: Tag,
-            href: '/products?min_price=1',
-            active: url.includes('min_price'),
-            flyout: {
-                title: 'Promo & Diskon Spesimen',
-                description: 'Penawaran harga terbaik langsung dari breeder dengan jaminan ikan hidup.',
-                links: [
-                    { label: 'Spesimen Diskon Hingga 70%', href: '/products?min_price=1', badge: 'To 70%' },
-                    { label: 'Paket Schooling Hemat (Multi-Pack)', href: '/products?q=paket' },
-                    { label: 'Garansi 100% Ikan Hidup Sampai Tujuan', href: '/products?category=ikan-hias' },
-                ],
-                footerLink: { label: 'Buka Semua Produk Promo', href: '/products?min_price=1' }
-            }
+            icon: Waves,
+            active: pathname.startsWith('/products') && waterType === 'saltwater',
         },
         {
             label: 'Panduan',
-            sublabel: 'Care Guides',
-            icon: BookOpen,
             href: '/guides',
-            active: url.startsWith('/guides'),
-            flyout: {
-                title: 'Fishpedia & Panduan Perawatan',
-                description: 'Edukasi parameter air, karantina, dan aklimatisasi spesimen baru.',
-                links: [
-                    { label: 'Aklimatisasi Suhu & Pelepasan Ikan Baru', href: '/guides' },
-                    { label: 'Menjaga Stabilitas pH Air & Siklus Nitrogen', href: '/guides' },
-                    { label: 'Prosedur Video Unboxing & Klaim Garansi', href: '/guides' },
-                    { label: 'Pencegahan & Pengobatan White Spot (Ich)', href: '/guides' },
-                ],
-                footerLink: { label: 'Buka Seluruh Artikel Fishpedia', href: '/guides' }
-            }
+            icon: BookOpen,
+            active: pathname.startsWith('/guides'),
         },
         {
             label: 'Pesanan',
-            sublabel: 'Status & Riwayat',
-            icon: Package,
             href: '/orders',
-            active: url.startsWith('/orders'),
-            flyout: {
-                title: 'Pesanan & Pelacakan Ikan',
-                description: 'Pantau pembayaran, karantina kirim, dan riwayat pesanan spesimen Anda.',
-                links: [
-                    { label: 'Semua Pesanan Saya', href: '/orders' },
-                    { label: 'Cek Status Pembayaran', href: '/orders' },
-                    { label: 'Profil & Pengaturan Akun', href: '/profile' },
-                ],
-                footerLink: { label: 'Buka Halaman Pesanan Saya', href: '/orders' }
-            }
+            icon: ShoppingBag,
+            active: pathname.startsWith('/orders'),
         },
     ];
 
-    return (
-        <>
-            {/* Desktop Sidebar: Hover-Responsive Rail (No clicking required!) */}
-            <div className="hidden md:block sticky top-0 shrink-0 h-screen z-40 select-none group/sidebar">
-                {/* Fixed Spacer (Holds page layout stable at w-20) */}
-                <div className="h-full w-20 transition-all duration-300 ease-in-out" />
+    const utilityItems = [
+        {
+            label: 'Tanya Kiko',
+            icon: MessageSquare,
+            onClick: () => onOpenChat?.(),
+            active: false,
+        },
+        ...(user?.role === 'seller'
+            ? [
+                  {
+                      label: 'Toko Saya',
+                      href: '/seller/products',
+                      icon: Store,
+                      active: pathname.startsWith('/seller'),
+                  },
+              ]
+            : []),
+        ...(user?.role === 'buyer'
+            ? [
+                  {
+                      label: 'Buka Toko',
+                      href: '/seller/register',
+                      icon: Store,
+                      active: pathname.startsWith('/seller/register'),
+                  },
+              ]
+            : []),
+        ...(user
+            ? [
+                  {
+                      label: 'Pengaturan',
+                      href: '/profile',
+                      icon: Settings,
+                      active: pathname.startsWith('/profile'),
+                  },
+                  {
+                      label: 'Keluar',
+                      href: '/logout',
+                      method: 'post',
+                      as: 'button',
+                      icon: LogOut,
+                      active: false,
+                  },
+              ]
+            : [
+                  {
+                      label: 'Masuk',
+                      href: '/login',
+                      icon: LogIn,
+                      active: pathname.startsWith('/login'),
+                  },
+                  {
+                      label: 'Daftar',
+                      href: '/register',
+                      icon: UserPlus,
+                      active: pathname.startsWith('/register'),
+                  },
+              ]),
+    ];
 
-                {/* Floating Drawer Surface: Expands smoothly on hover */}
-                <aside
-                    className="absolute top-0 left-0 h-full bg-white dark:bg-[#0b1325] border-r border-[#1E80A0]/10 dark:border-neutral-800 flex flex-col justify-between transition-all duration-300 ease-in-out z-40 w-20 group-hover/sidebar:w-64 lg:group-hover/sidebar:w-72 group-hover/sidebar:shadow-2xl group-hover/sidebar:border-[#1E80A0]/25 dark:group-hover/sidebar:border-neutral-700"
-                >
-                    {/* Top Section: Brand + Navigation */}
-                    <div className="p-4 lg:p-5 flex-1 flex flex-col min-h-0 overflow-visible">
-                        {/* Brand Header: Centered logo unhovered, expands on hover (No toggle button!) */}
-                        <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10 dark:border-neutral-800">
-                            {/* Icon-only mode header (visible when unhovered) */}
-                            <div className="w-full flex justify-center group-hover/sidebar:hidden">
-                                <Link 
-                                    href="/" 
-                                    className="w-10 h-10 rounded-xl bg-[#0a0a0a] text-white flex items-center justify-center shadow-xs hover:scale-105 border border-neutral-800 transition"
-                                    title="Dunia Ikan : MorphMarket Aquatic"
-                                >
-                                    <BrandLogo className="w-5 h-5 text-white" />
-                                </Link>
-                            </div>
-
-                            {/* Expanded header (revealed automatically on hover) */}
-                            <div className="w-full hidden group-hover/sidebar:flex items-center px-1">
-                                <Link href="/" className="flex items-center min-w-0 hover:opacity-90 transition">
-                                    <BrandWordmark className="h-9" />
-                                </Link>
-                            </div>
-                        </div>
-
-                        {/* Nav Items with MorphMarket Hover Flyouts */}
-                        <nav className="mt-5 space-y-1 relative">
-                            {navItems.map((item, index) => {
-                                const Icon = item.icon;
-                                const isItemActive = item.active;
-                                const isLowerItem = index >= 4;
-
-                                return (
-                                    <div
-                                        key={item.label}
-                                        className="relative group/nav"
-                                    >
-                                        <Link
-                                            href={item.href}
-                                            className={`flex items-center rounded-xl transition-all w-11 h-11 mx-auto justify-center group-hover/sidebar:w-full group-hover/sidebar:px-3.5 group-hover/sidebar:py-2.5 group-hover/sidebar:justify-between ${
-                                                isItemActive
-                                                    ? 'bg-[#001454] dark:bg-[#162240] text-white shadow-xs'
-                                                    : 'text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800'
-                                            }`}
-                                            title={item.label}
-                                        >
-                                            <div className="flex items-center gap-3 min-w-0">
-                                                <Icon className={`w-4 h-4 shrink-0 transition ${
-                                                    isItemActive ? 'text-[#4AB8BD]' : 'text-[#1E80A0] dark:text-[#4AB8BD] group-hover/nav:text-[#001454] dark:group-hover/nav:text-white'
-                                                }`} />
-                                                <span className="text-xs font-semibold truncate hidden group-hover/sidebar:inline">
-                                                    {item.label}
-                                                </span>
-                                            </div>
-
-                                            {/* Badges & Arrow */}
-                                            <div className="items-center gap-1.5 shrink-0 hidden group-hover/sidebar:flex">
-                                                {item.badge && (
-                                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFE4B0] text-[#001454]">
-                                                        {item.badge}
-                                                    </span>
-                                                )}
-                                                <ChevronRight className="w-3.5 h-3.5 text-[#1E80A0]/60 dark:text-neutral-400 group-hover/nav:text-[#001454] dark:group-hover/nav:text-white transition-transform group-hover/nav:translate-x-0.5" />
-                                            </div>
-                                        </Link>
-
-                                        {/* MorphMarket Hover Flyout Card (Opens INSTANTLY on hover without clicking!) */}
-                                        {item.flyout && (
-                                            <div
-                                                className={`absolute left-full ${
-                                                    isLowerItem ? 'bottom-0' : 'top-0'
-                                                } ml-2.5 z-50 w-72 sm:w-80 bg-white dark:bg-[#0f172a] rounded-2xl shadow-2xl border border-[#1E80A0]/15 dark:border-neutral-700 p-4 space-y-3 opacity-0 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:pointer-events-auto transition-all duration-200 transform translate-x-1 group-hover/nav:translate-x-0 before:absolute before:-left-3 before:top-0 before:bottom-0 before:w-4 before:content-['']`}
-                                            >
-                                                {/* Header */}
-                                                <div>
-                                                    <div className="flex items-center justify-between gap-2">
-                                                        <h4 className="text-xs font-extrabold uppercase tracking-wider text-[#001454] dark:text-white flex items-center gap-1.5">
-                                                            <Dna className="w-3.5 h-3.5 text-[#4AB8BD]" />
-                                                            <span>{item.flyout.title}</span>
-                                                        </h4>
-                                                        {item.badge && (
-                                                            <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#FFE4B0] text-[#001454]">
-                                                                {item.badge}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <p className="text-[11px] text-[#6d797a] dark:text-neutral-400 mt-1 leading-relaxed">
-                                                        {item.flyout.description}
-                                                    </p>
-                                                </div>
-
-                                                {/* Sub-links */}
-                                                <div className="space-y-1 border-t border-[#1E80A0]/10 dark:border-neutral-800 pt-2">
-                                                    {item.flyout.links.map((link) => (
-                                                        <Link
-                                                            key={link.label}
-                                                            href={link.href}
-                                                            className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-[#001454] dark:text-neutral-200 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 hover:text-[#0684E5] dark:hover:text-[#4AB8BD] transition group/sub"
-                                                        >
-                                                            <span className="truncate">{link.label}</span>
-                                                            {link.badge && (
-                                                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-[#ececff] dark:bg-neutral-800 text-[#1E80A0] dark:text-[#4AB8BD] shrink-0 ml-1">
-                                                                    {link.badge}
-                                                                </span>
-                                                            )}
-                                                        </Link>
-                                                    ))}
-                                                </div>
-
-                                                {/* Footer link */}
-                                                {item.flyout.footerLink && (
-                                                    <div className="pt-2 border-t border-[#1E80A0]/10 dark:border-neutral-800">
-                                                        <Link
-                                                            href={item.flyout.footerLink.href}
-                                                            className="text-[11px] font-bold text-[#0684E5] dark:text-cyan-400 hover:text-[#0060aa] flex items-center justify-between"
-                                                        >
-                                                            <span>{item.flyout.footerLink.label}</span>
-                                                            <ArrowRight className="w-3.5 h-3.5" />
-                                                        </Link>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </nav>
-
-                        {/* Special Features Nav */}
-                        <div className="mt-6 pt-5 border-t border-[#1E80A0]/10 dark:border-neutral-800 space-y-1.5 hidden group-hover/sidebar:block">
-                            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#1E80A0] dark:text-[#4AB8BD]">
-                                Fitur Spesial
-                            </p>
-                            <Link
-                                href="/guides"
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
-                            >
-                                <HeartPulse className="w-4 h-4 text-[#4AB8BD] shrink-0" />
-                                <span>Pusat Kesehatan Ikan</span>
-                            </Link>
-                            <Link
-                                href="/products?category=ikan-hias"
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
-                            >
-                                <ShieldCheck className="w-4 h-4 text-[#0684E5] shrink-0" />
-                                <span>Garansi Ikan Hidup 100%</span>
-                            </Link>
-                        </div>
-                    </div>
-
-                    {/* Bottom Section: TIPS OF THE DAY Widget */}
-                    {/* Compact Icon (Visible when not hovered) */}
-                    <div className="p-3 border-t border-[#1E80A0]/10 dark:border-neutral-800 flex justify-center group-hover/sidebar:hidden">
+    const renderSidebarInner = ({ collapsed, isMobile = false }) => (
+        <div className="flex flex-col justify-between h-full">
+            <div className="flex flex-col min-h-0">
+                {/* Brand Header + Collapse Toggle */}
+                {collapsed ? (
+                    <div className="pt-6 pb-4 flex flex-col items-center gap-3.5">
+                        <Link
+                            href="/"
+                            className="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800/70 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
+                            aria-label="Dunia Ikan Beranda"
+                        >
+                            <BrandLogo className="w-6 h-6" />
+                        </Link>
                         <button
                             type="button"
-                            onClick={nextTip}
-                            className="w-10 h-10 rounded-xl bg-[#f3f2ff] dark:bg-[#111a30] text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#0684E5] flex items-center justify-center border border-[#1E80A0]/20 dark:border-neutral-700 hover:bg-[#ececff] dark:hover:bg-neutral-800 transition"
-                            title={`Tip: ${currentTip.title}`}
+                            onClick={toggleCollapse}
+                            className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#001454] dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-600 flex items-center justify-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
+                            aria-label="Perluas menu samping"
+                            title="Perluas menu"
                         >
-                            <Lightbulb className="w-4 h-4 text-[#0684E5] dark:text-[#4AB8BD]" />
+                            <ArrowRight className="w-3.5 h-3.5" />
                         </button>
                     </div>
+                ) : (
+                    <div className="pt-6 pb-5 px-6 flex items-center justify-between gap-2">
+                        <Link
+                            href="/"
+                            onClick={isMobile ? onClose : undefined}
+                            className="flex items-center min-w-0 hover:opacity-90 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1] rounded-lg"
+                        >
+                            <BrandWordmark className="h-7" />
+                        </Link>
 
-                    {/* Full Card (Revealed on hover) */}
-                    <div className="p-4 border-t border-[#1E80A0]/10 dark:border-neutral-800 shrink-0 hidden group-hover/sidebar:block">
-                        <div className="bg-[#f3f2ff] dark:bg-[#111a30] rounded-2xl p-4 border border-[#1E80A0]/15 dark:border-neutral-700 space-y-2">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#1E80A0] dark:text-[#4AB8BD]">
-                                TIPS OF THE DAY
-                            </p>
-                            <h5 className="text-xs font-extrabold text-[#001454] dark:text-white leading-tight">
-                                {currentTip.title}
-                            </h5>
-                            <p className="text-[11px] text-[#3d4949] dark:text-neutral-300 leading-relaxed line-clamp-3">
-                                {currentTip.text}
-                            </p>
-                            <div className="pt-1 flex items-center justify-between text-[11px] font-medium text-[#1E80A0] dark:text-neutral-400">
-                                <span>{tipIndex + 1} of {TIPS.length}</span>
-                                <button
-                                    type="button"
-                                    onClick={nextTip}
-                                    className="text-[#0684E5] dark:text-cyan-400 hover:text-[#0060aa] font-bold flex items-center gap-1 transition"
-                                >
-                                    <span>Next</span>
-                                    <ArrowRight className="w-3 h-3" />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </aside>
-            </div>
-
-            {/* Mobile Drawer (Screens < 768px) */}
-            <div 
-                className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${
-                    isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-                }`}
-            >
-                {/* Backdrop */}
-                <div 
-                    onClick={onClose} 
-                    className="fixed inset-0 bg-[#001454]/40 backdrop-blur-xs" 
-                />
-
-                {/* Sliding Drawer */}
-                <aside 
-                    className={`fixed inset-y-0 left-0 w-72 max-w-[85vw] h-full bg-white dark:bg-[#0b1325] text-[#001454] dark:text-white shadow-2xl flex flex-col justify-between z-50 transform transition-transform duration-300 ease-in-out ${
-                        isOpen ? 'translate-x-0' : '-translate-x-full'
-                    }`}
-                >
-                    <div className="p-5 flex-1 flex flex-col overflow-y-auto">
-                        <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10 dark:border-neutral-800">
-                            <Link href="/" onClick={onClose} className="flex items-center">
-                                <BrandWordmark className="h-9" />
-                            </Link>
-
+                        {isMobile ? (
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="p-1.5 text-[#1E80A0] dark:text-neutral-400 hover:text-[#001454] dark:hover:text-white rounded-lg hover:bg-[#f3f2ff] dark:hover:bg-neutral-800"
-                                aria-label="Tutup Menu"
+                                className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#001454] dark:hover:text-white flex items-center justify-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
+                                aria-label="Tutup menu"
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-3.5 h-3.5" />
                             </button>
-                        </div>
-
-                        <nav className="mt-5 space-y-1">
-                            {navItems.map((item) => {
-                                const Icon = item.icon;
-                                return (
-                                    <Link
-                                        key={item.label}
-                                        href={item.href}
-                                        onClick={onClose}
-                                        className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
-                                            item.active
-                                                ? 'bg-[#001454] dark:bg-[#162240] text-white shadow-xs'
-                                                : 'text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800'
-                                        }`}
-                                    >
-                                        <div className="flex items-center gap-3 min-w-0">
-                                            <Icon className={`w-4 h-4 shrink-0 ${item.active ? 'text-[#4AB8BD]' : 'text-[#1E80A0] dark:text-[#4AB8BD]'}`} />
-                                            <span className="truncate">{item.label}</span>
-                                        </div>
-                                        {item.badge && (
-                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFE4B0] text-[#001454]">
-                                                {item.badge}
-                                            </span>
-                                        )}
-                                    </Link>
-                                );
-                            })}
-                        </nav>
-
-                        <div className="mt-6 pt-5 border-t border-[#1E80A0]/10 dark:border-neutral-800 space-y-1.5">
-                            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#1E80A0] dark:text-[#4AB8BD]">
-                                Fitur Spesial
-                            </p>
-                            <Link
-                                href="/guides"
-                                onClick={onClose}
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={toggleCollapse}
+                                className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#001454] dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-600 flex items-center justify-center shrink-0 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
+                                aria-label="Perkecil menu samping"
+                                title="Perkecil menu"
                             >
-                                <HeartPulse className="w-4 h-4 text-[#4AB8BD] shrink-0" />
-                                <span>Pusat Kesehatan Ikan</span>
-                            </Link>
-                            <Link
-                                href="/products?category=ikan-hias"
-                                onClick={onClose}
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
-                            >
-                                <ShieldCheck className="w-4 h-4 text-[#0684E5] shrink-0" />
-                                <span>Garansi Ikan Hidup 100%</span>
-                            </Link>
-                        </div>
+                                <ArrowLeft className="w-3.5 h-3.5" />
+                            </button>
+                        )}
+                    </div>
+                )}
+
+                {/* Navigation Groups */}
+                <nav
+                    aria-label="Navigasi utama"
+                    className={`mt-2 flex-1 ${isMobile ? 'overflow-y-auto' : 'overflow-visible'}`}
+                >
+                    <div className="space-y-1">
+                        {primaryItems.map((item) => (
+                            <NavRow
+                                key={item.label}
+                                item={item}
+                                collapsed={collapsed}
+                                onNavigate={isMobile ? onClose : undefined}
+                            />
+                        ))}
                     </div>
 
-                    <div className="p-4 border-t border-[#1E80A0]/10 dark:border-neutral-800">
-                        <div className="bg-[#f3f2ff] dark:bg-[#111a30] rounded-2xl p-4 border border-[#1E80A0]/15 dark:border-neutral-700 space-y-2">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#1E80A0] dark:text-[#4AB8BD]">
-                                TIPS OF THE DAY
-                            </p>
-                            <h5 className="text-xs font-extrabold text-[#001454] dark:text-white leading-tight">
-                                {currentTip.title}
-                            </h5>
-                            <p className="text-[11px] text-[#3d4949] dark:text-neutral-300 leading-relaxed">
-                                {currentTip.text}
-                            </p>
-                        </div>
+                    <div
+                        className={`my-4 border-t border-slate-100 dark:border-slate-800/80 ${
+                            collapsed ? 'mx-4' : 'mx-6'
+                        }`}
+                    />
+
+                    <div className="space-y-1">
+                        {utilityItems.map((item) => (
+                            <NavRow
+                                key={item.label}
+                                item={item}
+                                collapsed={collapsed}
+                                onNavigate={isMobile ? onClose : undefined}
+                            />
+                        ))}
                     </div>
+                </nav>
+            </div>
+
+            {/* Footer: Profile Summary + Theme Switch */}
+            <div className="pt-3 pb-5 border-t border-slate-100 dark:border-slate-800/80 space-y-3">
+                {user && (
+                    <Link
+                        href="/profile"
+                        onClick={isMobile ? onClose : undefined}
+                        className={`relative group/profile flex items-center transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0267C1] ${
+                            collapsed ? 'justify-center py-1' : 'gap-3 px-6 py-1'
+                        }`}
+                        aria-label={collapsed ? user.name : undefined}
+                    >
+                        <div className="w-8 h-8 rounded-full bg-[#001454] dark:bg-[#0684E5] text-white font-bold text-xs flex items-center justify-center shrink-0">
+                            {user.name.charAt(0).toUpperCase()}
+                        </div>
+                        {!collapsed && (
+                            <div className="min-w-0">
+                                <p className="text-[13px] font-semibold text-[#001454] dark:text-white truncate leading-tight">
+                                    {user.name}
+                                </p>
+                                <p className="text-[11px] text-slate-400 dark:text-slate-500 truncate mt-0.5">
+                                    {user.email}
+                                </p>
+                            </div>
+                        )}
+                        {collapsed && (
+                            <span
+                                role="tooltip"
+                                className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-3 z-50 whitespace-nowrap rounded-lg bg-[#1e2433] dark:bg-slate-800 px-3 py-1.5 text-xs font-medium text-white shadow-lg opacity-0 group-hover/profile:opacity-100 group-focus-within/profile:opacity-100 transition-opacity duration-150 before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-4 before:border-transparent before:border-r-[#1e2433] dark:before:border-r-slate-800"
+                            >
+                                {user.name}
+                            </span>
+                        )}
+                    </Link>
+                )}
+
+                <button
+                    type="button"
+                    role="switch"
+                    aria-checked={darkMode}
+                    onClick={() => onToggleDarkMode?.()}
+                    aria-label={darkMode ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'}
+                    className={`relative group/theme w-full flex items-center py-1.5 text-[13px] font-medium text-slate-500 hover:text-[#001454] dark:text-slate-400 dark:hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0267C1] ${
+                        collapsed ? 'justify-center' : 'gap-3 px-6'
+                    }`}
+                >
+                    <span
+                        className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full p-0.5 transition-colors duration-200 ${
+                            darkMode ? 'bg-[#0684E5]' : 'bg-slate-200 dark:bg-slate-700'
+                        }`}
+                    >
+                        <span
+                            className={`inline-block h-4 w-4 rounded-full bg-white shadow-xs transition-transform duration-200 ${
+                                darkMode ? 'translate-x-4' : 'translate-x-0'
+                            }`}
+                        />
+                    </span>
+
+                    {!collapsed && (
+                        <span className="truncate">
+                            {darkMode ? 'Mode Terang' : 'Mode Gelap'}
+                        </span>
+                    )}
+
+                    {collapsed && (
+                        <span
+                            role="tooltip"
+                            className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-3 z-50 whitespace-nowrap rounded-lg bg-[#1e2433] dark:bg-slate-800 px-3 py-1.5 text-xs font-medium text-white shadow-lg opacity-0 group-hover/theme:opacity-100 group-focus-within/theme:opacity-100 transition-opacity duration-150 before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-4 before:border-transparent before:border-r-[#1e2433] dark:before:border-r-slate-800"
+                        >
+                            {darkMode ? 'Mode Terang' : 'Mode Gelap'}
+                        </span>
+                    )}
+                </button>
+            </div>
+        </div>
+    );
+
+    return (
+        <>
+            {/* Desktop Sticky Collapsible Sidebar */}
+            <aside
+                className={`hidden md:block sticky top-0 shrink-0 h-screen z-40 select-none bg-white dark:bg-[#0e1424] border-r border-slate-200/80 dark:border-slate-800/90 transition-[width] duration-200 ease-out overflow-visible ${
+                    isCollapsed ? 'w-[72px]' : 'w-60'
+                }`}
+            >
+                {renderSidebarInner({ collapsed: isCollapsed, isMobile: false })}
+            </aside>
+
+            {/* Mobile Sliding Drawer */}
+            <div
+                className={`fixed inset-0 z-[60] md:hidden transition-opacity duration-200 ${
+                    isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                }`}
+                aria-hidden={!isOpen}
+            >
+                <div
+                    onClick={onClose}
+                    className="fixed inset-0 bg-[#001454]/40 backdrop-blur-xs"
+                />
+
+                <aside
+                    className={`fixed inset-y-0 left-0 w-64 max-w-[82vw] h-full bg-white dark:bg-[#0e1424] border-r border-slate-200/80 dark:border-slate-800/90 shadow-2xl z-[61] transform transition-transform duration-200 ease-out ${
+                        isOpen ? 'translate-x-0' : '-translate-x-full'
+                    }`}
+                >
+                    {renderSidebarInner({ collapsed: false, isMobile: true })}
                 </aside>
             </div>
         </>

@@ -45,20 +45,30 @@ const SEARCH_GROUPS = [
     },
 ];
 
-export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
+export default function TopHeader({
+    onOpenMobileSidebar,
+    onOpenChat,
+    darkMode: controlledDarkMode,
+    onToggleDarkMode,
+}) {
     const { auth, cartCount } = usePage().props;
     const user = auth?.user;
     const [searchQuery, setSearchQuery] = useState('');
     const [searchFocused, setSearchFocused] = useState(false);
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
     const searchBoxRef = useRef(null);
-    const [darkMode, setDarkMode] = useState(() => {
+    const [internalDarkMode, setInternalDarkMode] = useState(() => {
         if (typeof window !== 'undefined') {
-            return document.documentElement.classList.contains('dark') || 
-                   localStorage.getItem('theme') === 'dark';
+            return (
+                document.documentElement.classList.contains('dark') ||
+                localStorage.getItem('theme') === 'dark'
+            );
         }
         return false;
     });
+
+    const isControlledTheme = typeof controlledDarkMode === 'boolean' && typeof onToggleDarkMode === 'function';
+    const darkMode = isControlledTheme ? controlledDarkMode : internalDarkMode;
 
     useEffect(() => {
         const handleOutsideClick = (event) => {
@@ -71,18 +81,27 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
     }, []);
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            if (darkMode) {
-                document.documentElement.classList.add('dark');
-                document.documentElement.style.colorScheme = 'dark';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-                document.documentElement.style.colorScheme = 'light';
-                localStorage.setItem('theme', 'light');
-            }
+        if (isControlledTheme || typeof window === 'undefined') {
+            return;
         }
-    }, [darkMode]);
+        if (internalDarkMode) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.style.colorScheme = 'light';
+            localStorage.setItem('theme', 'light');
+        }
+    }, [internalDarkMode, isControlledTheme]);
+
+    const handleToggleTheme = () => {
+        if (isControlledTheme) {
+            onToggleDarkMode();
+        } else {
+            setInternalDarkMode((prev) => !prev);
+        }
+    };
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
@@ -188,7 +207,7 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                     {/* Theme Toggle Icon (Sun / Moon) */}
                     <button
                         type="button"
-                        onClick={() => setDarkMode(prev => !prev)}
+                        onClick={handleToggleTheme}
                         className="p-2 text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
                         title={darkMode ? 'Tema Terang' : 'Tema Gelap'}
                         aria-label="Ubah Tema"

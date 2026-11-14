@@ -11,6 +11,29 @@ export default function AppLayout({ children }) {
     const [chatOpen, setChatOpen] = useState(false);
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
     const [showFlash, setShowFlash] = useState(true);
+    const [darkMode, setDarkMode] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return (
+                document.documentElement.classList.contains('dark') ||
+                localStorage.getItem('theme') === 'dark'
+            );
+        }
+        return false;
+    });
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            if (darkMode) {
+                document.documentElement.classList.add('dark');
+                document.documentElement.style.colorScheme = 'dark';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.style.colorScheme = 'light';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+    }, [darkMode]);
 
     useEffect(() => {
         if (flash?.success || flash?.error) {
@@ -125,10 +148,13 @@ export default function AppLayout({ children }) {
 
     return (
         <div className="min-h-screen w-full flex overflow-x-clip bg-[#fbf8ff] dark:bg-[#070b14] text-[#001454] dark:text-[#e4e7ff] antialiased selection:bg-[#001454] selection:text-white transition-colors duration-200">
-            {/* Left Sidebar (Sticky rail on desktop, sliding drawer on mobile) */}
+            {/* Left Sidebar (Collapsible rail on desktop, sliding drawer on mobile) */}
             <Sidebar
                 isOpen={mobileSidebarOpen}
                 onClose={() => setMobileSidebarOpen(false)}
+                onOpenChat={() => setChatOpen(true)}
+                darkMode={darkMode}
+                onToggleDarkMode={() => setDarkMode((prev) => !prev)}
             />
 
             {/* Main Area: TopHeader + Page Canvas + Footer (Native Window Scroll) */}
@@ -136,6 +162,8 @@ export default function AppLayout({ children }) {
                 <TopHeader 
                     onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
                     onOpenChat={() => setChatOpen(true)}
+                    darkMode={darkMode}
+                    onToggleDarkMode={() => setDarkMode((prev) => !prev)}
                 />
 
                 {/* Flash Messages */}
