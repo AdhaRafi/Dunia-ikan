@@ -80,13 +80,25 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
 
             {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner (MorphMarket Authentic Dark Aesthetic) */}
             <section className="relative w-full overflow-hidden bg-black min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex items-center border-b border-neutral-800">
-                {/* Floating Studio Fish (Seamless Pure Black Background ala MorphMarket) */}
+                {/* Floating Studio Fish Video (Seamless Pure Black Background ala MorphMarket) */}
                 <div className="absolute right-0 top-0 bottom-0 w-full sm:w-3/4 lg:w-3/5 flex items-center justify-end pointer-events-none overflow-hidden">
-                    <img
-                        src="/images/hero-fish.webp"
-                        alt="Show Grade Betta Morph Dunia Ikan"
-                        className="h-full w-full object-cover sm:object-contain object-right select-none"
-                    />
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                        poster="/images/hero-fish-poster.webp"
+                        className="h-full w-full object-cover sm:object-contain object-center sm:object-right select-none opacity-80 sm:opacity-100"
+                    >
+                        <source src="/videos/hero-fish.webm" type="video/webm" />
+                        <source src="/videos/hero-fish.mp4" type="video/mp4" />
+                        <img
+                            src="/images/hero-fish-poster.webp"
+                            alt="Show Grade Betta Morph Dunia Ikan"
+                            className="h-full w-full object-cover sm:object-contain object-center sm:object-right select-none opacity-80 sm:opacity-100"
+                        />
+                    </video>
                 </div>
 
                 {/* Left vignette gradient for seamless typography readability */}
