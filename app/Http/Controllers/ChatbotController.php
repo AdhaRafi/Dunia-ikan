@@ -148,12 +148,12 @@ class ChatbotController extends Controller
                     return "Judul: {$g->title}\nJenis Ikan: {$g->fish_type}\nGejala: {$g->symptoms}\nPenyebab: {$g->possible_causes}\nPenanganan: {$g->care_instructions}\nPencegahan: {$g->prevention}\nSumber: {$g->source}";
                 })->implode("\n---\n");
 
-                $systemPrompt = "Anda adalah 'Asisten Dunia Ikan', asisten pintar konsultasi awal kesehatan ikan dan rekomendasi ikan hias untuk marketplace Dunia Ikan.
+                $systemPrompt = "Anda adalah 'Kiko', maskot dan asisten pintar resmi untuk marketplace Dunia Ikan (berwujud ikan mas astronaut ramah dengan headphone dan mic).
 Pedoman Penting:
 1. Konsultasi kesehatan ikan: Jawaban hanya berisi kemungkinan awal dan hal yang perlu diperiksa (kualitas air, suhu, pH, aerasi). BUKAN diagnosis pasti dokter hewan. Jangan meresepkan obat kimia keras atau dosis berbahaya. Untuk gejala berat atau ikan lemas parah, sarankan bantuan ahli kesehatan hewan.
 2. Gunakan informasi panduan resmi database berikut jika relevan:
 {$guidesContext}
-3. Gaya bahasa: Ramah, profesional, solutif, mudah dipahami pemula. Jawab dalam Bahasa Indonesia yang baik.";
+3. Gaya bahasa: Ramah, bersahabat, profesional, solutif, mudah dipahami pemula. Jawab dalam Bahasa Indonesia yang baik.";
 
                 $contents = [];
                 $parts = [
@@ -192,7 +192,7 @@ Pedoman Penting:
             $isFallback = true;
             if ($matchingGuides->isNotEmpty()) {
                 $guideTitles = $matchingGuides->pluck('title')->implode(', ');
-                $assistantReply = "Halo! Layanan AI eksternal saat ini sedang offline atau belum dikonfigurasi API key-nya. Namun jangan khawatir, kami menemukan panduan resmi dari basis data Dunia Ikan yang relevan dengan pertanyaan Anda:\n\n";
+                $assistantReply = "Halo! Aku Kiko dari Dunia Ikan 🐟. Layanan AI eksternal saat ini sedang offline atau belum dikonfigurasi API key-nya. Namun jangan khawatir, kami menemukan panduan resmi dari basis data Dunia Ikan yang relevan dengan pertanyaan Anda:\n\n";
                 foreach ($matchingGuides as $idx => $g) {
                     $assistantReply .= ($idx + 1).". **{$g->title}** ({$g->fish_type})\n";
                     $assistantReply .= "• Gejala: {$g->symptoms}\n";
@@ -200,9 +200,9 @@ Pedoman Penting:
                 }
                 $assistantReply .= '*(Catatan: Ini adalah pertolongan pertama, pastikan segera cek parameter air seperti suhu dan amonia).*';
             } elseif ($matchingProducts->isNotEmpty()) {
-                $assistantReply = 'Halo! Berikut beberapa rekomendasi produk ikan hias dan perlengkapan aktif yang tersedia di katalog Dunia Ikan sesuai kata kunci Anda:';
+                $assistantReply = 'Halo! Aku Kiko 🐟. Berikut beberapa rekomendasi produk ikan hias dan perlengkapan aktif yang tersedia di katalog Dunia Ikan sesuai kata kunci Anda:';
             } else {
-                $assistantReply = "Halo! Terima kasih telah menghubungi Asisten Dunia Ikan. Layanan Gemini AI sedang offline, silakan jelaskan jenis ikan Anda dan gejala yang terlihat (misal: 'cupang bintik putih' atau 'ikan lemas mengambang') agar sistem kami dapat mencocokkan panduan perawatan yang tersedia di database.";
+                $assistantReply = "Halo! Aku Kiko 🐟, maskot & asisten virtual resmi Dunia Ikan. Layanan Gemini AI sedang offline, silakan jelaskan jenis ikan Anda dan gejala yang terlihat (misal: 'cupang bintik putih' atau 'ikan lemas mengambang') agar aku bisa mencocokkan panduan perawatan yang tersedia di database.";
             }
         }
 

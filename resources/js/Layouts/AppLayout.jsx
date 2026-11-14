@@ -76,21 +76,12 @@ export default function AppLayout({ children }) {
                     {children}
                 </main>
 
-                {/* AI Assistant Floating Button */}
-                {!chatOpen && (
-                    <button
-                        type="button"
-                        onClick={() => setChatOpen(true)}
-                        className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 rounded-full bg-[#0D2E92] px-4 py-3 text-xs font-extrabold text-white shadow-xl hover:bg-[#001454] hover:scale-105 transition-all border border-[#1E80A0]/20"
-                        title="Tanya Asisten Ikan AI"
-                        aria-label="Buka asisten AI"
-                    >
-                        <MessageSquare className="h-4 w-4 text-[#4AB8BD]" />
-                        <span className="hidden sm:inline">Asisten AI</span>
-                    </button>
-                )}
-
-                <ChatbotWidget isOpen={chatOpen} onClose={() => setChatOpen(false)} />
+                {/* Kiko Mascot AI Assistant Widget (Floating Pill, Speech Bubble & Chat Modal) */}
+                <ChatbotWidget
+                    isOpen={chatOpen}
+                    onOpen={() => setChatOpen(true)}
+                    onClose={() => setChatOpen(false)}
+                />
 
                 <Footer />
             </div>
