@@ -20,8 +20,8 @@ export default function AppLayout({ children }) {
     }, [flash?.success, flash?.error]);
 
     return (
-        <div className="h-screen w-full flex overflow-hidden bg-[#FBFBFB] text-slate-900 antialiased selection:bg-slate-900 selection:text-white">
-            {/* Left Sidebar (Permanently docked on desktop, sliding drawer on mobile) */}
+        <div className="h-screen w-full flex overflow-hidden bg-[#fbf8ff] text-[#001454] antialiased selection:bg-[#001454] selection:text-white">
+            {/* Left Sidebar (Docked on desktop, sliding drawer on mobile) */}
             <Sidebar
                 isOpen={mobileSidebarOpen}
                 onClose={() => setMobileSidebarOpen(false)}
@@ -42,9 +42,9 @@ export default function AppLayout({ children }) {
                 {showFlash && (flash?.success || flash?.error) && (
                     <div className="px-4 sm:px-6 lg:px-8 pt-4 w-full max-w-6xl mx-auto">
                         {flash.success && (
-                            <div className="flex items-center justify-between gap-4 rounded-xl bg-emerald-700 px-4 py-3 text-xs font-bold text-white shadow-md">
+                            <div className="flex items-center justify-between gap-4 rounded-xl bg-[#00696D] px-4 py-3 text-xs font-bold text-white shadow-md">
                                 <span className="flex items-center gap-2">
-                                    <Check className="h-4 w-4 shrink-0 text-[#00C882]" />
+                                    <Check className="h-4 w-4 shrink-0 text-[#C0ECB8]" />
                                     {flash.success}
                                 </span>
                                 <button
@@ -58,9 +58,9 @@ export default function AppLayout({ children }) {
                             </div>
                         )}
                         {flash.error && (
-                            <div className="flex items-center justify-between gap-4 rounded-xl bg-rose-700 px-4 py-3 text-xs font-bold text-white shadow-md">
+                            <div className="flex items-center justify-between gap-4 rounded-xl bg-[#ba1a1a] px-4 py-3 text-xs font-bold text-white shadow-md">
                                 <span className="flex items-center gap-2">
-                                    <AlertTriangle className="h-4 w-4 shrink-0 text-rose-300" />
+                                    <AlertTriangle className="h-4 w-4 shrink-0 text-[#ffdad6]" />
                                     {flash.error}
                                 </span>
                                 <button
@@ -86,11 +86,11 @@ export default function AppLayout({ children }) {
                     <button
                         type="button"
                         onClick={() => setChatOpen(true)}
-                        className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 rounded-full bg-slate-950 px-4 py-3 text-xs font-extrabold text-white shadow-xl hover:bg-slate-800 hover:scale-105 transition-all"
+                        className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 rounded-full bg-[#0D2E92] px-4 py-3 text-xs font-extrabold text-white shadow-xl hover:bg-[#001454] hover:scale-105 transition-all border border-[#1E80A0]/20"
                         title="Tanya Asisten Ikan AI"
                         aria-label="Buka asisten AI"
                     >
-                        <MessageSquare className="h-4 w-4 text-[#00C882]" />
+                        <MessageSquare className="h-4 w-4 text-[#4AB8BD]" />
                         <span className="hidden sm:inline">Asisten AI</span>
                     </button>
                 )}

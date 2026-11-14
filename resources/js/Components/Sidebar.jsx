@@ -94,19 +94,19 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
         <>
             {/* Desktop Sidebar: Permanently docked inside the flex app shell */}
             <aside
-                className={`hidden md:flex flex-col justify-between bg-white border-r border-slate-200/80 transition-all duration-300 shrink-0 h-full select-none ${
+                className={`hidden md:flex flex-col justify-between bg-white border-r border-[#1E80A0]/10 transition-all duration-300 shrink-0 h-full select-none ${
                     isCollapsed ? 'w-20' : 'w-64 lg:w-72'
                 }`}
             >
                 {/* Top Section: Brand + Navigation */}
                 <div className="p-4 lg:p-5 flex-1 flex flex-col min-h-0 overflow-y-auto">
                     {/* Brand Header */}
-                    <div className="flex items-center justify-between pb-5 border-b border-slate-100">
+                    <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10">
                         {isCollapsed ? (
                             <div className="w-full flex flex-col items-center gap-2">
                                 <Link 
                                     href="/" 
-                                    className="w-9 h-9 rounded-xl bg-slate-950 text-white flex items-center justify-center shadow-xs hover:scale-105 transition"
+                                    className="w-9 h-9 rounded-xl bg-[#0D2E92] text-white flex items-center justify-center shadow-xs hover:scale-105 transition"
                                     title="CATALYST Dunia Ikan"
                                 >
                                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
@@ -116,7 +116,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                                 <button
                                     type="button"
                                     onClick={onToggleCollapse}
-                                    className="p-1.5 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition"
+                                    className="p-1.5 text-[#1E80A0] hover:text-[#001454] rounded-lg hover:bg-[#f3f2ff] transition"
                                     title="Perluas Sidebar"
                                     aria-label="Perluas Sidebar"
                                 >
@@ -126,16 +126,16 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                         ) : (
                             <>
                                 <Link href="/" className="flex items-center gap-3 group">
-                                    <div className="w-8 h-8 rounded-lg bg-slate-950 text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition">
+                                    <div className="w-8 h-8 rounded-lg bg-[#0D2E92] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition">
                                         <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
                                             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                                         </svg>
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-sm font-extrabold tracking-widest text-slate-950 uppercase leading-none">
+                                        <span className="text-sm font-extrabold tracking-widest text-[#001454] uppercase leading-none">
                                             CATALYST
                                         </span>
-                                        <span className="text-[9px] font-bold tracking-wider text-slate-400 uppercase mt-0.5">
+                                        <span className="text-[9px] font-bold tracking-wider text-[#1E80A0] uppercase mt-0.5">
                                             Dunia Ikan
                                         </span>
                                     </div>
@@ -144,7 +144,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                                 <button
                                     type="button"
                                     onClick={onToggleCollapse}
-                                    className="p-1.5 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition"
+                                    className="p-1.5 text-[#1E80A0] hover:text-[#001454] rounded-lg hover:bg-[#f3f2ff] transition"
                                     title="Kecilkan Sidebar"
                                     aria-label="Kecilkan Sidebar"
                                 >
@@ -165,8 +165,8 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                                         href={item.href}
                                         className={`w-11 h-11 mx-auto flex items-center justify-center rounded-xl transition ${
                                             item.active
-                                                ? 'bg-slate-950 text-white shadow-xs'
-                                                : 'text-slate-500 hover:text-slate-950 hover:bg-slate-100'
+                                                ? 'bg-[#001454] text-[#4AB8BD] shadow-xs'
+                                                : 'text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff]'
                                         }`}
                                         title={item.label}
                                     >
@@ -181,21 +181,21 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                                     href={item.href}
                                     className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
                                         item.active
-                                            ? 'bg-slate-950 text-white shadow-xs'
-                                            : 'text-slate-600 hover:text-slate-950 hover:bg-slate-100/80'
+                                            ? 'bg-[#001454] text-white shadow-xs'
+                                            : 'text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff]'
                                     }`}
                                     title={item.label}
                                 >
                                     <div className="flex items-center gap-3 min-w-0">
                                         <Icon className={`w-4 h-4 shrink-0 transition ${
-                                            item.active ? 'text-white' : 'text-slate-400 group-hover:text-slate-700'
+                                            item.active ? 'text-[#4AB8BD]' : 'text-[#1E80A0] group-hover:text-[#001454]'
                                         }`} />
                                         <span className="truncate">{item.label}</span>
                                     </div>
 
                                     {item.badge && (
                                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                                            item.active ? 'bg-slate-800 text-slate-200' : 'bg-slate-100 text-slate-500'
+                                            item.active ? 'bg-[#FFE4B0] text-[#001454]' : 'bg-[#FFE4B0]/80 text-[#001454]'
                                         }`}>
                                             {item.badge}
                                         </span>
@@ -207,22 +207,22 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
 
                     {/* Special Features Nav (Expanded Only) */}
                     {!isCollapsed && (
-                        <div className="mt-6 pt-5 border-t border-slate-100 space-y-1.5">
-                            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        <div className="mt-6 pt-5 border-t border-[#1E80A0]/10 space-y-1.5">
+                            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#1E80A0]">
                                 Fitur Spesial
                             </p>
                             <Link
                                 href="/guides"
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-950 hover:bg-slate-100 transition"
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff] transition"
                             >
-                                <HeartPulse className="w-4 h-4 text-emerald-600 shrink-0" />
+                                <HeartPulse className="w-4 h-4 text-[#4AB8BD] shrink-0" />
                                 <span>Pusat Kesehatan Ikan</span>
                             </Link>
                             <Link
                                 href="/products?category=ikan-hias"
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-950 hover:bg-slate-100 transition"
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff] transition"
                             >
-                                <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+                                <ShieldCheck className="w-4 h-4 text-[#0684E5] shrink-0" />
                                 <span>Garansi D.O.A. 100%</span>
                             </Link>
                         </div>
@@ -231,34 +231,34 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
 
                 {/* Bottom Section: TIPS OF THE DAY Widget */}
                 {isCollapsed ? (
-                    <div className="p-3 border-t border-slate-100 flex justify-center">
+                    <div className="p-3 border-t border-[#1E80A0]/10 flex justify-center">
                         <button
                             type="button"
                             onClick={nextTip}
-                            className="w-10 h-10 rounded-xl bg-slate-50 text-slate-500 hover:text-emerald-600 flex items-center justify-center border border-slate-200/70 hover:bg-slate-100 transition"
+                            className="w-10 h-10 rounded-xl bg-[#f3f2ff] text-[#1E80A0] hover:text-[#0684E5] flex items-center justify-center border border-[#1E80A0]/20 hover:bg-[#ececff] transition"
                             title={`Tip: ${currentTip.title}`}
                         >
-                            <Lightbulb className="w-4 h-4" />
+                            <Lightbulb className="w-4 h-4 text-[#0684E5]" />
                         </button>
                     </div>
                 ) : (
-                    <div className="p-4 border-t border-slate-100 shrink-0">
-                        <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/70 space-y-2">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                    <div className="p-4 border-t border-[#1E80A0]/10 shrink-0">
+                        <div className="bg-[#f3f2ff] rounded-2xl p-4 border border-[#1E80A0]/15 space-y-2">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#1E80A0]">
                                 TIPS OF THE DAY
                             </p>
-                            <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
+                            <h5 className="text-xs font-extrabold text-[#001454] leading-tight">
                                 {currentTip.title}
                             </h5>
-                            <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-3">
+                            <p className="text-[11px] text-[#3d4949] leading-relaxed line-clamp-3">
                                 {currentTip.text}
                             </p>
-                            <div className="pt-1 flex items-center justify-between text-[11px] font-medium text-slate-400">
+                            <div className="pt-1 flex items-center justify-between text-[11px] font-medium text-[#1E80A0]">
                                 <span>{tipIndex + 1} of {TIPS.length}</span>
                                 <button
                                     type="button"
                                     onClick={nextTip}
-                                    className="text-slate-900 hover:text-emerald-600 font-bold flex items-center gap-1 transition"
+                                    className="text-[#0684E5] hover:text-[#0060aa] font-bold flex items-center gap-1 transition"
                                 >
                                     <span>Next</span>
                                     <ArrowRight className="w-3 h-3" />
@@ -269,7 +269,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                 )}
             </aside>
 
-            {/* Mobile Drawer (Accessible on screens < 768px) */}
+            {/* Mobile Drawer (Screens < 768px) */}
             <div 
                 className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${
                     isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
@@ -278,7 +278,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                 {/* Backdrop */}
                 <div 
                     onClick={onClose} 
-                    className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs" 
+                    className="fixed inset-0 bg-[#001454]/40 backdrop-blur-xs" 
                 />
 
                 {/* Sliding Drawer */}
@@ -288,18 +288,18 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                     }`}
                 >
                     <div className="p-5 flex-1 flex flex-col overflow-y-auto">
-                        <div className="flex items-center justify-between pb-5 border-b border-slate-100">
+                        <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10">
                             <Link href="/" onClick={onClose} className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-slate-950 text-white flex items-center justify-center shadow-xs">
+                                <div className="w-8 h-8 rounded-lg bg-[#0D2E92] text-white flex items-center justify-center shadow-xs">
                                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
                                         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                                     </svg>
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-sm font-extrabold tracking-widest text-slate-950 uppercase leading-none">
+                                    <span className="text-sm font-extrabold tracking-widest text-[#001454] uppercase leading-none">
                                         CATALYST
                                     </span>
-                                    <span className="text-[9px] font-bold tracking-wider text-slate-400 uppercase mt-0.5">
+                                    <span className="text-[9px] font-bold tracking-wider text-[#1E80A0] uppercase mt-0.5">
                                         Dunia Ikan
                                     </span>
                                 </div>
@@ -308,7 +308,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="p-1.5 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100"
+                                className="p-1.5 text-[#1E80A0] hover:text-[#001454] rounded-lg hover:bg-[#f3f2ff]"
                                 aria-label="Tutup Menu"
                             >
                                 <X className="w-5 h-5" />
@@ -325,18 +325,16 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                                         onClick={onClose}
                                         className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
                                             item.active
-                                                ? 'bg-slate-950 text-white shadow-xs'
-                                                : 'text-slate-600 hover:text-slate-950 hover:bg-slate-100/80'
+                                                ? 'bg-[#001454] text-white shadow-xs'
+                                                : 'text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff]'
                                         }`}
                                     >
                                         <div className="flex items-center gap-3 min-w-0">
-                                            <Icon className={`w-4 h-4 shrink-0 ${item.active ? 'text-white' : 'text-slate-400'}`} />
+                                            <Icon className={`w-4 h-4 shrink-0 ${item.active ? 'text-[#4AB8BD]' : 'text-[#1E80A0]'}`} />
                                             <span className="truncate">{item.label}</span>
                                         </div>
                                         {item.badge && (
-                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                                                item.active ? 'bg-slate-800 text-slate-200' : 'bg-slate-100 text-slate-500'
-                                            }`}>
+                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFE4B0] text-[#001454]">
                                                 {item.badge}
                                             </span>
                                         )}
@@ -345,38 +343,38 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                             })}
                         </nav>
 
-                        <div className="mt-6 pt-5 border-t border-slate-100 space-y-1.5">
-                            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        <div className="mt-6 pt-5 border-t border-[#1E80A0]/10 space-y-1.5">
+                            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#1E80A0]">
                                 Fitur Spesial
                             </p>
                             <Link
                                 href="/guides"
                                 onClick={onClose}
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-950 hover:bg-slate-100 transition"
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff] transition"
                             >
-                                <HeartPulse className="w-4 h-4 text-emerald-600 shrink-0" />
+                                <HeartPulse className="w-4 h-4 text-[#4AB8BD] shrink-0" />
                                 <span>Pusat Kesehatan Ikan</span>
                             </Link>
                             <Link
                                 href="/products?category=ikan-hias"
                                 onClick={onClose}
-                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-950 hover:bg-slate-100 transition"
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff] transition"
                             >
-                                <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+                                <ShieldCheck className="w-4 h-4 text-[#0684E5] shrink-0" />
                                 <span>Garansi D.O.A. 100%</span>
                             </Link>
                         </div>
                     </div>
 
-                    <div className="p-4 border-t border-slate-100">
-                        <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/70 space-y-2">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                    <div className="p-4 border-t border-[#1E80A0]/10">
+                        <div className="bg-[#f3f2ff] rounded-2xl p-4 border border-[#1E80A0]/15 space-y-2">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#1E80A0]">
                                 TIPS OF THE DAY
                             </p>
-                            <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
+                            <h5 className="text-xs font-extrabold text-[#001454] leading-tight">
                                 {currentTip.title}
                             </h5>
-                            <p className="text-[11px] text-slate-500 leading-relaxed">
+                            <p className="text-[11px] text-[#3d4949] leading-relaxed">
                                 {currentTip.text}
                             </p>
                         </div>

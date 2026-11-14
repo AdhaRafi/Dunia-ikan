@@ -5,13 +5,13 @@ import { Check, ShoppingCart, ShieldCheck, Heart } from 'lucide-react';
 function sexLabel(sex) {
     switch (sex) {
         case 'male':
-            return { label: '♂ Jantan', bg: 'bg-slate-900 text-white' };
+            return { label: '♂ Jantan', bg: 'bg-[#001454] text-white' };
         case 'female':
-            return { label: '♀ Betina', bg: 'bg-rose-600 text-white' };
+            return { label: '♀ Betina', bg: 'bg-[#006783] text-white' };
         case 'pair':
-            return { label: 'Sepasang', bg: 'bg-purple-600 text-white' };
+            return { label: 'Sepasang', bg: 'bg-[#0D2E92] text-white' };
         default:
-            return { label: 'Unsexed', bg: 'bg-slate-700 text-white' };
+            return { label: 'Unsexed', bg: 'bg-[#3d4949] text-white' };
     }
 }
 
@@ -23,7 +23,7 @@ function formatPrice(price) {
     }).format(price);
 }
 
-const fallbackFish = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='750' viewBox='0 0 600 750' fill='none'%3E%3Crect width='600' height='750' fill='%23F1F5F9'/%3E%3Cpath d='M300 280 C390 280 450 340 450 380 C450 420 390 480 300 480 C240 480 180 420 130 435 L130 325 C180 340 240 280 300 280 Z' fill='%230F172A' opacity='0.7'/%3E%3Ccircle cx='390' cy='350' r='10' fill='white'/%3E%3Ctext x='50%25' y='560' text-anchor='middle' fill='%2364748B' font-family='sans-serif' font-weight='600' font-size='18'%3EDunia Ikan Specimen%3C/text%3E%3C/svg%3E";
+const fallbackFish = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='750' viewBox='0 0 600 750' fill='none'%3E%3Crect width='600' height='750' fill='%23f3f2ff'/%3E%3Cpath d='M300 280 C390 280 450 340 450 380 C450 420 390 480 300 480 C240 480 180 420 130 435 L130 325 C180 340 240 280 300 280 Z' fill='%23001454' opacity='0.7'/%3E%3Ccircle cx='390' cy='350' r='10' fill='white'/%3E%3Ctext x='50%25' y='560' text-anchor='middle' fill='%231E80A0' font-family='sans-serif' font-weight='600' font-size='18'%3EDunia Ikan Specimen%3C/text%3E%3C/svg%3E";
 
 export default function ProductCard({ product }) {
     const [adding, setAdding] = useState(false);
@@ -59,8 +59,8 @@ export default function ProductCard({ product }) {
 
     return (
         <article className="group flex flex-col select-none">
-            {/* Catalyst-style Studio Card Image Container */}
-            <div className="relative aspect-[3/4] rounded-2xl bg-[#ECECEC] overflow-hidden border border-slate-200/60 shadow-xs group-hover:shadow-md transition-all duration-300">
+            {/* Studio Card Image Container */}
+            <div className="relative aspect-[3/4] rounded-2xl bg-[#f3f2ff] overflow-hidden border border-[#1E80A0]/10 shadow-xs group-hover:shadow-md transition-all duration-300">
                 <Link href={`/products/${product.slug}`} className="block w-full h-full">
                     <img
                         src={product.image || fallbackFish}
@@ -82,24 +82,25 @@ export default function ProductCard({ product }) {
                         e.stopPropagation();
                         setIsFavorite(!isFavorite);
                     }}
-                    className="absolute top-3 right-3 p-2 rounded-full bg-white/80 backdrop-blur-xs text-slate-700 hover:text-rose-600 transition shadow-xs"
+                    className="absolute top-3 right-3 p-2 rounded-full bg-white/90 backdrop-blur-xs text-[#1E80A0] hover:text-[#0684E5] transition shadow-xs"
                     title="Simpan ke Favorit"
+                    aria-label="Simpan ke Favorit"
                 >
-                    <Heart className={`w-3.5 h-3.5 ${isFavorite ? 'fill-rose-500 text-rose-500' : ''}`} />
+                    <Heart className={`w-3.5 h-3.5 ${isFavorite ? 'fill-[#0684E5] text-[#0684E5]' : ''}`} />
                 </button>
 
-                {/* Top Left: Live Arrival Guarantee (DOA) Badge */}
+                {/* Top Left: Live Arrival Guarantee (DOA) Badge with Pastel Green & Deep Navy */}
                 {product.store?.doa_policy && (
-                    <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-xs text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs border border-slate-200/50">
-                        <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                    <div className="absolute top-3 left-3 bg-[#C0ECB8] text-[#0D2E92] text-[10px] font-extrabold tracking-wider px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-xs uppercase">
+                        <ShieldCheck className="w-3 h-3 text-[#0D2E92]" />
                         <span>DOA 100%</span>
                     </div>
                 )}
 
                 {/* Stock Out Badge */}
                 {product.stock <= 0 && (
-                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center">
-                        <span className="px-3 py-1 bg-white text-slate-900 font-extrabold text-xs rounded-full uppercase tracking-wider shadow-sm">
+                    <div className="absolute inset-0 bg-[#001454]/60 backdrop-blur-xs flex items-center justify-center">
+                        <span className="px-3 py-1 bg-white text-[#ba1a1a] font-extrabold text-xs rounded-full uppercase tracking-wider shadow-sm">
                             Habis
                         </span>
                     </div>
@@ -115,17 +116,17 @@ export default function ProductCard({ product }) {
                 )}
             </div>
 
-            {/* Product Meta (Catalyst Minimalist Typography) */}
+            {/* Product Meta (Modern Aquatic Typography) */}
             <div className="pt-3 space-y-1">
-                <div className="flex items-center justify-between text-xs text-slate-400">
-                    <span className="truncate">{fish?.morph_trait || product.category?.name}</span>
-                    <span className="text-[11px] text-slate-400 shrink-0">{product.store?.city}</span>
+                <div className="flex items-center justify-between text-xs text-[#1E80A0]">
+                    <span className="truncate font-medium">{fish?.morph_trait || product.category?.name}</span>
+                    <span className="text-[11px] text-[#6d797a] shrink-0">{product.store?.city}</span>
                 </div>
 
                 <div className="flex items-start justify-between gap-2">
                     <Link
                         href={`/products/${product.slug}`}
-                        className="text-xs sm:text-sm font-bold text-slate-900 hover:text-emerald-700 transition leading-snug line-clamp-1"
+                        className="text-xs sm:text-sm font-bold text-[#0D2E92] hover:text-[#0684E5] transition leading-snug line-clamp-1"
                     >
                         {product.name}
                     </Link>
@@ -137,17 +138,18 @@ export default function ProductCard({ product }) {
                             disabled={adding}
                             className={`p-1.5 rounded-full transition shrink-0 ${
                                 added
-                                    ? 'bg-emerald-600 text-white'
-                                    : 'text-slate-400 hover:text-slate-900 hover:bg-slate-100'
+                                    ? 'bg-[#00696D] text-white'
+                                    : 'bg-[#f3f2ff] text-[#0684E5] hover:bg-[#0684E5] hover:text-white'
                             }`}
                             title="Tambah ke Keranjang"
+                            aria-label="Tambah ke Keranjang"
                         >
                             {added ? <Check className="w-3.5 h-3.5" /> : <ShoppingCart className="w-3.5 h-3.5" />}
                         </button>
                     )}
                 </div>
 
-                <p className="text-xs sm:text-sm font-extrabold text-slate-900 tabular-nums">
+                <p className="text-xs sm:text-sm font-extrabold text-[#0684E5] tabular-nums">
                     {formatPrice(product.price)}
                 </p>
             </div>
