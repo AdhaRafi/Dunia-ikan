@@ -1,226 +1,249 @@
 import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { 
-    ShoppingCart, 
-    Trash2, 
-    Store, 
-    ArrowRight, 
-    ShieldCheck, 
-    AlertCircle, 
-    ArrowLeft 
-} from 'lucide-react';
+import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 
-export default function Index({ groupedCart, totalItems, grandTotal }) {
+const formatPrice = (price) =>
+    new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        maximumFractionDigits: 0,
+    }).format(price);
+
+export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0 }) {
+    const cartItems = groupedCart.flatMap((group) =>
+        (group.items || []).map((item) => ({
+            ...item,
+            storeName: group.store?.name,
+        }))
+    );
+
     const handleUpdateQuantity = (cartItemId, newQuantity) => {
-        if (newQuantity < 1) return;
+        if (newQuantity < 1) {
+            return;
+        }
 
-        router.patch(`/cart/${cartItemId}`, {
-            quantity: newQuantity,
-        }, {
-            preserveScroll: true,
-        });
+        router.patch(
+            `/cart/${cartItemId}`,
+            { quantity: newQuantity },
+            { preserveScroll: true }
+        );
     };
 
     const handleDelete = (cartItemId) => {
         if (confirm('Hapus produk ini dari keranjang?')) {
-            router.delete(`/cart/${cartItemId}`, {
-                preserveScroll: true,
-            });
+            router.delete(`/cart/${cartItemId}`, { preserveScroll: true });
         }
-    };
-
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            maximumFractionDigits: 0,
-        }).format(price);
     };
 
     return (
         <AppLayout>
-            <Head title="Keranjang Belanja - Dunia Ikan" />
+            <Head title="Keranjang — Dunia Ikan" />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                <div className="flex items-center gap-3 mb-8">
-                    <div className="w-10 h-10 rounded-xl bg-dunia-blue/10 text-dunia-blue flex items-center justify-center font-bold">
-                        <ShoppingCart className="w-5 h-5" />
-                    </div>
-                    <div>
-                        <h1 className="text-2xl sm:text-3xl font-extrabold text-dunia-navy tracking-tight">
-                            Keranjang Belanja
-                        </h1>
-                        <p className="text-xs text-slate-500">
-                            Pesanan dikelompokkan per toko penangkar untuk keamanan pengiriman hidup.
-                        </p>
-                    </div>
-                </div>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                {cartItems.length > 0 ? (
+                    <div className="bg-white dark:bg-[#0e1424] rounded-3xl border border-slate-200/80 dark:border-neutral-800 overflow-hidden">
+                        <div className="grid grid-cols-1 lg:grid-cols-12">
+                            {/* Left Column: Cart List */}
+                            <div className="lg:col-span-8 p-6 sm:p-8 lg:border-r border-slate-200/80 dark:border-neutral-800">
+                                <div className="flex items-center justify-between pb-6 border-b border-dashed border-slate-200 dark:border-neutral-800">
+                                    <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white uppercase">
+                                        Keranjang
+                                        <sup className="ml-1.5 text-xs font-bold text-slate-400 tabular-nums">
+                                            {String(cartItems.length).padStart(2, '0')}
+                                        </sup>
+                                    </h1>
+                                    <span className="text-xs font-medium text-slate-400 dark:text-neutral-500">
+                                        {groupedCart.length} toko
+                                    </span>
+                                </div>
 
-                {groupedCart?.length > 0 ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        {/* Cart Items Grouped by Store */}
-                        <div className="lg:col-span-8 space-y-6">
-                            {groupedCart.map((group, groupIndex) => (
-                                <div
-                                    key={groupIndex}
-                                    className="bg-white rounded-2xl border border-sky-100 shadow-xs overflow-hidden"
-                                >
-                                    {/* Store Header */}
-                                    <div className="bg-sky-50/60 px-5 py-3 border-b border-sky-100 flex items-center justify-between">
-                                        <div className="flex items-center gap-2">
-                                            <Store className="w-4 h-4 text-dunia-marine" />
-                                            <span className="font-bold text-sm text-dunia-navy">
-                                                {group.store.name}
-                                            </span>
-                                            <span className="text-xs text-slate-400">({group.store.city})</span>
-                                        </div>
+                                <div className="divide-y divide-dashed divide-slate-200 dark:divide-neutral-800">
+                                    {cartItems.map((item) => {
+                                        const categoryLabel =
+                                            item.product?.category?.name || 'Spesimen';
+                                        const metaParts = [
+                                            item.storeName,
+                                            item.product?.fish_detail?.morph_trait,
+                                        ].filter(Boolean);
 
-                                        {group.store.doa_policy && (
-                                            <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
-                                                <ShieldCheck className="w-3.5 h-3.5" /> Garansi Ikan Hidup 100%
-                                            </span>
-                                        )}
-                                    </div>
+                                        return (
+                                            <div
+                                                key={item.id}
+                                                className="py-5 sm:py-6 flex items-stretch gap-4 sm:gap-5"
+                                            >
+                                                <Link
+                                                    href={`/products/${item.product?.slug}`}
+                                                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-neutral-800 overflow-hidden shrink-0"
+                                                >
+                                                    <img
+                                                        src={
+                                                            item.product?.image ||
+                                                            '/images/hero-fish-poster.webp'
+                                                        }
+                                                        alt={item.product?.name}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                </Link>
 
-                                    {/* Store Items List */}
-                                    <div className="divide-y divide-slate-100 p-5 space-y-4">
-                                        {group.items.map((item) => (
-                                            <div key={item.id} className="pt-4 first:pt-0 flex items-center gap-4">
-                                                <img
-                                                    src={item.product?.image || 'https://images.unsplash.com/photo-1544943910-4c1dc44a0b27?auto=format&fit=crop&w=200&q=80'}
-                                                    alt={item.product?.name}
-                                                    className="w-20 h-20 rounded-xl object-cover border border-slate-100 shrink-0"
-                                                />
+                                                <div className="flex-1 min-w-0 flex flex-col justify-between">
+                                                    <div className="flex items-start justify-between gap-4">
+                                                        <div className="min-w-0 space-y-1">
+                                                            <span className="inline-block rounded-full border border-slate-200 dark:border-neutral-700 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                                                {categoryLabel}
+                                                            </span>
+                                                            <Link
+                                                                href={`/products/${item.product?.slug}`}
+                                                                className="block font-bold text-sm sm:text-base text-slate-900 dark:text-white hover:underline truncate"
+                                                            >
+                                                                {item.product?.name}
+                                                            </Link>
+                                                            {metaParts.length > 0 && (
+                                                                <p className="text-xs text-slate-500 dark:text-neutral-400 truncate">
+                                                                    {metaParts.join(' · ')}
+                                                                </p>
+                                                            )}
+                                                        </div>
 
-                                                <div className="flex-1 min-w-0">
-                                                    <Link
-                                                        href={`/products/${item.product?.slug}`}
-                                                        className="font-bold text-sm text-slate-900 hover:text-dunia-blue transition truncate block"
-                                                    >
-                                                        {item.product?.name}
-                                                    </Link>
-
-                                                    <p className="text-xs font-extrabold text-dunia-blue mt-0.5">
-                                                        {formatPrice(item.product?.price)}
-                                                    </p>
-
-                                                    {item.product?.fish_detail?.morph_trait && (
-                                                        <span className="inline-block mt-1 text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md font-semibold">
-                                                            Morph: {item.product.fish_detail.morph_trait}
+                                                        <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white tabular-nums shrink-0">
+                                                            {formatPrice(
+                                                                (item.product?.price || 0) *
+                                                                    item.quantity
+                                                            )}
                                                         </span>
-                                                    )}
-                                                </div>
-
-                                                {/* Quantity Selector */}
-                                                <div className="flex items-center gap-2">
-                                                    <div className="flex items-center border border-slate-200 rounded-lg p-0.5 bg-slate-50">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-                                                            disabled={item.quantity <= 1}
-                                                            className="w-7 h-7 rounded hover:bg-white flex items-center justify-center font-bold text-xs disabled:opacity-30"
-                                                        >
-                                                            -
-                                                        </button>
-                                                        <span className="w-8 text-center text-xs font-bold text-slate-800">
-                                                            {item.quantity}
-                                                        </span>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-                                                            disabled={item.quantity >= item.product?.stock}
-                                                            className="w-7 h-7 rounded hover:bg-white flex items-center justify-center font-bold text-xs disabled:opacity-30"
-                                                        >
-                                                            +
-                                                        </button>
                                                     </div>
 
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleDelete(item.id)}
-                                                        className="p-2 text-slate-400 hover:text-rose-500 transition cursor-pointer"
-                                                        title="Hapus"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
+                                                    <div className="flex items-center justify-end gap-3 pt-3">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleDelete(item.id)}
+                                                            className="p-1.5 text-slate-400 hover:text-rose-500 transition cursor-pointer"
+                                                            aria-label={`Hapus ${item.product?.name}`}
+                                                            title="Hapus"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+
+                                                        <div className="inline-flex items-center rounded-full border border-slate-200 dark:border-neutral-700 bg-white dark:bg-slate-900 px-1 py-0.5">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    handleUpdateQuantity(
+                                                                        item.id,
+                                                                        item.quantity - 1
+                                                                    )
+                                                                }
+                                                                disabled={item.quantity <= 1}
+                                                                aria-label="Kurangi jumlah"
+                                                                className="w-7 h-7 rounded-full flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 transition"
+                                                            >
+                                                                <Minus className="w-3.5 h-3.5" />
+                                                            </button>
+                                                            <span className="w-8 text-center text-xs font-bold text-slate-900 dark:text-white tabular-nums">
+                                                                {String(item.quantity).padStart(
+                                                                    2,
+                                                                    '0'
+                                                                )}
+                                                            </span>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    handleUpdateQuantity(
+                                                                        item.id,
+                                                                        item.quantity + 1
+                                                                    )
+                                                                }
+                                                                disabled={
+                                                                    item.quantity >=
+                                                                    (item.product?.stock ?? 0)
+                                                                }
+                                                                aria-label="Tambah jumlah"
+                                                                className="w-7 h-7 rounded-full flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 transition"
+                                                            >
+                                                                <Plus className="w-3.5 h-3.5" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        ))}
+                                        );
+                                    })}
+                                </div>
+                            </div>
 
-                                        {/* Store Subtotal */}
-                                        <div className="pt-3 flex justify-between items-center text-xs font-semibold text-slate-600">
-                                            <span>Subtotal Toko:</span>
-                                            <span className="font-bold text-slate-900 text-sm">
-                                                {formatPrice(group.storeTotal)}
+                            {/* Right Column: Summary */}
+                            <div className="lg:col-span-4 p-6 sm:p-8 flex flex-col justify-between bg-white dark:bg-[#0e1424]">
+                                <div className="lg:sticky lg:top-24 space-y-5">
+                                    <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white uppercase">
+                                        Ringkasan
+                                    </h2>
+
+                                    <div className="rounded-2xl bg-[#f7f7f8] dark:bg-slate-900/70 border border-slate-200/70 dark:border-neutral-800 p-5 space-y-3 text-xs sm:text-sm">
+                                        <div className="flex items-center justify-between text-slate-500 dark:text-neutral-400">
+                                            <span>Total item</span>
+                                            <span className="font-semibold text-slate-900 dark:text-white tabular-nums">
+                                                {String(totalItems).padStart(2, '0')} item
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center justify-between text-slate-500 dark:text-neutral-400">
+                                            <span>Subtotal</span>
+                                            <span className="font-semibold text-slate-900 dark:text-white tabular-nums">
+                                                {formatPrice(grandTotal)}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center justify-between text-slate-500 dark:text-neutral-400">
+                                            <span>Ongkos kirim</span>
+                                            <span className="text-xs font-medium text-slate-500 dark:text-neutral-400">
+                                                Saat checkout
+                                            </span>
+                                        </div>
+
+                                        <div className="pt-3 border-t border-slate-200/80 dark:border-neutral-800 flex items-center justify-between">
+                                            <span className="font-bold text-slate-900 dark:text-white">
+                                                Total bayar
+                                            </span>
+                                            <span className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tabular-nums">
+                                                {formatPrice(grandTotal)}
                                             </span>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
 
-                        {/* Order Summary & Checkout CTA */}
-                        <div className="lg:col-span-4">
-                            <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-5 sticky top-24">
-                                <h3 className="font-extrabold text-base text-dunia-navy pb-3 border-b border-slate-100">
-                                    Ringkasan Keranjang
-                                </h3>
+                                    <div className="space-y-2.5 pt-1">
+                                        <Link
+                                            href="/checkout"
+                                            className="w-full h-12 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center transition"
+                                        >
+                                            Checkout
+                                        </Link>
 
-                                <div className="space-y-2.5 text-xs text-slate-600">
-                                    <div className="flex justify-between">
-                                        <span>Total Jumlah Ikan/Produk</span>
-                                        <span className="font-bold text-slate-900">{totalItems} item</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Jumlah Toko Terlibat</span>
-                                        <span className="font-bold text-slate-900">{groupedCart.length} Toko</span>
-                                    </div>
-                                    <div className="pt-3 border-t border-slate-100 flex justify-between items-center text-sm font-bold text-dunia-navy">
-                                        <span>Total Produk</span>
-                                        <span className="text-lg font-extrabold text-dunia-blue">
-                                            {formatPrice(grandTotal)}
-                                        </span>
+                                        <Link
+                                            href="/products"
+                                            className="w-full h-11 rounded-full bg-white dark:bg-transparent border border-slate-200 dark:border-neutral-700 hover:border-slate-400 text-slate-800 dark:text-slate-200 text-xs font-bold uppercase tracking-wider flex items-center justify-center transition"
+                                        >
+                                            Lanjut Belanja
+                                        </Link>
                                     </div>
                                 </div>
-
-                                <p className="text-[11px] text-slate-400 leading-relaxed">
-                                    * Ongkos kirim khusus live fish (kemasan oksigen + box styrofoam) dihitung per toko pada halaman checkout berikutnya.
-                                </p>
-
-                                <Link
-                                    href="/checkout"
-                                    className="w-full py-3.5 px-6 rounded-2xl bg-dunia-blue hover:bg-sky-600 text-white font-bold text-sm shadow-lg shadow-dunia-blue/20 transition flex items-center justify-center gap-2 cursor-pointer"
-                                >
-                                    Lanjut ke Checkout
-                                    <ArrowRight className="w-4 h-4" />
-                                </Link>
-
-                                <Link
-                                    href="/products"
-                                    className="w-full py-2.5 text-center text-xs font-semibold text-slate-500 hover:text-dunia-blue transition block"
-                                >
-                                    ← Lanjut Belanja Ikan Lainnya
-                                </Link>
                             </div>
                         </div>
                     </div>
                 ) : (
                     /* Empty Cart State */
-                    <div className="p-16 text-center bg-white rounded-3xl border border-sky-100 shadow-xs max-w-lg mx-auto space-y-4">
-                        <div className="w-16 h-16 rounded-2xl bg-sky-50 text-dunia-blue mx-auto flex items-center justify-center">
-                            <ShoppingCart className="w-8 h-8" />
+                    <div className="max-w-md mx-auto py-16 px-6 text-center bg-white dark:bg-[#0e1424] rounded-3xl border border-slate-200/80 dark:border-neutral-800 space-y-4">
+                        <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 mx-auto flex items-center justify-center">
+                            <ShoppingBag className="w-5 h-5" />
                         </div>
-                        <h2 className="text-xl font-bold text-dunia-navy">Keranjang Anda Masih Kosong</h2>
-                        <p className="text-xs text-slate-500 leading-relaxed">
-                            Belum ada ikan hias atau perlengkapan yang Anda pilih. Jelajahi katalog kami untuk menemukan ikan idaman!
+                        <h1 className="text-lg font-extrabold tracking-tight text-slate-900 dark:text-white uppercase">
+                            Keranjang Kosong
+                        </h1>
+                        <p className="text-xs text-slate-500 dark:text-neutral-400 leading-relaxed">
+                            Belum ada produk yang ditambahkan ke keranjang Anda.
                         </p>
                         <div className="pt-2">
                             <Link
                                 href="/products"
-                                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-dunia-blue text-white text-xs font-bold hover:bg-sky-600 transition shadow-sm"
+                                className="inline-flex h-11 px-7 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:text-slate-950 text-white text-xs font-bold uppercase tracking-wider items-center justify-center transition"
                             >
-                                <ArrowLeft className="w-4 h-4" />
-                                Jelajahi Katalog Sekarang
+                                Jelajahi Katalog
                             </Link>
                         </div>
                     </div>
