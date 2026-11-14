@@ -8,7 +8,9 @@ import {
     ShoppingCart, 
     User, 
     Menu, 
-    ChevronDown
+    ChevronDown,
+    Package,
+    MapPin
 } from 'lucide-react';
 import BrandLogo from '@/Components/BrandLogo';
 import BrandWordmark from '@/Components/BrandWordmark';
@@ -119,6 +121,18 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                         )}
                     </Link>
 
+                    {/* Orders (Pesanan Saya) Icon */}
+                    {user && (
+                        <Link
+                            href="/orders"
+                            className="relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
+                            title="Pesanan Saya"
+                            aria-label="Pesanan Saya"
+                        >
+                            <Package className="w-4 h-4" />
+                        </Link>
+                    )}
+
                     {/* User Profile / Auth Actions */}
                     {user ? (
                         <div className="relative ml-1">
@@ -147,11 +161,17 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                                         <p className="text-[11px] text-[#3d4949] dark:text-neutral-400 truncate">{user.email}</p>
                                     </div>
 
-                                    <Link href="/orders" className="block px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
-                                        Pesanan Saya
+                                    <Link href="/profile" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
+                                        <User className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
+                                        <span>Profil Saya</span>
                                     </Link>
-                                    <Link href="/addresses" className="block px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
-                                        Buku Alamat
+                                    <Link href="/orders" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition font-medium">
+                                        <Package className="w-3.5 h-3.5 text-[#0684E5] dark:text-[#4AB8BD]" />
+                                        <span>Pesanan Saya</span>
+                                    </Link>
+                                    <Link href="/addresses" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
+                                        <MapPin className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
+                                        <span>Buku Alamat</span>
                                     </Link>
 
                                     {user.role === 'seller' && (

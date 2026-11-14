@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Order;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,9 +19,26 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $user = $request->user();
+
+        $recentOrders = Order::with(['store', 'items.product'])
+            ->where('buyer_id', $user->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $orderStats = [
+            'pending' => Order::where('buyer_id', $user->id)->where('status', 'pending_payment')->count(),
+            'processing' => Order::where('buyer_id', $user->id)->whereIn('status', ['awaiting_confirmation', 'processing'])->count(),
+            'shipped' => Order::where('buyer_id', $user->id)->where('status', 'shipped')->count(),
+            'delivered' => Order::where('buyer_id', $user->id)->where('status', 'delivered')->count(),
+        ];
+
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => session('status'),
+            'recentOrders' => $recentOrders,
+            'orderStats' => $orderStats,
         ]);
     }
 

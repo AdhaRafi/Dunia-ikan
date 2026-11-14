@@ -13,7 +13,8 @@ import {
     HeartPulse,
     Lightbulb,
     ChevronRight,
-    Dna
+    Dna,
+    Package
 } from 'lucide-react';
 import BrandLogo from '@/Components/BrandLogo';
 import BrandWordmark from '@/Components/BrandWordmark';
@@ -156,6 +157,23 @@ export default function Sidebar({ isOpen, onClose }) {
                     { label: 'Pencegahan & Pengobatan White Spot (Ich)', href: '/guides' },
                 ],
                 footerLink: { label: 'Buka Seluruh Artikel Fishpedia', href: '/guides' }
+            }
+        },
+        {
+            label: 'Pesanan',
+            sublabel: 'Status & Riwayat',
+            icon: Package,
+            href: '/orders',
+            active: url.startsWith('/orders'),
+            flyout: {
+                title: 'Pesanan & Pelacakan Ikan',
+                description: 'Pantau pembayaran, karantina kirim, dan riwayat pesanan spesimen Anda.',
+                links: [
+                    { label: 'Semua Pesanan Saya', href: '/orders' },
+                    { label: 'Cek Status Pembayaran', href: '/orders' },
+                    { label: 'Profil & Pengaturan Akun', href: '/profile' },
+                ],
+                footerLink: { label: 'Buka Halaman Pesanan Saya', href: '/orders' }
             }
         },
     ];
