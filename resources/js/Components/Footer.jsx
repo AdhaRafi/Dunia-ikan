@@ -1,109 +1,184 @@
+import { useState } from 'react';
 import { Link } from '@inertiajs/react';
-import { ShieldCheck, Heart, CheckCircle2 } from 'lucide-react';
-import BrandLogo from '@/Components/BrandLogo';
+import { Check } from 'lucide-react';
 import BrandWordmark from '@/Components/BrandWordmark';
 
 export default function Footer() {
+    const [email, setEmail] = useState('');
+    const [subscribed, setSubscribed] = useState(false);
+
+    const handleNewsletterSubmit = (e) => {
+        e.preventDefault();
+        if (email.trim()) {
+            setSubscribed(true);
+            setTimeout(() => setSubscribed(false), 4000);
+            setEmail('');
+        }
+    };
+
     return (
-        <footer className="mt-16 bg-[#0a0a0a] text-white text-xs border-t border-neutral-800 selection:bg-white selection:text-black">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                    {/* Brand */}
-                    <div className="space-y-3">
-                        <Link href="/" className="inline-block hover:opacity-90 transition">
-                            <BrandWordmark variant="white" className="h-10" />
+        <footer className="mt-20 bg-white dark:bg-[#070b14] text-neutral-900 dark:text-neutral-100 border-t border-neutral-200 dark:border-neutral-800 transition-colors duration-200 overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-0">
+                {/* 1. TOP SECTION: Brand on left + 4 Navigation Columns on right (Avora Luxury Layout) */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14 pb-12 sm:pb-16">
+                    {/* Brand Column */}
+                    <div className="md:col-span-4 space-y-4">
+                        <Link href="/" className="inline-block group">
+                            <BrandWordmark className="h-9 sm:h-10" />
                         </Link>
-                        <p className="text-[11px] text-neutral-400 leading-relaxed">
-                            Marketplace Ikan Hias & Mutasi Genetik Captive-Bred Terverifikasi Indonesia.
+                        <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-sm leading-relaxed">
+                            Marketplace ikan hias & mutasi genetik (morph) captive-bred pertama di Indonesia dengan garansi ikan hidup 100% sampai tujuan.
                         </p>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-900 text-neutral-300 text-[10px] font-bold border border-neutral-800">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                            <span>Certified Captive-Bred Origin</span>
+                        <div className="pt-2">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold border border-emerald-200 dark:border-emerald-800/60">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                Terakreditasi Asosiasi Penangkar Indonesia
+                            </span>
                         </div>
                     </div>
 
-                    {/* Nav 1: Koleksi */}
-                    <div className="space-y-2.5">
-                        <p className="font-bold text-white uppercase tracking-wider text-[11px]">
-                            Koleksi Spesimen
-                        </p>
-                        <ul className="space-y-2 text-[11px] text-neutral-400">
-                            <li>
-                                <Link href="/products?sort=popular" className="hover:text-white transition">
-                                    The Most Trending 100
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/products?water_type=freshwater" className="hover:text-white transition">
-                                    Air Tawar (Freshwater)
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/products?water_type=saltwater" className="hover:text-white transition">
-                                    Air Laut & Terumbu Karang
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/products?category=aquascape" className="hover:text-white transition">
-                                    Aquascape & Tanaman Air
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
+                    {/* 4 Navigation Columns (Skincare, Newsletter, Connect, Support) */}
+                    <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8 text-xs">
+                        {/* Col 1: Koleksi Ikan (Skincare equivalent) */}
+                        <div className="space-y-3">
+                            <h4 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
+                                Koleksi
+                            </h4>
+                            <ul className="space-y-2 text-neutral-500 dark:text-neutral-400 text-xs">
+                                <li>
+                                    <Link href="/products?water_type=freshwater" className="hover:text-black dark:hover:text-white transition">
+                                        Air Tawar
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/products?water_type=saltwater" className="hover:text-black dark:hover:text-white transition">
+                                        Air Laut
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/products?category=cupang" className="hover:text-black dark:hover:text-white transition">
+                                        Cupang / Betta
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/products?category=channa" className="hover:text-black dark:hover:text-white transition">
+                                        Channa Predator
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/products?category=aquascape" className="hover:text-black dark:hover:text-white transition">
+                                        Aquascape
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
 
-                    {/* Nav 2: Layanan */}
-                    <div className="space-y-2.5">
-                        <p className="font-bold text-white uppercase tracking-wider text-[11px]">
-                            Layanan & Jaminan
-                        </p>
-                        <ul className="space-y-2 text-[11px] text-neutral-400">
-                            <li>
-                                <Link href="/guides" className="hover:text-white transition">
-                                    Panduan Perawatan & Karantina
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/products" className="hover:text-white transition">
-                                    Garansi Ikan Hidup 100%
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/seller/register" className="hover:text-white transition">
-                                    Buka Toko Penangkar
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/addresses" className="hover:text-white transition">
-                                    Kalkulator Ongkos Kirim Aman
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
+                        {/* Col 2: Newsletter (Enter Email Address + Sign Up) */}
+                        <div className="space-y-3">
+                            <h4 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
+                                Newsletter
+                            </h4>
+                            {subscribed ? (
+                                <div className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium py-2">
+                                    <Check className="w-4 h-4" />
+                                    <span>Berhasil terdaftar!</span>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleNewsletterSubmit} className="space-y-2.5">
+                                    <input
+                                        type="email"
+                                        required
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="Enter Email Address"
+                                        className="w-full bg-transparent border-b border-neutral-300 dark:border-neutral-700 py-1.5 text-xs text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition"
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="text-xs font-semibold text-neutral-900 dark:text-white hover:opacity-70 transition flex items-center gap-1 cursor-pointer"
+                                    >
+                                        <span>Sign Up</span>
+                                    </button>
+                                </form>
+                            )}
+                        </div>
 
-                    {/* Policy / Certified Seal */}
-                    <div className="space-y-3 text-[11px]">
-                        <p className="font-bold text-white uppercase tracking-wider">
-                            Garansi Pengiriman Aman
-                        </p>
-                        <p className="text-neutral-400 leading-relaxed">
-                            Setiap pembelian dilindungi garansi hidup sampai tujuan dengan kemasan beroksigen tinggi dan pengiriman khusus hewan hidup.
-                        </p>
-                        <div className="flex items-center gap-2 text-white font-semibold text-[11px]">
-                            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                            <span>100% Verified Breeders</span>
+                        {/* Col 3: Connect (Social Links) */}
+                        <div className="space-y-3">
+                            <h4 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
+                                Connect
+                            </h4>
+                            <ul className="space-y-2 text-neutral-500 dark:text-neutral-400 text-xs">
+                                <li>
+                                    <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
+                                        Instagram
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
+                                        Facebook
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
+                                        Twitter
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
+                                        TikTok
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        {/* Col 4: Support */}
+                        <div className="space-y-3">
+                            <h4 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
+                                Support
+                            </h4>
+                            <ul className="space-y-2 text-neutral-500 dark:text-neutral-400 text-xs">
+                                <li>
+                                    <Link href="/guides" className="hover:text-black dark:hover:text-white transition">
+                                        24/7 Support
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/guides" className="hover:text-black dark:hover:text-white transition">
+                                        Garansi D.O.A
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/guides" className="hover:text-black dark:hover:text-white transition">
+                                        Terms & Conditions
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/guides" className="hover:text-black dark:hover:text-white transition">
+                                        Privacy Policy
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
 
-                {/* Bottom Legal bar */}
-                <div className="mt-12 pt-6 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-neutral-400">
-                    <p>© 2026 Dunia Ikan : Modern Aquatic Lifestyle. Seluruh hak cipta dilindungi.</p>
-                    <p className="text-[#4AB8BD]">
-                        Spesimen foto: Wikimedia Commons (CC-BY / CC0).{' '}
-                        <a href="/images/products/credits.json" className="underline hover:text-white text-white">
-                            credits.json
-                        </a>
+                {/* 2. DIVIDER LINE */}
+                <div className="border-t border-neutral-200 dark:border-neutral-800" />
+
+                {/* 3. SUB-FOOTER ROW: Copyright on Left, Powered By on Right */}
+                <div className="py-6 sm:py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-neutral-500 dark:text-neutral-400">
+                    <p>© Copyright 2026. Dunia Ikan All Rights Reserved.</p>
+                    <p className="hover:text-neutral-900 dark:hover:text-white transition">
+                        Powered By <span className="font-semibold text-neutral-900 dark:text-white">duniaikan.com</span>
                     </p>
+                </div>
+
+                {/* 4. MONUMENTAL TYPOGRAPHIC HERO: Giant "Duniaikan" Bleeding Off Bottom Edge */}
+                <div className="w-full overflow-hidden select-none pointer-events-none -mb-3 sm:-mb-6 md:-mb-10 lg:-mb-14 text-center">
+                    <h2 className="text-[15.5vw] sm:text-[17vw] lg:text-[18.2vw] font-black tracking-tighter leading-[0.74] text-neutral-900 dark:text-white font-['Montserrat',sans-serif] block whitespace-nowrap">
+                        Duniaikan
+                    </h2>
                 </div>
             </div>
         </footer>
