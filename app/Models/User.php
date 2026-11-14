@@ -36,6 +36,26 @@ class User extends Authenticatable implements FilamentUser
     ];
 
     /**
+     * @var list<string>
+     */
+    protected $appends = [
+        'avatar_url',
+    ];
+
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if (! $this->avatar) {
+            return null;
+        }
+
+        if (str_starts_with($this->avatar, 'http') || str_starts_with($this->avatar, '/')) {
+            return $this->avatar;
+        }
+
+        return '/storage/'.ltrim($this->avatar, '/');
+    }
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>

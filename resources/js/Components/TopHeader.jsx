@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import BrandLogo from '@/Components/BrandLogo';
 import BrandWordmark from '@/Components/BrandWordmark';
+import UserAvatar from '@/Components/UserAvatar';
 
 const SEARCH_GROUPS = [
     {
@@ -262,9 +263,7 @@ export default function TopHeader({
                                 className="flex items-center gap-2 p-1 rounded-full hover:ring-2 hover:ring-[#4AB8BD]/40 transition"
                                 aria-label="Menu Pengguna"
                             >
-                                <div className="w-8 h-8 rounded-full bg-[#0D2E92] text-white font-bold text-xs flex items-center justify-center">
-                                    {user.name.charAt(0).toUpperCase()}
-                                </div>
+                                <UserAvatar user={user} className="w-8 h-8 text-xs" />
                                 <span className="hidden lg:inline text-xs font-semibold text-[#001454] dark:text-white max-w-[110px] truncate">
                                     {user.name}
                                 </span>

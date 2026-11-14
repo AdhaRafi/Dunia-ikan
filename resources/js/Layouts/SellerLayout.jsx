@@ -1,4 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
+import UserAvatar from '@/Components/UserAvatar';
 import { 
     Store, 
     Fish, 
@@ -38,7 +39,14 @@ export default function SellerLayout({ children, title }) {
                     </div>
 
                     <div className="flex items-center gap-3">
-                        <span className="text-sm font-semibold text-slate-800">{store?.name || auth.user.name}</span>
+                        <Link
+                            href="/profile"
+                            className="flex items-center gap-2 rounded-full pr-2 hover:bg-slate-100 transition"
+                            title="Pengaturan Profil Akun"
+                        >
+                            <UserAvatar user={auth.user} className="w-7 h-7 text-[11px]" />
+                            <span className="text-sm font-semibold text-slate-800">{store?.name || auth.user.name}</span>
+                        </Link>
                         <Link
                             href="/logout"
                             method="post"

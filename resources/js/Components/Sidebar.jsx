@@ -16,6 +16,7 @@ import {
     X,
 } from 'lucide-react';
 import BrandWordmark from '@/Components/BrandWordmark';
+import UserAvatar from '@/Components/UserAvatar';
 
 function NavRow({ item, collapsed = false, onNavigate }) {
     const Icon = item.icon;
@@ -292,9 +293,7 @@ export default function Sidebar({
                         }`}
                         aria-label={collapsed ? user.name : undefined}
                     >
-                        <div className="w-8 h-8 rounded-full bg-[#001454] dark:bg-[#0684E5] text-white font-bold text-xs flex items-center justify-center shrink-0">
-                            {user.name.charAt(0).toUpperCase()}
-                        </div>
+                        <UserAvatar user={user} className="w-8 h-8 text-xs" />
                         {!collapsed && (
                             <div className="min-w-0">
                                 <p className="text-[13px] font-semibold text-[#001454] dark:text-white truncate leading-tight">

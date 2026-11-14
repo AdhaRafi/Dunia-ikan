@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
+import UserAvatar from '@/Components/UserAvatar';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 import {
     BadgeCheck,
+    Camera,
     MapPin,
     Package,
     Shield,
@@ -43,6 +45,75 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
     const { auth } = usePage().props;
     const user = auth?.user;
     const [activeTab, setActiveTab] = useState('profile');
+    const [avatarPreview, setAvatarPreview] = useState(null);
+    const [avatarBusy, setAvatarBusy] = useState(false);
+    const [avatarError, setAvatarError] = useState('');
+
+    useEffect(() => {
+        return () => {
+            if (avatarPreview) {
+                URL.revokeObjectURL(avatarPreview);
+            }
+        };
+    }, [avatarPreview]);
+
+    const handleAvatarChange = (e) => {
+        const file = e.target.files?.[0];
+        if (!file || !user) {
+            return;
+        }
+        if (avatarPreview) {
+            URL.revokeObjectURL(avatarPreview);
+        }
+        const preview = URL.createObjectURL(file);
+        setAvatarPreview(preview);
+        setAvatarError('');
+        setAvatarBusy(true);
+
+        router.post(
+            route('profile.update'),
+            {
+                _method: 'patch',
+                name: user.name,
+                email: user.email,
+                avatar: file,
+            },
+            {
+                forceFormData: true,
+                preserveScroll: true,
+                onError: (errors) => {
+                    setAvatarError(errors.avatar || 'Gagal mengunggah foto profil.');
+                    setAvatarPreview(null);
+                },
+                onFinish: () => {
+                    setAvatarBusy(false);
+                    e.target.value = '';
+                },
+            }
+        );
+    };
+
+    const handleRemoveAvatar = () => {
+        if (!user) {
+            return;
+        }
+        setAvatarError('');
+        setAvatarBusy(true);
+
+        router.patch(
+            route('profile.update'),
+            {
+                name: user.name,
+                email: user.email,
+                remove_avatar: true,
+            },
+            {
+                preserveScroll: true,
+                onSuccess: () => setAvatarPreview(null),
+                onFinish: () => setAvatarBusy(false),
+            }
+        );
+    };
 
     const roleLabel =
         user?.role === 'admin'
@@ -149,9 +220,57 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                     />
 
                                     <div className="relative flex flex-col items-start">
-                                        <div className="w-20 h-20 rounded-full bg-slate-900 dark:bg-slate-800 text-white text-2xl font-bold flex items-center justify-center ring-4 ring-white dark:ring-[#0e1424] shadow-xs">
-                                            {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                                        <div className="flex items-end gap-4">
+                                            <label
+                                                className="relative group cursor-pointer"
+                                                title="Ganti foto profil"
+                                            >
+                                                <UserAvatar
+                                                    user={user}
+                                                    previewUrl={avatarPreview}
+                                                    className="w-20 h-20 text-2xl ring-4 ring-white dark:ring-[#0e1424] shadow-xs"
+                                                />
+                                                <span className="absolute -bottom-0.5 -right-0.5 w-7 h-7 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-neutral-700 text-slate-700 dark:text-slate-200 flex items-center justify-center shadow-xs group-hover:scale-105 transition">
+                                                    <Camera className="w-3.5 h-3.5" />
+                                                </span>
+                                                <input
+                                                    type="file"
+                                                    accept="image/png,image/jpeg,image/webp"
+                                                    onChange={handleAvatarChange}
+                                                    disabled={avatarBusy}
+                                                    className="hidden"
+                                                />
+                                            </label>
+
+                                            <div className="flex items-center gap-3 pb-1 text-xs">
+                                                <label className="font-medium text-slate-600 dark:text-neutral-300 hover:text-slate-900 dark:hover:text-white underline underline-offset-4 decoration-slate-300 dark:decoration-neutral-700 cursor-pointer transition">
+                                                    {avatarBusy ? 'Mengunggah...' : 'Ganti foto'}
+                                                    <input
+                                                        type="file"
+                                                        accept="image/png,image/jpeg,image/webp"
+                                                        onChange={handleAvatarChange}
+                                                        disabled={avatarBusy}
+                                                        className="hidden"
+                                                    />
+                                                </label>
+                                                {(user?.avatar_url || avatarPreview) && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleRemoveAvatar}
+                                                        disabled={avatarBusy}
+                                                        className="font-medium text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition"
+                                                    >
+                                                        Hapus
+                                                    </button>
+                                                )}
+                                            </div>
                                         </div>
+
+                                        {avatarError && (
+                                            <p className="mt-2 text-xs text-rose-600 dark:text-rose-400">
+                                                {avatarError}
+                                            </p>
+                                        )}
 
                                         <div className="mt-4 flex items-center gap-2">
                                             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">

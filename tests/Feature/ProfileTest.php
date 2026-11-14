@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -95,5 +97,52 @@ class ProfileTest extends TestCase
             ->assertRedirect('/profile');
 
         $this->assertNotNull($user->fresh());
+    }
+
+    public function test_buyer_and_seller_can_upload_and_remove_profile_avatar(): void
+    {
+        Storage::fake('public');
+
+        foreach (['buyer', 'seller'] as $role) {
+            $user = User::factory()->create(['role' => $role]);
+            $file = UploadedFile::fake()->image("{$role}-avatar.jpg");
+
+            $response = $this
+                ->actingAs($user)
+                ->post('/profile', [
+                    '_method' => 'patch',
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'avatar' => $file,
+                ]);
+
+            $response
+                ->assertSessionHasNoErrors()
+                ->assertRedirect('/profile');
+
+            $user->refresh();
+            $this->assertNotNull($user->avatar);
+            $this->assertStringStartsWith('/storage/avatars/', $user->avatar_url);
+            Storage::disk('public')->assertExists($user->avatar);
+
+            $oldPath = $user->avatar;
+
+            $removeResponse = $this
+                ->actingAs($user)
+                ->patch('/profile', [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'remove_avatar' => true,
+                ]);
+
+            $removeResponse
+                ->assertSessionHasNoErrors()
+                ->assertRedirect('/profile');
+
+            $user->refresh();
+            $this->assertNull($user->avatar);
+            $this->assertNull($user->avatar_url);
+            Storage::disk('public')->assertMissing($oldPath);
+        }
     }
 }
