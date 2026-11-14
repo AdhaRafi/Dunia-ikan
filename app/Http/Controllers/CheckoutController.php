@@ -67,7 +67,7 @@ class CheckoutController extends Controller
 
         $validated = $request->validate([
             'address_id' => 'required|exists:addresses,id',
-            'payment_method' => 'required|in:bank_transfer,qris,cod',
+            'payment_method' => 'required|in:bank_transfer,qris,cod,midtrans',
             'shipping_notes' => 'nullable|string|max:500',
         ]);
 

@@ -10,7 +10,8 @@ import {
     Store, 
     ArrowLeft, 
     CheckCircle2, 
-    PlusCircle 
+    PlusCircle,
+    Zap 
 } from 'lucide-react';
 
 export default function Index({ groupedCart, addresses, totalProducts, totalShipping, grandTotal }) {
@@ -18,7 +19,7 @@ export default function Index({ groupedCart, addresses, totalProducts, totalShip
 
     const { data, setData, post, processing, errors } = useForm({
         address_id: primaryAddress?.id || '',
-        payment_method: 'bank_transfer',
+        payment_method: 'midtrans',
         shipping_notes: '',
     });
 
@@ -131,7 +132,39 @@ export default function Index({ groupedCart, addresses, totalProducts, totalShip
                                 2. Metode Pembayaran
                             </h2>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                                {/* Midtrans Payment Gateway */}
+                                <label
+                                    className={`p-4 rounded-xl border cursor-pointer transition flex flex-col justify-between ${
+                                        data.payment_method === 'midtrans'
+                                            ? 'bg-blue-50/70 border-dunia-blue ring-2 ring-dunia-blue'
+                                            : 'border-slate-200 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-1.5">
+                                                <Zap className="w-5 h-5 text-dunia-blue" />
+                                                <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-blue-100 text-dunia-blue">
+                                                    Otomatis
+                                                </span>
+                                            </div>
+                                            <input
+                                                type="radio"
+                                                name="payment_method"
+                                                value="midtrans"
+                                                checked={data.payment_method === 'midtrans'}
+                                                onChange={() => setData('payment_method', 'midtrans')}
+                                                className="text-dunia-blue"
+                                            />
+                                        </div>
+                                        <p className="font-bold text-sm text-slate-900">Midtrans Gateway</p>
+                                        <p className="text-[11px] text-slate-500 leading-snug">
+                                            QRIS (GoPay/ShopeePay) & Virtual Account (BCA, Mandiri, BRI, BNI).
+                                        </p>
+                                    </div>
+                                </label>
+
                                 {/* Bank Transfer */}
                                 <label
                                     className={`p-4 rounded-xl border cursor-pointer transition flex flex-col justify-between ${
@@ -152,9 +185,9 @@ export default function Index({ groupedCart, addresses, totalProducts, totalShip
                                                 className="text-dunia-blue"
                                             />
                                         </div>
-                                        <p className="font-bold text-sm text-slate-900">Transfer Bank</p>
+                                        <p className="font-bold text-sm text-slate-900">Transfer Manual</p>
                                         <p className="text-[11px] text-slate-500 leading-snug">
-                                            BCA, Mandiri, BRI. Unggah bukti transfer setelah checkout.
+                                            BCA, Mandiri, BRI. Unggah bukti transfer ke rekening toko.
                                         </p>
                                     </div>
                                 </label>
@@ -179,9 +212,9 @@ export default function Index({ groupedCart, addresses, totalProducts, totalShip
                                                 className="text-dunia-blue"
                                             />
                                         </div>
-                                        <p className="font-bold text-sm text-slate-900">QRIS Manual</p>
+                                        <p className="font-bold text-sm text-slate-900">QRIS Toko Manual</p>
                                         <p className="text-[11px] text-slate-500 leading-snug">
-                                            Scan QRIS toko dari GoPay, OVO, ShopeePay, atau m-Banking.
+                                            Scan barcode QRIS statis dari profil toko penangkar.
                                         </p>
                                     </div>
                                 </label>

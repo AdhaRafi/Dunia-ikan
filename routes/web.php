@@ -11,6 +11,7 @@ use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -36,6 +37,9 @@ Route::get('/guides/{id}', [GuideController::class, 'show'])->name('guides.show'
 // Chatbot Asisten Dunia Ikan
 Route::get('/chatbot/history', [ChatbotController::class, 'getHistory'])->name('chatbot.history');
 Route::post('/chatbot/message', [ChatbotController::class, 'sendMessage'])->name('chatbot.message');
+
+// Midtrans Webhook Notification (Exempted from CSRF)
+Route::post('/midtrans/notification', [MidtransController::class, 'notification'])->name('midtrans.notification');
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +78,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{orderNumber}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{orderNumber}/proof', [OrderController::class, 'uploadPaymentProof'])->name('orders.upload-proof');
     Route::post('/orders/{orderNumber}/confirm', [OrderController::class, 'confirmDelivery'])->name('orders.confirm-delivery');
+
+    // Midtrans Snap Actions (Buyer)
+    Route::post('/orders/{orderNumber}/snap-token', [MidtransController::class, 'getSnapToken'])->name('orders.midtrans.token');
+    Route::post('/orders/{orderNumber}/midtrans-finish', [MidtransController::class, 'finish'])->name('orders.midtrans.finish');
+    Route::post('/orders/{orderNumber}/midtrans-status', [MidtransController::class, 'checkStatus'])->name('orders.midtrans.status');
 
     // Addresses
     Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');

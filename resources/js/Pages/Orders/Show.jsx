@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import { 
@@ -12,12 +12,88 @@ import {
     AlertCircle, 
     Upload, 
     ShieldCheck, 
-    Clock 
+    Clock,
+    Zap,
+    RefreshCw,
+    ExternalLink
 } from 'lucide-react';
 
-export default function Show({ order }) {
+export default function Show({ order, midtransClientKey, isMidtransProduction }) {
     const store = order.store;
     const [confirming, setConfirming] = useState(false);
+    const [loadingSnap, setLoadingSnap] = useState(false);
+    const [checkingStatus, setCheckingStatus] = useState(false);
+
+    useEffect(() => {
+        const snapScriptUrl = isMidtransProduction 
+            ? 'https://app.midtrans.com/snap/snap.js' 
+            : 'https://app.sandbox.midtrans.com/snap/snap.js';
+        
+        const scriptId = 'midtrans-snap-script';
+        if (!document.getElementById(scriptId) && midtransClientKey) {
+            const script = document.createElement('script');
+            script.id = scriptId;
+            script.src = snapScriptUrl;
+            script.setAttribute('data-client-key', midtransClientKey);
+            script.async = true;
+            document.body.appendChild(script);
+        }
+    }, [midtransClientKey, isMidtransProduction]);
+
+    const handlePayMidtrans = async () => {
+        setLoadingSnap(true);
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            const res = await fetch(`/orders/${order.order_number}/snap-token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            });
+            const result = await res.json();
+            if (!res.ok) {
+                alert(result.message || 'Gagal memuat sesi pembayaran Midtrans');
+                return;
+            }
+
+            if (window.snap) {
+                window.snap.pay(result.snap_token, {
+                    onSuccess: (snapResult) => {
+                        router.post(`/orders/${order.order_number}/midtrans-finish`, { result: snapResult }, {
+                            preserveScroll: true,
+                        });
+                    },
+                    onPending: (snapResult) => {
+                        router.post(`/orders/${order.order_number}/midtrans-finish`, { result: snapResult }, {
+                            preserveScroll: true,
+                        });
+                    },
+                    onError: (snapResult) => {
+                        alert('Pembayaran gagal atau dibatalkan.');
+                    },
+                    onClose: () => {
+                        // User menutup pop-up Snap
+                    }
+                });
+            } else {
+                alert('Script Midtrans Snap sedang dimuat, silakan klik kembali dalam beberapa detik.');
+            }
+        } catch (err) {
+            alert('Terjadi kesalahan koneksi saat memanggil Midtrans.');
+        } finally {
+            setLoadingSnap(false);
+        }
+    };
+
+    const handleCheckStatus = () => {
+        setCheckingStatus(true);
+        router.post(`/orders/${order.order_number}/midtrans-status`, {}, {
+            preserveScroll: true,
+            onFinish: () => setCheckingStatus(false),
+        });
+    };
 
     const { data, setData, post, processing, errors } = useForm({
         payment_proof: null,
@@ -162,17 +238,86 @@ export default function Show({ order }) {
                     </div>
                 )}
 
-                {/* Bank / QRIS Instructions & Proof Upload */}
+                {/* Verified Payment Status Banner */}
+                {order.payment_status === 'verified' && (
+                    <div className="bg-emerald-50/80 border border-emerald-200 p-5 rounded-2xl flex items-center justify-between gap-4 text-xs">
+                        <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0">
+                                <CheckCircle2 className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-extrabold text-emerald-950">Pembayaran Terverifikasi (Lunas)</h4>
+                                <p className="text-emerald-700 mt-0.5">
+                                    {order.payment_notes || 'Pembayaran telah divalidasi dan pesanan diteruskan ke penangkar.'}
+                                </p>
+                            </div>
+                        </div>
+                        <span className="px-3 py-1 rounded-full bg-emerald-600 text-white font-extrabold text-[11px] shrink-0">
+                            LUNAS
+                        </span>
+                    </div>
+                )}
+
+                {/* Bank / QRIS Instructions & Midtrans Gateway */}
                 {order.payment_status !== 'verified' && order.status !== 'cancelled' && (
                     <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-6">
-                        <div className="flex items-center gap-2 text-sm font-bold text-dunia-navy pb-3 border-b border-slate-100">
-                            <CreditCard className="w-4 h-4 text-dunia-blue" />
-                            Petunjuk Pembayaran ke Toko: {store?.name}
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-100 gap-2">
+                            <div className="flex items-center gap-2 text-sm font-bold text-dunia-navy">
+                                <CreditCard className="w-4 h-4 text-dunia-blue" />
+                                <span>Penyelesaian Pembayaran Pesanan</span>
+                            </div>
+                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                                Menunggu Pembayaran
+                            </span>
                         </div>
 
+                        {/* Midtrans Snap Gateway (Otomatis & Realtime) */}
+                        <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-50/90 to-sky-50/90 border border-blue-200/80 space-y-3.5 shadow-xs">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div className="flex items-start sm:items-center gap-3">
+                                    <div className="w-10 h-10 rounded-xl bg-dunia-blue text-white flex items-center justify-center font-bold shrink-0 shadow-xs">
+                                        <Zap className="w-5 h-5 fill-white" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-sm font-extrabold text-dunia-navy flex items-center gap-2">
+                                            <span>Pembayaran Otomatis Midtrans</span>
+                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-600 text-white">
+                                                Instant
+                                            </span>
+                                        </h4>
+                                        <p className="text-xs text-slate-500 mt-0.5">
+                                            QRIS (GoPay/ShopeePay/BCA) & Virtual Account (BCA, Mandiri, BRI, BNI). Langsung lunas otomatis!
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2 shrink-0">
+                                    <button
+                                        type="button"
+                                        onClick={handlePayMidtrans}
+                                        disabled={loadingSnap}
+                                        className="px-5 py-2.5 rounded-xl bg-dunia-blue hover:bg-sky-600 text-white font-extrabold text-xs shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                                    >
+                                        <Zap className="w-4 h-4 fill-white" />
+                                        {loadingSnap ? 'Memuat Snap...' : 'Bayar Sekarang (Midtrans)'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleCheckStatus}
+                                        disabled={checkingStatus}
+                                        className="px-3 py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                                        title="Cek Status Pembayaran dari Midtrans"
+                                    >
+                                        <RefreshCw className={`w-3.5 h-3.5 ${checkingStatus ? 'animate-spin' : ''}`} />
+                                        <span className="hidden sm:inline">{checkingStatus ? 'Mengecek...' : 'Cek Status'}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Manual Transfer / QRIS / COD fallback section */}
                         {order.payment_method === 'bank_transfer' && (
                             <div className="p-4 rounded-xl bg-sky-50/80 border border-sky-100 space-y-2 text-xs">
-                                <p className="font-bold text-slate-800">Rekening Tujuan Toko:</p>
+                                <p className="font-bold text-slate-800">Atau Transfer Manual ke Rekening Toko ({store?.name}):</p>
                                 <div className="space-y-1 font-mono text-sm">
                                     <p>Bank: <strong className="font-sans text-dunia-navy">{store?.bank_name || 'BCA'}</strong></p>
                                     <p>No. Rekening: <strong className="text-dunia-blue text-base font-bold">{store?.bank_account_number || '7820192837'}</strong></p>
@@ -186,7 +331,7 @@ export default function Show({ order }) {
 
                         {order.payment_method === 'qris' && (
                             <div className="p-4 rounded-xl bg-teal-50/80 border border-teal-100 space-y-3 text-xs text-center">
-                                <p className="font-bold text-teal-900">Scan QRIS Toko Ini:</p>
+                                <p className="font-bold text-teal-900">Atau Scan QRIS Manual Toko ({store?.name}):</p>
                                 {store?.qris_image ? (
                                     <img src={`/storage/${store.qris_image}`} alt="QRIS Toko" className="w-48 h-48 mx-auto object-contain border rounded-xl bg-white p-2" />
                                 ) : (
@@ -209,15 +354,15 @@ export default function Show({ order }) {
                             </div>
                         )}
 
-                        {/* Upload Proof Form (for bank_transfer & qris) */}
+                        {/* Upload Proof Form (for manual transfer & manual qris) */}
                         {order.payment_method !== 'cod' && (
                             <form onSubmit={handleUploadProof} className="pt-4 border-t border-slate-100 space-y-4">
                                 <div className="space-y-1">
                                     <label className="block text-xs font-bold text-slate-700 uppercase">
-                                        Unggah Foto Bukti Transfer / Resi Pembayaran
+                                        Unggah Foto Bukti Transfer Manual (Opsional jika bayar via transfer manual)
                                     </label>
                                     <p className="text-[11px] text-slate-400">
-                                        Format JPEG, PNG, JPG maksimal 3MB.
+                                        Format JPEG, PNG, JPG maksimal 3MB. Jika bayar via tombol Midtrans di atas, Anda tidak perlu mengunggah bukti.
                                     </p>
                                 </div>
 
