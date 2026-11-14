@@ -147,24 +147,28 @@ export default function AppLayout({ children }) {
     }, []);
 
     return (
-        <div className="min-h-screen w-full flex overflow-x-clip bg-[#fbf8ff] dark:bg-[#070b14] text-[#001454] dark:text-[#e4e7ff] antialiased selection:bg-[#001454] selection:text-white transition-colors duration-200">
-            {/* Left Sidebar (Collapsible rail on desktop, sliding drawer on mobile) */}
-            <Sidebar
-                isOpen={mobileSidebarOpen}
-                onClose={() => setMobileSidebarOpen(false)}
+        <div className="min-h-screen w-full flex flex-col overflow-x-clip bg-[#fbf8ff] dark:bg-[#070b14] text-[#001454] dark:text-[#e4e7ff] antialiased selection:bg-[#001454] selection:text-white transition-colors duration-200">
+            {/* Full-Width TopHeader with Single Logo */}
+            <TopHeader
+                onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
                 onOpenChat={() => setChatOpen(true)}
                 darkMode={darkMode}
                 onToggleDarkMode={() => setDarkMode((prev) => !prev)}
             />
 
-            {/* Main Area: TopHeader + Page Canvas + Footer (Native Window Scroll) */}
-            <div className="flex-1 min-w-0 flex flex-col">
-                <TopHeader 
-                    onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
+            {/* Content Row Below TopHeader: Left Sidebar + Page Canvas */}
+            <div className="flex-1 flex min-w-0">
+                {/* Left Sidebar (Collapsible rail under TopHeader on desktop, sliding drawer on mobile) */}
+                <Sidebar
+                    isOpen={mobileSidebarOpen}
+                    onClose={() => setMobileSidebarOpen(false)}
                     onOpenChat={() => setChatOpen(true)}
                     darkMode={darkMode}
                     onToggleDarkMode={() => setDarkMode((prev) => !prev)}
                 />
+
+                {/* Main Area: Flash + Page Canvas + Footer (Native Window Scroll) */}
+                <div className="flex-1 min-w-0 flex flex-col">
 
                 {/* Flash Messages */}
                 {showFlash && (flash?.success || flash?.error) && (
@@ -217,6 +221,7 @@ export default function AppLayout({ children }) {
                 />
 
                 <Footer />
+                </div>
             </div>
         </div>
     );

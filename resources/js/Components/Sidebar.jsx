@@ -15,7 +15,6 @@ import {
     Waves,
     X,
 } from 'lucide-react';
-import BrandLogo from '@/Components/BrandLogo';
 import BrandWordmark from '@/Components/BrandWordmark';
 
 function NavRow({ item, collapsed = false, onNavigate }) {
@@ -225,44 +224,32 @@ export default function Sidebar({
     const renderSidebarInner = ({ collapsed, isMobile = false }) => (
         <div className="flex flex-col justify-between h-full">
             <div className="flex flex-col min-h-0 flex-1">
-                {/* Brand Header */}
-                {collapsed ? (
-                    <div className="pt-5 pb-4 flex flex-col items-center shrink-0">
-                        <Link
-                            href="/"
-                            className="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800/70 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
-                            aria-label="Dunia Ikan Beranda"
-                        >
-                            <BrandLogo className="w-6 h-6" />
-                        </Link>
-                    </div>
-                ) : (
+                {/* Mobile Drawer Header (Desktop logo sits above sidebar in TopHeader) */}
+                {isMobile && (
                     <div className="pt-5 pb-4 px-6 flex items-center justify-between gap-2 shrink-0">
                         <Link
                             href="/"
-                            onClick={isMobile ? onClose : undefined}
+                            onClick={onClose}
                             className="flex items-center min-w-0 hover:opacity-90 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1] rounded-lg"
                         >
                             <BrandWordmark className="h-7" />
                         </Link>
 
-                        {isMobile && (
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#001454] dark:hover:text-white flex items-center justify-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
-                                aria-label="Tutup menu"
-                            >
-                                <X className="w-3.5 h-3.5" />
-                            </button>
-                        )}
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#001454] dark:hover:text-white flex items-center justify-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
+                            aria-label="Tutup menu"
+                        >
+                            <X className="w-3.5 h-3.5" />
+                        </button>
                     </div>
                 )}
 
                 {/* Navigation Groups */}
                 <nav
                     aria-label="Navigasi utama"
-                    className={`mt-1 flex-1 ${isMobile || !collapsed ? 'overflow-y-auto' : 'overflow-visible'}`}
+                    className={`${isMobile ? 'mt-1' : 'pt-4'} flex-1 ${isMobile || !collapsed ? 'overflow-y-auto' : 'overflow-visible'}`}
                 >
                     <div className="space-y-0.5">
                         {primaryItems.map((item) => (
@@ -372,8 +359,8 @@ export default function Sidebar({
 
     return (
         <>
-            {/* Desktop Sticky Rail: Expands Smoothly on Hover */}
-            <div className="hidden md:block sticky top-0 shrink-0 h-screen w-[72px] z-40 select-none">
+            {/* Desktop Sticky Rail: Sits below TopHeader logo and expands on hover */}
+            <div className="hidden md:block sticky top-16 shrink-0 h-[calc(100vh-4rem)] w-[72px] z-30 select-none">
                 <aside
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}

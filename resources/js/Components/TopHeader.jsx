@@ -124,7 +124,7 @@ export default function TopHeader({
     })).filter((group) => group.items.length > 0);
 
     return (
-        <header className="sticky top-0 z-30 transform-gpu bg-white/90 dark:bg-[#070b14]/90 backdrop-blur-md border-b border-[#1E80A0]/10 dark:border-neutral-800 px-4 sm:px-6 lg:px-8 py-3 transition-colors">
+        <header className="sticky top-0 z-40 h-16 flex items-center transform-gpu bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-md border-b border-[#1E80A0]/10 dark:border-neutral-800 px-4 sm:px-6 lg:px-8 transition-colors">
             <div className="w-full flex items-center justify-between gap-3 sm:gap-6">
                 {/* Left: Mobile Menu Trigger + Brand + Search Bar */}
                 <div className="flex items-center gap-2.5 sm:gap-4 flex-1 min-w-0 max-w-3xl">
