@@ -189,7 +189,7 @@ export default function Sidebar({ isOpen, onClose }) {
                             {/* Expanded header (revealed automatically on hover) */}
                             <div className="w-full hidden group-hover/sidebar:flex items-center px-1">
                                 <Link href="/" className="flex items-center min-w-0 hover:opacity-90 transition">
-                                    <BrandWordmark className="h-7" />
+                                    <BrandWordmark className="h-9" />
                                 </Link>
                             </div>
                         </div>
@@ -381,7 +381,7 @@ export default function Sidebar({ isOpen, onClose }) {
                     <div className="p-5 flex-1 flex flex-col overflow-y-auto">
                         <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10">
                             <Link href="/" onClick={onClose} className="flex items-center">
-                                <BrandWordmark className="h-7" />
+                                <BrandWordmark className="h-9" />
                             </Link>
 
                             <button

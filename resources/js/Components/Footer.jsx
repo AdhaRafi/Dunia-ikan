@@ -11,7 +11,7 @@ export default function Footer() {
                     {/* Brand */}
                     <div className="space-y-3">
                         <Link href="/" className="inline-block hover:opacity-90 transition">
-                            <BrandWordmark variant="white" className="h-8" />
+                            <BrandWordmark variant="white" className="h-10" />
                         </Link>
                         <p className="text-[11px] text-neutral-400 leading-relaxed">
                             Marketplace Ikan Hias & Mutasi Genetik Captive-Bred Terverifikasi Indonesia.
