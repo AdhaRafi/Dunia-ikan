@@ -109,7 +109,7 @@ Route::middleware(['auth', 'role:seller,admin'])->prefix('seller')->name('seller
 | Admin Routes
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:admin'])->prefix('admin-portal')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
