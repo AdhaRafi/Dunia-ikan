@@ -44,7 +44,7 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                     <div className="bg-white dark:bg-[#0e1424] rounded-3xl border border-slate-200/80 dark:border-neutral-800 overflow-hidden">
                         <div className="grid grid-cols-1 lg:grid-cols-12">
                             {/* Left Column: Cart List */}
-                            <div className="lg:col-span-8 p-6 sm:p-8 lg:border-r border-slate-200/80 dark:border-neutral-800">
+                            <div className="lg:col-span-8 p-4 sm:p-8 lg:border-r border-slate-200/80 dark:border-neutral-800">
                                 <div className="flex items-center justify-between pb-6 border-b border-dashed border-slate-200 dark:border-neutral-800">
                                     <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white uppercase">
                                         Keranjang
@@ -69,11 +69,11 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                                         return (
                                             <div
                                                 key={item.id}
-                                                className="py-5 sm:py-6 flex items-stretch gap-4 sm:gap-5"
+                                                className="py-4 sm:py-6 flex items-stretch gap-3.5 sm:gap-5"
                                             >
                                                 <Link
                                                     href={`/products/${item.product?.slug}`}
-                                                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-neutral-800 overflow-hidden shrink-0"
+                                                    className="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-neutral-800 overflow-hidden shrink-0"
                                                 >
                                                     <img
                                                         src={
@@ -86,14 +86,14 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                                                 </Link>
 
                                                 <div className="flex-1 min-w-0 flex flex-col justify-between">
-                                                    <div className="flex items-start justify-between gap-4">
+                                                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1.5 sm:gap-4">
                                                         <div className="min-w-0 space-y-1">
                                                             <span className="inline-block rounded-full border border-slate-200 dark:border-neutral-700 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                                                                 {categoryLabel}
                                                             </span>
                                                             <Link
                                                                 href={`/products/${item.product?.slug}`}
-                                                                className="block font-bold text-sm sm:text-base text-slate-900 dark:text-white hover:underline truncate"
+                                                                className="block font-bold text-sm sm:text-base text-slate-900 dark:text-white hover:underline line-clamp-2 sm:truncate"
                                                             >
                                                                 {item.product?.name}
                                                             </Link>
@@ -171,7 +171,7 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                             </div>
 
                             {/* Right Column: Summary */}
-                            <div className="lg:col-span-4 p-6 sm:p-8 flex flex-col justify-between bg-white dark:bg-[#0e1424]">
+                            <div className="lg:col-span-4 p-4 sm:p-8 flex flex-col justify-between bg-white dark:bg-[#0e1424]">
                                 <div className="lg:sticky lg:top-24 space-y-5">
                                     <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white uppercase">
                                         Ringkasan

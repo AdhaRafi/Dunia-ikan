@@ -139,7 +139,7 @@ export default function Show({ product, relatedProducts }) {
                         delay={140}
                     >
                         <div className="flex flex-wrap items-baseline justify-between gap-4 bg-surface p-4">
-                            <p className="text-[44px] font-medium tabular-nums leading-none tracking-[-0.03em]">
+                            <p className="text-3xl sm:text-[44px] font-medium tabular-nums leading-none tracking-[-0.03em]">
                                 {formatPrice(product.price)}
                             </p>
                             <p className="text-[13px] text-muted">

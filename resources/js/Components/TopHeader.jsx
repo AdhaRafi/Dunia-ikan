@@ -10,7 +10,8 @@ import {
     Menu, 
     ChevronDown,
     Package,
-    MapPin
+    MapPin,
+    X
 } from 'lucide-react';
 import BrandLogo from '@/Components/BrandLogo';
 import BrandWordmark from '@/Components/BrandWordmark';
@@ -56,11 +57,51 @@ export default function TopHeader({
     const user = auth?.user;
     const [searchQuery, setSearchQuery] = useState('');
     const [searchFocused, setSearchFocused] = useState(false);
+    const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
     const searchBoxRef = useRef(null);
+    const mobileSearchInputRef = useRef(null);
     const [internalDarkMode, setInternalDarkMode] = useState(() => {
         if (typeof window !== 'undefined') {
-            return (
+            const renderSearchDropdown = (extraClose) => (
+        <div className="space-y-2.5 sm:space-y-3">
+            {searchQuery.trim() && (
+                <button
+                    type="button"
+                    onClick={handleSearchSubmit}
+                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl bg-[#f3f2ff] dark:bg-[#152038] text-xs font-bold text-[#001454] dark:text-white hover:bg-[#4AB8BD]/15 transition text-left"
+                >
+                    <Search className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
+                    <span>Cari &ldquo;{searchQuery.trim()}&rdquo; di seluruh toko</span>
+                </button>
+            )}
+
+            {filteredGroups.map((group) => (
+                <div key={group.label} className="space-y-1.5">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 px-1">
+                        {group.label}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                        {group.items.map((item) => (
+                            <Link
+                                key={item.title}
+                                href={item.href}
+                                onClick={() => {
+                                    setSearchFocused(false);
+                                    extraClose?.();
+                                }}
+                                className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-neutral-800 hover:bg-[#4AB8BD] hover:text-white dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] text-[11px] font-semibold text-[#001454] dark:text-neutral-200 transition"
+                            >
+                                {item.title}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+
+    return (
                 document.documentElement.classList.contains('dark') ||
                 localStorage.getItem('theme') === 'dark'
             );
@@ -78,7 +119,45 @@ export default function TopHeader({
             }
         };
         document.addEventListener('mousedown', handleOutsideClick);
-        return () => document.removeEventListener('mousedown', handleOutsideClick);
+        const renderSearchDropdown = (extraClose) => (
+        <div className="space-y-2.5 sm:space-y-3">
+            {searchQuery.trim() && (
+                <button
+                    type="button"
+                    onClick={handleSearchSubmit}
+                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl bg-[#f3f2ff] dark:bg-[#152038] text-xs font-bold text-[#001454] dark:text-white hover:bg-[#4AB8BD]/15 transition text-left"
+                >
+                    <Search className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
+                    <span>Cari &ldquo;{searchQuery.trim()}&rdquo; di seluruh toko</span>
+                </button>
+            )}
+
+            {filteredGroups.map((group) => (
+                <div key={group.label} className="space-y-1.5">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 px-1">
+                        {group.label}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                        {group.items.map((item) => (
+                            <Link
+                                key={item.title}
+                                href={item.href}
+                                onClick={() => {
+                                    setSearchFocused(false);
+                                    extraClose?.();
+                                }}
+                                className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-neutral-800 hover:bg-[#4AB8BD] hover:text-white dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] text-[11px] font-semibold text-[#001454] dark:text-neutral-200 transition"
+                            >
+                                {item.title}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
     }, []);
 
     useEffect(() => {
@@ -108,6 +187,7 @@ export default function TopHeader({
         e.preventDefault();
         if (searchQuery.trim()) {
             setSearchFocused(false);
+            setMobileSearchOpen(false);
             router.get('/products', { q: searchQuery.trim() });
         }
     };
@@ -124,28 +204,79 @@ export default function TopHeader({
             : group.items,
     })).filter((group) => group.items.length > 0);
 
+    const handleToggleMobileSearch = () => {
+        setMobileSearchOpen((prev) => {
+            const next = !prev;
+            if (next) {
+                setSearchFocused(true);
+                setTimeout(() => mobileSearchInputRef.current?.focus(), 20);
+            } else {
+                setSearchFocused(false);
+            }
+            return next;
+        });
+    };
+
+    const renderSearchDropdown = (extraClose) => (
+        <div className="space-y-2.5 sm:space-y-3">
+            {searchQuery.trim() && (
+                <button
+                    type="button"
+                    onClick={handleSearchSubmit}
+                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl bg-[#f3f2ff] dark:bg-[#152038] text-xs font-bold text-[#001454] dark:text-white hover:bg-[#4AB8BD]/15 transition text-left"
+                >
+                    <Search className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
+                    <span>Cari &ldquo;{searchQuery.trim()}&rdquo; di seluruh toko</span>
+                </button>
+            )}
+
+            {filteredGroups.map((group) => (
+                <div key={group.label} className="space-y-1.5">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 px-1">
+                        {group.label}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                        {group.items.map((item) => (
+                            <Link
+                                key={item.title}
+                                href={item.href}
+                                onClick={() => {
+                                    setSearchFocused(false);
+                                    extraClose?.();
+                                }}
+                                className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-neutral-800 hover:bg-[#4AB8BD] hover:text-white dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] text-[11px] font-semibold text-[#001454] dark:text-neutral-200 transition"
+                            >
+                                {item.title}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+
     return (
-        <header className="sticky top-0 z-40 h-16 flex items-center transform-gpu bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-md border-b border-[#1E80A0]/10 dark:border-neutral-800 px-4 sm:px-6 lg:px-8 transition-colors">
-            <div className="w-full flex items-center justify-between gap-3 sm:gap-6">
-                {/* Left: Mobile Menu Trigger + Brand + Search Bar */}
-                <div className="flex items-center gap-2.5 sm:gap-4 flex-1 min-w-0 max-w-3xl">
+        <header className="sticky top-0 z-40 transform-gpu bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-md border-b border-[#1E80A0]/10 dark:border-neutral-800 transition-colors">
+            <div className="h-14 sm:h-16 px-3 sm:px-6 lg:px-8 w-full flex items-center justify-between gap-2 sm:gap-6">
+                {/* Left: Mobile Menu Trigger + Brand + Desktop Search Bar */}
+                <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0 max-w-3xl">
                     {/* Mobile Hamburger Trigger */}
                     <button
                         type="button"
                         onClick={onOpenMobileSidebar}
-                        className="md:hidden p-2 text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white rounded-xl hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition shrink-0"
+                        className="md:hidden p-2 -ml-1 text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white rounded-xl hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition shrink-0"
                         aria-label="Buka Menu Navigasi"
                     >
                         <Menu className="w-5 h-5" />
                     </button>
 
-                    {/* Brand Mark (Always visible next to search bar like MorphMarket) */}
+                    {/* Brand Mark */}
                     <Link href="/" className="flex items-center shrink-0 hover:opacity-90 transition pr-1 sm:pr-2">
                         <BrandWordmark className="h-7 sm:h-9" />
                     </Link>
 
-                    {/* Search Form (Aquatic Coastal Pill Search + Quick Category Dropdown) */}
-                    <div ref={searchBoxRef} className="relative w-full min-w-0 flex-1">
+                    {/* Desktop/Tablet Inline Search Form */}
+                    <div ref={searchBoxRef} className="hidden sm:block relative w-full min-w-0 flex-1">
                         <form onSubmit={handleSearchSubmit} className="relative w-full">
                             <input
                                 type="search"
@@ -167,44 +298,27 @@ export default function TopHeader({
                         </form>
 
                         {searchFocused && (
-                            <div className="absolute left-0 right-0 mt-2 rounded-2xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-neutral-700 shadow-xl p-3.5 z-50 space-y-3">
-                                {searchQuery.trim() && (
-                                    <button
-                                        type="button"
-                                        onClick={handleSearchSubmit}
-                                        className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl bg-[#f3f2ff] dark:bg-[#152038] text-xs font-bold text-[#001454] dark:text-white hover:bg-[#4AB8BD]/15 transition text-left"
-                                    >
-                                        <Search className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
-                                        <span>Cari &ldquo;{searchQuery.trim()}&rdquo; di seluruh toko</span>
-                                    </button>
-                                )}
-
-                                {filteredGroups.map((group) => (
-                                    <div key={group.label} className="space-y-1.5">
-                                        <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 px-1">
-                                            {group.label}
-                                        </p>
-                                        <div className="flex flex-wrap gap-1.5">
-                                            {group.items.map((item) => (
-                                                <Link
-                                                    key={item.title}
-                                                    href={item.href}
-                                                    onClick={() => setSearchFocused(false)}
-                                                    className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-neutral-800 hover:bg-[#4AB8BD] hover:text-white dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] text-[11px] font-semibold text-[#001454] dark:text-neutral-200 transition"
-                                                >
-                                                    {item.title}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className="absolute left-0 right-0 mt-2 rounded-2xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-neutral-700 shadow-xl p-3.5 z-50">
+                                {renderSearchDropdown()}
                             </div>
                         )}
                     </div>
                 </div>
 
-                {/* Right: Quick Action Icons (Sun/Moon, Heart, Cart, User/Auth) */}
+                {/* Right: Quick Action Icons (Mobile Search, Sun/Moon, Heart, Cart, Orders, User/Auth) */}
                 <div className="flex items-center gap-1 sm:gap-3 shrink-0">
+                    {/* Mobile Search Toggle */}
+                    <button
+                        type="button"
+                        onClick={handleToggleMobileSearch}
+                        className="sm:hidden p-2 text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
+                        title="Cari Produk"
+                        aria-label="Cari Produk"
+                        aria-expanded={mobileSearchOpen}
+                    >
+                        {mobileSearchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
+                    </button>
+
                     {/* Theme Toggle Icon (Sun / Moon) */}
                     <button
                         type="button"
@@ -216,7 +330,7 @@ export default function TopHeader({
                         {darkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
                     </button>
 
-                    {/* Wishlist Icon (Heart) - Hidden on extra small mobile to give search bar breathing space */}
+                    {/* Wishlist Icon (Heart) - Hidden on extra small mobile */}
                     <Link
                         href="/products?sort=popular"
                         className="hidden sm:flex relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#0684E5] dark:hover:text-[#4AB8BD] rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
@@ -242,11 +356,11 @@ export default function TopHeader({
                         )}
                     </Link>
 
-                    {/* Orders (Pesanan Saya) Icon */}
+                    {/* Orders (Pesanan Saya) Icon - Visible on sm+; mobile accesses via Sidebar & User Menu */}
                     {user && (
                         <Link
                             href="/orders"
-                            className="relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
+                            className="hidden sm:flex relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
                             title="Pesanan Saya"
                             aria-label="Pesanan Saya"
                         >
@@ -357,6 +471,32 @@ export default function TopHeader({
                     )}
                 </div>
             </div>
+
+            {/* Mobile Full-Width Search Row */}
+            {mobileSearchOpen && (
+                <div className="sm:hidden px-3 pb-3 pt-0.5 border-t border-[#1E80A0]/10 dark:border-neutral-800/80 space-y-2.5">
+                    <form onSubmit={handleSearchSubmit} className="relative w-full">
+                        <input
+                            ref={mobileSearchInputRef}
+                            type="search"
+                            placeholder="Cari ikan, filter, aquascape, tanaman..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Escape') {
+                                    setMobileSearchOpen(false);
+                                }
+                            }}
+                            className="w-full h-10 rounded-full bg-[#f3f2ff] dark:bg-[#111a30] pl-10 pr-4 text-xs text-[#001454] dark:text-white placeholder:text-[#6d797a] dark:placeholder:text-neutral-400 border border-[#1E80A0]/15 dark:border-neutral-700 focus:ring-2 focus:ring-[#4AB8BD] focus:bg-white dark:focus:bg-[#152038] transition"
+                        />
+                        <Search className="w-4 h-4 text-[#1E80A0] dark:text-[#4AB8BD] absolute left-3.5 top-3 pointer-events-none" />
+                    </form>
+
+                    <div className="rounded-2xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-neutral-700 p-3 shadow-lg">
+                        {renderSearchDropdown(() => setMobileSearchOpen(false))}
+                    </div>
+                </div>
+            )}
         </header>
     );
 }

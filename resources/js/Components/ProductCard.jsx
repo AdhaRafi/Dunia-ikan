@@ -90,15 +90,15 @@ export default function ProductCard({ product }) {
                 </div>
 
                 <div className="px-0.5 space-y-1">
-                    <div className="flex items-start justify-between gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-0.5 sm:gap-2">
                         <Link
                             href={`/products/${product.slug}`}
-                            className="text-sm font-bold text-[#001454] dark:text-white hover:text-[#0684E5] dark:hover:text-[#4AB8BD] transition leading-snug line-clamp-1"
+                            className="text-xs sm:text-sm font-bold text-[#001454] dark:text-white hover:text-[#0684E5] dark:hover:text-[#4AB8BD] transition leading-snug line-clamp-1"
                             title={product.name}
                         >
                             {product.name}
                         </Link>
-                        <p className="text-sm font-extrabold text-[#001454] dark:text-cyan-400 tabular-nums shrink-0">
+                        <p className="text-xs sm:text-sm font-extrabold text-[#001454] dark:text-cyan-400 tabular-nums shrink-0">
                             {formatPrice(product.price)}
                         </p>
                     </div>
@@ -112,12 +112,12 @@ export default function ProductCard({ product }) {
             </div>
 
             {product.stock > 0 && (
-                <div className="flex items-center gap-2 pt-0.5">
+                <div className="flex items-center gap-1.5 sm:gap-2 pt-0.5">
                     <button
                         type="button"
                         onClick={(e) => addToCart(e, false)}
                         disabled={adding || buying}
-                        className={`flex-1 py-1.5 px-3 rounded-full text-[11px] font-semibold border transition flex items-center justify-center gap-1 ${
+                        className={`flex-1 py-2 sm:py-1.5 px-2 sm:px-3 rounded-full text-[11px] font-semibold border transition flex items-center justify-center gap-1 whitespace-nowrap ${
                             added
                                 ? 'border-[#00696D] bg-[#00696D]/10 text-[#00696D] dark:text-[#4AB8BD]'
                                 : 'border-slate-300 dark:border-neutral-700 text-[#001454] dark:text-neutral-200 hover:border-[#001454] dark:hover:border-[#4AB8BD]'
@@ -137,7 +137,7 @@ export default function ProductCard({ product }) {
                         type="button"
                         onClick={(e) => addToCart(e, true)}
                         disabled={adding || buying}
-                        className="flex-1 py-1.5 px-3 rounded-full text-[11px] font-bold bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] hover:opacity-90 transition"
+                        className="flex-1 py-2 sm:py-1.5 px-2 sm:px-3 rounded-full text-[11px] font-bold bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] hover:opacity-90 transition whitespace-nowrap"
                     >
                         {buying ? 'Memproses...' : 'Beli'}
                     </button>

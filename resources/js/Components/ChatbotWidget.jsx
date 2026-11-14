@@ -156,7 +156,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
         <>
             {/* 1. FLOATING TRIGGER BUTTON (WHEN CHAT CLOSED) */}
             {!isOpen && (
-                <div className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 select-none">
+                <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 select-none">
                     <button
                         type="button"
                         onClick={onOpen}
@@ -174,7 +174,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                         </span>
 
                         {/* Circular framed Kiko avatar FAB */}
-                        <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#133b9e] to-[#081c59] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_28px_rgba(0,20,84,0.3)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
+                        <span className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#133b9e] to-[#081c59] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_28px_rgba(0,20,84,0.3)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
                             <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#1642ad] to-[#081c59] p-1">
                                 <img
                                     src="/images/kiko/kiko-avatar.png"
@@ -190,7 +190,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
 
             {/* 2. CHATBOT WINDOW (WHEN OPEN) */}
             {isOpen && (
-                <div className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 flex flex-col sm:w-[420px] sm:h-[640px] max-h-[92vh]">
+                <div className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 flex flex-col h-[100dvh] sm:w-[420px] sm:h-[640px] sm:max-h-[92vh]">
                     {/* Chat Modal Container */}
                     <div className="w-full h-full flex flex-col bg-white dark:bg-[#070b14] sm:rounded-2xl sm:border border-slate-200 dark:border-neutral-800 shadow-2xl overflow-hidden transition-all duration-200">
                         {/* Header */}

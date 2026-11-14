@@ -17,8 +17,8 @@ export default function Footer() {
     };
 
     return (
-        <footer className="shrink-0 mt-20 bg-white dark:bg-[#070b14] text-neutral-900 dark:text-neutral-100 border-t border-neutral-200 dark:border-neutral-800 transition-colors duration-200 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-0">
+        <footer className="shrink-0 mt-12 sm:mt-20 bg-white dark:bg-[#070b14] text-neutral-900 dark:text-neutral-100 border-t border-neutral-200 dark:border-neutral-800 transition-colors duration-200 overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-0">
                 {/* 1. TOP SECTION: Brand on left + 4 Navigation Columns on right (Avora Luxury Layout) */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14 pb-12 sm:pb-16">
                     {/* Brand Column */}

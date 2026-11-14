@@ -111,7 +111,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                     <div className="lg:col-span-8 space-y-6">
                         {/* 1. Alamat Pengiriman */}
                         <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-4">
-                            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
                                 <h2 className="font-bold text-sm text-dunia-navy uppercase tracking-wider flex items-center gap-2">
                                     <MapPin className="w-4 h-4 text-[#0684E5]" />
                                     1. Alamat Tujuan Pengiriman Ikan
@@ -412,7 +412,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                 {showAddressModal && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
                         <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95">
-                            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
                                 <h3 className="font-extrabold text-base text-slate-900 flex items-center gap-2">
                                     <MapPin className="w-5 h-5 text-[#0684E5]" />
                                     Tambah Alamat Pengiriman Baru

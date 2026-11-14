@@ -146,12 +146,12 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                 <div className="rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-neutral-800 overflow-hidden shadow-xs">
                     <div className="grid grid-cols-1 md:grid-cols-12 min-h-[600px]">
                         {/* Left Settings Sub-Sidebar */}
-                        <aside className="md:col-span-3 border-b md:border-b-0 md:border-r border-slate-100 dark:border-neutral-800 bg-[#fbfbfc] dark:bg-[#0b101d] p-4">
-                            <p className="px-3 mb-2 text-[11px] font-semibold text-slate-400 dark:text-neutral-500">
+                        <aside className="md:col-span-3 border-b md:border-b-0 md:border-r border-slate-100 dark:border-neutral-800 bg-[#fbfbfc] dark:bg-[#0b101d] p-3.5 sm:p-4">
+                            <p className="px-2 md:px-3 mb-2 text-[11px] font-semibold text-slate-400 dark:text-neutral-500">
                                 Akun Saya
                             </p>
 
-                            <nav className="flex md:flex-col gap-1 overflow-x-auto md:overflow-visible">
+                            <nav className="flex flex-wrap md:flex-col gap-1.5 md:gap-1">
                                 {tabs.map((tab) => {
                                     const Icon = tab.icon;
                                     const isActive = activeTab === tab.id;
@@ -160,13 +160,13 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                             key={tab.id}
                                             type="button"
                                             onClick={() => setActiveTab(tab.id)}
-                                            className={`shrink-0 w-auto md:w-full flex items-center justify-between gap-2.5 px-3 py-2 rounded-lg text-xs sm:text-[13px] transition ${
+                                            className={`w-auto md:w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-xs sm:text-[13px] transition ${
                                                 isActive
                                                     ? 'bg-slate-200/70 dark:bg-slate-800/80 text-slate-900 dark:text-white font-semibold'
                                                     : 'text-slate-600 dark:text-neutral-400 hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-slate-900 dark:hover:text-white font-medium'
                                             }`}
                                         >
-                                            <span className="flex items-center gap-2.5">
+                                            <span className="flex items-center gap-2">
                                                 <Icon className="w-4 h-4 shrink-0" strokeWidth={1.75} />
                                                 <span className="whitespace-nowrap">{tab.label}</span>
                                             </span>
@@ -181,7 +181,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
 
                                 <Link
                                     href="/addresses"
-                                    className="shrink-0 w-auto md:w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs sm:text-[13px] font-medium text-slate-600 dark:text-neutral-400 hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-slate-900 dark:hover:text-white transition"
+                                    className="w-auto md:w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-[13px] font-medium text-slate-600 dark:text-neutral-400 hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-slate-900 dark:hover:text-white transition"
                                 >
                                     <MapPin className="w-4 h-4 shrink-0" strokeWidth={1.75} />
                                     <span className="whitespace-nowrap">Buku Alamat</span>
@@ -189,8 +189,8 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
 
                                 {user?.role === 'seller' && (
                                     <Link
-                                        href="/seller/dashboard"
-                                        className="shrink-0 w-auto md:w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs sm:text-[13px] font-medium text-slate-600 dark:text-neutral-400 hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-slate-900 dark:hover:text-white transition"
+                                        href="/seller/products"
+                                        className="w-auto md:w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-[13px] font-medium text-slate-600 dark:text-neutral-400 hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-slate-900 dark:hover:text-white transition"
                                     >
                                         <Store className="w-4 h-4 shrink-0" strokeWidth={1.75} />
                                         <span className="whitespace-nowrap">Toko Saya</span>
