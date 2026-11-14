@@ -165,8 +165,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                         aria-label="Tanya Kiko"
                     >
                         {/* Clean speech-bubble pill pointing to the mascot orb */}
-                        <span className="relative hidden sm:inline-flex items-center gap-2 rounded-full bg-white dark:bg-[#131d33] px-4 py-2 text-[13px] font-bold tracking-tight text-[#001454] dark:text-white border border-slate-200/90 dark:border-slate-700/80 shadow-[0_8px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 group-hover:-translate-x-0.5">
-                            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                        <span className="relative hidden sm:inline-flex items-center rounded-full bg-white dark:bg-[#131d33] px-4 py-2 text-[13px] font-bold tracking-tight text-[#001454] dark:text-white border border-slate-200/90 dark:border-slate-700/80 shadow-[0_8px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 group-hover:-translate-x-0.5">
                             <span>Tanya Kiko</span>
                             <span
                                 aria-hidden="true"
@@ -175,15 +174,15 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                         </span>
 
                         {/* Circular framed Kiko avatar FAB */}
-                        <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#0d2e92] via-[#092265] to-[#001454] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_28px_rgba(0,20,84,0.3)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
-                            <span className="h-full w-full overflow-hidden rounded-full bg-[#092265]">
+                        <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#133b9e] to-[#081c59] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_28px_rgba(0,20,84,0.3)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
+                            <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#1642ad] to-[#081c59] p-1">
                                 <img
                                     src="/images/kiko/kiko-avatar.png"
                                     alt="Kiko"
-                                    className="h-full w-full object-cover object-top scale-110 translate-y-0.5"
+                                    className="h-full w-full object-contain -translate-y-0.5"
                                 />
                             </span>
-                            <span className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-[#070b14]" />
+                            <span className="absolute top-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-[#070b14]" />
                         </span>
                     </button>
                 </div>
