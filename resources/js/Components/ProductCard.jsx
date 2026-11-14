@@ -1,6 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
-import { Check, ShoppingCart, Heart } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 function formatPrice(price) {
     return new Intl.NumberFormat('id-ID', {
@@ -11,120 +11,138 @@ function formatPrice(price) {
 }
 
 const fallbackFish =
-    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600' fill='none'%3E%3Crect width='600' height='600' fill='%23f8fafc'/%3E%3Cpath d='M300 220 C380 220 435 270 435 300 C435 330 380 380 300 380 C245 380 190 330 145 345 L145 255 C190 270 245 220 300 220 Z' fill='%23001454' opacity='0.25'/%3E%3C/svg%3E";
+    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='450' viewBox='0 0 600 450' fill='none'%3E%3Crect width='600' height='450' fill='%23f4f4f5'/%3E%3Cpath d='M300 155 C380 155 435 205 435 235 C435 265 380 315 300 315 C245 315 190 265 145 280 L145 190 C190 205 245 155 300 155 Z' fill='%23001454' opacity='0.22'/%3E%3C/svg%3E";
 
 export default function ProductCard({ product }) {
     const [adding, setAdding] = useState(false);
     const [added, setAdded] = useState(false);
-    const [isFavorite, setIsFavorite] = useState(false);
+    const [buying, setBuying] = useState(false);
 
-    const handleQuickAdd = (e) => {
+    const addToCart = (e, redirectToCheckout = false) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (product.stock <= 0 || adding) {
+        if (product.stock <= 0 || adding || buying) {
             return;
         }
 
-        setAdding(true);
+        if (redirectToCheckout) {
+            setBuying(true);
+        } else {
+            setAdding(true);
+        }
+
         router.post(
             '/cart',
             { product_id: product.id, quantity: 1 },
             {
-                preserveScroll: true,
+                preserveScroll: !redirectToCheckout,
                 onSuccess: () => {
+                    if (redirectToCheckout) {
+                        setBuying(false);
+                        router.visit('/checkout');
+                        return;
+                    }
                     setAdding(false);
                     setAdded(true);
-                    setTimeout(() => setAdded(false), 2000);
+                    setTimeout(() => setAdded(false), 1800);
                 },
-                onError: () => setAdding(false),
+                onError: () => {
+                    setAdding(false);
+                    setBuying(false);
+                },
             },
         );
     };
 
-    const metaLine = [product.store?.name, product.store?.city].filter(Boolean).join(' · ');
+    const subLabel = product.store?.city || product.store?.name || '';
 
     return (
-        <article className="group flex flex-col select-none bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 overflow-hidden hover:border-[#4AB8BD] hover:shadow-md transition-all duration-200">
-            <div className="relative aspect-[4/3] bg-slate-100 dark:bg-[#162240] overflow-hidden">
-                <Link href={`/products/${product.slug}`} className="block w-full h-full">
-                    <img
-                        src={product.image || fallbackFish}
-                        alt={product.name}
-                        loading="lazy"
-                        onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = fallbackFish;
-                        }}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                </Link>
-
-                <button
-                    type="button"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setIsFavorite(!isFavorite);
-                    }}
-                    className={`p-1.5 rounded-full bg-white/90 dark:bg-neutral-900/90 text-slate-500 hover:text-[#0684E5] transition shadow-xs z-10 absolute top-2.5 right-2.5 ${
-                        isFavorite ? 'opacity-100 text-[#0684E5]' : 'opacity-0 group-hover:opacity-100 focus:opacity-100'
-                    }`}
-                    title="Simpan ke Favorit"
-                    aria-label="Simpan ke Favorit"
-                >
-                    <Heart className={`w-3.5 h-3.5 ${isFavorite ? 'fill-[#0684E5] text-[#0684E5]' : ''}`} />
-                </button>
-
-                {product.stock <= 0 && (
-                    <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-20">
-                        <span className="px-3 py-1 bg-white dark:bg-[#111a30] text-[#ba1a1a] dark:text-[#ffb4ab] font-bold text-xs rounded-md">
-                            Habis
-                        </span>
-                    </div>
-                )}
-            </div>
-
-            <div className="p-3.5 flex-1 flex flex-col justify-between gap-2.5">
-                <div className="space-y-1">
-                    <Link
-                        href={`/products/${product.slug}`}
-                        className="block text-xs sm:text-sm font-semibold text-[#001454] dark:text-white hover:text-[#0684E5] dark:hover:text-[#4AB8BD] transition leading-snug line-clamp-2"
-                        title={product.name}
-                    >
-                        {product.name}
+        <article className="group flex flex-col justify-between bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 p-3 gap-3 hover:border-[#4AB8BD] hover:shadow-md transition-all duration-200 select-none">
+            <div className="space-y-3">
+                <div className="relative aspect-[4/3] rounded-xl bg-slate-100 dark:bg-[#162240] overflow-hidden">
+                    <Link href={`/products/${product.slug}`} className="block w-full h-full">
+                        <img
+                            src={product.image || fallbackFish}
+                            alt={product.name}
+                            loading="lazy"
+                            onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = fallbackFish;
+                            }}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
                     </Link>
 
-                    {metaLine && (
+                    {product.category?.name && (
+                        <span className="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-white/95 dark:bg-neutral-900/90 text-[10px] font-semibold text-slate-600 dark:text-neutral-300 shadow-xs">
+                            {product.category.name}
+                        </span>
+                    )}
+
+                    {product.stock <= 0 && (
+                        <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
+                            <span className="px-3 py-1 bg-white dark:bg-[#111a30] text-[#ba1a1a] dark:text-[#ffb4ab] font-bold text-xs rounded-full">
+                                Habis
+                            </span>
+                        </div>
+                    )}
+                </div>
+
+                <div className="px-0.5 space-y-1">
+                    <div className="flex items-start justify-between gap-2">
+                        <Link
+                            href={`/products/${product.slug}`}
+                            className="text-sm font-bold text-[#001454] dark:text-white hover:text-[#0684E5] dark:hover:text-[#4AB8BD] transition leading-snug line-clamp-1"
+                            title={product.name}
+                        >
+                            {product.name}
+                        </Link>
+                        <p className="text-sm font-extrabold text-[#001454] dark:text-cyan-400 tabular-nums shrink-0">
+                            {formatPrice(product.price)}
+                        </p>
+                    </div>
+
+                    {subLabel && (
                         <p className="text-[11px] text-slate-500 dark:text-neutral-400 truncate">
-                            {metaLine}
+                            {subLabel}
                         </p>
                     )}
                 </div>
-
-                <div className="flex items-center justify-between gap-2 pt-1">
-                    <p className="text-sm sm:text-base font-bold text-[#001454] dark:text-cyan-400 tabular-nums">
-                        {formatPrice(product.price)}
-                    </p>
-
-                    {product.stock > 0 && (
-                        <button
-                            type="button"
-                            onClick={handleQuickAdd}
-                            disabled={adding}
-                            className={`p-1.5 rounded-lg transition flex items-center justify-center ${
-                                added
-                                    ? 'bg-[#00696D] text-white'
-                                    : 'bg-slate-100 dark:bg-[#162240] text-[#001454] dark:text-cyan-400 hover:bg-[#0684E5] hover:text-white dark:hover:bg-[#4AB8BD] dark:hover:text-black'
-                            }`}
-                            title="Tambah ke Keranjang"
-                            aria-label="Tambah ke Keranjang"
-                        >
-                            {added ? <Check className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
-                        </button>
-                    )}
-                </div>
             </div>
+
+            {product.stock > 0 && (
+                <div className="flex items-center gap-2 pt-0.5">
+                    <button
+                        type="button"
+                        onClick={(e) => addToCart(e, false)}
+                        disabled={adding || buying}
+                        className={`flex-1 py-1.5 px-3 rounded-full text-[11px] font-semibold border transition flex items-center justify-center gap-1 ${
+                            added
+                                ? 'border-[#00696D] bg-[#00696D]/10 text-[#00696D] dark:text-[#4AB8BD]'
+                                : 'border-slate-300 dark:border-neutral-700 text-[#001454] dark:text-neutral-200 hover:border-[#001454] dark:hover:border-[#4AB8BD]'
+                        }`}
+                    >
+                        {added ? (
+                            <>
+                                <Check className="w-3.5 h-3.5" />
+                                <span>Ditambah</span>
+                            </>
+                        ) : (
+                            <span>+ Keranjang</span>
+                        )}
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={(e) => addToCart(e, true)}
+                        disabled={adding || buying}
+                        className="flex-1 py-1.5 px-3 rounded-full text-[11px] font-bold bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] hover:opacity-90 transition"
+                    >
+                        {buying ? 'Memproses...' : 'Beli'}
+                    </button>
+                </div>
+            )}
         </article>
     );
 }
