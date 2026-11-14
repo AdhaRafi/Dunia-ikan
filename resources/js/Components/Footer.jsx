@@ -29,12 +29,6 @@ export default function Footer() {
                         <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-sm leading-relaxed">
                             Marketplace ikan hias & mutasi genetik (morph) captive-bred pertama di Indonesia dengan garansi ikan hidup 100% sampai tujuan.
                         </p>
-                        <div className="pt-2">
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold border border-emerald-200 dark:border-emerald-800/60">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                Terakreditasi Asosiasi Penangkar Indonesia
-                            </span>
-                        </div>
                     </div>
 
                     {/* 4 Navigation Columns (Skincare, Newsletter, Connect, Support) */}
