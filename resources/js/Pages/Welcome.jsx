@@ -8,10 +8,9 @@ import {
     ShieldCheck, 
     Thermometer, 
     Droplets, 
-    SlidersHorizontal,
-    ChevronRight,
     Store,
-    BookOpen
+    BookOpen,
+    CheckCircle2
 } from 'lucide-react';
 
 export default function Welcome({ categories, featuredFish, careGuides, featuredStores, stats }) {
@@ -34,48 +33,49 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
         <AppLayout>
             <Head title="Dunia Ikan — Marketplace Ikan Hias, Morph & Aquascape" />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-8 py-6 space-y-10 sm:space-y-12">
-                {/* 1. HERO SECTION: Landscape Cinematic Card (like Catalyst Autumn-Winter 2024 Collection) */}
-                <section className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm bg-slate-900 aspect-[16/9] sm:aspect-[21/9] lg:aspect-[24/9] min-h-[340px] sm:min-h-[420px] flex items-center">
-                    {/* Background Nature / Aquatic Landscape */}
+            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10 sm:space-y-12">
+                {/* 1. HERO SECTION: Cinematic Card (Catalyst Style) */}
+                <section className="relative rounded-3xl overflow-hidden border border-slate-200/80 shadow-xs bg-slate-900 min-h-[360px] sm:min-h-[420px] flex items-center">
+                    {/* Aquatic Hero Background */}
                     <img
                         src="/images/products/cupang-halfmoon.jpg"
-                        alt="Autumn-Winter Collection"
-                        className="absolute inset-0 w-full h-full object-cover object-center scale-105"
+                        alt="Koleksi Spesimen Eksklusif"
+                        className="absolute inset-0 w-full h-full object-cover object-right sm:object-center"
                     />
 
                     {/* Gradient Overlay for Text Readability */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/50 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-transparent" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
 
-                    {/* Left Content Overlay (exact Catalyst typography & layout) */}
-                    <div className="relative z-10 p-6 sm:p-12 lg:p-14 max-w-xl text-white space-y-4">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-emerald-300 text-[11px] font-bold border border-white/20">
-                            <Sparkles className="w-3 h-3" />
-                            <span>AW'24 Eksklusif Morph Selection</span>
+                    {/* Content Overlay */}
+                    <div className="relative z-10 p-6 sm:p-12 lg:p-14 max-w-lg lg:max-w-xl text-white space-y-4">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-emerald-300 text-[11px] font-bold border border-white/20">
+                            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>Eksklusif Morph & Kontes Selection</span>
                         </div>
 
-                        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-[1.08] text-white">
-                            Autumn-Winter <br />
-                            2024 Collection
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.08] text-white">
+                            Koleksi Spesimen <br />
+                            Unggulan 2024
                         </h1>
 
-                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed line-clamp-3">
-                            Koleksi spesimen mutasi genetik (morph) dan ikan hias kontes pilihan dari penangkar bersertifikasi di seluruh Indonesia. Dilengkapi spesifikasi biologi lengkap dan garansi hidup D.O.A. 100%.
+                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            Kurasi mutasi genetik (morph) langka dan ikan hias kontes pilihan langsung dari penangkar bersertifikasi di seluruh Indonesia. Bergaransi hidup D.O.A. 100%.
                         </p>
 
                         <div className="pt-2">
                             <Link
                                 href="/products"
-                                className="inline-block px-7 py-2.5 rounded-full bg-white text-slate-950 font-extrabold text-xs tracking-wider hover:bg-slate-100 shadow-lg shadow-black/20 transition-all duration-200"
+                                className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white text-slate-950 font-extrabold text-xs tracking-wider hover:bg-slate-100 hover:scale-105 shadow-lg shadow-black/20 transition-all duration-200"
                             >
-                                See now
+                                <span>Lihat Koleksi</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
                             </Link>
                         </div>
                     </div>
                 </section>
 
-                {/* 2. THE MOST TRENDING SECTION (exact Catalyst "The most trending 100" with 4 portrait cards) */}
+                {/* 2. THE MOST TRENDING SECTION (Catalyst 4 Portrait Studio Cards) */}
                 <section className="space-y-6">
                     <div className="flex items-baseline justify-between">
                         <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
@@ -91,15 +91,15 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                         </Link>
                     </div>
 
-                    {/* 4 Portrait Cards Row (Catalyst Studio Style) */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                    {/* 4 Portrait Cards */}
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                         {trendingItems.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
                     </div>
                 </section>
 
-                {/* 3. PARAMETRIC BIOLOGY FILTER CHIPS (MorphMarket traits) */}
+                {/* 3. PARAMETRIC BIOLOGY FILTER CHIPS (MorphMarket Traits) */}
                 <section className="border-t border-slate-200/80 pt-10 space-y-6">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
@@ -107,7 +107,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                 Jelajahi Berdasarkan Kategori Biologi
                             </h3>
                             <p className="text-xs text-slate-500 mt-0.5">
-                                Filter instan berdasarkan tipe air dan jenis kelamin spesimen.
+                                Filter instan berdasarkan tipe perairan dan jenis kelamin spesimen.
                             </p>
                         </div>
 
@@ -137,7 +137,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                     </div>
 
                     {/* Full Product Grid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                         {displayedProducts.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
@@ -155,7 +155,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                 Garansi Hidup (D.O.A.) 100%
                             </h4>
                             <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                                Standar kemasan beroksigen tinggi dengan jaminan pengembalian dana atau penggantian spesimen jika terjadi kendala dalam perjalanan.
+                                Kemasan beroksigen tinggi dengan garansi pengembalian dana penuh atau penggantian jika ikan bermasalah di perjalanan.
                             </p>
                         </div>
                     </div>
@@ -169,7 +169,7 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                 Parameter Biologi Akurat
                             </h4>
                             <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                                Setiap mutasi genetik (morph), toleransi suhu, rentang pH, dan volume akuarium dicatat transparan dari peternak terakreditasi.
+                                Setiap mutasi genetik (morph), rentang suhu, pH, dan ukuran akuarium dicatat akurat dari peternak bersertifikat.
                             </p>
                         </div>
                     </div>
@@ -183,11 +183,112 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                                 Jaringan Penangkar Resmi
                             </h4>
                             <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                                Terhubung langsung dengan farm ikan hias dan aquascaper profesional di seluruh nusantara tanpa perantara spekulatif.
+                                Terhubung langsung dengan breeder dan aquascaper profesional di seluruh nusantara tanpa perantara spekulatif.
                             </p>
                         </div>
                     </div>
                 </section>
+
+                {/* 5. VERIFIED BREEDERS */}
+                {featuredStores && featuredStores.length > 0 && (
+                    <section className="space-y-6">
+                        <div className="flex items-baseline justify-between">
+                            <div>
+                                <h3 className="text-xl font-bold tracking-tight text-slate-900">
+                                    Penangkar Resmi Terverifikasi
+                                </h3>
+                                <p className="text-xs text-slate-500 mt-0.5">
+                                    Farm ikan hias dan breeder spesimen morph dengan reputasi teruji.
+                                </p>
+                            </div>
+                            <Link
+                                href="/products"
+                                className="text-xs font-bold text-slate-900 hover:text-emerald-700 flex items-center gap-1 transition"
+                            >
+                                <span>Lihat toko</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                            </Link>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                            {featuredStores.slice(0, 3).map((store) => (
+                                <Link
+                                    key={store.id}
+                                    href={`/stores/${store.slug}`}
+                                    className="p-5 rounded-2xl bg-white border border-slate-200/80 hover:border-slate-400 hover:shadow-md transition-all space-y-3 group"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-slate-800 text-sm group-hover:bg-slate-950 group-hover:text-white transition">
+                                            {store.name.charAt(0)}
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <h4 className="font-bold text-sm text-slate-900 truncate">
+                                                {store.name}
+                                            </h4>
+                                            <p className="text-xs text-slate-400 truncate">
+                                                {store.city} • Rating {store.rating || '4.9'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                                        {store.description || 'Penangkar spesialis ikan hias kontes dan mutasi morph berkualitas tinggi.'}
+                                    </p>
+                                    <div className="pt-1 flex items-center gap-2 text-[11px] font-bold text-emerald-700">
+                                        <CheckCircle2 className="w-3.5 h-3.5" />
+                                        <span>Garansi D.O.A. Aktif</span>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* 6. CARE GUIDES */}
+                {careGuides && careGuides.length > 0 && (
+                    <section className="space-y-6">
+                        <div className="flex items-baseline justify-between">
+                            <div>
+                                <h3 className="text-xl font-bold tracking-tight text-slate-900">
+                                    Panduan Perawatan & Karantina
+                                </h3>
+                                <p className="text-xs text-slate-500 mt-0.5">
+                                    Edukasi esensial menjaga kesehatan dan parameter ekosistem ikan.
+                                </p>
+                            </div>
+                            <Link
+                                href="/guides"
+                                className="text-xs font-bold text-slate-900 hover:text-emerald-700 flex items-center gap-1 transition"
+                            >
+                                <span>Semua panduan</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                            </Link>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            {careGuides.slice(0, 3).map((guide) => (
+                                <Link
+                                    key={guide.id}
+                                    href={`/guides/${guide.slug}`}
+                                    className="p-5 rounded-2xl bg-white border border-slate-200/80 hover:border-slate-400 hover:shadow-md transition-all space-y-2.5 group"
+                                >
+                                    <div className="flex items-center gap-2 text-[10px] font-bold text-emerald-700 uppercase tracking-wider">
+                                        <BookOpen className="w-3.5 h-3.5" />
+                                        <span>{guide.category || 'Tips Perawatan'}</span>
+                                    </div>
+                                    <h4 className="font-bold text-sm text-slate-900 group-hover:text-emerald-700 transition leading-snug line-clamp-2">
+                                        {guide.title}
+                                    </h4>
+                                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                                        {guide.excerpt || guide.content?.substring(0, 100)}...
+                                    </p>
+                                    <div className="pt-1 text-[11px] font-semibold text-slate-400">
+                                        Baca panduan selengkapnya →
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
             </div>
         </AppLayout>
     );

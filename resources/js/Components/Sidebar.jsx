@@ -8,11 +8,11 @@ import {
     ShieldCheck, 
     BookOpen, 
     PanelLeft, 
-    ChevronRight,
     ArrowRight,
     Tag,
     X,
-    HeartPulse
+    HeartPulse,
+    Lightbulb
 } from 'lucide-react';
 
 const TIPS = [
@@ -77,7 +77,6 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
             label: 'Discounts',
             sublabel: 'Garansi D.O.A.',
             badge: 'to 70%',
-            doaBadge: '100%',
             icon: Tag,
             href: '/products?min_price=1',
             active: url.includes('min_price'),
@@ -93,81 +92,96 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
 
     return (
         <>
-            {/* Mobile Backdrop */}
-            {isOpen && (
-                <div 
-                    onClick={onClose}
-                    className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs md:hidden"
-                />
-            )}
-
-            {/* Sidebar Container */}
+            {/* Desktop Sidebar: Permanently docked inside the flex app shell */}
             <aside
-                className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col justify-between bg-white border-r border-slate-200/80 transition-all duration-300 md:static ${
-                    isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-                } ${
-                    isCollapsed ? 'md:w-20' : 'md:w-64 lg:w-72'
-                } w-72 h-screen overflow-y-auto select-none`}
+                className={`hidden md:flex flex-col justify-between bg-white border-r border-slate-200/80 transition-all duration-300 shrink-0 h-full select-none ${
+                    isCollapsed ? 'w-20' : 'w-64 lg:w-72'
+                }`}
             >
-                <div className="p-5 flex-1 flex flex-col">
-                    {/* Brand Logo & Collapse Toggle (like Catalyst logo: geometric icon + CATALYST + [|]) */}
-                    <div className="flex items-center justify-between pb-6 border-b border-slate-100">
-                        <Link href="/" className="flex items-center gap-3 group">
-                            {/* Geometric modern brand mark */}
-                            <div className="w-8 h-8 rounded-lg bg-slate-950 text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition">
-                                <svg 
-                                    viewBox="0 0 24 24" 
-                                    className="w-4 h-4 fill-none stroke-current stroke-2"
+                {/* Top Section: Brand + Navigation */}
+                <div className="p-4 lg:p-5 flex-1 flex flex-col min-h-0 overflow-y-auto">
+                    {/* Brand Header */}
+                    <div className="flex items-center justify-between pb-5 border-b border-slate-100">
+                        {isCollapsed ? (
+                            <div className="w-full flex flex-col items-center gap-2">
+                                <Link 
+                                    href="/" 
+                                    className="w-9 h-9 rounded-xl bg-slate-950 text-white flex items-center justify-center shadow-xs hover:scale-105 transition"
+                                    title="CATALYST Dunia Ikan"
                                 >
-                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                                </svg>
+                                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                    </svg>
+                                </Link>
+                                <button
+                                    type="button"
+                                    onClick={onToggleCollapse}
+                                    className="p-1.5 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition"
+                                    title="Perluas Sidebar"
+                                    aria-label="Perluas Sidebar"
+                                >
+                                    <PanelLeft className="w-4 h-4 rotate-180" />
+                                </button>
                             </div>
-                            {!isCollapsed && (
-                                <div className="flex flex-col">
-                                    <span className="text-base font-extrabold tracking-widest text-slate-950 uppercase leading-none">
-                                        CATALYST
-                                    </span>
-                                    <span className="text-[9px] font-bold tracking-wider text-slate-400 uppercase mt-1">
-                                        Dunia Ikan
-                                    </span>
-                                </div>
-                            )}
-                        </Link>
+                        ) : (
+                            <>
+                                <Link href="/" className="flex items-center gap-3 group">
+                                    <div className="w-8 h-8 rounded-lg bg-slate-950 text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition">
+                                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-extrabold tracking-widest text-slate-950 uppercase leading-none">
+                                            CATALYST
+                                        </span>
+                                        <span className="text-[9px] font-bold tracking-wider text-slate-400 uppercase mt-0.5">
+                                            Dunia Ikan
+                                        </span>
+                                    </div>
+                                </Link>
 
-                        <div className="flex items-center gap-1">
-                            {/* Desktop Collapse Button */}
-                            <button
-                                type="button"
-                                onClick={onToggleCollapse}
-                                className="hidden md:flex p-1.5 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition"
-                                title={isCollapsed ? 'Perluas Sidebar' : 'Kecilkan Sidebar'}
-                            >
-                                <PanelLeft className="w-4 h-4" />
-                            </button>
-
-                            {/* Mobile Close Button */}
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                className="md:hidden p-1.5 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100"
-                            >
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
+                                <button
+                                    type="button"
+                                    onClick={onToggleCollapse}
+                                    className="p-1.5 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition"
+                                    title="Kecilkan Sidebar"
+                                    aria-label="Kecilkan Sidebar"
+                                >
+                                    <PanelLeft className="w-4 h-4" />
+                                </button>
+                            </>
+                        )}
                     </div>
 
-                    {/* Nav Items List */}
-                    <nav className="mt-6 space-y-1">
+                    {/* Nav Items */}
+                    <nav className="mt-5 space-y-1">
                         {navItems.map((item) => {
                             const Icon = item.icon;
+                            if (isCollapsed) {
+                                return (
+                                    <Link
+                                        key={item.label}
+                                        href={item.href}
+                                        className={`w-11 h-11 mx-auto flex items-center justify-center rounded-xl transition ${
+                                            item.active
+                                                ? 'bg-slate-950 text-white shadow-xs'
+                                                : 'text-slate-500 hover:text-slate-950 hover:bg-slate-100'
+                                        }`}
+                                        title={item.label}
+                                    >
+                                        <Icon className="w-4 h-4" />
+                                    </Link>
+                                );
+                            }
+
                             return (
                                 <Link
                                     key={item.label}
                                     href={item.href}
-                                    onClick={onClose}
-                                    className={`group flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition ${
+                                    className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
                                         item.active
-                                            ? 'bg-slate-900 text-white shadow-xs'
+                                            ? 'bg-slate-950 text-white shadow-xs'
                                             : 'text-slate-600 hover:text-slate-950 hover:bg-slate-100/80'
                                     }`}
                                     title={item.label}
@@ -176,12 +190,10 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                                         <Icon className={`w-4 h-4 shrink-0 transition ${
                                             item.active ? 'text-white' : 'text-slate-400 group-hover:text-slate-700'
                                         }`} />
-                                        {!isCollapsed && (
-                                            <span className="truncate">{item.label}</span>
-                                        )}
+                                        <span className="truncate">{item.label}</span>
                                     </div>
 
-                                    {!isCollapsed && item.badge && (
+                                    {item.badge && (
                                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                                             item.active ? 'bg-slate-800 text-slate-200' : 'bg-slate-100 text-slate-500'
                                         }`}>
@@ -193,9 +205,9 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                         })}
                     </nav>
 
-                    {/* Separator & Secondary Nav */}
+                    {/* Special Features Nav (Expanded Only) */}
                     {!isCollapsed && (
-                        <div className="mt-8 pt-6 border-t border-slate-100 space-y-2">
+                        <div className="mt-6 pt-5 border-t border-slate-100 space-y-1.5">
                             <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                                 Fitur Spesial
                             </p>
@@ -217,17 +229,28 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                     )}
                 </div>
 
-                {/* Bottom: TIPS OF THE DAY Widget (matches Catalyst reference) */}
-                {!isCollapsed && (
-                    <div className="p-4 border-t border-slate-100">
-                        <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/70 space-y-2.5">
+                {/* Bottom Section: TIPS OF THE DAY Widget */}
+                {isCollapsed ? (
+                    <div className="p-3 border-t border-slate-100 flex justify-center">
+                        <button
+                            type="button"
+                            onClick={nextTip}
+                            className="w-10 h-10 rounded-xl bg-slate-50 text-slate-500 hover:text-emerald-600 flex items-center justify-center border border-slate-200/70 hover:bg-slate-100 transition"
+                            title={`Tip: ${currentTip.title}`}
+                        >
+                            <Lightbulb className="w-4 h-4" />
+                        </button>
+                    </div>
+                ) : (
+                    <div className="p-4 border-t border-slate-100 shrink-0">
+                        <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/70 space-y-2">
                             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
                                 TIPS OF THE DAY
                             </p>
                             <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
                                 {currentTip.title}
                             </h5>
-                            <p className="text-[11px] text-slate-500 leading-relaxed">
+                            <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-3">
                                 {currentTip.text}
                             </p>
                             <div className="pt-1 flex items-center justify-between text-[11px] font-medium text-slate-400">
@@ -245,6 +268,121 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                     </div>
                 )}
             </aside>
+
+            {/* Mobile Drawer (Accessible on screens < 768px) */}
+            <div 
+                className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${
+                    isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                }`}
+            >
+                {/* Backdrop */}
+                <div 
+                    onClick={onClose} 
+                    className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs" 
+                />
+
+                {/* Sliding Drawer */}
+                <aside 
+                    className={`fixed inset-y-0 left-0 w-72 max-w-[85vw] h-full bg-white shadow-2xl flex flex-col justify-between z-50 transform transition-transform duration-300 ease-in-out ${
+                        isOpen ? 'translate-x-0' : '-translate-x-full'
+                    }`}
+                >
+                    <div className="p-5 flex-1 flex flex-col overflow-y-auto">
+                        <div className="flex items-center justify-between pb-5 border-b border-slate-100">
+                            <Link href="/" onClick={onClose} className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-lg bg-slate-950 text-white flex items-center justify-center shadow-xs">
+                                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                    </svg>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-sm font-extrabold tracking-widest text-slate-950 uppercase leading-none">
+                                        CATALYST
+                                    </span>
+                                    <span className="text-[9px] font-bold tracking-wider text-slate-400 uppercase mt-0.5">
+                                        Dunia Ikan
+                                    </span>
+                                </div>
+                            </Link>
+
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className="p-1.5 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100"
+                                aria-label="Tutup Menu"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <nav className="mt-5 space-y-1">
+                            {navItems.map((item) => {
+                                const Icon = item.icon;
+                                return (
+                                    <Link
+                                        key={item.label}
+                                        href={item.href}
+                                        onClick={onClose}
+                                        className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
+                                            item.active
+                                                ? 'bg-slate-950 text-white shadow-xs'
+                                                : 'text-slate-600 hover:text-slate-950 hover:bg-slate-100/80'
+                                        }`}
+                                    >
+                                        <div className="flex items-center gap-3 min-w-0">
+                                            <Icon className={`w-4 h-4 shrink-0 ${item.active ? 'text-white' : 'text-slate-400'}`} />
+                                            <span className="truncate">{item.label}</span>
+                                        </div>
+                                        {item.badge && (
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                                item.active ? 'bg-slate-800 text-slate-200' : 'bg-slate-100 text-slate-500'
+                                            }`}>
+                                                {item.badge}
+                                            </span>
+                                        )}
+                                    </Link>
+                                );
+                            })}
+                        </nav>
+
+                        <div className="mt-6 pt-5 border-t border-slate-100 space-y-1.5">
+                            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                                Fitur Spesial
+                            </p>
+                            <Link
+                                href="/guides"
+                                onClick={onClose}
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-950 hover:bg-slate-100 transition"
+                            >
+                                <HeartPulse className="w-4 h-4 text-emerald-600 shrink-0" />
+                                <span>Pusat Kesehatan Ikan</span>
+                            </Link>
+                            <Link
+                                href="/products?category=ikan-hias"
+                                onClick={onClose}
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-950 hover:bg-slate-100 transition"
+                            >
+                                <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+                                <span>Garansi D.O.A. 100%</span>
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className="p-4 border-t border-slate-100">
+                        <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/70 space-y-2">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                TIPS OF THE DAY
+                            </p>
+                            <h5 className="text-xs font-extrabold text-slate-900 leading-tight">
+                                {currentTip.title}
+                            </h5>
+                            <p className="text-[11px] text-slate-500 leading-relaxed">
+                                {currentTip.text}
+                            </p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
         </>
     );
 }

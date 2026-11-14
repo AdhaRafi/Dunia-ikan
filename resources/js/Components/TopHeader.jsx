@@ -9,17 +9,14 @@ import {
     User, 
     Menu, 
     ChevronDown,
-    X,
-    MessageSquare,
-    Store
+    PanelLeft
 } from 'lucide-react';
 
-export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
+export default function TopHeader({ onOpenMobileSidebar, onOpenChat, isCollapsed, onToggleCollapse }) {
     const { auth, cartCount } = usePage().props;
     const user = auth?.user;
     const [searchQuery, setSearchQuery] = useState('');
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-    const [wishlistCount, setWishlistCount] = useState(3);
     const [darkMode, setDarkMode] = useState(false);
 
     const handleSearchSubmit = (e) => {
@@ -30,22 +27,31 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
     };
 
     return (
-        <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5">
-            <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-                {/* Left: Mobile Sidebar Trigger + Search Input */}
-                <div className="flex items-center gap-3 flex-1 max-w-md">
-                    {/* Mobile Hamburger Button */}
+        <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-3">
+            <div className="w-full flex items-center justify-between gap-3 sm:gap-6">
+                {/* Left: Mobile Menu Trigger + Brand (Mobile) + Search Bar */}
+                <div className="flex items-center gap-3 flex-1 min-w-0 max-w-xl">
+                    {/* Mobile Hamburger Trigger */}
                     <button
                         type="button"
                         onClick={onOpenMobileSidebar}
-                        className="md:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition"
-                        aria-label="Buka Menu"
+                        className="md:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition shrink-0"
+                        aria-label="Buka Menu Navigasi"
                     >
                         <Menu className="w-5 h-5" />
                     </button>
 
-                    {/* Search Form (matches Catalyst search input) */}
-                    <form onSubmit={handleSearchSubmit} className="relative w-full">
+                    {/* Mobile Brand Mark */}
+                    <Link href="/" className="md:hidden flex items-center gap-2 shrink-0">
+                        <div className="w-7 h-7 rounded-lg bg-slate-950 text-white flex items-center justify-center shadow-xs">
+                            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-none stroke-current stroke-2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                            </svg>
+                        </div>
+                    </Link>
+
+                    {/* Search Form (Catalyst Minimalist Pill Search) */}
+                    <form onSubmit={handleSearchSubmit} className="relative w-full min-w-0">
                         <input
                             type="search"
                             placeholder="Cari spesimen, morph, penangkar..."
@@ -57,14 +63,15 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                     </form>
                 </div>
 
-                {/* Right: Quick Action Icons (Sun, Heart, Cart, User - exactly like Catalyst) */}
-                <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                {/* Right: Quick Action Icons (Sun, Heart, Cart, User/Auth) */}
+                <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
                     {/* Theme Toggle Icon (Sun) */}
                     <button
                         type="button"
                         onClick={() => setDarkMode(!darkMode)}
                         className="p-2 text-slate-500 hover:text-slate-900 rounded-full hover:bg-slate-100 transition"
-                        title="Ubah Tema"
+                        title={darkMode ? 'Tema Terang' : 'Tema Gelap'}
+                        aria-label="Ubah Tema"
                     >
                         {darkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
                     </button>
@@ -73,12 +80,11 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                     <Link
                         href="/products?sort=popular"
                         className="relative p-2 text-slate-500 hover:text-rose-600 rounded-full hover:bg-slate-100 transition"
-                        title="Favorit"
+                        title="Daftar Keinginan"
+                        aria-label="Daftar Keinginan"
                     >
                         <Heart className="w-4 h-4" />
-                        {wishlistCount > 0 && (
-                            <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-rose-500" />
-                        )}
+                        <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-rose-500" />
                     </Link>
 
                     {/* Shopping Cart Icon */}
@@ -86,22 +92,24 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                         href="/cart"
                         className="relative p-2 text-slate-700 hover:text-slate-950 rounded-full hover:bg-slate-100 transition"
                         title="Keranjang Belanja"
+                        aria-label="Keranjang Belanja"
                     >
                         <ShoppingCart className="w-4 h-4" />
                         {cartCount > 0 && (
-                            <span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-slate-950 text-white text-[10px] font-bold px-1 shadow-xs">
+                            <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-slate-950 text-white text-[10px] font-bold px-1 shadow-xs">
                                 {cartCount}
                             </span>
                         )}
                     </Link>
 
-                    {/* User Profile / Account Dropdown */}
+                    {/* User Profile / Auth Actions */}
                     {user ? (
                         <div className="relative ml-1">
                             <button
                                 type="button"
                                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                                 className="flex items-center gap-2 p-1 rounded-full hover:ring-2 hover:ring-slate-200 transition"
+                                aria-label="Menu Pengguna"
                             >
                                 <div className="w-8 h-8 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center">
                                     {user.name.charAt(0).toUpperCase()}
@@ -182,23 +190,24 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                             )}
                         </div>
                     ) : (
-                        <div className="flex items-center gap-2 ml-1">
+                        <div className="flex items-center gap-1.5 sm:gap-2 ml-1">
                             <Link
                                 href="/login"
-                                className="p-2 text-slate-700 hover:text-slate-950 rounded-full hover:bg-slate-100 transition"
+                                className="sm:hidden p-2 text-slate-700 hover:text-slate-950 rounded-full hover:bg-slate-100 transition"
                                 title="Masuk Akun"
+                                aria-label="Masuk Akun"
                             >
                                 <User className="w-4 h-4" />
                             </Link>
                             <Link
                                 href="/login"
-                                className="hidden sm:inline-block text-xs font-bold text-slate-700 hover:text-slate-950 px-2 py-1.5"
+                                className="hidden sm:inline-block text-xs font-bold text-slate-700 hover:text-slate-950 px-2.5 py-1.5"
                             >
                                 Masuk
                             </Link>
                             <Link
                                 href="/register"
-                                className="hidden sm:inline-block px-3.5 py-1.5 rounded-full bg-slate-950 text-white font-bold text-xs hover:bg-slate-800 shadow-xs transition"
+                                className="hidden sm:inline-block px-4 py-1.5 rounded-full bg-slate-950 text-white font-bold text-xs hover:bg-slate-800 shadow-xs transition"
                             >
                                 Daftar
                             </Link>

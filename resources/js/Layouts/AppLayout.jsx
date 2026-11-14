@@ -20,8 +20,8 @@ export default function AppLayout({ children }) {
     }, [flash?.success, flash?.error]);
 
     return (
-        <div className="min-h-screen bg-[#F8F9FA] text-slate-900 flex antialiased">
-            {/* Left Sidebar (Catalyst Navigation) */}
+        <div className="h-screen w-full flex overflow-hidden bg-[#FBFBFB] text-slate-900 antialiased selection:bg-slate-900 selection:text-white">
+            {/* Left Sidebar (Permanently docked on desktop, sliding drawer on mobile) */}
             <Sidebar
                 isOpen={mobileSidebarOpen}
                 onClose={() => setMobileSidebarOpen(false)}
@@ -29,16 +29,18 @@ export default function AppLayout({ children }) {
                 onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
             />
 
-            {/* Main Area: TopHeader + Content + Footer */}
-            <div className="flex-1 min-w-0 flex flex-col min-h-screen">
+            {/* Main Area: TopHeader + Page Canvas + Footer (Independent Clean Scroll) */}
+            <div className="flex-1 h-full min-w-0 flex flex-col overflow-y-auto overflow-x-hidden">
                 <TopHeader 
                     onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
                     onOpenChat={() => setChatOpen(true)}
+                    isCollapsed={sidebarCollapsed}
+                    onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
                 />
 
                 {/* Flash Messages */}
                 {showFlash && (flash?.success || flash?.error) && (
-                    <div className="px-4 sm:px-8 pt-4 w-full max-w-7xl mx-auto">
+                    <div className="px-4 sm:px-6 lg:px-8 pt-4 w-full max-w-6xl mx-auto">
                         {flash.success && (
                             <div className="flex items-center justify-between gap-4 rounded-xl bg-emerald-700 px-4 py-3 text-xs font-bold text-white shadow-md">
                                 <span className="flex items-center gap-2">
@@ -75,7 +77,7 @@ export default function AppLayout({ children }) {
                 )}
 
                 {/* Page Content Canvas */}
-                <main className="flex-1 w-full">
+                <main className="flex-1 w-full min-w-0">
                     {children}
                 </main>
 
