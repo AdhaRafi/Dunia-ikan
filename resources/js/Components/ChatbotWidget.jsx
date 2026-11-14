@@ -6,7 +6,6 @@ import {
     Image as ImageIcon,
     Loader2,
     Send,
-    Sparkles,
     X,
 } from 'lucide-react';
 import axios from 'axios';
@@ -18,7 +17,6 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
     const [imagePreview, setImagePreview] = useState(null);
     const [loading, setLoading] = useState(false);
     const [sessionToken, setSessionToken] = useState(null);
-    const [showBubble, setShowBubble] = useState(true);
     const messagesEndRef = useRef(null);
     const fileInputRef = useRef(null);
 
@@ -166,58 +164,9 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                 }
             `}</style>
 
-            {/* 1. FLOATING TRIGGER BUTTON & SPEECH BUBBLE (WHEN CHAT CLOSED) */}
+            {/* 1. FLOATING TRIGGER BUTTON (WHEN CHAT CLOSED) */}
             {!isOpen && (
                 <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end select-none">
-                    {/* Floating Speech Bubble / Tooltip (matching Lena reference video) */}
-                    {showBubble && (
-                        <div
-                            onClick={onOpen}
-                            className="relative mb-3.5 w-[280px] sm:w-[310px] cursor-pointer rounded-2xl bg-[#131d33] p-4 text-white shadow-2xl border border-slate-700/80 dark:border-cyan-500/30 transition-transform duration-200 hover:scale-[1.02] group"
-                        >
-                            {/* Close button */}
-                            <button
-                                type="button"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setShowBubble(false);
-                                }}
-                                className="absolute right-2.5 top-2.5 p-1 text-slate-400 hover:text-white rounded-lg transition"
-                                title="Tutup info"
-                                aria-label="Tutup info"
-                            >
-                                <X className="h-3.5 w-3.5" />
-                            </button>
-
-                            {/* Header */}
-                            <div className="flex items-center gap-1.5 mb-2.5 pr-6">
-                                <Sparkles className="h-4 w-4 text-[#00C882] shrink-0" />
-                                <span className="text-xs sm:text-[13px] font-black text-white tracking-tight">
-                                    Tanya Kiko untuk bantuan!
-                                </span>
-                            </div>
-
-                            {/* Service bullet items */}
-                            <div className="space-y-1.5 text-[11px] leading-snug text-slate-300">
-                                <p className="flex items-start gap-1.5">
-                                    <span className="text-[#00C882] font-bold">✓</span>
-                                    <span>Panduan kesehatan & perawatan ikan.</span>
-                                </p>
-                                <p className="flex items-start gap-1.5">
-                                    <span className="text-[#00C882] font-bold">✓</span>
-                                    <span>Rekomendasi spesimen, morph & breeder resmi.</span>
-                                </p>
-                                <p className="flex items-start gap-1.5">
-                                    <span className="text-[#00C882] font-bold">✓</span>
-                                    <span>Panduan karantina & garansi hidup 100% (D.O.A).</span>
-                                </p>
-                            </div>
-
-                            {/* Pointer tail pointing down directly to Kiko mascot */}
-                            <div className="absolute -bottom-2 right-8 h-4 w-4 rotate-45 border-b border-r border-slate-700/80 dark:border-cyan-500/30 bg-[#131d33]" />
-                        </div>
-                    )}
-
                     {/* Pill Trigger with Kiko Mascot popping out */}
                     <button
                         type="button"
