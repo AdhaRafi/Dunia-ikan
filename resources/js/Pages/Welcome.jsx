@@ -1,10 +1,45 @@
 import { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
+import { Minus, Plus } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
 
-export default function Welcome({ categories, featuredFish, careGuides, featuredStores, stats }) {
+const FAQ_ITEMS = [
+    {
+        letter: 'A',
+        question: 'Apakah garansi ikan hidup 100% berlaku di seluruh Indonesia?',
+        answer: 'Ya, setiap pengiriman ikan hias dari penangkar terverifikasi dilindungi garansi DOA (Dead on Arrival) dengan syarat melampirkan video unboxing tanpa jeda saat paket diterima.',
+    },
+    {
+        letter: 'B',
+        question: 'Bagaimana standar packing agar ikan tetap aman selama pengiriman?',
+        answer: 'Penangkar memakai kantong oksigen ganda bertekanan, air kondisi stabil, serta boks styrofoam atau insulasi thermal sesuai jarak pengiriman.',
+    },
+    {
+        letter: 'C',
+        question: 'Bagaimana cara memilih ikan air tawar, payau, atau air laut di katalog?',
+        answer: 'Anda bisa langsung klik menu Air Tawar atau Air Laut di sidebar, atau gunakan filter Tipe Air di halaman Katalog lengkap beserta informasi pH dan suhu ideal.',
+    },
+    {
+        letter: 'D',
+        question: 'Kapan dana pembayaran diteruskan ke toko penangkar?',
+        answer: 'Pembayaran ditahan sementara oleh sistem dan baru diteruskan setelah pesanan dikonfirmasi diterima dalam kondisi baik atau melewati batas waktu konfirmasi.',
+    },
+    {
+        letter: 'E',
+        question: 'Apakah penangkar atau toko aquascape bisa berjualan di sini?',
+        answer: 'Bisa. Anda cukup mendaftar akun lalu melengkapi profil toko di menu Toko Saya untuk mulai menayangkan stok ikan hias, tanaman, dan perlengkapan akuarium.',
+    },
+    {
+        letter: 'F',
+        question: 'Bagaimana jika saya masih bingung soal parameter air atau perawatan ikan?',
+        answer: 'Gunakan asisten Tanya Kiko di pojok kanan bawah atau buka halaman Panduan untuk mengecek protokol karantina, aklimatisasi, dan penanganan penyakit ikan.',
+    },
+];
+
+export default function Welcome({ categories, featuredFish, featuredStores, stats }) {
     const [selectedTab, setSelectedTab] = useState('all');
+    const [openFaq, setOpenFaq] = useState(0);
 
     // Filter items based on quick chips
     const displayedProducts = featuredFish?.filter((item) => {
@@ -282,42 +317,76 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                     </section>
                 )}
 
-                {/* 6. PANDUAN PERAWATAN (Behance/Editorial 3-Column Index) */}
-                {careGuides && careGuides.length > 0 && (
-                    <section className="space-y-6 border-t border-slate-200/80 dark:border-neutral-800 pt-10">
-                        <div className="flex items-center justify-between gap-2">
-                            <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
-                                Panduan Perawatan
+                {/* 6. FREQUENTLY ASKED QUESTIONS (Dribbble 26971331 Floating Tilted Card Style) */}
+                <section className="rounded-[28px] bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-slate-800/90 px-4 sm:px-10 py-12 sm:py-16 shadow-xs">
+                    <div className="max-w-2xl mx-auto">
+                        {/* Centered Editorial Header */}
+                        <div className="text-center max-w-lg mx-auto mb-10 sm:mb-12">
+                            <h2 className="text-2xl sm:text-4xl tracking-tight text-slate-900 dark:text-white leading-tight">
+                                <span className="font-bold">Pertanyaan yang Sering </span>
+                                <span className="font-serif italic font-normal text-slate-500 dark:text-slate-300">
+                                    Ditanyakan
+                                </span>
                             </h2>
-                            <Link
-                                href="/guides"
-                                className="text-xs font-semibold text-neutral-500 hover:text-[#001454] dark:text-neutral-400 dark:hover:text-white transition"
-                            >
-                                Semua Panduan
-                            </Link>
+                            <p className="mt-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                                Transparansi membangun kepercayaan. Berikut hal yang paling sering ditanyakan penghobi sebelum berbelanja di Dunia Ikan.
+                            </p>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-                            {careGuides.slice(0, 3).map((guide, index) => (
-                                <Link
-                                    key={guide.id}
-                                    href={`/guides/${guide.id}`}
-                                    className="group border-t border-slate-200 dark:border-neutral-800 pt-4 space-y-2 block"
-                                >
-                                    <p className="text-[11px] font-semibold text-slate-400 dark:text-neutral-500 tabular-nums">
-                                        {String(index + 1).padStart(2, '0')} · {guide.category || 'Perawatan Ikan'}
-                                    </p>
-                                    <h3 className="font-bold text-sm sm:text-[15px] text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] transition leading-snug line-clamp-2">
-                                        {guide.title}
-                                    </h3>
-                                    <p className="text-xs text-slate-600 dark:text-neutral-400 line-clamp-3 leading-relaxed">
-                                        {guide.symptoms || guide.possible_causes || guide.prevention}
-                                    </p>
-                                </Link>
-                            ))}
+                        {/* Accordion Column with Vertical Dashed Guidelines */}
+                        <div className="border-x border-dashed border-slate-200/90 dark:border-slate-800 px-3 sm:px-7 py-2 space-y-4">
+                            {FAQ_ITEMS.map((item, index) => {
+                                const isExpanded = openFaq === index;
+                                return (
+                                    <div key={item.letter} className="relative">
+                                        {isExpanded && (
+                                            <div
+                                                aria-hidden="true"
+                                                className="absolute inset-0 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 pointer-events-none"
+                                            />
+                                        )}
+
+                                        <button
+                                            type="button"
+                                            onClick={() => setOpenFaq(isExpanded ? null : index)}
+                                            aria-expanded={isExpanded}
+                                            className={`w-full text-left rounded-2xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1] ${
+                                                isExpanded
+                                                    ? 'relative z-10 bg-white dark:bg-[#131d33] border border-slate-200/80 dark:border-slate-700/80 px-5 sm:px-6 py-5 rotate-[1.15deg] shadow-[0_12px_28px_-8px_rgba(15,23,42,0.08),0_20px_42px_-12px_rgba(124,58,237,0.22)]'
+                                                    : 'bg-[#f4f5f7] hover:bg-[#eceef2] dark:bg-slate-800/60 dark:hover:bg-slate-800 px-5 sm:px-6 py-4'
+                                            }`}
+                                        >
+                                            <div className="flex items-center justify-between gap-4">
+                                                <span
+                                                    className={`text-sm sm:text-[15px] leading-snug ${
+                                                        isExpanded
+                                                            ? 'font-semibold text-slate-900 dark:text-white'
+                                                            : 'font-medium text-slate-800 dark:text-slate-100'
+                                                    }`}
+                                                >
+                                                    {item.letter}. {item.question}
+                                                </span>
+                                                <span className="shrink-0 text-slate-500 dark:text-slate-400">
+                                                    {isExpanded ? (
+                                                        <Minus className="w-4 h-4" strokeWidth={2} />
+                                                    ) : (
+                                                        <Plus className="w-4 h-4" strokeWidth={2} />
+                                                    )}
+                                                </span>
+                                            </div>
+
+                                            {isExpanded && (
+                                                <p className="mt-2.5 pr-6 text-xs sm:text-[13.5px] leading-relaxed text-slate-600 dark:text-slate-300">
+                                                    {item.answer}
+                                                </p>
+                                            )}
+                                        </button>
+                                    </div>
+                                );
+                            })}
                         </div>
-                    </section>
-                )}
+                    </div>
+                </section>
             </div>
         </AppLayout>
     );
