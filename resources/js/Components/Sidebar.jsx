@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import {
-    ArrowLeft,
-    ArrowRight,
     BookOpen,
     Fish,
     Home,
@@ -19,8 +17,6 @@ import {
 } from 'lucide-react';
 import BrandLogo from '@/Components/BrandLogo';
 import BrandWordmark from '@/Components/BrandWordmark';
-
-const PIN_STORAGE_KEY = 'duniaikan_sidebar_pinned';
 
 function NavRow({ item, collapsed = false, onNavigate }) {
     const Icon = item.icon;
@@ -105,12 +101,6 @@ export default function Sidebar({
     const { url, props } = usePage();
     const user = props?.auth?.user;
 
-    const [isPinned, setIsPinned] = useState(() => {
-        if (typeof window !== 'undefined') {
-            return localStorage.getItem(PIN_STORAGE_KEY) === 'true';
-        }
-        return false;
-    });
     const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
@@ -126,21 +116,8 @@ export default function Sidebar({
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isOpen, onClose]);
 
-    const togglePin = () => {
-        setIsPinned((prev) => {
-            const next = !prev;
-            if (!next) {
-                setIsHovered(false);
-            }
-            if (typeof window !== 'undefined') {
-                localStorage.setItem(PIN_STORAGE_KEY, String(next));
-            }
-            return next;
-        });
-    };
-
-    const isDesktopExpanded = isPinned || isHovered;
-    const isDesktopCollapsed = !isDesktopExpanded;
+    const isDesktopExpanded = isHovered;
+    const isDesktopCollapsed = !isHovered;
 
     const [pathname, queryString = ''] = url.split('?');
     const searchParams = new URLSearchParams(queryString);
@@ -248,9 +225,9 @@ export default function Sidebar({
     const renderSidebarInner = ({ collapsed, isMobile = false }) => (
         <div className="flex flex-col justify-between h-full">
             <div className="flex flex-col min-h-0 flex-1">
-                {/* Brand Header + Collapse Toggle */}
+                {/* Brand Header */}
                 {collapsed ? (
-                    <div className="pt-5 pb-3 flex flex-col items-center gap-3 shrink-0">
+                    <div className="pt-5 pb-4 flex flex-col items-center shrink-0">
                         <Link
                             href="/"
                             className="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800/70 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
@@ -258,18 +235,9 @@ export default function Sidebar({
                         >
                             <BrandLogo className="w-6 h-6" />
                         </Link>
-                        <button
-                            type="button"
-                            onClick={togglePin}
-                            className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#001454] dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-600 flex items-center justify-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
-                            aria-label="Kunci menu tetap terbuka"
-                            title="Kunci menu tetap terbuka"
-                        >
-                            <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
                     </div>
                 ) : (
-                    <div className="pt-5 pb-3 px-6 flex items-center justify-between gap-2 shrink-0">
+                    <div className="pt-5 pb-4 px-6 flex items-center justify-between gap-2 shrink-0">
                         <Link
                             href="/"
                             onClick={isMobile ? onClose : undefined}
@@ -278,7 +246,7 @@ export default function Sidebar({
                             <BrandWordmark className="h-7" />
                         </Link>
 
-                        {isMobile ? (
+                        {isMobile && (
                             <button
                                 type="button"
                                 onClick={onClose}
@@ -286,20 +254,6 @@ export default function Sidebar({
                                 aria-label="Tutup menu"
                             >
                                 <X className="w-3.5 h-3.5" />
-                            </button>
-                        ) : (
-                            <button
-                                type="button"
-                                onClick={togglePin}
-                                className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#001454] dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-600 flex items-center justify-center shrink-0 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
-                                aria-label={isPinned ? 'Perkecil menu samping' : 'Kunci menu tetap terbuka'}
-                                title={isPinned ? 'Perkecil ke mode hover' : 'Kunci menu tetap terbuka'}
-                            >
-                                {isPinned ? (
-                                    <ArrowLeft className="w-3.5 h-3.5" />
-                                ) : (
-                                    <ArrowRight className="w-3.5 h-3.5" />
-                                )}
                             </button>
                         )}
                     </div>
@@ -418,18 +372,14 @@ export default function Sidebar({
 
     return (
         <>
-            {/* Desktop Sticky Rail: Expands Smoothly on Hover + Optional Pin */}
-            <div
-                className={`hidden md:block sticky top-0 shrink-0 h-screen z-40 select-none transition-[width] duration-200 ease-out ${
-                    isPinned ? 'w-60' : 'w-[72px]'
-                }`}
-            >
+            {/* Desktop Sticky Rail: Expands Smoothly on Hover */}
+            <div className="hidden md:block sticky top-0 shrink-0 h-screen w-[72px] z-40 select-none">
                 <aside
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     className={`absolute top-0 left-0 h-full bg-white dark:bg-[#0e1424] border-r border-slate-200/80 dark:border-slate-800/90 transition-all duration-200 ease-out overflow-visible ${
-                        isDesktopExpanded ? 'w-60' : 'w-[72px]'
-                    } ${!isPinned && isHovered ? 'shadow-2xl' : ''}`}
+                        isDesktopExpanded ? 'w-60 shadow-2xl' : 'w-[72px]'
+                    }`}
                 >
                     {renderSidebarInner({ collapsed: isDesktopCollapsed, isMobile: false })}
                 </aside>
