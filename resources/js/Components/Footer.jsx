@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { ShieldCheck, Heart, CheckCircle2 } from 'lucide-react';
 import BrandLogo from '@/Components/BrandLogo';
+import BrandWordmark from '@/Components/BrandWordmark';
 
 export default function Footer() {
     return (
@@ -9,14 +10,9 @@ export default function Footer() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
                     {/* Brand */}
                     <div className="space-y-3">
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-lg bg-neutral-900 text-white flex items-center justify-center font-bold border border-neutral-800">
-                                <BrandLogo className="w-4 h-4 text-white" />
-                            </div>
-                            <span className="font-extrabold tracking-widest text-white uppercase text-sm">
-                                DUNIA IKAN
-                            </span>
-                        </div>
+                        <Link href="/" className="inline-block hover:opacity-90 transition">
+                            <BrandWordmark variant="white" className="h-8" />
+                        </Link>
                         <p className="text-[11px] text-neutral-400 leading-relaxed">
                             Marketplace Ikan Hias & Mutasi Genetik Captive-Bred Terverifikasi Indonesia.
                         </p>

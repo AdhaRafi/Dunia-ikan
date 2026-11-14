@@ -16,6 +16,7 @@ import {
     Dna
 } from 'lucide-react';
 import BrandLogo from '@/Components/BrandLogo';
+import BrandWordmark from '@/Components/BrandWordmark';
 
 const TIPS = [
     {
@@ -186,19 +187,9 @@ export default function Sidebar({ isOpen, onClose }) {
                             </div>
 
                             {/* Expanded header (revealed automatically on hover) */}
-                            <div className="w-full hidden group-hover/sidebar:flex items-center">
-                                <Link href="/" className="flex items-center gap-3 group min-w-0">
-                                    <div className="w-9 h-9 rounded-xl bg-[#0a0a0a] text-white flex items-center justify-center shadow-xs group-hover:scale-105 border border-neutral-800 transition shrink-0">
-                                        <BrandLogo className="w-5 h-5 text-white" />
-                                    </div>
-                                    <div className="flex flex-col min-w-0">
-                                        <span className="text-sm font-extrabold tracking-widest text-[#001454] uppercase leading-none truncate">
-                                            DUNIA IKAN
-                                        </span>
-                                        <span className="text-[9px] font-bold tracking-wider text-[#1E80A0] uppercase mt-0.5 truncate">
-                                            MorphMarket Edition
-                                        </span>
-                                    </div>
+                            <div className="w-full hidden group-hover/sidebar:flex items-center px-1">
+                                <Link href="/" className="flex items-center min-w-0 hover:opacity-90 transition">
+                                    <BrandWordmark className="h-7" />
                                 </Link>
                             </div>
                         </div>
@@ -389,18 +380,8 @@ export default function Sidebar({ isOpen, onClose }) {
                 >
                     <div className="p-5 flex-1 flex flex-col overflow-y-auto">
                         <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10">
-                            <Link href="/" onClick={onClose} className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-[#0a0a0a] text-white flex items-center justify-center shadow-xs border border-neutral-800">
-                                    <BrandLogo className="w-4 h-4 text-white" />
-                                </div>
-                                <div className="flex flex-col">
-                                    <span className="text-sm font-extrabold tracking-widest text-[#001454] uppercase leading-none">
-                                        DUNIA IKAN
-                                    </span>
-                                    <span className="text-[9px] font-bold tracking-wider text-[#1E80A0] uppercase mt-0.5">
-                                        MorphMarket Edition
-                                    </span>
-                                </div>
+                            <Link href="/" onClick={onClose} className="flex items-center">
+                                <BrandWordmark className="h-7" />
                             </Link>
 
                             <button

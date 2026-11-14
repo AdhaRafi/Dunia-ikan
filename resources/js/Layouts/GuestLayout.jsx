@@ -1,5 +1,6 @@
 import { Link } from '@inertiajs/react';
 import Reveal from '@/Components/Reveal';
+import BrandWordmark from '@/Components/BrandWordmark';
 
 const CATALOGUE = [
     {
@@ -31,9 +32,9 @@ export default function GuestLayout({ children }) {
                 <div className="flex h-[72px] items-center justify-between gap-4">
                     <Link
                         href="/"
-                        className="text-[20px] font-semibold leading-none tracking-[-0.045em]"
+                        className="inline-flex items-center"
                     >
-                        DUNIA IKAN
+                        <BrandWordmark className="h-8" />
                     </Link>
                     <Link
                         href="/"

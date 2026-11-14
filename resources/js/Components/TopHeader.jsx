@@ -11,6 +11,7 @@ import {
     ChevronDown
 } from 'lucide-react';
 import BrandLogo from '@/Components/BrandLogo';
+import BrandWordmark from '@/Components/BrandWordmark';
 
 export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
     const { auth, cartCount } = usePage().props;
@@ -42,10 +43,8 @@ export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
                     </button>
 
                     {/* Mobile Brand Mark */}
-                    <Link href="/" className="md:hidden flex items-center gap-2 shrink-0">
-                        <div className="w-8 h-8 rounded-lg bg-[#0a0a0a] text-white flex items-center justify-center shadow-xs border border-neutral-800">
-                            <BrandLogo className="w-4 h-4 text-white" />
-                        </div>
+                    <Link href="/" className="md:hidden flex items-center shrink-0">
+                        <BrandWordmark className="h-7" />
                     </Link>
 
                     {/* Search Form (Aquatic Coastal Pill Search) */}

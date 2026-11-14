@@ -1,21 +1,38 @@
-export default function BrandLogo({ className = "w-5 h-5" }) {
+export default function BrandLogo({ className = "w-5 h-5", strokeWidth = 2.8 }) {
     return (
         <svg 
-            viewBox="0 0 24 24" 
+            viewBox="0 0 36 36" 
             className={className} 
             fill="none" 
             stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
             aria-hidden="true"
         >
-            {/* Streamlined aquatic show fish silhouette */}
-            <path d="M6.5 12c.5-3.5 3-6.5 7.5-6.5 4 0 7 3 8 6.5-1 3.5-4 6.5-8 6.5-4.5 0-7-3-7.5-6.5Z" />
-            <path d="M2 7l4.5 5L2 17V7Z" fill="currentColor" fillOpacity="0.25" />
-            <path d="M12 5.5c-.5-1.5-1.5-2.5-3-2.5" />
-            <path d="M12 18.5c-.5 1.5-1.5 2.5-3 2.5" />
-            <circle cx="17.5" cy="11.5" r="1.2" fill="currentColor" />
+            {/* Aquatic fish tail flaring on the left */}
+            <path 
+                d="M3 28 C0.5 26, 0.5 31, 3.5 32 C6.5 33, 8.5 30, 9.5 27" 
+                strokeWidth={strokeWidth} 
+                strokeLinecap="round" 
+            />
+            <path 
+                d="M3 28 C0.5 29, 0.5 24, 3.5 22 C6.5 20, 8.5 24, 9.5 27" 
+                strokeWidth={strokeWidth} 
+                strokeLinecap="round" 
+            />
+            {/* Streamlined fish body forming the letter 'D' */}
+            <path 
+                d="M9.5 27 L9.5 9 C9.5 4, 14.5 2, 20.5 2 C29.5 2, 34.5 7, 34.5 16 C34.5 25, 29.5 30, 20.5 30 L9.5 30" 
+                strokeWidth={strokeWidth} 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+            />
+            {/* Dorsal fin crest */}
+            <path 
+                d="M17.5 2 C20.5 -1.5, 24.5 -0.5, 25.5 2" 
+                strokeWidth={strokeWidth * 0.75} 
+                strokeLinecap="round" 
+            />
+            {/* Eye of the fish */}
+            <circle cx="25" cy="16" r="2.1" fill="currentColor" stroke="none" />
         </svg>
     );
 }
