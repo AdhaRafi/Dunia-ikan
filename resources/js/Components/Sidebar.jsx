@@ -20,13 +20,13 @@ import {
 import BrandLogo from '@/Components/BrandLogo';
 import BrandWordmark from '@/Components/BrandWordmark';
 
-const COLLAPSE_STORAGE_KEY = 'duniaikan_sidebar_collapsed';
+const PIN_STORAGE_KEY = 'duniaikan_sidebar_pinned';
 
 function NavRow({ item, collapsed = false, onNavigate }) {
     const Icon = item.icon;
 
     const baseClasses = `relative group/item w-full h-9 flex items-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0267C1] ${
-        collapsed ? 'justify-center px-0' : 'gap-3 px-6'
+        collapsed ? 'justify-center px-0' : 'gap-3 px-6 hover:bg-slate-50/90 dark:hover:bg-slate-800/40'
     } ${
         item.active
             ? 'text-[#0267C1] dark:text-white font-semibold'
@@ -51,7 +51,7 @@ function NavRow({ item, collapsed = false, onNavigate }) {
                 }`}
             />
 
-            {!collapsed && <span className="text-[13px] truncate">{item.label}</span>}
+            {!collapsed && <span className="text-[13px] truncate whitespace-nowrap">{item.label}</span>}
 
             {collapsed && (
                 <span
@@ -105,12 +105,13 @@ export default function Sidebar({
     const { url, props } = usePage();
     const user = props?.auth?.user;
 
-    const [isCollapsed, setIsCollapsed] = useState(() => {
+    const [isPinned, setIsPinned] = useState(() => {
         if (typeof window !== 'undefined') {
-            return localStorage.getItem(COLLAPSE_STORAGE_KEY) === 'true';
+            return localStorage.getItem(PIN_STORAGE_KEY) === 'true';
         }
         return false;
     });
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         if (!isOpen) {
@@ -125,15 +126,21 @@ export default function Sidebar({
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isOpen, onClose]);
 
-    const toggleCollapse = () => {
-        setIsCollapsed((prev) => {
+    const togglePin = () => {
+        setIsPinned((prev) => {
             const next = !prev;
+            if (!next) {
+                setIsHovered(false);
+            }
             if (typeof window !== 'undefined') {
-                localStorage.setItem(COLLAPSE_STORAGE_KEY, String(next));
+                localStorage.setItem(PIN_STORAGE_KEY, String(next));
             }
             return next;
         });
     };
+
+    const isDesktopExpanded = isPinned || isHovered;
+    const isDesktopCollapsed = !isDesktopExpanded;
 
     const [pathname, queryString = ''] = url.split('?');
     const searchParams = new URLSearchParams(queryString);
@@ -253,10 +260,10 @@ export default function Sidebar({
                         </Link>
                         <button
                             type="button"
-                            onClick={toggleCollapse}
+                            onClick={togglePin}
                             className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#001454] dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-600 flex items-center justify-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
-                            aria-label="Perluas menu samping"
-                            title="Perluas menu"
+                            aria-label="Kunci menu tetap terbuka"
+                            title="Kunci menu tetap terbuka"
                         >
                             <ArrowRight className="w-3.5 h-3.5" />
                         </button>
@@ -283,12 +290,16 @@ export default function Sidebar({
                         ) : (
                             <button
                                 type="button"
-                                onClick={toggleCollapse}
+                                onClick={togglePin}
                                 className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#001454] dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-600 flex items-center justify-center shrink-0 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
-                                aria-label="Perkecil menu samping"
-                                title="Perkecil menu"
+                                aria-label={isPinned ? 'Perkecil menu samping' : 'Kunci menu tetap terbuka'}
+                                title={isPinned ? 'Perkecil ke mode hover' : 'Kunci menu tetap terbuka'}
                             >
-                                <ArrowLeft className="w-3.5 h-3.5" />
+                                {isPinned ? (
+                                    <ArrowLeft className="w-3.5 h-3.5" />
+                                ) : (
+                                    <ArrowRight className="w-3.5 h-3.5" />
+                                )}
                             </button>
                         )}
                     </div>
@@ -407,14 +418,22 @@ export default function Sidebar({
 
     return (
         <>
-            {/* Desktop Sticky Collapsible Sidebar */}
-            <aside
-                className={`hidden md:block sticky top-0 shrink-0 h-screen z-40 select-none bg-white dark:bg-[#0e1424] border-r border-slate-200/80 dark:border-slate-800/90 transition-[width] duration-200 ease-out overflow-visible ${
-                    isCollapsed ? 'w-[72px]' : 'w-60'
+            {/* Desktop Sticky Rail: Expands Smoothly on Hover + Optional Pin */}
+            <div
+                className={`hidden md:block sticky top-0 shrink-0 h-screen z-40 select-none transition-[width] duration-200 ease-out ${
+                    isPinned ? 'w-60' : 'w-[72px]'
                 }`}
             >
-                {renderSidebarInner({ collapsed: isCollapsed, isMobile: false })}
-            </aside>
+                <aside
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    className={`absolute top-0 left-0 h-full bg-white dark:bg-[#0e1424] border-r border-slate-200/80 dark:border-slate-800/90 transition-all duration-200 ease-out overflow-visible ${
+                        isDesktopExpanded ? 'w-60' : 'w-[72px]'
+                    } ${!isPinned && isHovered ? 'shadow-2xl' : ''}`}
+                >
+                    {renderSidebarInner({ collapsed: isDesktopCollapsed, isMobile: false })}
+                </aside>
+            </div>
 
             {/* Mobile Sliding Drawer */}
             <div
