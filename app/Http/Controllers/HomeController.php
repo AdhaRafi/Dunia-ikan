@@ -38,7 +38,7 @@ class HomeController extends Controller
 
         $featuredStores = Store::where('is_active', true)
             ->withCount('products')
-            ->take(4)
+            ->take(6)
             ->get();
 
         return Inertia::render('Welcome', [

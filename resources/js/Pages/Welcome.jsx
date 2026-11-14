@@ -234,41 +234,30 @@ export default function Welcome({ categories, featuredFish, careGuides, featured
                             </Link>
                         </div>
 
-                        <div className={`grid grid-cols-1 gap-4 ${featuredStores.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-                            {featuredStores.slice(0, 3).map((store) => (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
+                            {featuredStores.slice(0, 6).map((store) => (
                                 <Link
                                     key={store.id}
                                     href={`/stores/${store.slug}`}
-                                    className="group p-5 rounded-2xl bg-white dark:bg-[#0f172a] border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] transition-colors flex items-start gap-4"
+                                    className="group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 flex flex-col overflow-hidden"
                                 >
-                                    {store.logo_url ? (
-                                        <img
-                                            src={store.logo_url}
-                                            alt={store.name}
-                                            className="w-11 h-11 rounded-full object-cover border border-slate-200/80 dark:border-neutral-700 shrink-0"
-                                        />
-                                    ) : (
-                                        <div className="w-11 h-11 rounded-full bg-slate-100 dark:bg-[#162240] flex items-center justify-center font-bold text-[#001454] dark:text-white text-sm shrink-0 group-hover:bg-[#001454] group-hover:text-white dark:group-hover:bg-[#4AB8BD] dark:group-hover:text-[#001454] transition">
-                                            {store.name.charAt(0)}
-                                        </div>
-                                    )}
-                                    <div className="min-w-0 flex-1 space-y-1">
-                                        <div className="flex items-baseline justify-between gap-2">
-                                            <h3 className="font-bold text-sm text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] truncate transition">
-                                                {store.name}
-                                            </h3>
-                                            {store.products_count > 0 && (
-                                                <span className="text-[11px] text-slate-400 shrink-0 tabular-nums">
-                                                    {store.products_count} produk
-                                                </span>
-                                            )}
-                                        </div>
-                                        <p className="text-[11px] text-slate-500 dark:text-neutral-400 truncate">
-                                            {store.city}, {store.province}
-                                        </p>
-                                        <p className="text-xs text-slate-600 dark:text-neutral-300 line-clamp-2 leading-relaxed pt-1">
-                                            {store.description || 'Penangkar ikan hias dan perlengkapan akuarium terverifikasi.'}
-                                        </p>
+                                    <div className="w-full aspect-square bg-white dark:bg-slate-900 overflow-hidden flex items-center justify-center border-b border-slate-100 dark:border-neutral-800/80">
+                                        {store.logo_url ? (
+                                            <img
+                                                src={store.logo_url}
+                                                alt={store.name}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-slate-50 dark:bg-[#162240] flex items-center justify-center font-extrabold text-3xl text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] transition">
+                                                {store.name.charAt(0).toUpperCase()}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="px-3 py-2.5">
+                                        <h3 className="text-xs font-bold text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] truncate transition">
+                                            {store.name}
+                                        </h3>
                                     </div>
                                 </Link>
                             ))}
