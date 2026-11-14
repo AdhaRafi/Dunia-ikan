@@ -7,7 +7,6 @@ import {
     Store, 
     ShieldCheck, 
     BookOpen, 
-    PanelLeft, 
     ArrowRight,
     Tag,
     X,
@@ -36,7 +35,7 @@ const TIPS = [
     },
 ];
 
-export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }) {
+export default function Sidebar({ isOpen, onClose }) {
     const { url } = usePage();
     const [tipIndex, setTipIndex] = useState(0);
 
@@ -163,107 +162,48 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
         <>
             {/* Desktop Sidebar: Hover-Responsive Rail (No clicking required!) */}
             <div className="hidden md:block relative shrink-0 h-full z-40 select-none group/sidebar">
-                {/* Fixed Spacer */}
-                <div 
-                    className={`h-full transition-all duration-300 ease-in-out ${
-                        isCollapsed ? 'w-20' : 'w-64 lg:w-72'
-                    }`} 
-                />
+                {/* Fixed Spacer (Holds page layout stable at w-20) */}
+                <div className="h-full w-20 transition-all duration-300 ease-in-out" />
 
-                {/* Floating Drawer Surface: Expands smoothly on hover when collapsed */}
+                {/* Floating Drawer Surface: Expands smoothly on hover */}
                 <aside
-                    className={`absolute top-0 left-0 h-full bg-white border-r border-[#1E80A0]/10 flex flex-col justify-between transition-all duration-300 ease-in-out z-40 ${
-                        isCollapsed 
-                            ? 'w-20 group-hover/sidebar:w-64 lg:group-hover/sidebar:w-72 group-hover/sidebar:shadow-2xl group-hover/sidebar:border-[#1E80A0]/25' 
-                            : 'w-64 lg:w-72 shadow-xs'
-                    }`}
+                    className="absolute top-0 left-0 h-full bg-white border-r border-[#1E80A0]/10 flex flex-col justify-between transition-all duration-300 ease-in-out z-40 w-20 group-hover/sidebar:w-64 lg:group-hover/sidebar:w-72 group-hover/sidebar:shadow-2xl group-hover/sidebar:border-[#1E80A0]/25"
                 >
                     {/* Top Section: Brand + Navigation */}
                     <div className="p-4 lg:p-5 flex-1 flex flex-col min-h-0 overflow-visible">
-                        {/* Brand Header */}
+                        {/* Brand Header: Centered logo unhovered, expands on hover (No toggle button!) */}
                         <div className="flex items-center justify-between pb-5 border-b border-[#1E80A0]/10">
-                            {isCollapsed ? (
-                                <>
-                                    {/* Icon-only mode header (visible when unhovered) */}
-                                    <div className="w-full flex flex-col items-center gap-2 group-hover/sidebar:hidden">
-                                        <Link 
-                                            href="/" 
-                                            className="w-9 h-9 rounded-xl bg-[#0D2E92] text-white flex items-center justify-center shadow-xs hover:scale-105 transition"
-                                            title="Dunia Ikan — MorphMarket Aquatic"
-                                        >
-                                            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
-                                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                                            </svg>
-                                        </Link>
-                                        <button
-                                            type="button"
-                                            onClick={onToggleCollapse}
-                                            className="p-1.5 text-[#1E80A0] hover:text-[#001454] rounded-lg hover:bg-[#f3f2ff] transition"
-                                            title="Kunci Buka (Pin)"
-                                            aria-label="Kunci Sidebar"
-                                        >
-                                            <PanelLeft className="w-4 h-4 rotate-180" />
-                                        </button>
+                            {/* Icon-only mode header (visible when unhovered) */}
+                            <div className="w-full flex justify-center group-hover/sidebar:hidden">
+                                <Link 
+                                    href="/" 
+                                    className="w-10 h-10 rounded-xl bg-[#0D2E92] text-white flex items-center justify-center shadow-xs hover:scale-105 transition"
+                                    title="Dunia Ikan — MorphMarket Aquatic"
+                                >
+                                    <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                    </svg>
+                                </Link>
+                            </div>
+
+                            {/* Expanded header (revealed automatically on hover) */}
+                            <div className="w-full hidden group-hover/sidebar:flex items-center">
+                                <Link href="/" className="flex items-center gap-3 group min-w-0">
+                                    <div className="w-9 h-9 rounded-xl bg-[#0D2E92] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition shrink-0">
+                                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                        </svg>
                                     </div>
-
-                                    {/* Expanded header (revealed automatically on hover) */}
-                                    <div className="w-full hidden group-hover/sidebar:flex items-center justify-between">
-                                        <Link href="/" className="flex items-center gap-3 group min-w-0">
-                                            <div className="w-8 h-8 rounded-lg bg-[#0D2E92] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition shrink-0">
-                                                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
-                                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                                                </svg>
-                                            </div>
-                                            <div className="flex flex-col min-w-0">
-                                                <span className="text-sm font-extrabold tracking-widest text-[#001454] uppercase leading-none truncate">
-                                                    DUNIA IKAN
-                                                </span>
-                                                <span className="text-[9px] font-bold tracking-wider text-[#1E80A0] uppercase mt-0.5 truncate">
-                                                    MorphMarket Edition
-                                                </span>
-                                            </div>
-                                        </Link>
-
-                                        <button
-                                            type="button"
-                                            onClick={onToggleCollapse}
-                                            className="p-1.5 text-[#1E80A0] hover:text-[#001454] rounded-lg hover:bg-[#f3f2ff] transition shrink-0"
-                                            title="Kunci Terbuka (Pin)"
-                                            aria-label="Kunci Terbuka"
-                                        >
-                                            <PanelLeft className="w-4 h-4 rotate-180" />
-                                        </button>
+                                    <div className="flex flex-col min-w-0">
+                                        <span className="text-sm font-extrabold tracking-widest text-[#001454] uppercase leading-none truncate">
+                                            DUNIA IKAN
+                                        </span>
+                                        <span className="text-[9px] font-bold tracking-wider text-[#1E80A0] uppercase mt-0.5 truncate">
+                                            MorphMarket Edition
+                                        </span>
                                     </div>
-                                </>
-                            ) : (
-                                <>
-                                    <Link href="/" className="flex items-center gap-3 group min-w-0">
-                                        <div className="w-8 h-8 rounded-lg bg-[#0D2E92] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition shrink-0">
-                                            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-2">
-                                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                                            </svg>
-                                        </div>
-                                        <div className="flex flex-col min-w-0">
-                                            <span className="text-sm font-extrabold tracking-widest text-[#001454] uppercase leading-none truncate">
-                                                DUNIA IKAN
-                                            </span>
-                                            <span className="text-[9px] font-bold tracking-wider text-[#1E80A0] uppercase mt-0.5 truncate">
-                                                MorphMarket Edition
-                                            </span>
-                                        </div>
-                                    </Link>
-
-                                    <button
-                                        type="button"
-                                        onClick={onToggleCollapse}
-                                        className="p-1.5 text-[#1E80A0] hover:text-[#001454] rounded-lg hover:bg-[#f3f2ff] transition shrink-0"
-                                        title="Kecilkan (Unpin)"
-                                        aria-label="Kecilkan Sidebar"
-                                    >
-                                        <PanelLeft className="w-4 h-4" />
-                                    </button>
-                                </>
-                            )}
+                                </Link>
+                            </div>
                         </div>
 
                         {/* Nav Items with MorphMarket Hover Flyouts */}
@@ -280,32 +220,24 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                                     >
                                         <Link
                                             href={item.href}
-                                            className={`flex items-center rounded-xl transition-all ${
-                                                isCollapsed
-                                                    ? 'w-11 h-11 mx-auto justify-center group-hover/sidebar:w-full group-hover/sidebar:px-3.5 group-hover/sidebar:py-2.5 group-hover/sidebar:justify-between'
-                                                    : 'w-full px-3.5 py-2.5 justify-between'
-                                            } ${
+                                            className={`flex items-center rounded-xl transition-all w-11 h-11 mx-auto justify-center group-hover/sidebar:w-full group-hover/sidebar:px-3.5 group-hover/sidebar:py-2.5 group-hover/sidebar:justify-between ${
                                                 isItemActive
                                                     ? 'bg-[#001454] text-white shadow-xs'
                                                     : 'text-[#3d4949] hover:text-[#001454] hover:bg-[#f3f2ff]'
                                             }`}
-                                            title={isCollapsed ? item.label : undefined}
+                                            title={item.label}
                                         >
                                             <div className="flex items-center gap-3 min-w-0">
                                                 <Icon className={`w-4 h-4 shrink-0 transition ${
                                                     isItemActive ? 'text-[#4AB8BD]' : 'text-[#1E80A0] group-hover/nav:text-[#001454]'
                                                 }`} />
-                                                <span className={`text-xs font-semibold truncate ${
-                                                    isCollapsed ? 'hidden group-hover/sidebar:inline' : 'inline'
-                                                }`}>
+                                                <span className="text-xs font-semibold truncate hidden group-hover/sidebar:inline">
                                                     {item.label}
                                                 </span>
                                             </div>
 
                                             {/* Badges & Arrow */}
-                                            <div className={`items-center gap-1.5 shrink-0 ${
-                                                isCollapsed ? 'hidden group-hover/sidebar:flex' : 'flex'
-                                            }`}>
+                                            <div className="items-center gap-1.5 shrink-0 hidden group-hover/sidebar:flex">
                                                 {item.badge && (
                                                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFE4B0] text-[#001454]">
                                                         {item.badge}
@@ -378,9 +310,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                         </nav>
 
                         {/* Special Features Nav */}
-                        <div className={`mt-6 pt-5 border-t border-[#1E80A0]/10 space-y-1.5 ${
-                            isCollapsed ? 'hidden group-hover/sidebar:block' : 'block'
-                        }`}>
+                        <div className="mt-6 pt-5 border-t border-[#1E80A0]/10 space-y-1.5 hidden group-hover/sidebar:block">
                             <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#1E80A0]">
                                 Fitur Spesial
                             </p>
@@ -402,72 +332,43 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                     </div>
 
                     {/* Bottom Section: TIPS OF THE DAY Widget */}
-                    {isCollapsed ? (
-                        <>
-                            {/* Compact Icon (Visible when not hovered) */}
-                            <div className="p-3 border-t border-[#1E80A0]/10 flex justify-center group-hover/sidebar:hidden">
+                    {/* Compact Icon (Visible when not hovered) */}
+                    <div className="p-3 border-t border-[#1E80A0]/10 flex justify-center group-hover/sidebar:hidden">
+                        <button
+                            type="button"
+                            onClick={nextTip}
+                            className="w-10 h-10 rounded-xl bg-[#f3f2ff] text-[#1E80A0] hover:text-[#0684E5] flex items-center justify-center border border-[#1E80A0]/20 hover:bg-[#ececff] transition"
+                            title={`Tip: ${currentTip.title}`}
+                        >
+                            <Lightbulb className="w-4 h-4 text-[#0684E5]" />
+                        </button>
+                    </div>
+
+                    {/* Full Card (Revealed on hover) */}
+                    <div className="p-4 border-t border-[#1E80A0]/10 shrink-0 hidden group-hover/sidebar:block">
+                        <div className="bg-[#f3f2ff] rounded-2xl p-4 border border-[#1E80A0]/15 space-y-2">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#1E80A0]">
+                                TIPS OF THE DAY
+                            </p>
+                            <h5 className="text-xs font-extrabold text-[#001454] leading-tight">
+                                {currentTip.title}
+                            </h5>
+                            <p className="text-[11px] text-[#3d4949] leading-relaxed line-clamp-3">
+                                {currentTip.text}
+                            </p>
+                            <div className="pt-1 flex items-center justify-between text-[11px] font-medium text-[#1E80A0]">
+                                <span>{tipIndex + 1} of {TIPS.length}</span>
                                 <button
                                     type="button"
                                     onClick={nextTip}
-                                    className="w-10 h-10 rounded-xl bg-[#f3f2ff] text-[#1E80A0] hover:text-[#0684E5] flex items-center justify-center border border-[#1E80A0]/20 hover:bg-[#ececff] transition"
-                                    title={`Tip: ${currentTip.title}`}
+                                    className="text-[#0684E5] hover:text-[#0060aa] font-bold flex items-center gap-1 transition"
                                 >
-                                    <Lightbulb className="w-4 h-4 text-[#0684E5]" />
+                                    <span>Next</span>
+                                    <ArrowRight className="w-3 h-3" />
                                 </button>
                             </div>
-
-                            {/* Full Card (Revealed on hover) */}
-                            <div className="p-4 border-t border-[#1E80A0]/10 shrink-0 hidden group-hover/sidebar:block">
-                                <div className="bg-[#f3f2ff] rounded-2xl p-4 border border-[#1E80A0]/15 space-y-2">
-                                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#1E80A0]">
-                                        TIPS OF THE DAY
-                                    </p>
-                                    <h5 className="text-xs font-extrabold text-[#001454] leading-tight">
-                                        {currentTip.title}
-                                    </h5>
-                                    <p className="text-[11px] text-[#3d4949] leading-relaxed line-clamp-3">
-                                        {currentTip.text}
-                                    </p>
-                                    <div className="pt-1 flex items-center justify-between text-[11px] font-medium text-[#1E80A0]">
-                                        <span>{tipIndex + 1} of {TIPS.length}</span>
-                                        <button
-                                            type="button"
-                                            onClick={nextTip}
-                                            className="text-[#0684E5] hover:text-[#0060aa] font-bold flex items-center gap-1 transition"
-                                        >
-                                            <span>Next</span>
-                                            <ArrowRight className="w-3 h-3" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        <div className="p-4 border-t border-[#1E80A0]/10 shrink-0">
-                            <div className="bg-[#f3f2ff] rounded-2xl p-4 border border-[#1E80A0]/15 space-y-2">
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-[#1E80A0]">
-                                    TIPS OF THE DAY
-                                </p>
-                                <h5 className="text-xs font-extrabold text-[#001454] leading-tight">
-                                    {currentTip.title}
-                                </h5>
-                                <p className="text-[11px] text-[#3d4949] leading-relaxed line-clamp-3">
-                                    {currentTip.text}
-                                </p>
-                                <div className="pt-1 flex items-center justify-between text-[11px] font-medium text-[#1E80A0]">
-                                    <span>{tipIndex + 1} of {TIPS.length}</span>
-                                    <button
-                                        type="button"
-                                        onClick={nextTip}
-                                        className="text-[#0684E5] hover:text-[#0060aa] font-bold flex items-center gap-1 transition"
-                                    >
-                                        <span>Next</span>
-                                        <ArrowRight className="w-3 h-3" />
-                                    </button>
-                                </div>
-                            </div>
                         </div>
-                    )}
+                    </div>
                 </aside>
             </div>
 

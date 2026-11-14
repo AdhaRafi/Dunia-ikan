@@ -11,7 +11,7 @@ import {
     ChevronDown
 } from 'lucide-react';
 
-export default function TopHeader({ onOpenMobileSidebar, onOpenChat, isCollapsed, onToggleCollapse }) {
+export default function TopHeader({ onOpenMobileSidebar, onOpenChat }) {
     const { auth, cartCount } = usePage().props;
     const user = auth?.user;
     const [searchQuery, setSearchQuery] = useState('');
