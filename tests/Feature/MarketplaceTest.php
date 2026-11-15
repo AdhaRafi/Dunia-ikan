@@ -479,7 +479,7 @@ class MarketplaceTest extends TestCase
 
         $buyer = User::where('role', 'buyer')->firstOrFail();
         $this->actingAs($buyer)
-            ->get('/admin')
+            ->get('/admin-portal')
             ->assertStatus(403)
             ->assertInertia(fn ($page) => $page
                 ->component('Errors/HttpError')
