@@ -56,7 +56,6 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user,
             ],
-            'canUseDemoAccounts' => ! app()->isProduction() || (bool) config('app.demo_mode', false),
             'turnstileSiteKey' => fn () => app(TurnstileVerifier::class)->isEnabled()
                 ? app(TurnstileVerifier::class)->siteKey()
                 : null,

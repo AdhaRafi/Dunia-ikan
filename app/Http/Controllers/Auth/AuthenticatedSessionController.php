@@ -18,9 +18,28 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
+        $canUseDemoAccounts = app()->environment(['local', 'testing']);
+
         return Inertia::render('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
+            'canUseDemoAccounts' => $canUseDemoAccounts,
+            'demoAccounts' => $canUseDemoAccounts ? [
+                [
+                    'role' => 'buyer',
+                    'label' => 'Pembeli',
+                    'label_en' => 'Buyer',
+                    'email' => 'pembeli@duniaikan.test',
+                    'password' => 'password',
+                ],
+                [
+                    'role' => 'seller',
+                    'label' => 'Penjual',
+                    'label_en' => 'Seller',
+                    'email' => 'penjual1@duniaikan.test',
+                    'password' => 'password',
+                ],
+            ] : [],
         ]);
     }
 

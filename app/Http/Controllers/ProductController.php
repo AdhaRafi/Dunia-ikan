@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = Product::with(['store', 'category', 'fishDetail'])
+        $query = Product::with(['store:id,name,slug,city,province,logo', 'category', 'fishDetail'])
             ->where('is_active', true);
 
         // Pencarian kata kunci (termasuk kategori dan padanan umum seperti alat/tumbuhan/hiasan)
@@ -116,14 +116,14 @@ class ProductController extends Controller
 
     public function show(Request $request, string $slug): Response
     {
-        $product = Product::with(['store', 'category', 'fishDetail'])
+        $product = Product::with(['store:id,user_id,name,slug,city,province,description,logo,doa_policy', 'category', 'fishDetail'])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
 
         $product->increment('views');
 
-        $relatedProducts = Product::with(['store', 'category', 'fishDetail'])
+        $relatedProducts = Product::with(['store:id,name,slug,city,province,logo', 'category', 'fishDetail'])
             ->where('id', '!=', $product->id)
             ->where('category_id', $product->category_id)
             ->where('is_active', true)

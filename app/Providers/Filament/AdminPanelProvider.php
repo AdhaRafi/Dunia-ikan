@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\AdminLogin;
 use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -31,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->authGuard('admin')
-            ->login()
+            ->login(AdminLogin::class)
             ->brandName('Dunia Ikan Admin')
             ->brandLogo(fn () => asset('images/brand/logo-dunia-ikan.png'))
             ->darkModeBrandLogo(fn () => asset('images/brand/logo-dunia-ikan-white.png'))

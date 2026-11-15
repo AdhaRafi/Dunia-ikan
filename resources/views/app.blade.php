@@ -77,7 +77,11 @@
         </script>
 
         <!-- Scripts -->
-        @routes
+        @if(auth('admin')->user()?->isAdmin() || auth('web')->user()?->isAdmin())
+            @routes(['public', 'admin'])
+        @else
+            @routes('public')
+        @endif
         @viteReactRefresh
         @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
         @inertiaHead

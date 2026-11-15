@@ -10,9 +10,14 @@ import { Store, User } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
 import { useState } from 'react';
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({
+    status,
+    canResetPassword,
+    canUseDemoAccounts = false,
+    demoAccounts = [],
+}) {
     const { pick } = useLanguage();
-    const { canUseDemoAccounts = false, turnstileSiteKey = null } = usePage().props;
+    const { turnstileSiteKey = null } = usePage().props;
     const [turnstileResetKey, setTurnstileResetKey] = useState(0);
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
@@ -32,8 +37,13 @@ export default function Login({ status, canResetPassword }) {
         });
     };
 
-    const fillDemo = (email, password = 'password') => {
-        setData((prev) => ({ ...prev, email, password, remember: true }));
+    const fillDemo = (account) => {
+        setData((prev) => ({
+            ...prev,
+            email: account.email,
+            password: account.password,
+            remember: true,
+        }));
     };
 
     return (
@@ -136,7 +146,7 @@ export default function Login({ status, canResetPassword }) {
                 </button>
             </form>
 
-            {canUseDemoAccounts && (
+            {canUseDemoAccounts && demoAccounts.length > 0 && (
                 <>
                     <div className="my-5 flex items-center gap-3">
                         <div className="h-px flex-1 bg-slate-200 dark:bg-neutral-800" />
@@ -147,27 +157,30 @@ export default function Login({ status, canResetPassword }) {
                     </div>
 
                     <div className="grid grid-cols-2 gap-2.5">
-                        <button
-                            type="button"
-                            onClick={() => fillDemo('pembeli@duniaikan.test')}
-                            className="h-10 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800/80 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-neutral-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-1.5 transition"
-                        >
-                            <User className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-                            {pick('Pembeli', 'Buyer')}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => fillDemo('penjual1@duniaikan.test')}
-                            className="h-10 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800/80 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-neutral-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-1.5 transition"
-                        >
-                            <Store className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-                            {pick('Penjual', 'Seller')}
-                        </button>
+                        {demoAccounts.map((account) => {
+                            const Icon = account.role === 'seller' ? Store : User;
+
+                            return (
+                                <button
+                                    key={account.email}
+                                    type="button"
+                                    onClick={() => fillDemo(account)}
+                                    className="h-10 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800/80 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-neutral-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-1.5 transition"
+                                >
+                                    <Icon className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                                    {pick(account.label, account.label_en || account.label)}
+                                </button>
+                            );
+                        })}
                     </div>
-                    <p className="mt-2 text-center text-[11px] text-slate-400 dark:text-slate-500">
-                        {pick('Kata sandi akun demo:', 'Demo account password:')}{' '}
-                        <span className="font-medium text-slate-500 dark:text-slate-400">password</span>
-                    </p>
+                    {demoAccounts[0]?.password && (
+                        <p className="mt-2 text-center text-[11px] text-slate-400 dark:text-slate-500">
+                            {pick('Kata sandi akun demo:', 'Demo account password:')}{' '}
+                            <span className="font-medium text-slate-500 dark:text-slate-400">
+                                {demoAccounts[0].password}
+                            </span>
+                        </p>
+                    )}
                 </>
             )}
 

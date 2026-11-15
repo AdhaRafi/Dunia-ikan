@@ -15,7 +15,7 @@ class HomeController extends Controller
     {
         $categories = Category::withCount('products')->get();
 
-        $allFeaturedFish = Product::with(['store', 'category', 'fishDetail'])
+        $allFeaturedFish = Product::with(['store:id,name,slug,city,logo', 'category', 'fishDetail'])
             ->where('is_active', true)
             ->where('stock', '>', 0)
             ->whereHas('category', fn ($query) => $query->where('slug', 'ikan-hias'))
@@ -38,7 +38,7 @@ class HomeController extends Controller
             }
         }
 
-        $featuredSupplies = Product::with(['store', 'category'])
+        $featuredSupplies = Product::with(['store:id,name,slug,city,logo', 'category'])
             ->where('is_active', true)
             ->where('stock', '>', 0)
             ->whereHas('category', fn ($query) => $query->where('slug', '!=', 'ikan-hias'))
@@ -52,6 +52,7 @@ class HomeController extends Controller
             ->get();
 
         $featuredStores = Store::where('is_active', true)
+            ->select(['id', 'name', 'slug', 'city', 'province', 'description', 'logo', 'doa_policy'])
             ->withCount('products')
             ->orderBy('id')
             ->take(6)

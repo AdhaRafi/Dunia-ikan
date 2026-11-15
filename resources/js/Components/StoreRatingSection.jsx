@@ -60,7 +60,7 @@ export default function StoreRatingSection({ store, storeRating }) {
     };
 
     const activeReview = reviews[activeIndex] ?? null;
-    const isOwner = auth?.user && store?.user_id === auth.user.id;
+    const isOwner = Boolean(summary.isOwner ?? (auth?.user && store?.user_id === auth.user.id));
     const displayRating = hoverRating || data.rating;
 
     return (

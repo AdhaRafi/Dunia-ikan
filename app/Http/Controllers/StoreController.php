@@ -11,7 +11,7 @@ class StoreController extends Controller
 {
     public function show(Request $request, string $slug): Response
     {
-        $store = Store::with(['user:id,name,avatar'])
+        $store = Store::select(['id', 'user_id', 'name', 'slug', 'city', 'province', 'phone', 'description', 'logo', 'doa_policy'])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();

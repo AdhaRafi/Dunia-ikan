@@ -7,7 +7,13 @@
     root * /app/public
     encode zstd gzip
 
-    @immutable path /build/* /images/* /videos/* /css/* /js/* /fonts/* /favicon.ico /favicon.png
+    @manifest path /build/manifest.json
+    respond @manifest 404
+
+    @immutable {
+        path /build/* /images/* /videos/* /css/* /js/* /fonts/* /favicon.ico /favicon.png
+        not path /build/manifest.json
+    }
     header @immutable Cache-Control "public, max-age=31536000, immutable"
     header @immutable CDN-Cache-Control "public, max-age=31536000, immutable"
 

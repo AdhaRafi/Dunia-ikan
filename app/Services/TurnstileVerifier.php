@@ -32,21 +32,30 @@ class TurnstileVerifier
     }
 
     /**
-     * Verify a Cloudflare Turnstile token via siteverify, failing closed on error or mismatch.
+     * Verify a Cloudflare Turnstile token from the HTTP request, failing closed on error or mismatch.
      *
      * @throws ValidationException
      */
-    public function verifyOrFail(Request $request, string $expectedAction): void
+    public function verifyOrFail(Request $request, string $expectedAction, string $errorKey = self::FIELD_NAME): void
+    {
+        $this->verifyTokenOrFail($request->input(self::FIELD_NAME), $request, $expectedAction, $errorKey);
+    }
+
+    /**
+     * Verify an explicit Cloudflare Turnstile token via siteverify, failing closed on error or mismatch.
+     *
+     * @throws ValidationException
+     */
+    public function verifyTokenOrFail(mixed $token, Request $request, string $expectedAction, string $errorKey = self::FIELD_NAME): void
     {
         if (! $this->isEnabled()) {
             return;
         }
 
-        $token = $request->input(self::FIELD_NAME);
         $allowedHostnames = $this->allowedHostnames();
 
         if (! is_string($token) || $token === '' || strlen($token) > 2048 || $allowedHostnames === []) {
-            $this->throwVerificationError();
+            $this->throwVerificationError($errorKey);
         }
 
         try {
@@ -59,7 +68,7 @@ class TurnstileVerifier
                 ]);
 
             if (! $response->successful()) {
-                $this->throwVerificationError();
+                $this->throwVerificationError($errorKey);
             }
 
             $payload = $response->json();
@@ -71,11 +80,11 @@ class TurnstileVerifier
                 'error' => $exception->getMessage(),
             ]);
 
-            $this->throwVerificationError();
+            $this->throwVerificationError($errorKey);
         }
 
         if (! is_array($payload)) {
-            $this->throwVerificationError();
+            $this->throwVerificationError($errorKey);
         }
 
         $isSuccess = ($payload['success'] ?? false) === true;
@@ -84,7 +93,7 @@ class TurnstileVerifier
         $hostnameMatches = $hostname !== '' && in_array($hostname, $allowedHostnames, true);
 
         if (! $isSuccess || ! $actionMatches || ! $hostnameMatches) {
-            $this->throwVerificationError();
+            $this->throwVerificationError($errorKey);
         }
     }
 
@@ -126,10 +135,10 @@ class TurnstileVerifier
     /**
      * @throws ValidationException
      */
-    private function throwVerificationError(): never
+    private function throwVerificationError(string $errorKey = self::FIELD_NAME): never
     {
         throw ValidationException::withMessages([
-            self::FIELD_NAME => __('Verifikasi keamanan Cloudflare gagal atau kedaluwarsa. Silakan selesaikan verifikasi lagi.'),
+            $errorKey => __('Verifikasi keamanan Cloudflare gagal atau kedaluwarsa. Silakan selesaikan verifikasi lagi.'),
         ]);
     }
 }

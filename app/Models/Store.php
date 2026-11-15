@@ -31,6 +31,7 @@ class Store extends Model
     ];
 
     protected $hidden = [
+        'user_id',
         'bank_name',
         'bank_account_number',
         'bank_account_name',
@@ -142,6 +143,7 @@ class Store extends Model
                 'comment' => $userReviewRecord->comment,
             ] : null,
             'canReview' => $viewer !== null && $viewer->id !== $this->user_id,
+            'isOwner' => $viewer !== null && $viewer->id === $this->user_id,
         ];
     }
 }

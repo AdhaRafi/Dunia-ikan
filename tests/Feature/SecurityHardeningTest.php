@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Pages\Auth\AdminLogin;
 use App\Models\Address;
 use App\Models\CartItem;
 use App\Models\ChatMessage;
@@ -14,6 +15,7 @@ use App\Models\User;
 use App\Services\TurnstileVerifier;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class SecurityHardeningTest extends TestCase
@@ -468,5 +470,135 @@ class SecurityHardeningTest extends TestCase
         $this->assertStringContainsString('• Katalog air tawar', $reply);
         $this->assertStringContainsString('Captain', $reply);
         $this->assertStringContainsString('10 * 5 liter', $reply);
+    }
+
+    public function test_filament_admin_login_enforces_turnstile_and_preserves_isolated_guard(): void
+    {
+        $admin = User::where('role', 'admin')->firstOrFail();
+
+        config([
+            'services.turnstile.site_key' => '0x4AAAATestSiteKey',
+            'services.turnstile.secret_key' => '0x4AAAATestSecretKey',
+            'services.turnstile.hostnames' => 'dunia-ikan.vercel.app',
+        ]);
+
+        Http::preventStrayRequests();
+        Http::fake([
+            TurnstileVerifier::VERIFY_URL => Http::sequence()
+                ->push([
+                    'success' => true,
+                    'action' => 'login',
+                    'hostname' => 'dunia-ikan.vercel.app',
+                ], 200)
+                ->push([
+                    'success' => true,
+                    'action' => 'admin_login',
+                    'hostname' => 'dunia-ikan.vercel.app',
+                ], 200),
+        ]);
+
+        Livewire::test(AdminLogin::class)
+            ->fillForm([
+                'email' => $admin->email,
+                'password' => 'password',
+            ])
+            ->call('authenticate')
+            ->assertHasFormErrors(['cf_turnstile_response']);
+        $this->assertGuest('admin');
+
+        Livewire::test(AdminLogin::class)
+            ->fillForm([
+                'email' => $admin->email,
+                'password' => 'password',
+                'cf_turnstile_response' => 'wrong-action-token',
+            ])
+            ->call('authenticate')
+            ->assertHasFormErrors(['cf_turnstile_response']);
+        $this->assertGuest('admin');
+
+        Livewire::test(AdminLogin::class)
+            ->fillForm([
+                'email' => $admin->email,
+                'password' => 'password',
+                'cf_turnstile_response' => 'valid-admin-token',
+            ])
+            ->call('authenticate')
+            ->assertHasNoFormErrors();
+
+        $this->assertAuthenticatedAs($admin, 'admin');
+    }
+
+    public function test_public_ziggy_routes_omit_admin_filament_webhook_and_storage_routes(): void
+    {
+        $guestHtml = $this->get('/')->assertStatus(200)->getContent();
+
+        $this->assertStringContainsString('"products.index"', $guestHtml);
+        $this->assertStringContainsString('"login"', $guestHtml);
+        $this->assertStringNotContainsString('"admin.dashboard"', $guestHtml);
+        $this->assertStringNotContainsString('"filament.admin', $guestHtml);
+        $this->assertStringNotContainsString('"midtrans.notification"', $guestHtml);
+        $this->assertStringNotContainsString('"storage.local', $guestHtml);
+        $this->assertStringNotContainsString('"livewire.', $guestHtml);
+
+        $admin = User::where('role', 'admin')->firstOrFail();
+        $adminHtml = $this->actingAs($admin, 'admin')->get('/admin-portal')->assertStatus(200)->getContent();
+
+        $this->assertStringContainsString('"admin.dashboard"', $adminHtml);
+        $this->assertStringNotContainsString('"filament.admin', $adminHtml);
+        $this->assertStringNotContainsString('"midtrans.notification"', $adminHtml);
+        $this->assertStringNotContainsString('"storage.local', $adminHtml);
+    }
+
+    public function test_public_pages_hide_store_owner_user_id_and_omit_demo_accounts_in_production(): void
+    {
+        $store = Store::firstOrFail();
+        $seller = User::findOrFail($store->user_id);
+
+        $homeResponse = $this->get('/')->assertStatus(200);
+        $homeResponse->assertInertia(fn ($page) => $page
+            ->component('Welcome')
+            ->has('featuredStores.0', fn ($item) => $item
+                ->missing('user_id')
+                ->missing('phone')
+                ->etc()
+            )
+            ->has('featuredFish.0.store', fn ($item) => $item
+                ->missing('user_id')
+                ->missing('phone')
+                ->etc()
+            )
+        );
+
+        $this->get("/stores/{$store->slug}")
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->component('Stores/Show')
+                ->missing('store.user_id')
+                ->where('storeRating.isOwner', false)
+            );
+
+        $this->actingAs($seller)
+            ->get("/stores/{$store->slug}")
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->component('Stores/Show')
+                ->where('storeRating.isOwner', true)
+            );
+
+        $this->post('/logout');
+
+        $originalEnv = app()['env'];
+        app()['env'] = 'production';
+        try {
+            $this->get('/login')
+                ->assertStatus(200)
+                ->assertInertia(fn ($page) => $page
+                    ->component('Auth/Login')
+                    ->where('canUseDemoAccounts', false)
+                    ->where('demoAccounts', [])
+                );
+        } finally {
+            app()['env'] = $originalEnv;
+        }
     }
 }
