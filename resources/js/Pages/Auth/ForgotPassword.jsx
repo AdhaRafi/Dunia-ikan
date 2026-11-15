@@ -1,20 +1,30 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
+import TurnstileWidget from '@/Components/TurnstileWidget';
 import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
 import { useLanguage } from '@/lib/i18n';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
 export default function ForgotPassword({ status }) {
     const { pick } = useLanguage();
-    const { data, setData, post, processing, errors } = useForm({
+    const { turnstileSiteKey = null } = usePage().props;
+    const [turnstileResetKey, setTurnstileResetKey] = useState(0);
+    const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
+        'cf-turnstile-response': '',
     });
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('password.email'));
+        post(route('password.email'), {
+            onFinish: () => {
+                reset('cf-turnstile-response');
+                setTurnstileResetKey((value) => value + 1);
+            },
+        });
     };
 
     return (
@@ -64,9 +74,17 @@ export default function ForgotPassword({ status }) {
                     <InputError message={errors.email} className="mt-1.5" />
                 </div>
 
+                <TurnstileWidget
+                    action="forgot_password"
+                    resetTrigger={turnstileResetKey}
+                    error={errors['cf-turnstile-response']}
+                    onVerify={(token) => setData('cf-turnstile-response', token)}
+                    onExpire={() => setData('cf-turnstile-response', '')}
+                />
+
                 <button
                     type="submit"
-                    disabled={processing}
+                    disabled={processing || (Boolean(turnstileSiteKey) && !data['cf-turnstile-response'])}
                     className={authPrimaryButtonClass}
                 >
                     {processing ? pick('Mengirim...', 'Sending...') : pick('Kirim Tautan Pemulihan', 'Send Reset Link')}

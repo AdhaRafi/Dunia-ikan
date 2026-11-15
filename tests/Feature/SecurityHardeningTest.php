@@ -11,6 +11,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\User;
+use App\Services\TurnstileVerifier;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
@@ -294,5 +295,118 @@ class SecurityHardeningTest extends TestCase
 
         $txRes = $this->actingAs($admin)->get('/admin-portal/transactions?q=DI-&status=cancelled');
         $txRes->assertStatus(200);
+    }
+
+    public function test_turnstile_verification_enforces_action_hostname_and_fails_closed(): void
+    {
+        $buyer = User::where('role', 'buyer')->firstOrFail();
+
+        config([
+            'services.turnstile.site_key' => '0x4AAAATestSiteKey',
+            'services.turnstile.secret_key' => '0x4AAAATestSecretKey',
+            'services.turnstile.hostnames' => 'dunia-ikan.vercel.app',
+        ]);
+
+        Http::preventStrayRequests();
+        Http::fake([
+            TurnstileVerifier::VERIFY_URL => Http::sequence()
+                ->push([
+                    'success' => true,
+                    'action' => 'signup',
+                    'hostname' => 'dunia-ikan.vercel.app',
+                ], 200)
+                ->push([
+                    'success' => true,
+                    'action' => 'login',
+                    'hostname' => 'localhost',
+                ], 200)
+                ->push(['error' => 'upstream-down'], 500)
+                ->push([
+                    'success' => true,
+                    'action' => 'login',
+                    'hostname' => 'dunia-ikan.vercel.app',
+                ], 200)
+                ->push([
+                    'success' => true,
+                    'action' => 'signup',
+                    'hostname' => 'dunia-ikan.vercel.app',
+                ], 200),
+        ]);
+
+        $this->post('/login', [
+            'email' => $buyer->email,
+            'password' => 'password',
+        ])->assertSessionHasErrors('cf-turnstile-response');
+        $this->assertGuest();
+
+        $this->post('/login', [
+            'email' => $buyer->email,
+            'password' => 'password',
+            'cf-turnstile-response' => 'wrong-action-token',
+        ])->assertSessionHasErrors('cf-turnstile-response');
+        $this->assertGuest();
+
+        $this->post('/login', [
+            'email' => $buyer->email,
+            'password' => 'password',
+            'cf-turnstile-response' => 'disallowed-hostname-token',
+        ])->assertSessionHasErrors('cf-turnstile-response');
+        $this->assertGuest();
+
+        $this->post('/login', [
+            'email' => $buyer->email,
+            'password' => 'password',
+            'cf-turnstile-response' => 'upstream-error-token',
+        ])->assertSessionHasErrors('cf-turnstile-response');
+        $this->assertGuest();
+
+        $this->post('/login', [
+            'email' => $buyer->email,
+            'password' => 'password',
+            'cf-turnstile-response' => 'valid-login-token',
+        ])->assertRedirect(route('dashboard', absolute: false));
+        $this->assertAuthenticatedAs($buyer);
+
+        $this->post('/logout');
+        $this->assertGuest();
+
+        $this->post('/register', [
+            'name' => 'Turnstile Buyer',
+            'email' => 'turnstile-buyer@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'account_type' => 'buyer',
+            'cf-turnstile-response' => 'valid-signup-token',
+        ])->assertRedirect(route('dashboard', absolute: false));
+        $this->assertAuthenticated();
+    }
+
+    public function test_chatbot_uses_updated_gemini_flash_model_when_api_key_configured(): void
+    {
+        config([
+            'services.gemini.api_key' => 'AIzaTestGeminiKey',
+            'services.gemini.model' => 'gemini-3.8-flash',
+        ]);
+
+        Http::preventStrayRequests();
+        Http::fake([
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent*' => Http::response([
+                'candidates' => [[
+                    'content' => [
+                        'parts' => [[
+                            'text' => 'Halo! Ini jawaban AI Kiko.',
+                        ]],
+                    ],
+                ]],
+            ], 200),
+        ]);
+
+        $response = $this->postJson('/chatbot/message', [
+            'message' => 'Tips merawat ikan cupang agar sehat',
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJsonPath('is_fallback', false)
+            ->assertJsonPath('assistant_message.message', 'Halo! Ini jawaban AI Kiko.');
     }
 }

@@ -37,7 +37,13 @@ return [
 
     'gemini' => [
         'api_key' => env('GEMINI_API_KEY'),
-        'model' => env('GEMINI_MODEL', 'gemini-1.5-flash'),
+        'model' => env('GEMINI_MODEL', 'gemini-3.8-flash'),
+    ],
+
+    'turnstile' => [
+        'site_key' => env('TURNSTILE_SITE_KEY'),
+        'secret_key' => env('TURNSTILE_SECRET_KEY', env('TURNSTILE_SECRET')),
+        'hostnames' => env('TURNSTILE_HOSTNAMES'),
     ],
 
     'midtrans' => [

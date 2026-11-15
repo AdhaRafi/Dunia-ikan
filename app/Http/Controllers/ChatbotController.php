@@ -148,7 +148,7 @@ class ChatbotController extends Controller
 
         // Siapkan respons AI atau Fallback
         $apiKey = config('services.gemini.api_key');
-        $model = config('services.gemini.model', 'gemini-1.5-flash');
+        $model = config('services.gemini.model', 'gemini-3.8-flash');
         $assistantReply = null;
         $isFallback = false;
 

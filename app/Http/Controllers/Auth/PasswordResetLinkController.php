@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\TurnstileVerifier;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -28,8 +29,10 @@ class PasswordResetLinkController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, TurnstileVerifier $turnstileVerifier): RedirectResponse
     {
+        $turnstileVerifier->verifyOrFail($request, 'forgot_password');
+
         $request->merge([
             'email' => Str::lower(trim((string) $request->input('email'))),
         ]);

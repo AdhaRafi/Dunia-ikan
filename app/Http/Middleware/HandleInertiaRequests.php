@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Category;
 use App\Models\User;
+use App\Services\TurnstileVerifier;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -54,6 +55,9 @@ class HandleInertiaRequests extends Middleware
                 'user' => $user,
             ],
             'canUseDemoAccounts' => ! app()->isProduction() || (bool) config('app.demo_mode', false),
+            'turnstileSiteKey' => fn () => app(TurnstileVerifier::class)->isEnabled()
+                ? app(TurnstileVerifier::class)->siteKey()
+                : null,
             'pendingSellerCount' => fn () => $user?->isAdmin()
                 ? User::where('seller_status', 'pending')->count()
                 : 0,

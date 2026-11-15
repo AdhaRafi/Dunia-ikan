@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\TurnstileVerifier;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,8 +31,10 @@ class RegisteredUserController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, TurnstileVerifier $turnstileVerifier): RedirectResponse
     {
+        $turnstileVerifier->verifyOrFail($request, 'signup');
+
         $request->merge([
             'email' => Str::lower(trim((string) $request->input('email'))),
         ]);

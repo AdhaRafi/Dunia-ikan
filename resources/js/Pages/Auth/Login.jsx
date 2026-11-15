@@ -3,30 +3,37 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PasswordInput from '@/Components/PasswordInput';
 import TextInput from '@/Components/TextInput';
+import TurnstileWidget from '@/Components/TurnstileWidget';
 import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Store, User } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
+import { useState } from 'react';
 
 export default function Login({ status, canResetPassword }) {
     const { pick } = useLanguage();
-    const { canUseDemoAccounts = false } = usePage().props;
+    const { canUseDemoAccounts = false, turnstileSiteKey = null } = usePage().props;
+    const [turnstileResetKey, setTurnstileResetKey] = useState(0);
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
         remember: false,
+        'cf-turnstile-response': '',
     });
 
     const submit = (e) => {
         e.preventDefault();
 
         post(route('login'), {
-            onFinish: () => reset('password'),
+            onFinish: () => {
+                reset('password', 'cf-turnstile-response');
+                setTurnstileResetKey((value) => value + 1);
+            },
         });
     };
 
     const fillDemo = (email, password = 'password') => {
-        setData({ email, password, remember: true });
+        setData((prev) => ({ ...prev, email, password, remember: true }));
     };
 
     return (
@@ -112,9 +119,17 @@ export default function Login({ status, canResetPassword }) {
                     {pick('Ingat saya di perangkat ini', 'Keep me signed in')}
                 </label>
 
+                <TurnstileWidget
+                    action="login"
+                    resetTrigger={turnstileResetKey}
+                    error={errors['cf-turnstile-response']}
+                    onVerify={(token) => setData('cf-turnstile-response', token)}
+                    onExpire={() => setData('cf-turnstile-response', '')}
+                />
+
                 <button
                     type="submit"
-                    disabled={processing}
+                    disabled={processing || (Boolean(turnstileSiteKey) && !data['cf-turnstile-response'])}
                     className={authPrimaryButtonClass}
                 >
                     {processing ? pick('Memproses...', 'Signing in...') : pick('Masuk', 'Sign In')}

@@ -2,13 +2,17 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PasswordInput from '@/Components/PasswordInput';
 import TextInput from '@/Components/TextInput';
+import TurnstileWidget from '@/Components/TurnstileWidget';
 import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { ShoppingBag, Store } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
+import { useState } from 'react';
 
 export default function Register() {
     const { pick } = useLanguage();
+    const { turnstileSiteKey = null } = usePage().props;
+    const [turnstileResetKey, setTurnstileResetKey] = useState(0);
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -17,6 +21,7 @@ export default function Register() {
         account_type: 'buyer',
         seller_store_name: '',
         seller_application_note: '',
+        'cf-turnstile-response': '',
     });
 
     const isSellerApplicant = data.account_type === 'seller';
@@ -25,7 +30,10 @@ export default function Register() {
         e.preventDefault();
 
         post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
+            onFinish: () => {
+                reset('password', 'password_confirmation', 'cf-turnstile-response');
+                setTurnstileResetKey((value) => value + 1);
+            },
         });
     };
 
@@ -240,10 +248,18 @@ export default function Register() {
                     />
                 </div>
 
+                <TurnstileWidget
+                    action="signup"
+                    resetTrigger={turnstileResetKey}
+                    error={errors['cf-turnstile-response']}
+                    onVerify={(token) => setData('cf-turnstile-response', token)}
+                    onExpire={() => setData('cf-turnstile-response', '')}
+                />
+
                 <div className="pt-1">
                     <button
                         type="submit"
-                        disabled={processing}
+                        disabled={processing || (Boolean(turnstileSiteKey) && !data['cf-turnstile-response'])}
                         className={authPrimaryButtonClass}
                     >
                         {processing
