@@ -6,34 +6,24 @@ import ProductCard from '@/Components/ProductCard';
 
 const FAQ_ITEMS = [
     {
-        letter: 'A',
         question: 'Apakah garansi ikan hidup 100% berlaku di seluruh Indonesia?',
         answer: 'Ya, setiap pengiriman ikan hias dari penangkar terverifikasi dilindungi garansi DOA (Dead on Arrival) dengan syarat melampirkan video unboxing tanpa jeda saat paket diterima.',
     },
     {
-        letter: 'B',
         question: 'Bagaimana standar packing agar ikan tetap aman selama pengiriman?',
         answer: 'Penangkar memakai kantong oksigen ganda bertekanan, air kondisi stabil, serta boks styrofoam atau insulasi thermal sesuai jarak pengiriman.',
     },
     {
-        letter: 'C',
-        question: 'Bagaimana cara memilih ikan air tawar, payau, atau air laut di katalog?',
+        question: 'Bagaimana cara memilih ikan air tawar atau air laut di katalog?',
         answer: 'Anda bisa langsung klik menu Air Tawar atau Air Laut di sidebar, atau gunakan filter Tipe Air di halaman Katalog lengkap beserta informasi pH dan suhu ideal.',
     },
     {
-        letter: 'D',
         question: 'Kapan dana pembayaran diteruskan ke toko penangkar?',
         answer: 'Pembayaran ditahan sementara oleh sistem dan baru diteruskan setelah pesanan dikonfirmasi diterima dalam kondisi baik atau melewati batas waktu konfirmasi.',
     },
     {
-        letter: 'E',
         question: 'Apakah penangkar atau toko aquascape bisa berjualan di sini?',
-        answer: 'Bisa. Anda cukup mendaftar akun lalu melengkapi profil toko di menu Toko Saya untuk mulai menayangkan stok ikan hias, tanaman, dan perlengkapan akuarium.',
-    },
-    {
-        letter: 'F',
-        question: 'Bagaimana jika saya masih bingung soal parameter air atau perawatan ikan?',
-        answer: 'Gunakan asisten Tanya Kiko di pojok kanan bawah atau buka halaman Panduan untuk mengecek protokol karantina, aklimatisasi, dan penanganan penyakit ikan.',
+        answer: 'Bisa. Anda cukup mendaftar akun lalu melengkapi profil toko di menu Buka Toko untuk mulai menayangkan stok ikan hias, tanaman, dan perlengkapan akuarium.',
     },
 ];
 
@@ -317,71 +307,62 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                     </section>
                 )}
 
-                {/* 6. FREQUENTLY ASKED QUESTIONS (Dribbble 26971331 Floating Tilted Card Style) */}
-                <section className="rounded-[28px] bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-slate-800/90 px-4 sm:px-10 py-12 sm:py-16 shadow-xs">
-                    <div className="max-w-2xl mx-auto">
-                        {/* Centered Editorial Header */}
-                        <div className="text-center max-w-lg mx-auto mb-10 sm:mb-12">
-                            <h2 className="text-2xl sm:text-4xl tracking-tight text-slate-900 dark:text-white leading-tight">
-                                <span className="font-bold">Pertanyaan yang Sering </span>
-                                <span className="font-serif italic font-normal text-slate-500 dark:text-slate-300">
-                                    Ditanyakan
-                                </span>
+                {/* 6. FREQUENTLY ASKED QUESTIONS */}
+                <section className="rounded-[24px] sm:rounded-[28px] bg-[#f4f5f7] dark:bg-[#0e1424] border border-slate-200/70 dark:border-slate-800/90 px-5 sm:px-10 lg:px-14 py-10 sm:py-14 lg:py-16">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-stretch">
+                        {/* Left Column: Heading at top, Helper Subtext + Pill CTA at bottom */}
+                        <div className="lg:col-span-5 flex flex-col justify-between gap-7">
+                            <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-semibold tracking-[-0.03em] leading-[1.12] text-slate-900 dark:text-white">
+                                Pertanyaan Umum
+                                <br />
+                                dari para pembeli.
                             </h2>
-                            <p className="mt-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                                Transparansi membangun kepercayaan. Berikut hal yang paling sering ditanyakan penghobi sebelum berbelanja di Dunia Ikan.
-                            </p>
+
+                            <div>
+                                <p className="max-w-[34ch] text-xs sm:text-[13.5px] leading-relaxed text-slate-500 dark:text-slate-400">
+                                    Tim dan asisten Kiko kami selalu siap membantu dengan jawaban cepat, jelas, dan tepercaya kapan pun Anda butuh.
+                                </p>
+                                <button
+                                    type="button"
+                                    onClick={() => window.dispatchEvent(new CustomEvent('dunia-ikan:open-chat'))}
+                                    className="mt-4 inline-flex items-center justify-center rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-950 px-5 py-2.5 text-xs sm:text-[13px] font-semibold shadow-[0_6px_18px_rgba(15,23,42,0.18)] active:scale-[0.99] transition"
+                                >
+                                    Tanya Kiko
+                                </button>
+                            </div>
                         </div>
 
-                        {/* Accordion Column with Vertical Dashed Guidelines */}
-                        <div className="border-x border-dashed border-slate-200/90 dark:border-slate-800 px-3 sm:px-7 py-2 space-y-4">
+                        {/* Right Column: Clean White Card Accordion Stack */}
+                        <div className="lg:col-span-7 space-y-3">
                             {FAQ_ITEMS.map((item, index) => {
                                 const isExpanded = openFaq === index;
                                 return (
-                                    <div key={item.letter} className="relative">
+                                    <button
+                                        key={item.question}
+                                        type="button"
+                                        onClick={() => setOpenFaq(isExpanded ? null : index)}
+                                        aria-expanded={isExpanded}
+                                        className="w-full text-left rounded-2xl bg-white dark:bg-[#131d33] border border-slate-200/80 dark:border-slate-700/80 px-5 sm:px-6 py-4 sm:py-5 shadow-[0_2px_10px_rgba(15,23,42,0.03)] hover:border-slate-300 dark:hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
+                                    >
+                                        <div className="flex items-center justify-between gap-4">
+                                            <span className="text-sm sm:text-[15px] font-semibold leading-snug text-slate-900 dark:text-white">
+                                                {item.question}
+                                            </span>
+                                            <span className="shrink-0 w-6 h-6 rounded-full border border-slate-400/75 dark:border-slate-500 inline-flex items-center justify-center text-slate-600 dark:text-slate-300">
+                                                {isExpanded ? (
+                                                    <Minus className="w-3.5 h-3.5" strokeWidth={1.8} />
+                                                ) : (
+                                                    <Plus className="w-3.5 h-3.5" strokeWidth={1.8} />
+                                                )}
+                                            </span>
+                                        </div>
+
                                         {isExpanded && (
-                                            <div
-                                                aria-hidden="true"
-                                                className="absolute inset-0 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 pointer-events-none"
-                                            />
+                                            <p className="mt-2.5 pr-8 text-xs sm:text-[13.5px] leading-relaxed text-slate-500 dark:text-slate-400">
+                                                {item.answer}
+                                            </p>
                                         )}
-
-                                        <button
-                                            type="button"
-                                            onClick={() => setOpenFaq(isExpanded ? null : index)}
-                                            aria-expanded={isExpanded}
-                                            className={`w-full text-left rounded-2xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1] ${
-                                                isExpanded
-                                                    ? 'relative z-10 bg-white dark:bg-[#131d33] border border-slate-200/80 dark:border-slate-700/80 px-5 sm:px-6 py-5 rotate-[1.15deg] shadow-[0_12px_28px_-8px_rgba(15,23,42,0.08),0_20px_42px_-12px_rgba(124,58,237,0.22)]'
-                                                    : 'bg-[#f4f5f7] hover:bg-[#eceef2] dark:bg-slate-800/60 dark:hover:bg-slate-800 px-5 sm:px-6 py-4'
-                                            }`}
-                                        >
-                                            <div className="flex items-center justify-between gap-4">
-                                                <span
-                                                    className={`text-sm sm:text-[15px] leading-snug ${
-                                                        isExpanded
-                                                            ? 'font-semibold text-slate-900 dark:text-white'
-                                                            : 'font-medium text-slate-800 dark:text-slate-100'
-                                                    }`}
-                                                >
-                                                    {item.letter}. {item.question}
-                                                </span>
-                                                <span className="shrink-0 text-slate-500 dark:text-slate-400">
-                                                    {isExpanded ? (
-                                                        <Minus className="w-4 h-4" strokeWidth={2} />
-                                                    ) : (
-                                                        <Plus className="w-4 h-4" strokeWidth={2} />
-                                                    )}
-                                                </span>
-                                            </div>
-
-                                            {isExpanded && (
-                                                <p className="mt-2.5 pr-6 text-xs sm:text-[13.5px] leading-relaxed text-slate-600 dark:text-slate-300">
-                                                    {item.answer}
-                                                </p>
-                                            )}
-                                        </button>
-                                    </div>
+                                    </button>
                                 );
                             })}
                         </div>

@@ -42,6 +42,12 @@ export default function AppLayout({ children }) {
     }, [flash?.success, flash?.error]);
 
     useEffect(() => {
+        const handleOpenChat = () => setChatOpen(true);
+        window.addEventListener('dunia-ikan:open-chat', handleOpenChat);
+        return () => window.removeEventListener('dunia-ikan:open-chat', handleOpenChat);
+    }, []);
+
+    useEffect(() => {
         if (
             typeof window === 'undefined' ||
             window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
