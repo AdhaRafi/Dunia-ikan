@@ -1,91 +1,106 @@
-# Dunia Ikan - Marketplace Ikan Hias & Mutasi Genetik (Morph)
+# Dunia Ikan — Marketplace Ikan Hias & Aquascape
 
-**Dunia Ikan** adalah platform marketplace multi-penjual untuk ikan hias tropis, mutasi genetik (morph), dan kebutuhan aquascape yang terinspirasi dari pola taksonomi dan standar keselamatan hewan [MorphMarket](https://www.morphmarket.com/). Platform ini dibangun menggunakan **Laravel 12 (PHP 8.4)** dengan **React** melalui **Inertia.js**, di-style dengan **Tailwind CSS**, dan didukung oleh **Chatbot Asisten AI (Google Gemini)**.
+**Dunia Ikan** adalah platform marketplace multi-penjual untuk ikan hias tropis (air tawar, air laut, air payau), varian/morph genetik, serta flora dan perlengkapan aquascape yang terinspirasi dari pola taksonomi dan standar keselamatan hewan [MorphMarket](https://www.morphmarket.com/).
 
----
-
-## 🌟 Fitur Utama & Inspirasi MorphMarket
-
-### 1. Karakteristik Biologi & Morfologi Ikan (MorphMarket-Inspired)
-Setiap spesimen ikan hias dilengkapi metadata biologi spesifik:
-- **Spesies & Mutasi (Morph / Trait):** Pencatatan nama ilmiah (e.g. *Betta splendens*, *Channa marulioides*) dan nama varian/mutasi genetik (e.g. *Rosetail Super Red*, *Avatar Gordon*, *Yellow Sentarum*).
-- **Jenis Kelamin (Sex):** ♂ Jantan (Male), ♀ Betina (Female), Sepasang (Pair), dan Unsexed.
-- **Ukuran & Fase Hidup (Size Stage):** S (2-3 cm), M (3-4 cm), Juvenile, hingga Indukan Dewasa Siap Pijah.
-- **Parameter Air & Kebutuhan Akuarium:** Tipe air (Freshwater, Saltwater, Brackish), volume tank minimal (Liter), rentang suhu ideal (°C), dan rentang pH air.
-- **Karakteristik Perawatan:** Tingkat perawatan (Pemula, Menengah, Mahir), temperamen (Damai, Semi-Agresif, Agresif, Predator), tipe pakan, dan asal pembiakan (*Captive Bred*, *Farm Raised*, *Tangkapan Liar*).
-
-### 2. Standar Garansi Ikan Hidup (D.O.A. - Death On Arrival Policy)
-- Mengadopsi standar marketplace hewan hidup dunia: setiap toko penangkar wajib menetapkan kebijakan D.O.A. (misal: jaminan 100% ikan hidup sampai tujuan dengan syarat melampirkan video unboxing utuh tanpa jeda maksimal 2 jam setelah paket tiba).
-- Badge **Garansi DOA** ditampilkan secara transparan pada kartu produk, halaman detail, dan profil toko.
-
-### 3. Sistem Multi-Penjual & Pembayaran Manual
-- **Pesanan Terpisah per Toko:** Pembeli dapat memesan dari berbagai toko dalam satu keranjang, namun pesanan dan ongkos kirim (termasuk packing box styrofoam beroksigen) dikelompokkan dan diproses secara independen oleh masing-masing toko penangkar.
-- **Metode Pembayaran Manual:** Transfer Bank (BCA, Mandiri, dsb), QRIS Manual, dan COD (Bayar di Tempat).
-- **Alur Verifikasi:** Pembeli mengunggah bukti pembayaran -> Penjual memverifikasi -> Penjual memasukkan nama kurir dan nomor resi pengiriman -> Pembeli mengonfirmasi paket ikan telah tiba dengan selamat.
-
-### 4. Chatbot Asisten AI Dunia Ikan (Google Gemini)
-- **Konsultasi Kesehatan Ikan:** Menjawab pertanyaan gejala sakit (misal: *White Spot*, *Fin Rot*, gangguan kantung kemih) dengan rujukan langsung ke basis panduan database resmi yang dikelola Admin. Dilengkapi disclaimer medis bahwa asisten tidak memberikan resep obat keras berbahaya.
-- **Rekomendasi Ikan:** Mencocokkan kriteria pengguna dengan stok ikan asli yang sedang aktif dan tersedia di database.
-- **Transparansi & Fallback Cerdas:** Jika `GEMINI_API_KEY` belum diisi atau offline, chatbot secara jujur memberitahu pengguna dan menampilkan panduan statis serta produk rekomendasi dari database.
+Platform ini dibangun menggunakan **Laravel 13 (PHP 8.3/8.4)**, **React 18 + Inertia.js v2**, **Tailwind CSS 3**, **Filament v5**, **Midtrans Snap**, **Cloudflare Turnstile**, serta **Asisten AI Kiko (Google Gemini)**.
 
 ---
 
-## 👥 Tiga Peran Pengguna (Roles)
+## Fitur Utama
 
-1. **Pembeli (Buyer):**
-   - Menjelajah dan memfilter katalog dengan filter biologi lengkap.
-   - Mengelola buku alamat pengiriman dan keranjang belanja.
-   - Melakukan checkout, mengunggah bukti transfer, memantau nomor resi, dan konfirmasi barang diterima.
-   - Menggunakan chatbot asisten kesehatan dan rekomendasi ikan.
-   - Dapat mendaftarkan toko melalui menu "Buka Toko".
-
-2. **Penjual (Seller):**
-   - Mengelola profil toko, kontak, rekening penerima pembayaran, dan kebijakan garansi hidup (DOA).
-   - Menambah, mengubah, dan menghapus produk serta spesifikasi morfologi ikan.
-   - Mengelola pesanan khusus tokonya: verifikasi bukti bayar dan input nomor resi pengiriman.
-
-3. **Administrator (Admin):**
-   - Dashboard monitoring statistik platform (pengguna, toko, produk, pesanan, dan total perputaran dana).
-   - Mengelola taksonomi kategori produk.
-   - Mengelola basis panduan kesehatan ikan untuk Chatbot.
-   - Mengelola hak akses peran (Role) pengguna.
-   - Memantau seluruh transaksi di marketplace.
+1. **Taksonomi Biologi & Filter Spesimen (`FishDetail`)**
+   - Pencatatan nama ilmiah, morph/trait, jenis kelamin (`male`, `female`, `pair`, `unsexed`), fase ukuran, tipe air (`freshwater`, `saltwater`, `brackish`), minimal volume tank, rentang suhu & pH, tingkat perawatan, temperamen, dan asal pembiakan.
+2. **Standar Garansi Hidup (D.O.A. Policy) & Ulasan Toko**
+   - Setiap toko memiliki kebijakan garansi Death On Arrival yang ditampilkan pada halaman produk dan profil toko, beserta rating & ulasan pembeli (`StoreReview`).
+3. **Checkout Multi-Toko & Tiga Jalur Pembayaran**
+   - Pesanan dipisah otomatis per toko.
+   - Mendukung **Midtrans Snap** (QRIS, Virtual Account, Kartu, dll lengkap dengan webhook `/midtrans/notification`, sinkronisasi status, dan halaman finish), **Transfer Bank Manual / Unggah Bukti Bayar**, serta **COD (Bayar di Tempat)** yang langsung diproses toko tanpa tahap pembayaran online.
+4. **Dual Auth Guard Terisolasi (`web` & `admin`) + Anti-Bot**
+   - Login Pembeli & Penjual melalui `/login` (`guard: web`), registrasi penangkar baru melalui `/register` (dengan status verifikasi admin), dan login Administrator terpisah melalui `/admin/login` (`guard: admin`) untuk mengakses Panel Filament `/admin` maupun Portal Admin `/admin-portal`.
+   - Autentikasi dilindungi **Cloudflare Turnstile** (ketika site key & secret key dikonfigurasi) dan pembatasan percobaan login.
+5. **Chatbot Asisten AI "Kiko" (Google Gemini)**
+   - Konsultasi gejala penyakit ikan dan rekomendasi stok ikan langsung dari database. Jika `GEMINI_API_KEY` belum diisi atau layanan tidak tersedia, chatbot otomatis memakai fallback panduan perawatan (`FishGuide`) dan daftar produk aktif.
+6. **UI Dwibahasa (`ID` / `EN`) & Dark/Light Mode**
+   - Pengaturan bahasa dan tema tersedia di header aplikasi (`resources/js/lib/i18n.jsx`, `TopHeader.jsx`).
 
 ---
 
-## 🔑 Kredensial Akun Demo (Seeder)
+## Struktur Proyek
 
-Setelah menjalankan seeder database, akun demo berikut siap digunakan (Password default untuk semua akun: `password`):
-
-| Role | Nama Akun | Email | Password |
-|---|---|---|---|
-| **Admin** | Administrator Dunia Ikan | `admin@duniaikan.test` | `password` |
-| **Penjual 1** | Budi Hartono (Aquatic Heritage Farm) | `penjual1@duniaikan.test` | `password` |
-| **Penjual 2** | Siti Rahayu (Nusantara Aquascape) | `penjual2@duniaikan.test` | `password` |
-| **Pembeli** | Andi Pratama | `pembeli@duniaikan.test` | `password` |
-
-> 💡 *Pada halaman login, tersedia tombol cepat satu-klik untuk mengisi otomatis kredensial akun demo.*
-
----
-
-## 🛠️ Panduan Instalasi & Menjalankan Aplikasi
-
-### Persyaratan Sistem
-- PHP >= 8.2 (Disarankan PHP 8.4)
-- Node.js >= 18 & npm
-- Composer
-- Database: **PostgreSQL** (atau SQLite untuk pengujian lokal instan)
-
-### Langkah 1: Kloning & Pengaturan Lingkungan
-Salin berkas konfigurasi `.env`:
-```bash
-cp .env.example .env
+```text
+.
+├── app/
+│   ├── Filament/
+│   │   ├── Pages/Auth/AdminLogin.php       # Halaman login panel Filament (/admin/login) + Turnstile & rate limit
+│   │   └── Resources/                      # Resource CRUD Filament: Categories, Orders, Products, Stores, Users
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Admin/                      # Controller Portal Admin Inertia (/admin-portal/*)
+│   │   │   ├── Auth/                       # Autentikasi Breeze + AdminLogoutController
+│   │   │   ├── Seller/                     # Manajemen toko, produk, dan pesanan penjual (/seller/*)
+│   │   │   └── *.php                       # Storefront, katalog, keranjang, checkout, order, review, chatbot, Midtrans
+│   │   ├── Middleware/                     # EnsureUserHasRole, HandleInertiaRequests, SecurityHeaders
+│   │   └── Requests/                       # Validasi LoginRequest & ProfileUpdateRequest
+│   ├── Models/                             # User, Store, Category, Product, FishDetail, FishGuide, Address, CartItem, Order, OrderItem, StoreReview, ChatSession, ChatMessage
+│   ├── Providers/                          # AppServiceProvider & Filament\AdminPanelProvider
+│   └── Services/                           # TurnstileVerifier (verifikasi token Cloudflare Turnstile)
+├── bootstrap/
+│   ├── app.php                             # Routing, middleware, CSRF exception webhook Midtrans, render 403/404 Inertia, & path /tmp/storage di Vercel
+│   └── providers.php                       # Registrasi service provider aplikasi & Filament
+├── config/                                 # Konfigurasi Laravel (auth guard web/admin, services, ziggy filter, cors, sanctum, dll.)
+├── database/
+│   ├── factories/                          # Model factories untuk pengujian
+│   ├── migrations/                         # Skema tabel marketplace, Midtrans snap_token, verifikasi seller, ulasan toko
+│   └── seeders/                            # DatabaseSeeder, FishSpeciesExpansionSeeder, StoreReviewSeeder
+├── public/
+│   ├── images/                             # Aset lokal: brand, banner, kategori, produk, avatar Kiko, hero showcase
+│   └── videos/                             # Video latar hero halaman utama
+├── resources/
+│   ├── css/app.css                         # Entry styling Tailwind CSS
+│   ├── js/
+│   │   ├── Components/                     # TopHeader, Sidebar, Footer, ProductCard, ChatbotWidget, TurnstileWidget, dll.
+│   │   ├── Layouts/                        # AppLayout, GuestLayout, SellerLayout, AdminLayout
+│   │   ├── Pages/                          # Halaman Inertia (Welcome, Products, Stores, Guides, Cart, Checkout, Orders, Seller, Admin, Auth, Profile, Errors/HttpError)
+│   │   └── lib/                            # Helper frontend (i18n.jsx, guideMeta.js)
+│   └── views/                              # app.blade.php (root Inertia) & komponen Blade Turnstile Filament
+├── routes/
+│   ├── web.php                             # Route storefront, buyer, seller (/seller/*), admin (/admin-portal/*), Midtrans, chatbot
+│   ├── auth.php                            # Route autentikasi pengguna (/login, /register, reset password, dll.)
+│   ├── api.php                             # Endpoint /api/health & /api/user (Sanctum)
+│   └── console.php                         # Perintah Artisan CLI
+├── tests/
+│   └── Feature/                            # PHPUnit suite (Auth, MarketplaceTest, MidtransTest, ProfileTest, SecurityHardeningTest)
+├── Caddyfile                               # Konfigurasi webserver FrankenPHP/Caddy + blokir akses /build/manifest.json
+├── Dockerfile.vercel                       # Multi-stage Docker image (Node 22 + FrankenPHP PHP 8.4)
+├── docker-entrypoint.sh                    # Inisialisasi container saat boot (migrasi, optimasi cache, start FrankenPHP)
+└── vercel.json                             # Konfigurasi deployment container di Vercel
 ```
 
-### Langkah 2: Konfigurasi Database
+---
 
-#### Opsi A: Menggunakan PostgreSQL (Sesuai Spesifikasi Tugas Akhir)
-Pastikan PostgreSQL telah terpasang dan buat database bernama `dunia_ikan`. Sesuaikan baris berikut di `.env`:
+## Cara Menggunakan & Menjalankan Lokal
+
+### 1. Persyaratan Sistem
+- **PHP >= 8.3** (disarankan PHP 8.4) dengan ekstensi `pdo_pgsql` / `pdo_sqlite`, `intl`, `mbstring`, `bcmath`, `zip`, `gd`
+- **Composer**
+- **Node.js >= 18 & npm**
+- **Database:** PostgreSQL (direkomendasikan untuk produksi) atau SQLite (praktis untuk lokal)
+
+### 2. Instalasi Dependensi & Pengaturan `.env`
+```bash
+git clone https://github.com/AdhaRafi/Dunia-ikan.git
+cd Dunia-ikan
+
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+
+> **Keamanan `.env`:** File `.env` dan `.env.*` (kecuali `.env.example`) sudah masuk dalam `.gitignore`. Jangan pernah menonaktifkan aturan tersebut atau meng-commit kunci API/rahasia asli ke GitHub.
+
+### 3. Konfigurasi Database & Integrasi di `.env`
+
+**Opsi A — PostgreSQL (Default `.env.example`)**
 ```env
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
@@ -94,59 +109,67 @@ DB_DATABASE=dunia_ikan
 DB_USERNAME=postgres
 DB_PASSWORD=secret
 ```
+*(Untuk managed PostgreSQL seperti Neon/Supabase/Railway, Anda juga dapat memakai `DB_URL`.)*
 
-#### Opsi B: Menggunakan SQLite (Pengujian Lokal Instan Tanpa Install Database Server)
+**Opsi B — SQLite (Cepat Tanpa Server Database)**
 ```env
 DB_CONNECTION=sqlite
 ```
-*(File database otomatis dibuat di `database/database.sqlite`)*
+*(Buat file kosong `database/database.sqlite` atau jalankan migrasi langsung bila SQLite mengizinkannya; hapus/komentari baris `DB_HOST`..`DB_SSLMODE` di `.env`.)*
 
-### Langkah 3: Konfigurasi Gemini API (Opsional)
-Dapatkan API Key gratis di [Google AI Studio](https://aistudio.google.com/):
-```env
-GEMINI_API_KEY=AIzaSy...
-GEMINI_MODEL=gemini-1.5-flash
-```
-*(Jika dikosongkan, chatbot tetap berfungsi secara penuh menggunakan panduan statis database).*
+**Integrasi Opsional di `.env`:**
+- **Chatbot Gemini:** isi `GEMINI_API_KEY` dan `GEMINI_MODEL=gemini-3.5-flash-lite` (bila kosong, fallback database tetap berjalan).
+- **Midtrans Snap:** isi `MIDTRANS_SERVER_KEY`, `MIDTRANS_CLIENT_KEY`, dan `MIDTRANS_IS_PRODUCTION=false` untuk sandbox.
+- **Cloudflare Turnstile:** isi `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`, serta daftar host di `TURNSTILE_HOSTNAMES=localhost,127.0.0.1`.
+- **Tombol Demo di `/login`:** set `APP_DEMO_MODE=false` untuk produksi publik, atau `true` bila ingin menampilkan tombol pengisi kredensial demo lokal.
 
-### Langkah 4: Migrasi & Seeding Data Awal
-Jalankan migrasi tabel dan seeder:
+### 4. Migrasi, Seeding, dan Symlink Storage
 ```bash
-php artisan migrate:fresh --seed
-```
-
-### Langkah 5: Buat Simbolik Link Storage
-Untuk menampilkan foto produk dan bukti transfer yang diunggah:
-```bash
+php artisan migrate --seed
 php artisan storage:link
 ```
+*(Gunakan `php artisan migrate:fresh --seed` untuk mereset database dari awal dan mengisi ulang data seeder.)*
 
-### Langkah 6: Kompilasi Aset Frontend
+### 5. Build Aset Frontend & Jalankan Server
 ```bash
-npm install
+npm install --ignore-scripts
 npm run build
 ```
-*(Atau jalankan `npm run dev` untuk hot-reload saat pengembangan)*
 
-### Langkah 7: Jalankan Server Lokal
+Jalankan server pengembangan Laravel + Vite:
+```bash
+composer run dev
+```
+Atau jalankan di dua terminal terpisah:
 ```bash
 php artisan serve
+npm run dev
 ```
-Buka browser di [http://localhost:8000](http://localhost:8000).
+
+Akses aplikasi di browser:
+- **Marketplace:** `http://localhost:8000`
+- **Login Pembeli / Penjual:** `http://localhost:8000/login`
+- **Panel Admin (Filament):** `http://localhost:8000/admin/login` -> `/admin`
+- **Portal Admin (Inertia):** `http://localhost:8000/admin-portal`
 
 ---
 
-## 🧪 Menjalankan Pengujian (Automated Tests)
+## Pengujian & Pemeriksaan Kualitas Kode
 
-Aplikasi dilengkapi test suite PHPUnit untuk memastikan validasi stok, checkout multi-toko, pembatasan otorisasi peran, dan fungsi chatbot:
+Jalankan suite PHPUnit (fitur katalog, checkout multi-toko & COD, Midtrans webhook, autentikasi, serta security hardening):
 ```bash
 php artisan test --compact
 ```
 
+Periksa gaya kode PHP menggunakan Laravel Pint:
+```bash
+php vendor/bin/pint --test --format agent
+```
+
 ---
 
-## 📝 Asumsi Penting & Batas Arsitektur
-1. **Otorisasi Server-Side:** Seluruh route seller dan admin dilindungi oleh middleware `role:seller,admin` dan `role:admin`. Menyembunyikan tombol di frontend tidak menggantikan validasi server.
-2. **Pemesanan per Toko:** Tidak ada payment gateway otomatis pihak ketiga (seperti Midtrans/Xendit) sesuai batasan tugas; alur pembayaran menggunakan verifikasi manual rekening toko & QRIS.
-3. **Resi Pengiriman:** Nomor resi dan ekspedisi dicatat secara manual oleh penjual; tidak ada pelacakan satelit real-time palsu.
-4. **Keamanan Kunci API:** API key Gemini disimpan secara eksklusif di backend Laravel dan tidak pernah dikirim ke browser/klien.
+## Deployment Container / Vercel
+
+Repository ini dilengkapi `vercel.json` (`"framework": "container"`), `Dockerfile.vercel`, `docker-entrypoint.sh`, dan `Caddyfile` (FrankenPHP PHP 8.4). Untuk deploy produksi:
+1. Atur environment variable di platform hosting (`APP_KEY`, `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, `DB_CONNECTION=pgsql`, `DB_URL` / koneksi PostgreSQL, `SESSION_SECURE_COOKIE=true`, `TURNSTILE_*`, `MIDTRANS_*`, `GEMINI_*`).
+2. Pastikan `APP_DEMO_MODE=false` pada deployment publik.
