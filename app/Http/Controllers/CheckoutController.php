@@ -51,6 +51,7 @@ class CheckoutController extends Controller
         $totalProducts = $cartItems->sum(fn ($item) => $item->quantity * $item->product->price);
         $totalShipping = $groupedCart->sum('shippingCost');
         $grandTotal = $totalProducts + $totalShipping;
+        $supportsManualQris = $groupedCart->every(fn ($grp) => ! empty($grp['store']?->qris_image));
 
         return Inertia::render('Checkout/Index', [
             'groupedCart' => $groupedCart,
@@ -58,6 +59,7 @@ class CheckoutController extends Controller
             'totalProducts' => $totalProducts,
             'totalShipping' => $totalShipping,
             'grandTotal' => $grandTotal,
+            'supportsManualQris' => $supportsManualQris,
         ]);
     }
 
@@ -81,6 +83,13 @@ class CheckoutController extends Controller
 
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Keranjang belanja Anda kosong.');
+        }
+
+        if ($validated['payment_method'] === 'qris') {
+            $missingQris = $cartItems->contains(fn ($item) => empty($item->product?->store?->qris_image));
+            if ($missingQris) {
+                return back()->with('error', 'Toko belum mengunggah QRIS manual statis. Gunakan Midtrans Gateway untuk membayar via QRIS.');
+            }
         }
 
         $createdOrders = [];

@@ -408,4 +408,51 @@ class MarketplaceTest extends TestCase
         $this->assertSame('delivered', $order->status);
         $this->assertSame('verified', $order->payment_status);
     }
+
+    public function test_manual_qris_checkout_requires_store_qris_image(): void
+    {
+        $buyer = User::where('role', 'buyer')->firstOrFail();
+        $address = Address::where('user_id', $buyer->id)->firstOrFail();
+        $product = Product::where('stock', '>', 5)->with('store')->firstOrFail();
+        $store = $product->store;
+        $store->update(['qris_image' => null]);
+
+        $this->actingAs($buyer)->post('/cart', [
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
+
+        $this->actingAs($buyer)
+            ->get('/checkout')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page->where('supportsManualQris', false));
+
+        $this->actingAs($buyer)
+            ->post('/checkout', [
+                'address_id' => $address->id,
+                'payment_method' => 'qris',
+            ])
+            ->assertSessionHas('error');
+
+        $store->update(['qris_image' => 'stores/qris/sample.png']);
+
+        $this->actingAs($buyer)
+            ->get('/checkout')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page->where('supportsManualQris', true));
+
+        $this->actingAs($buyer)
+            ->post('/checkout', [
+                'address_id' => $address->id,
+                'payment_method' => 'qris',
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('orders', [
+            'buyer_id' => $buyer->id,
+            'store_id' => $store->id,
+            'payment_method' => 'qris',
+            'status' => 'pending_payment',
+        ]);
+    }
 }

@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
 
-export default function Index({ groupedCart, addresses = [], totalProducts, totalShipping, grandTotal }) {
+export default function Index({ groupedCart, addresses = [], totalProducts, totalShipping, grandTotal, supportsManualQris = false }) {
     const { pick } = useLanguage();
     const { auth } = usePage().props;
     const currentUser = auth?.user;
@@ -245,11 +245,13 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                                 className="text-dunia-blue"
                                             />
                                         </div>
-                                        <p className="font-bold text-sm text-slate-900">Midtrans Gateway</p>
+                                        <p className="font-bold text-sm text-slate-900">
+                                            {pick('Midtrans (QRIS & Virtual Account)', 'Midtrans (QRIS & Virtual Account)')}
+                                        </p>
                                         <p className="text-[11px] text-slate-500 leading-snug">
                                             {pick(
-                                                'QRIS (GoPay/ShopeePay) & Virtual Account (BCA, Mandiri, BRI, BNI).',
-                                                'QRIS (GoPay/ShopeePay) & Virtual Account (BCA, Mandiri, BRI, BNI).'
+                                                'QRIS (GoPay, ShopeePay, DANA, OVO) & Virtual Account (BCA, Mandiri, BRI, BNI).',
+                                                'QRIS (GoPay, ShopeePay, DANA, OVO) & Virtual Account (BCA, Mandiri, BRI, BNI).'
                                             )}
                                         </p>
                                     </div>
@@ -289,32 +291,47 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
 
                                 {/* QRIS */}
                                 <label
-                                    className={`p-4 rounded-xl border cursor-pointer transition flex flex-col justify-between ${
-                                        data.payment_method === 'qris'
-                                            ? 'bg-sky-50/60 border-dunia-blue ring-1 ring-dunia-blue'
-                                            : 'border-slate-200 hover:bg-slate-50'
+                                    className={`p-4 rounded-xl border transition flex flex-col justify-between ${
+                                        !supportsManualQris
+                                            ? 'border-slate-200 bg-slate-50/80 opacity-65 cursor-not-allowed'
+                                            : data.payment_method === 'qris'
+                                                ? 'bg-sky-50/60 border-dunia-blue ring-1 ring-dunia-blue cursor-pointer'
+                                                : 'border-slate-200 hover:bg-slate-50 cursor-pointer'
                                     }`}
                                 >
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
-                                            <QrCode className="w-5 h-5 text-teal-600" />
+                                            <div className="flex items-center gap-1.5">
+                                                <QrCode className="w-5 h-5 text-teal-600" />
+                                                {!supportsManualQris && (
+                                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-slate-200 text-slate-600">
+                                                        {pick('Belum tersedia', 'Unavailable')}
+                                                    </span>
+                                                )}
+                                            </div>
                                             <input
                                                 type="radio"
                                                 name="payment_method"
                                                 value="qris"
+                                                disabled={!supportsManualQris}
                                                 checked={data.payment_method === 'qris'}
-                                                onChange={() => setData('payment_method', 'qris')}
-                                                className="text-dunia-blue"
+                                                onChange={() => supportsManualQris && setData('payment_method', 'qris')}
+                                                className="text-dunia-blue disabled:cursor-not-allowed"
                                             />
                                         </div>
                                         <p className="font-bold text-sm text-slate-900">
                                             {pick('QRIS Toko Manual', 'Manual Store QRIS')}
                                         </p>
                                         <p className="text-[11px] text-slate-500 leading-snug">
-                                            {pick(
-                                                'Scan barcode QRIS statis dari profil toko penangkar.',
-                                                'Scan the static QRIS code from the breeder store profile.'
-                                            )}
+                                            {supportsManualQris
+                                                ? pick(
+                                                    'Scan barcode QRIS statis dari profil toko penangkar.',
+                                                    'Scan the static QRIS code from the breeder store profile.'
+                                                )
+                                                : pick(
+                                                    'Toko belum mengunggah gambar QRIS statis. Untuk bayar via QRIS, pilih Midtrans.',
+                                                    'Store has not uploaded a static QRIS yet. Use Midtrans for QRIS.'
+                                                )}
                                         </p>
                                     </div>
                                 </label>
@@ -444,10 +461,15 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             'Pesanan COD langsung diproses penangkar tanpa perlu pilih metode pembayaran online. Siapkan uang pas saat kurir tiba.',
                                             'Your COD order goes straight to the breeder without online payment selection. Prepare exact cash when the courier arrives.'
                                         )
-                                        : pick(
-                                            'Stok dikunci otomatis saat pesanan dibuat. Anda dapat melihat detail rekening dan mengunggah bukti transfer setelah ini.',
-                                            'Stock is automatically reserved once placed. You can view account details and upload payment proof right after.'
-                                        )}
+                                        : data.payment_method === 'midtrans'
+                                            ? pick(
+                                                'Stok dikunci otomatis saat pesanan dibuat. Setelah ini Anda langsung diarahkan ke pembayaran instan Midtrans (QRIS & Virtual Account).',
+                                                'Stock is automatically reserved once placed. You will proceed directly to Midtrans instant payment (QRIS & Virtual Account).'
+                                            )
+                                            : pick(
+                                                'Stok dikunci otomatis saat pesanan dibuat. Anda dapat melihat detail rekening/QRIS toko dan mengunggah bukti pembayaran setelah ini.',
+                                                'Stock is automatically reserved once placed. You can view the store account/QRIS details and upload payment proof right after.'
+                                            )}
                                 </p>
                             </div>
                         </div>

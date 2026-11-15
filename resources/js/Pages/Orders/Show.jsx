@@ -24,6 +24,12 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
     const { isEn, pick, trOrderStatus } = useLanguage();
     const store = order.store;
     const isCod = order.payment_method === 'cod';
+    const showMidtrans =
+        order.payment_method === 'midtrans' ||
+        (order.payment_method === 'qris' && !store?.qris_image);
+    const showManualProofUpload =
+        order.payment_method === 'bank_transfer' ||
+        order.payment_method === 'qris';
     const [confirming, setConfirming] = useState(false);
     const [loadingSnap, setLoadingSnap] = useState(false);
     const [checkingStatus, setCheckingStatus] = useState(false);
@@ -79,10 +85,10 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
     };
 
     useEffect(() => {
-        if (!isCod && midtransClientKey) {
+        if (showMidtrans && midtransClientKey) {
             ensureSnapLoaded(midtransClientKey, isMidtransProduction).catch(() => {});
         }
-    }, [isCod, midtransClientKey, isMidtransProduction]);
+    }, [showMidtrans, midtransClientKey, isMidtransProduction]);
 
     const handlePayMidtrans = async () => {
         setLoadingSnap(true);
@@ -384,68 +390,78 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                             </span>
                         </div>
 
-                        {/* Midtrans Snap Gateway (Otomatis & Realtime) */}
-                        <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-50/90 to-sky-50/90 border border-blue-200/80 space-y-3.5 shadow-xs">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                <div className="flex items-start sm:items-center gap-3">
-                                    <div className="w-10 h-10 rounded-xl bg-dunia-blue text-white flex items-center justify-center font-bold shrink-0 shadow-xs">
-                                        <Zap className="w-5 h-5 fill-white" />
+                        {/* Midtrans Snap Gateway (hanya untuk metode Midtrans atau fallback QRIS jika toko belum upload gambar) */}
+                        {showMidtrans && (
+                            <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-50/90 to-sky-50/90 border border-blue-200/80 space-y-3.5 shadow-xs">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <div className="flex items-start sm:items-center gap-3">
+                                        <div className="w-10 h-10 rounded-xl bg-dunia-blue text-white flex items-center justify-center font-bold shrink-0 shadow-xs">
+                                            <Zap className="w-5 h-5 fill-white" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-extrabold text-dunia-navy flex items-center gap-2">
+                                                <span>{pick('Pembayaran Otomatis Midtrans', 'Midtrans Instant Payment')}</span>
+                                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-600 text-white">
+                                                    Instant
+                                                </span>
+                                            </h4>
+                                            <p className="text-xs text-slate-500 mt-0.5">
+                                                {pick(
+                                                    'QRIS (GoPay/ShopeePay/BCA) & Virtual Account (BCA, Mandiri, BRI, BNI). Langsung lunas otomatis!',
+                                                    'QRIS (GoPay/ShopeePay/BCA) & Virtual Account (BCA, Mandiri, BRI, BNI). Verified automatically!'
+                                                )}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 className="text-sm font-extrabold text-dunia-navy flex items-center gap-2">
-                                            <span>{pick('Pembayaran Otomatis Midtrans', 'Midtrans Instant Payment')}</span>
-                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-600 text-white">
-                                                Instant
+                                    <div className="flex items-center gap-2 shrink-0">
+                                        <button
+                                            type="button"
+                                            onClick={handlePayMidtrans}
+                                            disabled={loadingSnap}
+                                            className="px-5 py-2.5 rounded-xl bg-dunia-blue hover:bg-sky-600 text-white font-extrabold text-xs shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                                        >
+                                            <Zap className="w-4 h-4 fill-white" />
+                                            {loadingSnap
+                                                ? pick('Memuat Snap...', 'Loading Snap...')
+                                                : pick('Bayar Sekarang (Midtrans)', 'Pay Now (Midtrans)')}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={handleCheckStatus}
+                                            disabled={checkingStatus}
+                                            className="px-3 py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                                            title={pick('Cek Status Pembayaran dari Midtrans', 'Check Payment Status via Midtrans')}
+                                        >
+                                            <RefreshCw className={`w-3.5 h-3.5 ${checkingStatus ? 'animate-spin' : ''}`} />
+                                            <span className="hidden sm:inline">
+                                                {checkingStatus ? pick('Mengecek...', 'Checking...') : pick('Cek Status', 'Check Status')}
                                             </span>
-                                        </h4>
-                                        <p className="text-xs text-slate-500 mt-0.5">
-                                            {pick(
-                                                'QRIS (GoPay/ShopeePay/BCA) & Virtual Account (BCA, Mandiri, BRI, BNI). Langsung lunas otomatis!',
-                                                'QRIS (GoPay/ShopeePay/BCA) & Virtual Account (BCA, Mandiri, BRI, BNI). Verified automatically!'
-                                            )}
-                                        </p>
+                                        </button>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2 shrink-0">
-                                    <button
-                                        type="button"
-                                        onClick={handlePayMidtrans}
-                                        disabled={loadingSnap}
-                                        className="px-5 py-2.5 rounded-xl bg-dunia-blue hover:bg-sky-600 text-white font-extrabold text-xs shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
-                                    >
-                                        <Zap className="w-4 h-4 fill-white" />
-                                        {loadingSnap
-                                            ? pick('Memuat Snap...', 'Loading Snap...')
-                                            : pick('Bayar Sekarang (Midtrans)', 'Pay Now (Midtrans)')}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={handleCheckStatus}
-                                        disabled={checkingStatus}
-                                        className="px-3 py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-                                        title={pick('Cek Status Pembayaran dari Midtrans', 'Check Payment Status via Midtrans')}
-                                    >
-                                        <RefreshCw className={`w-3.5 h-3.5 ${checkingStatus ? 'animate-spin' : ''}`} />
-                                        <span className="hidden sm:inline">
-                                            {checkingStatus ? pick('Mengecek...', 'Checking...') : pick('Cek Status', 'Check Status')}
-                                        </span>
-                                    </button>
-                                </div>
+
+                                {midtransError && (
+                                    <div className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2.5 text-xs font-semibold text-rose-700 flex items-start gap-2">
+                                        <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
+                                        <span>{midtransError}</span>
+                                    </div>
+                                )}
                             </div>
+                        )}
 
-                            {midtransError && (
-                                <div className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2.5 text-xs font-semibold text-rose-700 flex items-start gap-2">
-                                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
-                                    <span>{midtransError}</span>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Manual Transfer / QRIS / COD fallback section */}
-                        {order.payment_method === 'bank_transfer' && (
+                        {/* Bank Transfer Details (also shown as manual fallback if legacy QRIS order has no store QRIS image) */}
+                        {(order.payment_method === 'bank_transfer' || (order.payment_method === 'qris' && !store?.qris_image)) && (
                             <div className="p-4 rounded-xl bg-sky-50/80 border border-sky-100 space-y-2 text-xs">
+                                {order.payment_method === 'qris' && !store?.qris_image && (
+                                    <p className="text-xs font-semibold text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-2">
+                                        {pick(
+                                            'Toko ini belum mengunggah gambar QRIS statis. Gunakan QRIS instan via Midtrans di atas atau transfer manual ke rekening toko berikut:',
+                                            'This store has not uploaded a static QRIS image yet. Use instant QRIS via Midtrans above or transfer to the store account below:'
+                                        )}
+                                    </p>
+                                )}
                                 <p className="font-bold text-slate-800">
-                                    {pick('Atau Transfer Manual ke Rekening Toko', 'Or Bank Transfer to Store Account')} ({store?.name}):
+                                    {pick('Transfer Manual ke Rekening Toko', 'Bank Transfer to Store Account')} ({store?.name}):
                                 </p>
                                 <div className="space-y-1 font-mono text-sm">
                                     <p>Bank: <strong className="font-sans text-dunia-navy">{store?.bank_name || 'BCA'}</strong></p>
@@ -459,41 +475,35 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                             </div>
                         )}
 
-                        {order.payment_method === 'qris' && (
+                        {order.payment_method === 'qris' && store?.qris_image && (
                             <div className="p-4 rounded-xl bg-teal-50/80 border border-teal-100 space-y-3 text-xs text-center">
                                 <p className="font-bold text-teal-900">
-                                    {pick('Atau Scan QRIS Manual Toko', 'Or Scan Store Static QRIS')} ({store?.name}):
+                                    {pick('Scan QRIS Toko', 'Scan Store QRIS')} ({store?.name}):
                                 </p>
-                                {store?.qris_image ? (
-                                    <img src={`/storage/${store.qris_image}`} alt="QRIS Toko" className="w-48 h-48 mx-auto object-contain border rounded-xl bg-white p-2" />
-                                ) : (
-                                    <div className="w-44 h-44 bg-white border border-teal-200 rounded-xl mx-auto flex items-center justify-center text-teal-600 font-bold">
-                                        {pick('[QRIS TOKO STATIS]', '[STATIC STORE QRIS]')}
-                                    </div>
-                                )}
+                                <img src={`/storage/${store.qris_image}`} alt="QRIS Toko" className="w-48 h-48 mx-auto object-contain border rounded-xl bg-white p-2" />
                                 <p className="text-[11px] text-slate-500">
                                     {pick(
-                                        'Scan melalui GoPay, OVO, Dana, ShopeePay, atau BCA Mobile',
-                                        'Scan via GoPay, OVO, Dana, ShopeePay, or any Indonesian mobile banking app'
+                                        'Scan melalui GoPay, OVO, Dana, ShopeePay, atau BCA Mobile, lalu unggah bukti pembayaran di bawah.',
+                                        'Scan via GoPay, OVO, Dana, ShopeePay, or any mobile banking app, then upload proof below.'
                                     )}
                                 </p>
                             </div>
                         )}
 
                         {/* Upload Proof Form (for manual transfer & manual qris) */}
-                        {order.payment_method !== 'cod' && (
+                        {showManualProofUpload && (
                             <form onSubmit={handleUploadProof} className="pt-4 border-t border-slate-100 space-y-4">
                                 <div className="space-y-1">
                                     <label className="block text-xs font-bold text-slate-700 uppercase">
                                         {pick(
-                                            'Unggah Foto Bukti Transfer Manual (Opsional jika bayar via transfer manual)',
-                                            'Upload Manual Transfer Receipt (Optional if paying by manual transfer)'
+                                            'Unggah Foto Bukti Pembayaran / Transfer',
+                                            'Upload Payment / Transfer Receipt'
                                         )}
                                     </label>
                                     <p className="text-[11px] text-slate-400">
                                         {pick(
-                                            'Format JPEG, PNG, JPG maksimal 3MB. Jika bayar via tombol Midtrans di atas, Anda tidak perlu mengunggah bukti.',
-                                            'JPEG, PNG, JPG up to 3MB. If you paid using Midtrans above, no receipt upload is required.'
+                                            'Format JPEG, PNG, JPG maksimal 3MB agar penjual dapat memverifikasi pembayaran Anda.',
+                                            'JPEG, PNG, JPG up to 3MB so the seller can verify your payment.'
                                         )}
                                     </p>
                                 </div>
