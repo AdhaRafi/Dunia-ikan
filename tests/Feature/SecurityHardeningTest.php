@@ -416,4 +416,41 @@ class SecurityHardeningTest extends TestCase
                 && data_get($request->data(), 'generationConfig.thinkingConfig.thinkingLevel') === 'low';
         });
     }
+
+    public function test_chatbot_strips_raw_markdown_asterisks_from_assistant_replies(): void
+    {
+        config([
+            'services.gemini.api_key' => 'AIzaTestGeminiKey',
+            'services.gemini.model' => 'gemini-3.5-flash-lite',
+        ]);
+
+        Http::preventStrayRequests();
+        Http::fake([
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent' => Http::response([
+                'candidates' => [[
+                    'content' => [
+                        'parts' => [[
+                            'text' => "### Rekomendasi Kiko\nTema **akuarium dan ikan hias** seru sekali!\n* Katalog air tawar\n* Tips harian untuk *Captain*\n---\nTank ukuran 10 * 5 liter cocok.",
+                        ]],
+                    ],
+                ]],
+            ], 200),
+        ]);
+
+        $response = $this->postJson('/chatbot/message', [
+            'message' => 'Kasih ide toko ikan hias',
+        ]);
+
+        $reply = (string) $response->json('assistant_message.message');
+
+        $response->assertStatus(200);
+        $this->assertStringNotContainsString('**', $reply);
+        $this->assertStringNotContainsString('###', $reply);
+        $this->assertStringNotContainsString('*Captain*', $reply);
+        $this->assertStringContainsString('Rekomendasi Kiko', $reply);
+        $this->assertStringContainsString('akuarium dan ikan hias', $reply);
+        $this->assertStringContainsString('• Katalog air tawar', $reply);
+        $this->assertStringContainsString('Captain', $reply);
+        $this->assertStringContainsString('10 * 5 liter', $reply);
+    }
 }

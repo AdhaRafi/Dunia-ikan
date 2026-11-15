@@ -164,7 +164,7 @@ Pedoman Penting:
 1. Konsultasi kesehatan ikan: Jawaban hanya berisi kemungkinan awal dan hal yang perlu diperiksa (kualitas air, suhu, pH, aerasi). BUKAN diagnosis pasti dokter hewan. Jangan meresepkan obat kimia keras atau dosis berbahaya. Untuk gejala berat atau ikan lemas parah, sarankan bantuan ahli kesehatan hewan.
 2. Gunakan informasi panduan resmi database berikut jika relevan:
 {$guidesContext}
-3. Gaya bahasa: Ramah, bersahabat, profesional, solutif, mudah dipahami pemula. Jawab dalam Bahasa Indonesia yang baik.";
+3. Gaya bahasa & format: Ramah, bersahabat, profesional, solutif, mudah dipahami pemula dalam Bahasa Indonesia yang baik. Tulis teks polos yang bersih tanpa markup Markdown seperti tanda bintang (** atau *), pagar (#), garis ---, atau backtick (`); gunakan daftar angka (1., 2.) atau simbol peluru (•) saja.";
 
                 $parts = [
                     ['text' => $systemPrompt."\n\nPertanyaan Pembeli:\n".$userMessage],
@@ -225,17 +225,19 @@ Pedoman Penting:
                 $guideTitles = $matchingGuides->pluck('title')->implode(', ');
                 $assistantReply = "Halo! Aku Kiko dari Dunia Ikan 🐟. Layanan AI eksternal saat ini sedang offline atau belum dikonfigurasi API key-nya. Namun jangan khawatir, kami menemukan panduan resmi dari basis data Dunia Ikan yang relevan dengan pertanyaan Anda:\n\n";
                 foreach ($matchingGuides as $idx => $g) {
-                    $assistantReply .= ($idx + 1).". **{$g->title}** ({$g->fish_type})\n";
+                    $assistantReply .= ($idx + 1).". {$g->title} ({$g->fish_type})\n";
                     $assistantReply .= "• Gejala: {$g->symptoms}\n";
                     $assistantReply .= "• Penanganan awal: {$g->care_instructions}\n\n";
                 }
-                $assistantReply .= '*(Catatan: Ini adalah pertolongan pertama, pastikan segera cek parameter air seperti suhu dan amonia).*';
+                $assistantReply .= '(Catatan: Ini adalah pertolongan pertama, pastikan segera cek parameter air seperti suhu dan amonia).';
             } elseif ($matchingProducts->isNotEmpty()) {
                 $assistantReply = 'Halo! Aku Kiko 🐟. Berikut beberapa rekomendasi produk ikan hias dan perlengkapan aktif yang tersedia di katalog Dunia Ikan sesuai kata kunci Anda:';
             } else {
                 $assistantReply = "Halo! Aku Kiko 🐟, maskot & asisten virtual resmi Dunia Ikan. Layanan Gemini AI sedang offline, silakan jelaskan jenis ikan Anda dan gejala yang terlihat (misal: 'cupang bintik putih' atau 'ikan lemas mengambang') agar aku bisa mencocokkan panduan perawatan yang tersedia di database.";
             }
         }
+
+        $assistantReply = $this->stripMarkdown((string) $assistantReply);
 
         $recommendedProductsData = $matchingProducts->map(function ($p) {
             return [
@@ -330,5 +332,31 @@ Pedoman Penting:
         $request->session()->put('chat_session_token', $token);
 
         return $token;
+    }
+
+    /**
+     * Strip raw Markdown syntax so assistant replies render cleanly without stray asterisks.
+     */
+    private function stripMarkdown(string $text): string
+    {
+        $lines = preg_split("/\r\n|\n|\r/", $text) ?: [$text];
+        $cleaned = array_map(static function (string $line): string {
+            if (preg_match('/^\s*[-*_]{3,}\s*$/', $line) === 1) {
+                return '';
+            }
+
+            $line = preg_replace('/^\s*#{1,6}\s*/', '', $line) ?? $line;
+            $line = preg_replace('/^\s*[\*\-]\s+/', '• ', $line) ?? $line;
+
+            return $line;
+        }, $lines);
+
+        $result = implode("\n", $cleaned);
+        $result = preg_replace('/\*\*(.+?)\*\*/s', '$1', $result) ?? $result;
+        $result = preg_replace('/\*([^\s*](?:[^*]*[^\s*])?)\*/', '$1', $result) ?? $result;
+        $result = str_replace(['**', '`'], '', $result);
+        $result = preg_replace("/\n{3,}/", "\n\n", $result) ?? $result;
+
+        return trim($result);
     }
 }

@@ -11,6 +11,73 @@ import {
 import axios from 'axios';
 import { useLanguage } from '@/lib/i18n';
 
+function formatInlineMarkdown(line) {
+    const cleaned = line.replace(/`/g, '');
+    const parts = [];
+    const pattern = /\*\*(.+?)\*\*|\*([^\s*](?:[^*]*[^\s*])?)\*/g;
+    let lastIndex = 0;
+    let match;
+
+    while ((match = pattern.exec(cleaned)) !== null) {
+        if (match.index > lastIndex) {
+            parts.push(cleaned.slice(lastIndex, match.index).replaceAll('**', ''));
+        }
+        if (match[1] !== undefined) {
+            parts.push(<strong key={match.index}>{match[1]}</strong>);
+        } else if (match[2] !== undefined) {
+            parts.push(<em key={match.index}>{match[2]}</em>);
+        }
+        lastIndex = pattern.lastIndex;
+    }
+
+    if (lastIndex < cleaned.length) {
+        parts.push(cleaned.slice(lastIndex).replaceAll('**', ''));
+    }
+
+    return parts.length > 0 ? parts : '';
+}
+
+function renderAssistantMessage(text) {
+    const lines = String(text ?? '').split(/\r?\n/);
+
+    return (
+        <div className="space-y-1.5">
+            {lines.map((rawLine, idx) => {
+                if (/^\s*[-*_]{3,}\s*$/.test(rawLine)) {
+                    return (
+                        <div
+                            key={idx}
+                            className="my-1 border-t border-slate-200/80 dark:border-neutral-700/60"
+                        />
+                    );
+                }
+
+                if (!rawLine.trim()) {
+                    return <div key={idx} className="h-1" />;
+                }
+
+                const isHeading = /^\s*#{1,6}\s+/.test(rawLine);
+                const normalized = rawLine
+                    .replace(/^\s*#{1,6}\s+/, '')
+                    .replace(/^\s*[\*\-]\s+/, '• ');
+
+                return (
+                    <div
+                        key={idx}
+                        className={
+                            isHeading
+                                ? 'font-bold text-[#001454] dark:text-cyan-300 pt-0.5'
+                                : undefined
+                        }
+                    >
+                        {formatInlineMarkdown(normalized)}
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
+
 export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
     const { pick } = useLanguage();
     const [messages, setMessages] = useState([]);
@@ -276,9 +343,13 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                             </div>
                                         )}
 
-                                        <div className="whitespace-pre-wrap">
-                                            {msg.message}
-                                        </div>
+                                        {isUser ? (
+                                            <div className="whitespace-pre-wrap">
+                                                {msg.message}
+                                            </div>
+                                        ) : (
+                                            renderAssistantMessage(msg.message)
+                                        )}
 
                                         {msg.fish_guides &&
                                             msg.fish_guides.length > 0 && (
