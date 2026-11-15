@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import BrandWordmark from '@/Components/BrandWordmark';
 import UserAvatar from '@/Components/UserAvatar';
+import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
 
 function NavRow({ item, collapsed = false, onNavigate }) {
     const Icon = item.icon;
@@ -99,6 +100,7 @@ export default function Sidebar({
     onToggleDarkMode,
 }) {
     const { url, props } = usePage();
+    const { pick } = useLanguage();
     const user = props?.auth?.user;
 
     const [isHovered, setIsHovered] = useState(false);
@@ -125,37 +127,37 @@ export default function Sidebar({
 
     const primaryItems = [
         {
-            label: 'Beranda',
+            label: pick('Beranda', 'Home'),
             href: '/',
             icon: Home,
             active: pathname === '/',
         },
         {
-            label: 'Katalog',
+            label: pick('Katalog', 'Catalog'),
             href: '/products',
             icon: LayoutGrid,
             active: pathname.startsWith('/products') && !waterType,
         },
         {
-            label: 'Air Tawar',
+            label: pick('Air Tawar', 'Freshwater'),
             href: '/products?water_type=freshwater',
             icon: Fish,
             active: pathname.startsWith('/products') && waterType === 'freshwater',
         },
         {
-            label: 'Air Laut',
+            label: pick('Air Laut', 'Saltwater'),
             href: '/products?water_type=saltwater',
             icon: Waves,
             active: pathname.startsWith('/products') && waterType === 'saltwater',
         },
         {
-            label: 'Panduan',
+            label: pick('Panduan', 'Care Guides'),
             href: '/guides',
             icon: BookOpen,
             active: pathname.startsWith('/guides'),
         },
         {
-            label: 'Pesanan',
+            label: pick('Pesanan', 'Orders'),
             href: '/orders',
             icon: ShoppingBag,
             active: pathname.startsWith('/orders'),
@@ -164,7 +166,7 @@ export default function Sidebar({
 
     const utilityItems = [
         {
-            label: 'Tanya Kiko',
+            label: pick('Tanya Kiko', 'Ask Kiko'),
             icon: MessageSquare,
             onClick: () => onOpenChat?.(),
             active: false,
@@ -172,7 +174,7 @@ export default function Sidebar({
         ...(user?.role === 'seller'
             ? [
                   {
-                      label: 'Toko Saya',
+                      label: pick('Toko Saya', 'My Store'),
                       href: '/seller/products',
                       icon: Store,
                       active: pathname.startsWith('/seller'),
@@ -184,10 +186,10 @@ export default function Sidebar({
                   {
                       label:
                           user?.seller_status === 'pending'
-                              ? 'Menunggu Acc Toko'
+                              ? pick('Menunggu Acc Toko', 'Store Pending')
                               : user?.seller_status === 'rejected'
-                                ? 'Pengajuan Ditolak'
-                                : 'Buka Toko',
+                                ? pick('Pengajuan Ditolak', 'Application Rejected')
+                                : pick('Buka Toko', 'Open Store'),
                       href: '/seller/register',
                       icon: Store,
                       active: pathname.startsWith('/seller/register'),
@@ -197,13 +199,13 @@ export default function Sidebar({
         ...(user
             ? [
                   {
-                      label: 'Pengaturan',
+                      label: pick('Pengaturan', 'Settings'),
                       href: '/profile',
                       icon: Settings,
                       active: pathname.startsWith('/profile'),
                   },
                   {
-                      label: 'Keluar',
+                      label: pick('Keluar', 'Sign Out'),
                       href: '/logout',
                       method: 'post',
                       as: 'button',
@@ -213,13 +215,13 @@ export default function Sidebar({
               ]
             : [
                   {
-                      label: 'Masuk',
+                      label: pick('Masuk', 'Sign In'),
                       href: '/login',
                       icon: LogIn,
                       active: pathname.startsWith('/login'),
                   },
                   {
-                      label: 'Daftar',
+                      label: pick('Daftar', 'Sign Up'),
                       href: '/register',
                       icon: UserPlus,
                       active: pathname.startsWith('/register'),
@@ -245,7 +247,7 @@ export default function Sidebar({
                             type="button"
                             onClick={onClose}
                             className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#001454] dark:hover:text-white flex items-center justify-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
-                            aria-label="Tutup menu"
+                            aria-label={pick('Tutup menu', 'Close menu')}
                         >
                             <X className="w-3.5 h-3.5" />
                         </button>
@@ -254,7 +256,7 @@ export default function Sidebar({
 
                 {/* Navigation Groups */}
                 <nav
-                    aria-label="Navigasi utama"
+                    aria-label={pick('Navigasi utama', 'Main navigation')}
                     className={`${isMobile ? 'mt-1' : 'pt-4'} flex-1 ${isMobile || !collapsed ? 'overflow-y-auto' : 'overflow-visible'}`}
                 >
                     <div className="space-y-0.5">
@@ -320,12 +322,25 @@ export default function Sidebar({
                     </Link>
                 )}
 
+                {!collapsed && (
+                    <div className="flex items-center justify-between px-6 py-1">
+                        <span className="text-[12px] font-medium text-slate-500 dark:text-slate-400">
+                            {pick('Bahasa', 'Language')}
+                        </span>
+                        <LanguageSwitcher />
+                    </div>
+                )}
+
                 <button
                     type="button"
                     role="switch"
                     aria-checked={darkMode}
                     onClick={() => onToggleDarkMode?.()}
-                    aria-label={darkMode ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'}
+                    aria-label={
+                        darkMode
+                            ? pick('Aktifkan mode terang', 'Enable light mode')
+                            : pick('Aktifkan mode gelap', 'Enable dark mode')
+                    }
                     className={`relative group/theme w-full flex items-center py-1.5 text-[13px] font-medium text-slate-500 hover:text-[#001454] dark:text-slate-400 dark:hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0267C1] ${
                         collapsed ? 'justify-center' : 'gap-3 px-6'
                     }`}
@@ -344,7 +359,9 @@ export default function Sidebar({
 
                     {!collapsed && (
                         <span className="truncate">
-                            {darkMode ? 'Mode Terang' : 'Mode Gelap'}
+                            {darkMode
+                                ? pick('Mode Terang', 'Light Mode')
+                                : pick('Mode Gelap', 'Dark Mode')}
                         </span>
                     )}
 
@@ -353,7 +370,9 @@ export default function Sidebar({
                             role="tooltip"
                             className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-3 z-50 whitespace-nowrap rounded-lg bg-[#1e2433] dark:bg-slate-800 px-3 py-1.5 text-xs font-medium text-white shadow-lg opacity-0 group-hover/theme:opacity-100 group-focus-within/theme:opacity-100 transition-opacity duration-150 before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-4 before:border-transparent before:border-r-[#1e2433] dark:before:border-r-slate-800"
                         >
-                            {darkMode ? 'Mode Terang' : 'Mode Gelap'}
+                            {darkMode
+                                ? pick('Mode Terang', 'Light Mode')
+                                : pick('Mode Gelap', 'Dark Mode')}
                         </span>
                     )}
                 </button>

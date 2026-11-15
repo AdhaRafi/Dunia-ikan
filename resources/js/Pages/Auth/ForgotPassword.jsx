@@ -2,9 +2,11 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
+import { useLanguage } from '@/lib/i18n';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function ForgotPassword({ status }) {
+    const { pick } = useLanguage();
     const { data, setData, post, processing, errors } = useForm({
         email: '',
     });
@@ -17,16 +19,22 @@ export default function ForgotPassword({ status }) {
 
     return (
         <GuestLayout
-            eyebrow="Pemulihan akses akun"
-            headline="Dapatkan tautan aman untuk mengatur ulang kata sandi akun Anda."
+            eyebrow={pick('Pemulihan akses akun', 'Account recovery')}
+            headline={pick(
+                'Dapatkan tautan aman untuk mengatur ulang kata sandi akun Anda.',
+                'Get a secure link to reset your account password.'
+            )}
         >
-            <Head title="Lupa password — Dunia Ikan" />
+            <Head title={pick('Lupa password — Dunia Ikan', 'Forgot Password — Dunia Ikan')} />
 
             <h1 className="text-[24px] sm:text-[26px] font-bold tracking-[-0.025em] text-slate-900 dark:text-white">
-                Lupa kata sandi
+                {pick('Lupa kata sandi', 'Forgot password')}
             </h1>
             <p className="mt-1.5 text-[13px] leading-relaxed text-slate-500 dark:text-slate-400">
-                Masukkan email akun Anda. Kami akan mengirimkan tautan untuk membuat kata sandi baru.
+                {pick(
+                    'Masukkan email akun Anda. Kami akan mengirimkan tautan untuk membuat kata sandi baru.',
+                    'Enter your account email and we will send you a link to set a new password.'
+                )}
             </p>
 
             {status && (
@@ -44,7 +52,7 @@ export default function ForgotPassword({ status }) {
                         name="email"
                         value={data.email}
                         className="mt-1.5"
-                        placeholder="nama@email.com"
+                        placeholder={pick('nama@email.com', 'name@email.com')}
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
                         required
@@ -57,17 +65,17 @@ export default function ForgotPassword({ status }) {
                     disabled={processing}
                     className={authPrimaryButtonClass}
                 >
-                    {processing ? 'Mengirim...' : 'Kirim Tautan Pemulihan'}
+                    {processing ? pick('Mengirim...', 'Sending...') : pick('Kirim Tautan Pemulihan', 'Send Reset Link')}
                 </button>
             </form>
 
             <p className="mt-5 text-center text-[13px] text-slate-500 dark:text-slate-400">
-                Ingat kata sandi Anda?{' '}
+                {pick('Ingat kata sandi Anda?', 'Remember your password?')}{' '}
                 <Link
                     href="/login"
                     className="font-semibold text-[#2448f5] dark:text-sky-400 hover:underline"
                 >
-                    Masuk
+                    {pick('Masuk', 'Sign in')}
                 </Link>
             </p>
         </GuestLayout>

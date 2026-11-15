@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import { MapPin, Plus, Trash2, Edit3, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
 
 export default function Index({ addresses }) {
+    const { pick } = useLanguage();
     const [editingAddress, setEditingAddress] = useState(null);
     const [showForm, setShowForm] = useState(false);
 
@@ -51,7 +53,7 @@ export default function Index({ addresses }) {
     };
 
     const handleDelete = (id) => {
-        if (confirm('Hapus alamat pengiriman ini?')) {
+        if (confirm(pick('Hapus alamat pengiriman ini?', 'Delete this shipping address?'))) {
             router.delete(`/addresses/${id}`);
         }
     };
@@ -62,16 +64,19 @@ export default function Index({ addresses }) {
 
     return (
         <AppLayout>
-            <Head title="Buku Alamat Pengiriman - Dunia Ikan" />
+            <Head title={pick('Buku Alamat Pengiriman - Dunia Ikan', 'Address Book — Dunia Ikan')} />
 
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl sm:text-3xl font-extrabold text-dunia-navy tracking-tight">
-                            Buku Alamat Pengiriman
+                            {pick('Buku Alamat Pengiriman', 'Shipping Address Book')}
                         </h1>
                         <p className="text-xs text-slate-500 mt-1">
-                            Kelola alamat pengiriman ikan hidup ke rumah atau kantor Anda.
+                            {pick(
+                                'Kelola alamat pengiriman ikan hidup ke rumah atau kantor Anda.',
+                                'Manage live fish delivery addresses for your home or office.'
+                            )}
                         </p>
                     </div>
 
@@ -82,7 +87,7 @@ export default function Index({ addresses }) {
                             className="px-4 py-2.5 rounded-xl bg-[#0684E5] hover:bg-[#006783] text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-md shadow-blue-500/20"
                         >
                             <Plus className="w-4 h-4" />
-                            Tambah Alamat Baru
+                            {pick('Tambah Alamat Baru', 'Add New Address')}
                         </button>
                     )}
                 </div>
@@ -92,21 +97,25 @@ export default function Index({ addresses }) {
                     <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-md space-y-4 animate-in fade-in">
                         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                             <h2 className="font-bold text-sm text-dunia-navy">
-                                {editingAddress ? 'Edit Alamat Pengiriman' : 'Tambah Alamat Pengiriman Baru'}
+                                {editingAddress
+                                    ? pick('Edit Alamat Pengiriman', 'Edit Shipping Address')
+                                    : pick('Tambah Alamat Pengiriman Baru', 'Add New Shipping Address')}
                             </h2>
                             <button
                                 type="button"
                                 onClick={() => setShowForm(false)}
                                 className="text-xs text-slate-400 hover:text-slate-600"
                             >
-                                Batal
+                                {pick('Batal', 'Cancel')}
                             </button>
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Nama Penerima</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        {pick('Nama Penerima', 'Recipient Name')}
+                                    </label>
                                     <input
                                         type="text"
                                         value={data.recipient_name}
@@ -118,7 +127,9 @@ export default function Index({ addresses }) {
                                 </div>
 
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Nomor Telepon / WhatsApp</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        {pick('Nomor Telepon / WhatsApp', 'Phone / WhatsApp')}
+                                    </label>
                                     <input
                                         type="text"
                                         value={data.phone}
@@ -132,7 +143,9 @@ export default function Index({ addresses }) {
 
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Kota / Kabupaten</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        {pick('Kota / Kabupaten', 'City / Regency')}
+                                    </label>
                                     <input
                                         type="text"
                                         value={data.city}
@@ -144,7 +157,9 @@ export default function Index({ addresses }) {
                                 </div>
 
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Provinsi</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        {pick('Provinsi', 'Province')}
+                                    </label>
                                     <input
                                         type="text"
                                         value={data.province}
@@ -155,7 +170,9 @@ export default function Index({ addresses }) {
                                 </div>
 
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Kode Pos</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        {pick('Kode Pos', 'Postal Code')}
+                                    </label>
                                     <input
                                         type="text"
                                         value={data.postal_code}
@@ -167,7 +184,9 @@ export default function Index({ addresses }) {
                             </div>
 
                             <div>
-                                <label className="block font-bold text-slate-700 uppercase mb-1">Alamat Lengkap (Jalan, No. Rumah, RT/RW, Patokan)</label>
+                                <label className="block font-bold text-slate-700 uppercase mb-1">
+                                    {pick('Alamat Lengkap (Jalan, No. Rumah, RT/RW, Patokan)', 'Full Address (Street, House No., Landmark)')}
+                                </label>
                                 <textarea
                                     rows={3}
                                     value={data.full_address}
@@ -185,7 +204,9 @@ export default function Index({ addresses }) {
                                     onChange={(e) => setData('is_primary', e.target.checked)}
                                     className="rounded-sm text-dunia-blue focus:ring-dunia-aqua"
                                 />
-                                <span className="font-semibold text-slate-700">Jadikan alamat pengiriman utama</span>
+                                <span className="font-semibold text-slate-700">
+                                    {pick('Jadikan alamat pengiriman utama', 'Set as primary shipping address')}
+                                </span>
                             </label>
 
                             <div className="pt-2 flex justify-end gap-2">
@@ -194,14 +215,16 @@ export default function Index({ addresses }) {
                                     onClick={() => setShowForm(false)}
                                     className="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200"
                                 >
-                                    Batal
+                                    {pick('Batal', 'Cancel')}
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={processing}
                                     className="px-5 py-2 rounded-xl bg-[#0684E5] hover:bg-[#006783] text-white font-bold transition cursor-pointer shadow-md shadow-blue-500/20"
                                 >
-                                    {processing ? 'Menyimpan...' : 'Simpan Alamat'}
+                                    {processing
+                                        ? pick('Menyimpan...', 'Saving...')
+                                        : pick('Simpan Alamat', 'Save Address')}
                                 </button>
                             </div>
                         </form>
@@ -223,7 +246,7 @@ export default function Index({ addresses }) {
                                     <span className="text-slate-500 font-medium">({addr.phone})</span>
                                     {addr.is_primary && (
                                         <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-dunia-blue font-bold text-[10px]">
-                                            Alamat Utama
+                                            {pick('Alamat Utama', 'Primary Address')}
                                         </span>
                                     )}
                                 </div>
@@ -242,14 +265,14 @@ export default function Index({ addresses }) {
                                         onClick={() => handleSetPrimary(addr.id)}
                                         className="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-sky-50 text-slate-700 font-semibold"
                                     >
-                                        Set Utama
+                                        {pick('Set Utama', 'Set Primary')}
                                     </button>
                                 )}
                                 <button
                                     type="button"
                                     onClick={() => openEdit(addr)}
                                     className="p-2 text-slate-500 hover:text-dunia-blue rounded-lg hover:bg-sky-50"
-                                    title="Edit"
+                                    title={pick('Edit', 'Edit')}
                                 >
                                     <Edit3 className="w-4 h-4" />
                                 </button>
@@ -257,7 +280,7 @@ export default function Index({ addresses }) {
                                     type="button"
                                     onClick={() => handleDelete(addr.id)}
                                     className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50"
-                                    title="Hapus"
+                                    title={pick('Hapus', 'Delete')}
                                 >
                                     <Trash2 className="w-4 h-4" />
                                 </button>

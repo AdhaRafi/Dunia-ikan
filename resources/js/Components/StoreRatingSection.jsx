@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import UserAvatar from '@/Components/UserAvatar';
+import { useLanguage } from '@/lib/i18n';
 
 const RATING_LABELS = {
-    1: 'Kurang',
-    2: 'Cukup',
-    3: 'Baik',
-    4: 'Sangat baik',
-    5: 'Sempurna',
+    1: { id: 'Kurang', en: 'Poor' },
+    2: { id: 'Cukup', en: 'Fair' },
+    3: { id: 'Baik', en: 'Good' },
+    4: { id: 'Sangat baik', en: 'Very good' },
+    5: { id: 'Sempurna', en: 'Excellent' },
 };
 
 /**
@@ -16,6 +17,7 @@ const RATING_LABELS = {
  */
 export default function StoreRatingSection({ store, storeRating }) {
     const { auth } = usePage().props;
+    const { pick } = useLanguage();
     const summary = storeRating || {
         average: 0,
         count: 0,
@@ -69,10 +71,10 @@ export default function StoreRatingSection({ store, storeRating }) {
             <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
                     <h2 className="text-xl sm:text-2xl font-bold tracking-[-0.02em] text-slate-900 dark:text-white">
-                        Rating &amp; Ulasan Toko
+                        {pick('Rating & Ulasan Toko', 'Store Ratings & Reviews')}
                     </h2>
                     <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                        Penilaian pembeli untuk{' '}
+                        {pick('Penilaian pembeli untuk', 'Buyer reviews for')}{' '}
                         <Link
                             href={`/stores/${store.slug}`}
                             className="font-semibold text-[#0267C1] dark:text-sky-400 hover:underline"
@@ -88,7 +90,9 @@ export default function StoreRatingSection({ store, storeRating }) {
                         onClick={() => setShowAllReviews((prev) => !prev)}
                         className="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white underline underline-offset-4"
                     >
-                        {showAllReviews ? 'Tampilkan ringkas' : `Lihat semua (${reviews.length})`}
+                        {showAllReviews
+                            ? pick('Tampilkan ringkas', 'Show compact')
+                            : pick(`Lihat semua (${reviews.length})`, `View all (${reviews.length})`)}
                     </button>
                 )}
             </div>
@@ -106,7 +110,7 @@ export default function StoreRatingSection({ store, storeRating }) {
                             </span>
                         </div>
                         <p className="mt-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
-                            ({summary.count} Ulasan Toko)
+                            ({summary.count} {pick('Ulasan Toko', 'Store Reviews')})
                         </p>
                     </div>
 
@@ -144,7 +148,10 @@ export default function StoreRatingSection({ store, storeRating }) {
                 <div className="lg:col-span-7 space-y-4">
                     {reviews.length === 0 ? (
                         <div className="rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-neutral-800 p-5 sm:p-6 text-sm text-slate-500 dark:text-slate-400">
-                            Belum ada ulasan untuk toko ini. Jadilah pembeli pertama yang memberikan rating toko.
+                            {pick(
+                                'Belum ada ulasan untuk toko ini. Jadilah pembeli pertama yang memberikan rating toko.',
+                                'No reviews for this store yet. Be the first buyer to rate this store.',
+                            )}
                         </div>
                     ) : showAllReviews ? (
                         <div className="space-y-3">
@@ -165,7 +172,7 @@ export default function StoreRatingSection({ store, storeRating }) {
                                                     key={rev.id}
                                                     type="button"
                                                     onClick={() => setActiveIndex(idx)}
-                                                    aria-label={`Ulasan ke-${idx + 1}`}
+                                                    aria-label={pick(`Ulasan ke-${idx + 1}`, `Review #${idx + 1}`)}
                                                     className={`h-1.5 rounded-full transition-all ${
                                                         idx === activeIndex
                                                             ? 'flex-[2] bg-slate-900 dark:bg-white'
@@ -184,7 +191,7 @@ export default function StoreRatingSection({ store, storeRating }) {
                                                             reviews.length,
                                                     )
                                                 }
-                                                aria-label="Ulasan sebelumnya"
+                                                aria-label={pick('Ulasan sebelumnya', 'Previous review')}
                                                 className="w-7 h-7 rounded-full border border-slate-200 dark:border-neutral-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
                                             >
                                                 <ChevronLeft className="w-3.5 h-3.5" />
@@ -194,7 +201,7 @@ export default function StoreRatingSection({ store, storeRating }) {
                                                 onClick={() =>
                                                     setActiveIndex((activeIndex + 1) % reviews.length)
                                                 }
-                                                aria-label="Ulasan berikutnya"
+                                                aria-label={pick('Ulasan berikutnya', 'Next review')}
                                                 className="w-7 h-7 rounded-full border border-slate-200 dark:border-neutral-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
                                             >
                                                 <ChevronRight className="w-3.5 h-3.5" />
@@ -215,15 +222,15 @@ export default function StoreRatingSection({ store, storeRating }) {
                             <div className="flex flex-wrap items-center justify-between gap-2">
                                 <p className="text-sm font-semibold text-slate-900 dark:text-white">
                                     {summary.userReview
-                                        ? 'Perbarui Rating Anda untuk Toko Ini'
-                                        : 'Beri Rating untuk Toko Ini'}
+                                        ? pick('Perbarui Rating Anda untuk Toko Ini', 'Update Your Rating for This Store')
+                                        : pick('Beri Rating untuk Toko Ini', 'Rate This Store')}
                                 </p>
                                 <span className="text-xs font-medium text-amber-600 dark:text-amber-400">
-                                    {displayRating}/5 · {RATING_LABELS[displayRating]}
+                                    {displayRating}/5 · {pick(RATING_LABELS[displayRating]?.id, RATING_LABELS[displayRating]?.en)}
                                 </span>
                             </div>
 
-                            <div className="flex items-center gap-1.5" role="radiogroup" aria-label="Pilih bintang rating toko">
+                            <div className="flex items-center gap-1.5" role="radiogroup" aria-label={pick('Pilih bintang rating toko', 'Select store star rating')}>
                                 {[1, 2, 3, 4, 5].map((star) => {
                                     const filled = star <= displayRating;
                                     return (
@@ -233,7 +240,7 @@ export default function StoreRatingSection({ store, storeRating }) {
                                             onClick={() => setData('rating', star)}
                                             onMouseEnter={() => setHoverRating(star)}
                                             onMouseLeave={() => setHoverRating(0)}
-                                            aria-label={`Beri ${star} bintang`}
+                                            aria-label={pick(`Beri ${star} bintang`, `Give ${star} stars`)}
                                             className="p-1 rounded-lg hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
                                         >
                                             <Star
@@ -258,7 +265,10 @@ export default function StoreRatingSection({ store, storeRating }) {
                                     rows={2}
                                     value={data.comment}
                                     onChange={(e) => setData('comment', e.target.value)}
-                                    placeholder="Bagikan pengalaman belanja, kondisi ikan, atau kualitas packing toko..."
+                                    placeholder={pick(
+                                        'Bagikan pengalaman belanja, kondisi ikan, atau kualitas packing toko...',
+                                        'Share your shopping experience, fish health, or store packing quality...',
+                                    )}
                                     className="w-full rounded-xl border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#111a30] px-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0267C1] focus:ring-2 focus:ring-[#0267C1]/20 focus:outline-none"
                                 />
                                 {errors.comment && (
@@ -275,28 +285,32 @@ export default function StoreRatingSection({ store, storeRating }) {
                                     className="h-10 px-5 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-[#0684E5] dark:hover:bg-[#0267C1] text-white text-xs sm:text-sm font-semibold transition disabled:opacity-50"
                                 >
                                     {processing
-                                        ? 'Menyimpan...'
+                                        ? pick('Menyimpan...', 'Saving...')
                                         : summary.userReview
-                                          ? 'Perbarui Rating'
-                                          : 'Kirim Rating Toko'}
+                                          ? pick('Perbarui Rating', 'Update Rating')
+                                          : pick('Kirim Rating Toko', 'Submit Store Rating')}
                                 </button>
                             </div>
                         </form>
                     ) : !auth?.user ? (
                         <div className="rounded-2xl border border-slate-200/80 dark:border-neutral-800 bg-[#f8fafc] dark:bg-[#0b101d] px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
                             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-                                Pernah berbelanja di <span className="font-semibold">{store.name}</span>? Masuk untuk memberi rating toko.
+                                {pick('Pernah berbelanja di', 'Shopped at')} <span className="font-semibold">{store.name}</span>?{' '}
+                                {pick('Masuk untuk memberi rating toko.', 'Sign in to leave a store rating.')}
                             </p>
                             <Link
                                 href="/login"
                                 className="px-4 py-2 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:text-slate-950 text-white text-xs font-semibold transition"
                             >
-                                Masuk
+                                {pick('Masuk', 'Sign In')}
                             </Link>
                         </div>
                     ) : isOwner ? (
                         <p className="text-xs text-slate-400 dark:text-slate-500">
-                            Anda mengelola toko ini, sehingga rating hanya dapat dikirim oleh pembeli.
+                            {pick(
+                                'Anda mengelola toko ini, sehingga rating hanya dapat dikirim oleh pembeli.',
+                                'You manage this store, so ratings can only be submitted by buyers.',
+                            )}
                         </p>
                     ) : null}
                 </div>
@@ -314,6 +328,7 @@ function ReviewCard({ review }) {
 }
 
 function ReviewCardContent({ review }) {
+    const { pick } = useLanguage();
     return (
         <div>
             <div className="flex flex-wrap items-start justify-between gap-3">
@@ -322,16 +337,16 @@ function ReviewCardContent({ review }) {
                     <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
                             <p className="text-sm font-bold text-slate-900 dark:text-white truncate">
-                                {review.user?.name || 'Pembeli'}
+                                {review.user?.name || pick('Pembeli', 'Buyer')}
                             </p>
                             {review.is_verified_buyer && (
                                 <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/70 dark:border-emerald-900 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:text-emerald-300">
                                     <CheckCircle2 className="w-3 h-3" />
-                                    Pembeli Terverifikasi
+                                    {pick('Pembeli Terverifikasi', 'Verified Buyer')}
                                 </span>
                             )}
                         </div>
-                        <div className="mt-1 flex items-center gap-0.5" aria-label={`Rating ${review.rating} dari 5`}>
+                        <div className="mt-1 flex items-center gap-0.5" aria-label={pick(`Rating ${review.rating} dari 5`, `Rating ${review.rating} out of 5`)}>
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <Star
                                     key={star}
@@ -356,7 +371,10 @@ function ReviewCardContent({ review }) {
             <p className="mt-3.5 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
                 {review.comment
                     ? `“${review.comment}”`
-                    : `Memberikan rating ${review.rating}/5 bintang untuk toko ini.`}
+                    : pick(
+                          `Memberikan rating ${review.rating}/5 bintang untuk toko ini.`,
+                          `Rated this store ${review.rating}/5 stars.`,
+                      )}
             </p>
         </div>
     );

@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Link } from '@inertiajs/react';
 import { Check } from 'lucide-react';
 import BrandWordmark from '@/Components/BrandWordmark';
+import { useLanguage } from '@/lib/i18n';
 
 export default function Footer() {
+    const { pick } = useLanguage();
     const [email, setEmail] = useState('');
     const [subscribed, setSubscribed] = useState(false);
 
@@ -27,36 +29,39 @@ export default function Footer() {
                             <BrandWordmark className="h-9 sm:h-10" />
                         </Link>
                         <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-sm leading-relaxed">
-                            Marketplace ikan hias & mutasi genetik (morph) captive-bred pertama di Indonesia dengan garansi ikan hidup 100% sampai tujuan.
+                            {pick(
+                                'Marketplace ikan hias & mutasi genetik (morph) captive-bred pertama di Indonesia dengan garansi ikan hidup 100% sampai tujuan.',
+                                "Indonesia's first marketplace for captive-bred ornamental fish and genetic morphs with a 100% live arrival guarantee.",
+                            )}
                         </p>
                     </div>
 
                     {/* 4 Navigation Columns (Skincare, Newsletter, Connect, Support) */}
                     <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8 text-xs">
-                        {/* Col 1: Koleksi Ikan (Skincare equivalent) */}
+                        {/* Col 1: Koleksi Ikan */}
                         <div className="space-y-3">
                             <h4 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
-                                Koleksi
+                                {pick('Koleksi', 'Collections')}
                             </h4>
                             <ul className="space-y-2 text-neutral-500 dark:text-neutral-400 text-xs">
                                 <li>
                                     <Link href="/products?water_type=freshwater" className="hover:text-black dark:hover:text-white transition">
-                                        Air Tawar
+                                        {pick('Air Tawar', 'Freshwater')}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link href="/products?water_type=saltwater" className="hover:text-black dark:hover:text-white transition">
-                                        Air Laut
+                                        {pick('Air Laut', 'Saltwater')}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link href="/products?category=cupang" className="hover:text-black dark:hover:text-white transition">
-                                        Cupang / Betta
+                                        {pick('Cupang / Betta', 'Betta Fish')}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link href="/products?category=channa" className="hover:text-black dark:hover:text-white transition">
-                                        Channa Predator
+                                        {pick('Channa Predator', 'Channa Snakehead')}
                                     </Link>
                                 </li>
                                 <li>
@@ -75,7 +80,7 @@ export default function Footer() {
                             {subscribed ? (
                                 <div className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium py-2">
                                     <Check className="w-4 h-4" />
-                                    <span>Berhasil terdaftar!</span>
+                                    <span>{pick('Berhasil terdaftar!', 'Subscribed successfully!')}</span>
                                 </div>
                             ) : (
                                 <form onSubmit={handleNewsletterSubmit} className="space-y-2.5">
@@ -84,23 +89,23 @@ export default function Footer() {
                                         required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="Enter Email Address"
+                                        placeholder={pick('Masukkan Alamat Email', 'Enter Email Address')}
                                         className="w-full bg-transparent border-b border-neutral-300 dark:border-neutral-700 py-1.5 text-xs text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition"
                                     />
                                     <button
                                         type="submit"
                                         className="text-xs font-semibold text-neutral-900 dark:text-white hover:opacity-70 transition flex items-center gap-1 cursor-pointer"
                                     >
-                                        <span>Sign Up</span>
+                                        <span>{pick('Daftar', 'Sign Up')}</span>
                                     </button>
                                 </form>
                             )}
                         </div>
 
-                        {/* Col 3: Connect (Social Links) */}
+                        {/* Col 3: Connect */}
                         <div className="space-y-3">
                             <h4 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
-                                Connect
+                                {pick('Terhubung', 'Connect')}
                             </h4>
                             <ul className="space-y-2 text-neutral-500 dark:text-neutral-400 text-xs">
                                 <li>
@@ -129,27 +134,27 @@ export default function Footer() {
                         {/* Col 4: Support */}
                         <div className="space-y-3">
                             <h4 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
-                                Support
+                                {pick('Bantuan', 'Support')}
                             </h4>
                             <ul className="space-y-2 text-neutral-500 dark:text-neutral-400 text-xs">
                                 <li>
                                     <Link href="/guides" className="hover:text-black dark:hover:text-white transition">
-                                        24/7 Support
+                                        {pick('Layanan 24/7', '24/7 Support')}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link href="/guides" className="hover:text-black dark:hover:text-white transition">
-                                        Garansi Ikan Hidup
+                                        {pick('Garansi Ikan Hidup', 'Live Arrival Guarantee')}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link href="/guides" className="hover:text-black dark:hover:text-white transition">
-                                        Terms & Conditions
+                                        {pick('Syarat & Ketentuan', 'Terms & Conditions')}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link href="/guides" className="hover:text-black dark:hover:text-white transition">
-                                        Privacy Policy
+                                        {pick('Kebijakan Privasi', 'Privacy Policy')}
                                     </Link>
                                 </li>
                             </ul>

@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Head, useForm, router } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { BookOpen, Plus, Edit3, Trash2, CheckCircle2, XCircle, X } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
 
 export default function Index({ guides }) {
+    const { pick, trGuideCategory } = useLanguage();
     const [editingGuide, setEditingGuide] = useState(null);
     const [showForm, setShowForm] = useState(false);
 
@@ -59,23 +61,23 @@ export default function Index({ guides }) {
     };
 
     const handleDelete = (id, title) => {
-        if (confirm(`Hapus panduan "${title}"?`)) {
+        if (confirm(pick(`Hapus panduan "${title}"?`, `Delete guide "${title}"?`))) {
             router.delete(`/admin/guides/${id}`);
         }
     };
 
     return (
         <AdminLayout>
-            <Head title="Kelola Panduan Ikan Chatbot - Panel Admin" />
+            <Head title={pick('Kelola Panduan Ikan Chatbot - Panel Admin', 'Manage Chatbot Fish Guides - Admin Panel')} />
 
             <div className="space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-                            Basis Panduan Kesehatan Ikan (Chatbot AI)
+                            {pick('Basis Panduan Kesehatan Ikan (Chatbot AI)', 'Fish Health Guide Knowledge Base (Chatbot AI)')}
                         </h1>
                         <p className="text-xs text-slate-500 mt-1">
-                            Artikel panduan ini diindeks oleh Asisten Virtual Dunia Ikan saat menjawab konsultasi kesehatan pembeli.
+                            {pick('Artikel panduan ini diindeks oleh Asisten Virtual Dunia Ikan saat menjawab konsultasi kesehatan pembeli.', 'These guide articles are indexed by Dunia Ikan Virtual Assistant when answering buyer health consultations.')}
                         </p>
                     </div>
 
@@ -86,7 +88,7 @@ export default function Index({ guides }) {
                             className="px-4 py-2.5 rounded-xl bg-dunia-blue text-white font-bold text-xs hover:bg-sky-600 transition flex items-center gap-1.5 cursor-pointer shadow-xs"
                         >
                             <Plus className="w-4 h-4" />
-                            Tambah Panduan Baru
+                            {pick('Tambah Panduan Baru', 'Add New Guide')}
                         </button>
                     )}
                 </div>
@@ -96,7 +98,7 @@ export default function Index({ guides }) {
                     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-md space-y-4 animate-in fade-in">
                         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                             <h2 className="font-bold text-sm text-slate-900">
-                                {editingGuide ? `Edit Panduan: ${editingGuide.title}` : 'Buat Panduan Kesehatan Ikan Baru'}
+                                {editingGuide ? `${pick('Edit Panduan', 'Edit Guide')}: ${editingGuide.title}` : pick('Buat Panduan Kesehatan Ikan Baru', 'Create New Fish Health Guide')}
                             </h2>
                             <button
                                 type="button"
@@ -110,10 +112,10 @@ export default function Index({ guides }) {
                         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div className="sm:col-span-2">
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Judul Panduan / Penyakit</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">{pick('Judul Panduan / Penyakit', 'Guide / Disease Title')}</label>
                                     <input
                                         type="text"
-                                        placeholder="Contoh: Pencegahan & Pengobatan White Spot (Ich)"
+                                        placeholder={pick('Contoh: Pencegahan & Pengobatan White Spot (Ich)', 'Example: White Spot (Ich) Prevention & Treatment')}
                                         value={data.title}
                                         onChange={(e) => setData('title', e.target.value)}
                                         className="w-full p-2.5 rounded-xl border border-slate-200"
@@ -123,10 +125,10 @@ export default function Index({ guides }) {
                                 </div>
 
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Target Jenis Ikan</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">{pick('Target Jenis Ikan', 'Target Fish Species')}</label>
                                     <input
                                         type="text"
-                                        placeholder="e.g. Ikan Cupang / Semua Air Tawar"
+                                        placeholder={pick('e.g. Ikan Cupang / Semua Air Tawar', 'e.g. Betta Fish / All Freshwater')}
                                         value={data.fish_type}
                                         onChange={(e) => setData('fish_type', e.target.value)}
                                         className="w-full p-2.5 rounded-xl border border-slate-200"
@@ -137,22 +139,22 @@ export default function Index({ guides }) {
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Kategori Masalah</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">{pick('Kategori Masalah', 'Issue Category')}</label>
                                     <select
                                         value={data.category}
                                         onChange={(e) => setData('category', e.target.value)}
                                         className="w-full p-2.5 rounded-xl border border-slate-200"
                                     >
-                                        <option value="Penyakit Parasit">Penyakit Parasit</option>
-                                        <option value="Infeksi Bakteri / Jamur">Infeksi Bakteri / Jamur</option>
-                                        <option value="Kualitas Air & Filter">Kualitas Air & Filter</option>
-                                        <option value="Gangguan Pencernaan & Organ">Gangguan Pencernaan & Organ</option>
-                                        <option value="Perawatan Dasar">Perawatan Dasar</option>
+                                        <option value="Penyakit Parasit">{trGuideCategory('Penyakit Parasit')}</option>
+                                        <option value="Infeksi Bakteri / Jamur">{trGuideCategory('Infeksi Bakteri / Jamur')}</option>
+                                        <option value="Kualitas Air & Filter">{trGuideCategory('Kualitas Air & Filter')}</option>
+                                        <option value="Gangguan Pencernaan & Organ">{trGuideCategory('Gangguan Pencernaan & Organ')}</option>
+                                        <option value="Perawatan Dasar">{trGuideCategory('Perawatan Dasar')}</option>
                                     </select>
                                 </div>
 
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Sumber Referensi / Asosiasi</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">{pick('Sumber Referensi / Asosiasi', 'Reference Source / Association')}</label>
                                     <input
                                         type="text"
                                         value={data.source}
@@ -163,10 +165,10 @@ export default function Index({ guides }) {
                             </div>
 
                             <div>
-                                <label className="block font-bold text-slate-700 uppercase mb-1">Gejala yang Terlihat (Symptoms)</label>
+                                <label className="block font-bold text-slate-700 uppercase mb-1">{pick('Gejala yang Terlihat (Symptoms)', 'Observed Symptoms')}</label>
                                 <textarea
                                     rows={2}
-                                    placeholder="Jelaskan bintik putih, sirip robek, berenang miring, dsb..."
+                                    placeholder={pick('Jelaskan bintik putih, sirip robek, berenang miring, dsb...', 'Describe white spots, torn fins, tilted swimming, etc...')}
                                     value={data.symptoms}
                                     onChange={(e) => setData('symptoms', e.target.value)}
                                     className="w-full p-2.5 rounded-xl border border-slate-200"
@@ -175,10 +177,10 @@ export default function Index({ guides }) {
                             </div>
 
                             <div>
-                                <label className="block font-bold text-slate-700 uppercase mb-1">Kemungkinan Penyebab Utama</label>
+                                <label className="block font-bold text-slate-700 uppercase mb-1">{pick('Kemungkinan Penyebab Utama', 'Likely Root Causes')}</label>
                                 <textarea
                                     rows={2}
-                                    placeholder="Penurunan suhu mendadak, amonia tinggi, pakan membusuk..."
+                                    placeholder={pick('Penurunan suhu mendadak, amonia tinggi, pakan membusuk...', 'Sudden temperature drop, high ammonia, spoiled feed...')}
                                     value={data.possible_causes}
                                     onChange={(e) => setData('possible_causes', e.target.value)}
                                     className="w-full p-2.5 rounded-xl border border-slate-200"
@@ -187,10 +189,10 @@ export default function Index({ guides }) {
                             </div>
 
                             <div>
-                                <label className="block font-bold text-slate-700 uppercase mb-1">Langkah Penanganan / Pertolongan Pertama</label>
+                                <label className="block font-bold text-slate-700 uppercase mb-1">{pick('Langkah Penanganan / Pertolongan Pertama', 'Treatment / First Aid Steps')}</label>
                                 <textarea
                                     rows={3}
-                                    placeholder="Tindakan karantina, suhu heater, takaran garam non-yodium per liter..."
+                                    placeholder={pick('Tindakan karantina, suhu heater, takaran garam non-yodium per liter...', 'Quarantine action, heater temperature, non-iodized salt dosage per liter...')}
                                     value={data.care_instructions}
                                     onChange={(e) => setData('care_instructions', e.target.value)}
                                     className="w-full p-2.5 rounded-xl border border-slate-200"
@@ -199,10 +201,10 @@ export default function Index({ guides }) {
                             </div>
 
                             <div>
-                                <label className="block font-bold text-slate-700 uppercase mb-1">Pencegahan Jangka Panjang</label>
+                                <label className="block font-bold text-slate-700 uppercase mb-1">{pick('Pencegahan Jangka Panjang', 'Long-Term Prevention')}</label>
                                 <textarea
                                     rows={2}
-                                    placeholder="Tips water change rutin, cycling akuarium..."
+                                    placeholder={pick('Tips water change rutin, cycling akuarium...', 'Routine water change tips, aquarium cycling...')}
                                     value={data.prevention}
                                     onChange={(e) => setData('prevention', e.target.value)}
                                     className="w-full p-2.5 rounded-xl border border-slate-200"
@@ -216,7 +218,7 @@ export default function Index({ guides }) {
                                     onChange={(e) => setData('is_active', e.target.checked)}
                                     className="rounded-sm text-dunia-blue"
                                 />
-                                <span className="font-bold text-slate-700">Aktifkan untuk referensi Chatbot & Halaman Publik</span>
+                                <span className="font-bold text-slate-700">{pick('Aktifkan untuk referensi Chatbot & Halaman Publik', 'Enable for Chatbot & Public Pages reference')}</span>
                             </label>
 
                             <div className="flex justify-end gap-2 pt-2">
@@ -225,14 +227,14 @@ export default function Index({ guides }) {
                                     onClick={() => setShowForm(false)}
                                     className="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-bold"
                                 >
-                                    Batal
+                                    {pick('Batal', 'Cancel')}
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={processing}
                                     className="px-5 py-2 rounded-xl bg-dunia-blue text-white font-bold hover:bg-sky-600 cursor-pointer"
                                 >
-                                    {processing ? 'Menyimpan...' : 'Simpan Panduan'}
+                                    {processing ? pick('Menyimpan...', 'Saving...') : pick('Simpan Panduan', 'Save Guide')}
                                 </button>
                             </div>
                         </form>
@@ -244,18 +246,18 @@ export default function Index({ guides }) {
                     <table className="w-full text-left text-xs">
                         <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
                             <tr>
-                                <th className="p-4">Judul Panduan</th>
-                                <th className="p-4">Kategori</th>
-                                <th className="p-4">Jenis Ikan</th>
-                                <th className="p-4">Status</th>
-                                <th className="p-4 text-right">Aksi</th>
+                                <th className="p-4">{pick('Judul Panduan', 'Guide Title')}</th>
+                                <th className="p-4">{pick('Kategori', 'Category')}</th>
+                                <th className="p-4">{pick('Jenis Ikan', 'Fish Species')}</th>
+                                <th className="p-4">{pick('Status', 'Status')}</th>
+                                <th className="p-4 text-right">{pick('Aksi', 'Actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                             {guides?.data?.map((g) => (
                                 <tr key={g.id} className="hover:bg-slate-50/80 transition">
                                     <td className="p-4 font-bold text-slate-900 max-w-xs">{g.title}</td>
-                                    <td className="p-4 font-semibold text-slate-600">{g.category}</td>
+                                    <td className="p-4 font-semibold text-slate-600">{trGuideCategory(g.category)}</td>
                                     <td className="p-4 text-slate-500">{g.fish_type}</td>
                                     <td className="p-4">
                                         <button
@@ -267,7 +269,7 @@ export default function Index({ guides }) {
                                                     : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                                             }`}
                                         >
-                                            {g.is_active ? 'Aktif' : 'Non-aktif'}
+                                            {g.is_active ? pick('Aktif', 'Active') : pick('Non-aktif', 'Inactive')}
                                         </button>
                                     </td>
                                     <td className="p-4 text-right">
@@ -276,7 +278,7 @@ export default function Index({ guides }) {
                                                 type="button"
                                                 onClick={() => openEdit(g)}
                                                 className="p-1.5 text-slate-500 hover:text-dunia-blue rounded-lg hover:bg-sky-50"
-                                                title="Edit"
+                                                title={pick('Edit', 'Edit')}
                                             >
                                                 <Edit3 className="w-4 h-4" />
                                             </button>
@@ -284,7 +286,7 @@ export default function Index({ guides }) {
                                                 type="button"
                                                 onClick={() => handleDelete(g.id, g.title)}
                                                 className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50"
-                                                title="Hapus"
+                                                title={pick('Hapus', 'Delete')}
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </button>

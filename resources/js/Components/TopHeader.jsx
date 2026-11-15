@@ -15,33 +15,37 @@ import {
 } from 'lucide-react';
 import BrandWordmark from '@/Components/BrandWordmark';
 import UserAvatar from '@/Components/UserAvatar';
+import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
 
 const SEARCH_GROUPS = [
     {
-        label: 'Jenis Ikan',
+        labelId: 'Jenis Ikan',
+        labelEn: 'Fish Species',
         items: [
-            { title: 'Cupang', href: '/products?category=ikan-hias&q=cupang' },
-            { title: 'Channa', href: '/products?category=ikan-hias&q=channa' },
-            { title: 'Discus', href: '/products?category=ikan-hias&q=discus' },
-            { title: 'Guppy', href: '/products?category=ikan-hias&q=guppy' },
-            { title: 'Neon Tetra', href: '/products?water_type=freshwater&q=tetra' },
+            { titleId: 'Cupang', titleEn: 'Betta', href: '/products?category=ikan-hias&q=cupang' },
+            { titleId: 'Channa', titleEn: 'Channa', href: '/products?category=ikan-hias&q=channa' },
+            { titleId: 'Discus', titleEn: 'Discus', href: '/products?category=ikan-hias&q=discus' },
+            { titleId: 'Guppy', titleEn: 'Guppy', href: '/products?category=ikan-hias&q=guppy' },
+            { titleId: 'Neon Tetra', titleEn: 'Neon Tetra', href: '/products?water_type=freshwater&q=tetra' },
         ],
     },
     {
-        label: 'Alat & Kebutuhan',
+        labelId: 'Alat & Kebutuhan',
+        labelEn: 'Gear & Supplies',
         items: [
-            { title: 'Filter Aquarium', href: '/products?category=perlengkapan-aquarium&q=filter' },
-            { title: 'Tank Aquarium', href: '/products?category=perlengkapan-aquarium&q=aquarium' },
-            { title: 'Pakan & Pelet', href: '/products?category=pakan-ikan' },
-            { title: 'Perawatan Air', href: '/products?category=perawatan-ikan' },
+            { titleId: 'Filter Aquarium', titleEn: 'Aquarium Filter', href: '/products?category=perlengkapan-aquarium&q=filter' },
+            { titleId: 'Tank Aquarium', titleEn: 'Aquarium Tank', href: '/products?category=perlengkapan-aquarium&q=aquarium' },
+            { titleId: 'Pakan & Pelet', titleEn: 'Food & Pellets', href: '/products?category=pakan-ikan' },
+            { titleId: 'Perawatan Air', titleEn: 'Water Care', href: '/products?category=perawatan-ikan' },
         ],
     },
     {
-        label: 'Tumbuhan & Hiasan',
+        labelId: 'Tumbuhan & Hiasan',
+        labelEn: 'Plants & Decor',
         items: [
-            { title: 'Tanaman Hias', href: '/products?category=aquascape' },
-            { title: 'Anubias', href: '/products?category=aquascape&q=anubias' },
-            { title: 'Bucephalandra', href: '/products?category=aquascape&q=bucephalandra' },
+            { titleId: 'Tanaman Hias', titleEn: 'Aquatic Plants', href: '/products?category=aquascape' },
+            { titleId: 'Anubias', titleEn: 'Anubias', href: '/products?category=aquascape&q=anubias' },
+            { titleId: 'Bucephalandra', titleEn: 'Bucephalandra', href: '/products?category=aquascape&q=bucephalandra' },
         ],
     },
 ];
@@ -53,6 +57,7 @@ export default function TopHeader({
     onToggleDarkMode,
 }) {
     const { auth, cartCount } = usePage().props;
+    const { pick, isEn } = useLanguage();
     const user = auth?.user;
     const [searchQuery, setSearchQuery] = useState('');
     const [searchFocused, setSearchFocused] = useState(false);
@@ -62,45 +67,7 @@ export default function TopHeader({
     const mobileSearchInputRef = useRef(null);
     const [internalDarkMode, setInternalDarkMode] = useState(() => {
         if (typeof window !== 'undefined') {
-            const renderSearchDropdown = (extraClose) => (
-        <div className="space-y-2.5 sm:space-y-3">
-            {searchQuery.trim() && (
-                <button
-                    type="button"
-                    onClick={handleSearchSubmit}
-                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl bg-[#f3f2ff] dark:bg-[#152038] text-xs font-bold text-[#001454] dark:text-white hover:bg-[#4AB8BD]/15 transition text-left"
-                >
-                    <Search className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
-                    <span>Cari &ldquo;{searchQuery.trim()}&rdquo; di seluruh toko</span>
-                </button>
-            )}
-
-            {filteredGroups.map((group) => (
-                <div key={group.label} className="space-y-1.5">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 px-1">
-                        {group.label}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                        {group.items.map((item) => (
-                            <Link
-                                key={item.title}
-                                href={item.href}
-                                onClick={() => {
-                                    setSearchFocused(false);
-                                    extraClose?.();
-                                }}
-                                className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-neutral-800 hover:bg-[#4AB8BD] hover:text-white dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] text-[11px] font-semibold text-[#001454] dark:text-neutral-200 transition"
-                            >
-                                {item.title}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-
-    return (
+            return (
                 document.documentElement.classList.contains('dark') ||
                 localStorage.getItem('theme') === 'dark'
             );
@@ -118,45 +85,7 @@ export default function TopHeader({
             }
         };
         document.addEventListener('mousedown', handleOutsideClick);
-        const renderSearchDropdown = (extraClose) => (
-        <div className="space-y-2.5 sm:space-y-3">
-            {searchQuery.trim() && (
-                <button
-                    type="button"
-                    onClick={handleSearchSubmit}
-                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl bg-[#f3f2ff] dark:bg-[#152038] text-xs font-bold text-[#001454] dark:text-white hover:bg-[#4AB8BD]/15 transition text-left"
-                >
-                    <Search className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
-                    <span>Cari &ldquo;{searchQuery.trim()}&rdquo; di seluruh toko</span>
-                </button>
-            )}
-
-            {filteredGroups.map((group) => (
-                <div key={group.label} className="space-y-1.5">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 px-1">
-                        {group.label}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                        {group.items.map((item) => (
-                            <Link
-                                key={item.title}
-                                href={item.href}
-                                onClick={() => {
-                                    setSearchFocused(false);
-                                    extraClose?.();
-                                }}
-                                className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-neutral-800 hover:bg-[#4AB8BD] hover:text-white dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] text-[11px] font-semibold text-[#001454] dark:text-neutral-200 transition"
-                            >
-                                {item.title}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-
-    return () => document.removeEventListener('mousedown', handleOutsideClick);
+        return () => document.removeEventListener('mousedown', handleOutsideClick);
     }, []);
 
     useEffect(() => {
@@ -192,16 +121,29 @@ export default function TopHeader({
     };
 
     const normalizedSearch = searchQuery.trim().toLowerCase();
-    const filteredGroups = SEARCH_GROUPS.map((group) => ({
-        ...group,
-        items: normalizedSearch
-            ? group.items.filter(
-                  (item) =>
-                      item.title.toLowerCase().includes(normalizedSearch) ||
-                      group.label.toLowerCase().includes(normalizedSearch),
-              )
-            : group.items,
-    })).filter((group) => group.items.length > 0);
+    const filteredGroups = SEARCH_GROUPS.map((group) => {
+        const label = isEn ? group.labelEn : group.labelId;
+        return {
+            label,
+            items: normalizedSearch
+                ? group.items
+                      .map((item) => ({
+                          ...item,
+                          title: isEn ? item.titleEn : item.titleId,
+                      }))
+                      .filter(
+                          (item) =>
+                              item.title.toLowerCase().includes(normalizedSearch) ||
+                              item.titleId.toLowerCase().includes(normalizedSearch) ||
+                              item.titleEn.toLowerCase().includes(normalizedSearch) ||
+                              label.toLowerCase().includes(normalizedSearch),
+                      )
+                : group.items.map((item) => ({
+                      ...item,
+                      title: isEn ? item.titleEn : item.titleId,
+                  })),
+        };
+    }).filter((group) => group.items.length > 0);
 
     const handleToggleMobileSearch = () => {
         setMobileSearchOpen((prev) => {
@@ -225,7 +167,12 @@ export default function TopHeader({
                     className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl bg-[#f3f2ff] dark:bg-[#152038] text-xs font-bold text-[#001454] dark:text-white hover:bg-[#4AB8BD]/15 transition text-left"
                 >
                     <Search className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
-                    <span>Cari &ldquo;{searchQuery.trim()}&rdquo; di seluruh toko</span>
+                    <span>
+                        {pick(
+                            `Cari “${searchQuery.trim()}” di seluruh toko`,
+                            `Search “${searchQuery.trim()}” across stores`,
+                        )}
+                    </span>
                 </button>
             )}
 
@@ -264,7 +211,7 @@ export default function TopHeader({
                         type="button"
                         onClick={onOpenMobileSidebar}
                         className="md:hidden p-2 -ml-1 text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white rounded-xl hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition shrink-0"
-                        aria-label="Buka Menu Navigasi"
+                        aria-label={pick('Buka Menu Navigasi', 'Open Navigation Menu')}
                     >
                         <Menu className="w-5 h-5" />
                     </button>
@@ -279,7 +226,10 @@ export default function TopHeader({
                         <form onSubmit={handleSearchSubmit} className="relative w-full">
                             <input
                                 type="search"
-                                placeholder="Cari ikan, filter, aquascape, tanaman..."
+                                placeholder={pick(
+                                    'Cari ikan, filter, aquascape, tanaman...',
+                                    'Search fish, filters, aquascape, plants...',
+                                )}
                                 value={searchQuery}
                                 onFocus={() => setSearchFocused(true)}
                                 onChange={(e) => {
@@ -304,27 +254,30 @@ export default function TopHeader({
                     </div>
                 </div>
 
-                {/* Right: Quick Action Icons (Mobile Search, Sun/Moon, Heart, Cart, Orders, User/Auth) */}
-                <div className="flex items-center gap-1 sm:gap-3 shrink-0">
+                {/* Right: Quick Action Icons (Mobile Search, Lang, Sun/Moon, Heart, Cart, Orders, User/Auth) */}
+                <div className="flex items-center gap-1 sm:gap-2.5 shrink-0">
                     {/* Mobile Search Toggle */}
                     <button
                         type="button"
                         onClick={handleToggleMobileSearch}
                         className="sm:hidden p-2 text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
-                        title="Cari Produk"
-                        aria-label="Cari Produk"
+                        title={pick('Cari Produk', 'Search Products')}
+                        aria-label={pick('Cari Produk', 'Search Products')}
                         aria-expanded={mobileSearchOpen}
                     >
                         {mobileSearchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
                     </button>
+
+                    {/* ID / EN Language Switcher */}
+                    <LanguageSwitcher />
 
                     {/* Theme Toggle Icon (Sun / Moon) */}
                     <button
                         type="button"
                         onClick={handleToggleTheme}
                         className="p-2 text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
-                        title={darkMode ? 'Tema Terang' : 'Tema Gelap'}
-                        aria-label="Ubah Tema"
+                        title={darkMode ? pick('Tema Terang', 'Light Theme') : pick('Tema Gelap', 'Dark Theme')}
+                        aria-label={pick('Ubah Tema', 'Toggle Theme')}
                     >
                         {darkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
                     </button>
@@ -333,8 +286,8 @@ export default function TopHeader({
                     <Link
                         href="/products?sort=popular"
                         className="hidden sm:flex relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#0684E5] dark:hover:text-[#4AB8BD] rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
-                        title="Daftar Keinginan"
-                        aria-label="Daftar Keinginan"
+                        title={pick('Daftar Keinginan', 'Wishlist')}
+                        aria-label={pick('Daftar Keinginan', 'Wishlist')}
                     >
                         <Heart className="w-4 h-4" />
                         <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[#0684E5]" />
@@ -344,8 +297,8 @@ export default function TopHeader({
                     <Link
                         href="/cart"
                         className="relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
-                        title="Keranjang Belanja"
-                        aria-label="Keranjang Belanja"
+                        title={pick('Keranjang Belanja', 'Shopping Cart')}
+                        aria-label={pick('Keranjang Belanja', 'Shopping Cart')}
                     >
                         <ShoppingCart className="w-4 h-4" />
                         {cartCount > 0 && (
@@ -355,13 +308,13 @@ export default function TopHeader({
                         )}
                     </Link>
 
-                    {/* Orders (Pesanan Saya) Icon - Visible on sm+; mobile accesses via Sidebar & User Menu */}
+                    {/* Orders Icon - Visible on sm+; mobile accesses via Sidebar & User Menu */}
                     {user && (
                         <Link
                             href="/orders"
                             className="hidden sm:flex relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
-                            title="Pesanan Saya"
-                            aria-label="Pesanan Saya"
+                            title={pick('Pesanan Saya', 'My Orders')}
+                            aria-label={pick('Pesanan Saya', 'My Orders')}
                         >
                             <Package className="w-4 h-4" />
                         </Link>
@@ -369,12 +322,12 @@ export default function TopHeader({
 
                     {/* User Profile / Auth Actions */}
                     {user ? (
-                        <div className="relative ml-1">
+                        <div className="relative ml-0.5 sm:ml-1">
                             <button
                                 type="button"
                                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                                 className="flex items-center gap-2 p-1 rounded-full hover:ring-2 hover:ring-[#4AB8BD]/40 transition"
-                                aria-label="Menu Pengguna"
+                                aria-label={pick('Menu Pengguna', 'User Menu')}
                             >
                                 <UserAvatar user={user} className="w-8 h-8 text-xs" />
                                 <span className="hidden lg:inline text-xs font-semibold text-[#001454] dark:text-white max-w-[110px] truncate">
@@ -395,30 +348,30 @@ export default function TopHeader({
 
                                     <Link href="/profile" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
                                         <User className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
-                                        <span>Profil Saya</span>
+                                        <span>{pick('Profil Saya', 'My Profile')}</span>
                                     </Link>
                                     <Link href="/orders" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition font-medium">
                                         <Package className="w-3.5 h-3.5 text-[#0684E5] dark:text-[#4AB8BD]" />
-                                        <span>Pesanan Saya</span>
+                                        <span>{pick('Pesanan Saya', 'My Orders')}</span>
                                     </Link>
                                     <Link href="/addresses" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
                                         <MapPin className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
-                                        <span>Buku Alamat</span>
+                                        <span>{pick('Buku Alamat', 'Address Book')}</span>
                                     </Link>
 
                                     {user.role === 'seller' && (
                                         <div className="border-t border-[#1E80A0]/10 dark:border-neutral-800 my-1 pt-1">
                                             <span className="px-4 text-[10px] font-bold text-[#1E80A0] dark:text-[#4AB8BD] uppercase tracking-wider block mb-1">
-                                                Toko Saya
+                                                {pick('Toko Saya', 'My Store')}
                                             </span>
                                             <Link href="/seller/products" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
-                                                Produk Toko
+                                                {pick('Produk Toko', 'Store Products')}
                                             </Link>
                                             <Link href="/seller/orders" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
-                                                Pesanan Masuk
+                                                {pick('Pesanan Masuk', 'Incoming Orders')}
                                             </Link>
                                             <Link href="/seller/store" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#001454] dark:text-neutral-200 transition">
-                                                Profil Toko
+                                                {pick('Profil Toko', 'Store Profile')}
                                             </Link>
                                         </div>
                                     )}
@@ -428,19 +381,19 @@ export default function TopHeader({
                                             <Link href="/seller/register" className="flex items-center justify-between gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#0684E5] dark:text-cyan-400 font-bold transition">
                                                 <span>
                                                     {user.seller_status === 'pending'
-                                                        ? 'Status Penjual'
+                                                        ? pick('Status Penjual', 'Seller Status')
                                                         : user.seller_status === 'rejected'
-                                                          ? 'Ajukan Ulang Toko'
-                                                          : 'Buka Toko Penangkar'}
+                                                          ? pick('Ajukan Ulang Toko', 'Reapply Store')
+                                                          : pick('Buka Toko Penangkar', 'Open Breeder Store')}
                                                 </span>
                                                 {user.seller_status === 'pending' && (
                                                     <span className="px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
-                                                        Pending
+                                                        {pick('Pending', 'Pending')}
                                                     </span>
                                                 )}
                                                 {user.seller_status === 'rejected' && (
                                                     <span className="px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-700 text-[10px] font-bold">
-                                                        Ditolak
+                                                        {pick('Ditolak', 'Rejected')}
                                                     </span>
                                                 )}
                                             </Link>
@@ -454,19 +407,19 @@ export default function TopHeader({
                                             as="button"
                                             className="block w-full text-left px-4 py-2 text-[#ba1a1a] dark:text-red-400 hover:bg-[#ffdad6]/40 dark:hover:bg-red-950/40 transition font-medium"
                                         >
-                                            Keluar
+                                            {pick('Keluar', 'Sign Out')}
                                         </Link>
                                     </div>
                                 </div>
                             )}
                         </div>
                     ) : (
-                        <div className="flex items-center gap-1.5 sm:gap-2 ml-1">
+                        <div className="flex items-center gap-1.5 sm:gap-2 ml-0.5 sm:ml-1">
                             <Link
                                 href="/login"
                                 className="sm:hidden p-2 text-[#001454] dark:text-white hover:text-[#0684E5] dark:hover:text-[#4AB8BD] rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
-                                title="Masuk Akun"
-                                aria-label="Masuk Akun"
+                                title={pick('Masuk Akun', 'Sign In')}
+                                aria-label={pick('Masuk Akun', 'Sign In')}
                             >
                                 <User className="w-4 h-4" />
                             </Link>
@@ -474,13 +427,13 @@ export default function TopHeader({
                                 href="/login"
                                 className="hidden sm:inline-block text-xs font-bold text-[#001454] dark:text-neutral-200 hover:text-[#0684E5] dark:hover:text-[#4AB8BD] px-2.5 py-1.5 transition"
                             >
-                                Masuk
+                                {pick('Masuk', 'Sign In')}
                             </Link>
                             <Link
                                 href="/register"
                                 className="hidden sm:inline-block px-4 py-2 rounded-full bg-[#0684E5] text-white font-bold text-xs hover:bg-[#0060aa] hover:scale-[1.02] shadow-sm transition-all"
                             >
-                                Daftar
+                                {pick('Daftar', 'Sign Up')}
                             </Link>
                         </div>
                     )}
@@ -494,7 +447,10 @@ export default function TopHeader({
                         <input
                             ref={mobileSearchInputRef}
                             type="search"
-                            placeholder="Cari ikan, filter, aquascape, tanaman..."
+                            placeholder={pick(
+                                'Cari ikan, filter, aquascape, tanaman...',
+                                'Search fish, filters, aquascape, plants...',
+                            )}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             onKeyDown={(e) => {

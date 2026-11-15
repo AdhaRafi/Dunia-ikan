@@ -1,10 +1,12 @@
 import InputError from '@/Components/InputError';
 import PasswordInput from '@/Components/PasswordInput';
+import { useLanguage } from '@/lib/i18n';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { useRef } from 'react';
 
 export default function UpdatePasswordForm() {
+    const { pick } = useLanguage();
     const passwordInput = useRef();
     const currentPasswordInput = useRef();
 
@@ -50,10 +52,13 @@ export default function UpdatePasswordForm() {
             <div className="px-6 py-4 border-b border-slate-100 dark:border-neutral-800 flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
-                        Pengaturan Keamanan
+                        {pick('Pengaturan Keamanan', 'Security Settings')}
                     </h2>
                     <p className="mt-0.5 text-xs text-slate-500 dark:text-neutral-400">
-                        Masukkan kata sandi saat ini dan sandi baru untuk memperbarui keamanan akun.
+                        {pick(
+                            'Masukkan kata sandi saat ini dan sandi baru untuk memperbarui keamanan akun.',
+                            'Enter your current and new password to update your account security.'
+                        )}
                     </p>
                 </div>
 
@@ -66,7 +71,7 @@ export default function UpdatePasswordForm() {
                         leaveTo="opacity-0"
                     >
                         <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                            Kata sandi diperbarui
+                            {pick('Kata sandi diperbarui', 'Password updated')}
                         </span>
                     </Transition>
 
@@ -75,7 +80,7 @@ export default function UpdatePasswordForm() {
                         disabled={processing}
                         className="px-4 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 dark:bg-[#0684E5] dark:hover:bg-[#0267C1] text-white text-xs font-semibold disabled:opacity-50 transition"
                     >
-                        {processing ? 'Menyimpan...' : 'Simpan'}
+                        {processing ? pick('Menyimpan...', 'Saving...') : pick('Simpan', 'Save')}
                     </button>
                 </div>
             </div>
@@ -86,7 +91,7 @@ export default function UpdatePasswordForm() {
                         htmlFor="current_password"
                         className="sm:w-44 shrink-0 text-xs sm:text-[13px] font-medium text-slate-600 dark:text-neutral-400"
                     >
-                        Kata sandi saat ini
+                        {pick('Kata sandi saat ini', 'Current password')}
                     </label>
                     <div className="flex-1 min-w-0">
                         <PasswordInput
@@ -96,7 +101,7 @@ export default function UpdatePasswordForm() {
                             onChange={(e) =>
                                 setData('current_password', e.target.value)
                             }
-                            placeholder="Masukkan kata sandi saat ini"
+                            placeholder={pick('Masukkan kata sandi saat ini', 'Enter current password')}
                             autoComplete="current-password"
                             required
                             className="!h-10 !text-[13px] bg-slate-50/70 focus:bg-white dark:bg-[#0b101d]"
@@ -113,7 +118,7 @@ export default function UpdatePasswordForm() {
                         htmlFor="password"
                         className="sm:w-44 shrink-0 text-xs sm:text-[13px] font-medium text-slate-600 dark:text-neutral-400"
                     >
-                        Kata sandi baru
+                        {pick('Kata sandi baru', 'New password')}
                     </label>
                     <div className="flex-1 min-w-0">
                         <PasswordInput
@@ -121,7 +126,7 @@ export default function UpdatePasswordForm() {
                             ref={passwordInput}
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Minimal 8 karakter"
+                            placeholder={pick('Minimal 8 karakter', 'At least 8 characters')}
                             autoComplete="new-password"
                             required
                             className="!h-10 !text-[13px] bg-slate-50/70 focus:bg-white dark:bg-[#0b101d]"
@@ -135,7 +140,7 @@ export default function UpdatePasswordForm() {
                         htmlFor="password_confirmation"
                         className="sm:w-44 shrink-0 text-xs sm:text-[13px] font-medium text-slate-600 dark:text-neutral-400"
                     >
-                        Konfirmasi sandi baru
+                        {pick('Konfirmasi sandi baru', 'Confirm new password')}
                     </label>
                     <div className="flex-1 min-w-0">
                         <PasswordInput
@@ -144,7 +149,7 @@ export default function UpdatePasswordForm() {
                             onChange={(e) =>
                                 setData('password_confirmation', e.target.value)
                             }
-                            placeholder="Ulangi kata sandi baru"
+                            placeholder={pick('Ulangi kata sandi baru', 'Repeat new password')}
                             autoComplete="new-password"
                             required
                             className="!h-10 !text-[13px] bg-slate-50/70 focus:bg-white dark:bg-[#0b101d]"

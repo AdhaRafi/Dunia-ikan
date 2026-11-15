@@ -1,10 +1,12 @@
 import { Head, Link, router } from '@inertiajs/react';
 import SellerLayout from '@/Layouts/SellerLayout';
 import { PlusCircle, Edit3, Trash2, Eye, ShieldCheck, Fish, AlertCircle } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
 
 export default function Index({ store, products }) {
+    const { pick, trCategory } = useLanguage();
     const handleDelete = (id, name) => {
-        if (confirm(`Yakin ingin menghapus produk "${name}"?`)) {
+        if (confirm(pick(`Yakin ingin menghapus produk "${name}"?`, `Are you sure you want to delete "${name}"?`))) {
             router.delete(`/seller/products/${id}`);
         }
     };
@@ -19,16 +21,19 @@ export default function Index({ store, products }) {
 
     return (
         <SellerLayout>
-            <Head title="Manajemen Produk & Morf Ikan - Portal Penjual" />
+            <Head title={pick('Manajemen Produk & Morf Ikan - Portal Penjual', 'Product & Morph Management — Seller Portal')} />
 
             <div className="space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-xl sm:text-2xl font-extrabold text-dunia-navy">
-                            Katalog Produk & Morf Toko
+                            {pick('Katalog Produk & Morf Toko', 'Store Catalog & Morphs')}
                         </h1>
                         <p className="text-xs text-slate-500 mt-1">
-                            Kelola stok, harga, dan karakteristik morfologi spesifik ikan hias Anda.
+                            {pick(
+                                'Kelola stok, harga, dan karakteristik morfologi spesifik ikan hias Anda.',
+                                'Manage stock, pricing, and specific ornamental fish traits.'
+                            )}
                         </p>
                     </div>
 
@@ -37,7 +42,7 @@ export default function Index({ store, products }) {
                         className="px-4 py-2.5 rounded-xl bg-dunia-blue text-white font-bold text-xs hover:bg-sky-600 transition inline-flex items-center justify-center gap-2 self-start sm:self-auto shrink-0 shadow-xs cursor-pointer"
                     >
                         <PlusCircle className="w-4 h-4" />
-                        Tambah Produk / Ikan
+                        {pick('Tambah Produk / Ikan', 'Add Product / Fish')}
                     </Link>
                 </div>
 
@@ -61,11 +66,11 @@ export default function Index({ store, products }) {
                                                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${
                                                     product.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'
                                                 }`}>
-                                                    {product.is_active ? 'Aktif' : 'Non-aktif'}
+                                                    {product.is_active ? pick('Aktif', 'Active') : pick('Non-aktif', 'Inactive')}
                                                 </span>
                                             </div>
                                             <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-500">
-                                                {product.category?.name && <span>{product.category.name}</span>}
+                                                {product.category?.name && <span>{trCategory(product.category.name)}</span>}
                                                 {product.fish_detail?.morph_trait && (
                                                     <span className="px-2 py-0.5 rounded-md bg-sky-50 text-dunia-marine font-bold text-[10px]">
                                                         {product.fish_detail.morph_trait}
@@ -81,7 +86,7 @@ export default function Index({ store, products }) {
                                                 {formatPrice(product.price)}
                                             </p>
                                             <p className={`text-[11px] font-semibold ${product.stock > 0 ? 'text-slate-600' : 'text-rose-600'}`}>
-                                                Stok: {product.stock} ekor
+                                                {pick('Stok:', 'Stock:')} {product.stock} {pick('ekor', 'pcs')}
                                             </p>
                                         </div>
 
@@ -89,10 +94,10 @@ export default function Index({ store, products }) {
                                             <Link
                                                 href={`/products/${product.slug}`}
                                                 className="inline-flex items-center gap-1 px-2.5 py-2 text-xs font-semibold text-slate-600 hover:text-dunia-blue rounded-xl bg-slate-50 hover:bg-sky-50"
-                                                title="Lihat di Toko"
+                                                title={pick('Lihat di Toko', 'View in Store')}
                                             >
                                                 <Eye className="w-3.5 h-3.5" />
-                                                <span>Lihat</span>
+                                                <span>{pick('Lihat', 'View')}</span>
                                             </Link>
                                             <Link
                                                 href={`/seller/products/${product.id}/edit`}
@@ -106,8 +111,8 @@ export default function Index({ store, products }) {
                                                 type="button"
                                                 onClick={() => handleDelete(product.id, product.name)}
                                                 className="p-2 text-rose-500 hover:text-rose-700 rounded-xl bg-rose-50 hover:bg-rose-100"
-                                                title="Hapus"
-                                                aria-label={`Hapus ${product.name}`}
+                                                title={pick('Hapus', 'Delete')}
+                                                aria-label={`${pick('Hapus', 'Delete')} ${product.name}`}
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </button>
@@ -122,13 +127,13 @@ export default function Index({ store, products }) {
                             <table className="w-full text-left text-xs">
                                 <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
                                     <tr>
-                                        <th className="p-4">Produk / Ikan</th>
-                                        <th className="p-4">Kategori</th>
-                                        <th className="p-4">Morf / Trait</th>
-                                        <th className="p-4">Harga</th>
-                                        <th className="p-4">Stok</th>
-                                        <th className="p-4">Status</th>
-                                        <th className="p-4 text-right">Aksi</th>
+                                        <th className="p-4">{pick('Produk / Ikan', 'Product / Fish')}</th>
+                                        <th className="p-4">{pick('Kategori', 'Category')}</th>
+                                        <th className="p-4">{pick('Morf / Trait', 'Morph / Trait')}</th>
+                                        <th className="p-4">{pick('Harga', 'Price')}</th>
+                                        <th className="p-4">{pick('Stok', 'Stock')}</th>
+                                        <th className="p-4">{pick('Status', 'Status')}</th>
+                                        <th className="p-4 text-right">{pick('Aksi', 'Actions')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
@@ -155,7 +160,7 @@ export default function Index({ store, products }) {
                                             </td>
 
                                             <td className="p-4 font-semibold text-slate-600">
-                                                {product.category?.name}
+                                                {product.category?.name ? trCategory(product.category.name) : '-'}
                                             </td>
 
                                             <td className="p-4">
@@ -174,7 +179,7 @@ export default function Index({ store, products }) {
 
                                             <td className="p-4">
                                                 <span className={`font-bold ${product.stock > 0 ? 'text-slate-800' : 'text-rose-600'}`}>
-                                                    {product.stock} ekor
+                                                    {product.stock} {pick('ekor', 'pcs')}
                                                 </span>
                                             </td>
 
@@ -182,7 +187,7 @@ export default function Index({ store, products }) {
                                                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                                                     product.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'
                                                 }`}>
-                                                    {product.is_active ? 'Aktif' : 'Non-aktif'}
+                                                    {product.is_active ? pick('Aktif', 'Active') : pick('Non-aktif', 'Inactive')}
                                                 </span>
                                             </td>
 
@@ -191,7 +196,7 @@ export default function Index({ store, products }) {
                                                     <Link
                                                         href={`/products/${product.slug}`}
                                                         className="p-1.5 text-slate-400 hover:text-dunia-blue rounded-lg hover:bg-sky-50"
-                                                        title="Lihat di Toko"
+                                                        title={pick('Lihat di Toko', 'View in Store')}
                                                     >
                                                         <Eye className="w-4 h-4" />
                                                     </Link>
@@ -206,7 +211,7 @@ export default function Index({ store, products }) {
                                                         type="button"
                                                         onClick={() => handleDelete(product.id, product.name)}
                                                         className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50"
-                                                        title="Hapus"
+                                                        title={pick('Hapus', 'Delete')}
                                                     >
                                                         <Trash2 className="w-4 h-4" />
                                                     </button>
@@ -221,14 +226,21 @@ export default function Index({ store, products }) {
                 ) : (
                     <div className="p-12 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-xs space-y-3">
                         <Fish className="w-10 h-10 text-slate-300 mx-auto" />
-                        <p className="font-bold text-slate-700">Toko Anda belum memiliki produk terdaftar</p>
-                        <p className="text-slate-400">Tambahkan ikan atau produk pertama Anda untuk mulai berjualan.</p>
+                        <p className="font-bold text-slate-700">
+                            {pick('Toko Anda belum memiliki produk terdaftar', 'Your store has no listed products yet')}
+                        </p>
+                        <p className="text-slate-400">
+                            {pick(
+                                'Tambahkan ikan atau produk pertama Anda untuk mulai berjualan.',
+                                'Add your first fish or product to start selling.'
+                            )}
+                        </p>
                         <Link
                             href="/seller/products/create"
                             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-dunia-blue text-white font-bold"
                         >
                             <PlusCircle className="w-4 h-4" />
-                            Tambah Produk Sekarang
+                            {pick('Tambah Produk Sekarang', 'Add Product Now')}
                         </Link>
                     </div>
                 )}

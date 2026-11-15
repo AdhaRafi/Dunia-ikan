@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Head, router, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { ReceiptText, Search, Store, User } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
 
 export default function Index({ orders, filters }) {
+    const { isEn, pick, trOrderStatus } = useLanguage();
     const [search, setSearch] = useState(filters?.q || '');
     const [status, setStatus] = useState(filters?.status || '');
     const [paymentStatus, setPaymentStatus] = useState(filters?.payment_status || '');
@@ -23,15 +25,15 @@ export default function Index({ orders, filters }) {
 
     return (
         <AdminLayout>
-            <Head title="Monitoring Semua Transaksi - Panel Admin" />
+            <Head title={pick('Monitoring Semua Transaksi - Panel Admin', 'Platform Transaction Monitoring - Admin Panel')} />
 
             <div className="space-y-6">
                 <div>
                     <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-                        Monitoring Semua Transaksi Platform
+                        {pick('Monitoring Semua Transaksi Platform', 'Platform Transaction Monitoring')}
                     </h1>
                     <p className="text-xs text-slate-500 mt-1">
-                        Seluruh transaksi pesanan multi-toko tercatat di halaman ini untuk audit dan pengawasan.
+                        {pick('Seluruh transaksi pesanan multi-toko tercatat di halaman ini untuk audit dan pengawasan.', 'All multi-store order transactions are recorded here for auditing and oversight.')}
                     </p>
                 </div>
 
@@ -39,7 +41,7 @@ export default function Index({ orders, filters }) {
                 <form onSubmit={handleSearch} className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row gap-3">
                     <input
                         type="text"
-                        placeholder="Cari no. order, pembeli, toko..."
+                        placeholder={pick('Cari no. order, pembeli, toko...', 'Search order #, buyer, store...')}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="flex-1 text-xs p-2.5 rounded-xl border border-slate-200"
@@ -53,13 +55,13 @@ export default function Index({ orders, filters }) {
                         }}
                         className="text-xs p-2.5 rounded-xl border border-slate-200 bg-white"
                     >
-                        <option value="">Semua Status Pesanan</option>
-                        <option value="pending_payment">Menunggu Pembayaran</option>
-                        <option value="awaiting_confirmation">Menunggu Konfirmasi</option>
-                        <option value="processing">Diproses</option>
-                        <option value="shipped">Dikirim</option>
-                        <option value="delivered">Selesai</option>
-                        <option value="cancelled">Dibatalkan</option>
+                        <option value="">{pick('Semua Status Pesanan', 'All Order Statuses')}</option>
+                        <option value="pending_payment">{trOrderStatus('pending_payment')}</option>
+                        <option value="awaiting_confirmation">{trOrderStatus('awaiting_confirmation')}</option>
+                        <option value="processing">{trOrderStatus('processing')}</option>
+                        <option value="shipped">{trOrderStatus('shipped')}</option>
+                        <option value="delivered">{trOrderStatus('delivered')}</option>
+                        <option value="cancelled">{trOrderStatus('cancelled')}</option>
                     </select>
 
                     <select
@@ -70,18 +72,18 @@ export default function Index({ orders, filters }) {
                         }}
                         className="text-xs p-2.5 rounded-xl border border-slate-200 bg-white"
                     >
-                        <option value="">Semua Status Bayar</option>
-                        <option value="unpaid">Unpaid</option>
-                        <option value="paid">Paid</option>
-                        <option value="verified">Verified</option>
-                        <option value="rejected">Rejected</option>
+                        <option value="">{pick('Semua Status Bayar', 'All Payment Statuses')}</option>
+                        <option value="unpaid">{pick('Belum Dibayar (Unpaid)', 'Unpaid')}</option>
+                        <option value="paid">{pick('Dibayar (Paid)', 'Paid')}</option>
+                        <option value="verified">{pick('Terverifikasi (Verified)', 'Verified')}</option>
+                        <option value="rejected">{pick('Ditolak (Rejected)', 'Rejected')}</option>
                     </select>
 
                     <button
                         type="submit"
                         className="px-4 py-2.5 rounded-xl bg-dunia-blue text-white font-bold text-xs hover:bg-sky-600 transition"
                     >
-                        Filter
+                        {pick('Filter', 'Filter')}
                     </button>
                 </form>
 
@@ -90,14 +92,14 @@ export default function Index({ orders, filters }) {
                     <table className="w-full text-left text-xs">
                         <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
                             <tr>
-                                <th className="p-4">No. Order</th>
-                                <th className="p-4">Pembeli</th>
-                                <th className="p-4">Toko Penangkar</th>
-                                <th className="p-4">Total Tagihan</th>
-                                <th className="p-4">Metode Bayar</th>
-                                <th className="p-4">Status Pesanan</th>
-                                <th className="p-4">Status Bayar</th>
-                                <th className="p-4">Tanggal</th>
+                                <th className="p-4">{pick('No. Order', 'Order #')}</th>
+                                <th className="p-4">{pick('Pembeli', 'Buyer')}</th>
+                                <th className="p-4">{pick('Toko Penangkar', 'Breeder Store')}</th>
+                                <th className="p-4">{pick('Total Tagihan', 'Total Bill')}</th>
+                                <th className="p-4">{pick('Metode Bayar', 'Payment Method')}</th>
+                                <th className="p-4">{pick('Status Pesanan', 'Order Status')}</th>
+                                <th className="p-4">{pick('Status Bayar', 'Payment Status')}</th>
+                                <th className="p-4">{pick('Tanggal', 'Date')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -120,7 +122,7 @@ export default function Index({ orders, filters }) {
                                     </td>
                                     <td className="p-4">
                                         <span className="px-2.5 py-0.5 rounded-full font-bold text-[10px] bg-slate-100 text-slate-700">
-                                            {ord.status}
+                                            {trOrderStatus(ord.status)}
                                         </span>
                                     </td>
                                     <td className="p-4">
@@ -135,7 +137,7 @@ export default function Index({ orders, filters }) {
                                         </span>
                                     </td>
                                     <td className="p-4 text-slate-400">
-                                        {new Date(ord.created_at).toLocaleDateString('id-ID')}
+                                        {new Date(ord.created_at).toLocaleDateString(isEn ? 'en-US' : 'id-ID')}
                                     </td>
                                 </tr>
                             ))}

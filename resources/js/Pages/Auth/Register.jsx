@@ -5,8 +5,10 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ShoppingBag, Store } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
 
 export default function Register() {
+    const { pick } = useLanguage();
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -29,28 +31,37 @@ export default function Register() {
 
     return (
         <GuestLayout
-            eyebrow="Bergabung dengan Dunia Ikan"
-            headline="Temukan ikan hias terkurasi dan konsultasi langsung bersama Kiko."
+            eyebrow={pick('Bergabung dengan Dunia Ikan', 'Join Dunia Ikan')}
+            headline={pick(
+                'Temukan ikan hias terkurasi dan konsultasi langsung bersama Kiko.',
+                'Discover curated ornamental fish and consult directly with Kiko.'
+            )}
         >
-            <Head title="Daftar — Dunia Ikan" />
+            <Head title={pick('Daftar — Dunia Ikan', 'Sign Up — Dunia Ikan')} />
 
             <div>
                 <h1 className="text-[24px] sm:text-[26px] font-bold tracking-[-0.025em] text-slate-900 dark:text-white">
-                    Buat akun
+                    {pick('Buat akun', 'Create account')}
                 </h1>
                 <p className="mt-1.5 text-[13px] leading-relaxed text-slate-500 dark:text-slate-400">
                     {isSellerApplicant
-                        ? 'Ajukan akun penjual untuk membuka toko. Admin akan memverifikasi pengajuan Anda.'
-                        : 'Daftar gratis sebagai pembeli untuk memesan ikan dan menyimpan riwayat konsultasi.'}
+                        ? pick(
+                              'Ajukan akun penjual untuk membuka toko. Admin akan memverifikasi pengajuan Anda.',
+                              'Apply for a seller account to open a store. An admin will review your application.'
+                          )
+                        : pick(
+                              'Daftar gratis sebagai pembeli untuk memesan ikan dan menyimpan riwayat konsultasi.',
+                              'Sign up free as a buyer to order fish and save your consultation history.'
+                          )}
                 </p>
             </div>
 
             <form onSubmit={submit} className="mt-4 space-y-3.5">
                 <div>
-                    <InputLabel value="Daftar sebagai" />
+                    <InputLabel value={pick('Daftar sebagai', 'Register as')} />
                     <div
                         role="radiogroup"
-                        aria-label="Jenis akun"
+                        aria-label={pick('Jenis akun', 'Account type')}
                         className="mt-1.5 grid grid-cols-2 gap-2.5"
                     >
                         <button
@@ -73,10 +84,10 @@ export default function Register() {
                             />
                             <span className="min-w-0">
                                 <span className="block text-[13px] font-semibold text-slate-900 dark:text-white leading-tight">
-                                    Pembeli
+                                    {pick('Pembeli', 'Buyer')}
                                 </span>
                                 <span className="mt-0.5 block text-[11px] text-slate-500 dark:text-slate-400 leading-tight">
-                                    Belanja langsung
+                                    {pick('Belanja langsung', 'Shop directly')}
                                 </span>
                             </span>
                         </button>
@@ -101,10 +112,10 @@ export default function Register() {
                             />
                             <span className="min-w-0">
                                 <span className="block text-[13px] font-semibold text-slate-900 dark:text-white leading-tight">
-                                    Ingin Berjualan
+                                    {pick('Ingin Berjualan', 'Sell on Platform')}
                                 </span>
                                 <span className="mt-0.5 block text-[11px] text-slate-500 dark:text-slate-400 leading-tight">
-                                    Perlu acc admin
+                                    {pick('Perlu acc admin', 'Admin approval')}
                                 </span>
                             </span>
                         </button>
@@ -113,13 +124,13 @@ export default function Register() {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="name" value="Nama lengkap" />
+                    <InputLabel htmlFor="name" value={pick('Nama lengkap', 'Full name')} />
                     <TextInput
                         id="name"
                         name="name"
                         value={data.name}
                         className="mt-1.5"
-                        placeholder="Nama lengkap Anda"
+                        placeholder={pick('Nama lengkap Anda', 'Your full name')}
                         autoComplete="name"
                         isFocused={true}
                         onChange={(e) => setData('name', e.target.value)}
@@ -147,13 +158,16 @@ export default function Register() {
                 {isSellerApplicant && (
                     <div className="space-y-3 rounded-xl border border-amber-200/80 bg-amber-50/60 p-3 dark:border-amber-500/30 dark:bg-amber-950/20">
                         <div>
-                            <InputLabel htmlFor="seller_store_name" value="Nama rencana toko / farm" />
+                            <InputLabel
+                                htmlFor="seller_store_name"
+                                value={pick('Nama rencana toko / farm', 'Planned store / farm name')}
+                            />
                             <TextInput
                                 id="seller_store_name"
                                 name="seller_store_name"
                                 value={data.seller_store_name}
                                 className="mt-1.5"
-                                placeholder="Contoh: Nusantara Betta Farm"
+                                placeholder={pick('Contoh: Nusantara Betta Farm', 'Example: Nusantara Betta Farm')}
                                 onChange={(e) => setData('seller_store_name', e.target.value)}
                                 required
                             />
@@ -161,32 +175,38 @@ export default function Register() {
                         </div>
 
                         <div>
-                            <InputLabel htmlFor="seller_application_note" value="Catatan untuk admin (opsional)" />
+                            <InputLabel
+                                htmlFor="seller_application_note"
+                                value={pick('Catatan untuk admin (opsional)', 'Note for admin (optional)')}
+                            />
                             <TextInput
                                 id="seller_application_note"
                                 name="seller_application_note"
                                 value={data.seller_application_note}
                                 className="mt-1.5"
-                                placeholder="Jenis ikan yang dijual / domisili toko"
+                                placeholder={pick('Jenis ikan yang dijual / domisili toko', 'Fish species sold / store city')}
                                 onChange={(e) => setData('seller_application_note', e.target.value)}
                             />
                             <InputError message={errors.seller_application_note} className="mt-1.5" />
                         </div>
 
                         <p className="text-[11px] leading-relaxed text-amber-800 dark:text-amber-200/90">
-                            Akun langsung aktif untuk belanja. Fitur penjual terbuka setelah admin menyetujui pengajuan Anda.
+                            {pick(
+                                'Akun langsung aktif untuk belanja. Fitur penjual terbuka setelah admin menyetujui pengajuan Anda.',
+                                'Your buyer account is active right away. Seller features unlock once an admin approves your application.'
+                            )}
                         </p>
                     </div>
                 )}
 
                 <div>
-                    <InputLabel htmlFor="password" value="Kata sandi" />
+                    <InputLabel htmlFor="password" value={pick('Kata sandi', 'Password')} />
                     <PasswordInput
                         id="password"
                         name="password"
                         value={data.password}
                         wrapperClassName="mt-1.5"
-                        placeholder="Minimal 8 karakter"
+                        placeholder={pick('Minimal 8 karakter', 'At least 8 characters')}
                         autoComplete="new-password"
                         onChange={(e) => setData('password', e.target.value)}
                         required
@@ -195,13 +215,16 @@ export default function Register() {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password_confirmation" value="Konfirmasi kata sandi" />
+                    <InputLabel
+                        htmlFor="password_confirmation"
+                        value={pick('Konfirmasi kata sandi', 'Confirm password')}
+                    />
                     <PasswordInput
                         id="password_confirmation"
                         name="password_confirmation"
                         value={data.password_confirmation}
                         wrapperClassName="mt-1.5"
-                        placeholder="Ulangi kata sandi"
+                        placeholder={pick('Ulangi kata sandi', 'Repeat password')}
                         autoComplete="new-password"
                         onChange={(e) =>
                             setData('password_confirmation', e.target.value)
@@ -221,21 +244,21 @@ export default function Register() {
                         className={authPrimaryButtonClass}
                     >
                         {processing
-                            ? 'Mendaftarkan...'
+                            ? pick('Mendaftarkan...', 'Registering...')
                             : isSellerApplicant
-                              ? 'Daftar & Ajukan Penjual'
-                              : 'Buat Akun'}
+                              ? pick('Daftar & Ajukan Penjual', 'Sign Up & Apply as Seller')
+                              : pick('Buat Akun', 'Create Account')}
                     </button>
                 </div>
             </form>
 
             <p className="mt-4 text-center text-[13px] text-slate-500 dark:text-slate-400">
-                Sudah punya akun?{' '}
+                {pick('Sudah punya akun?', 'Already have an account?')}{' '}
                 <Link
                     href="/login"
                     className="font-semibold text-[#2448f5] dark:text-sky-400 hover:underline"
                 >
-                    Masuk
+                    {pick('Masuk', 'Sign in')}
                 </Link>
             </p>
         </GuestLayout>

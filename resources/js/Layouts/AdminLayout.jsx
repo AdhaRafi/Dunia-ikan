@@ -12,18 +12,20 @@ import {
     X 
 } from 'lucide-react';
 import { useState } from 'react';
+import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
 
 export default function AdminLayout({ children, title }) {
     const { url, props } = usePage();
+    const { pick } = useLanguage();
     const { auth, flash, pendingSellerCount = 0 } = props;
     const [showFlash, setShowFlash] = useState(true);
 
     const navItems = [
-        { href: '/admin-portal', label: 'Ringkasan Platform', icon: LayoutDashboard, iconClass: 'text-purple-600', active: url === '/admin-portal' || url === '/admin' },
-        { href: '/admin-portal/categories', label: 'Kelola Kategori', icon: Folders, iconClass: 'text-dunia-blue', active: url.includes('/categories') },
-        { href: '/admin-portal/guides', label: 'Panduan Chatbot Ikan', icon: BookOpen, iconClass: 'text-emerald-600', active: url.includes('/guides') },
-        { href: '/admin-portal/users', label: 'Manajemen Pengguna', icon: Users, iconClass: 'text-amber-600', badge: pendingSellerCount, active: url.includes('/users') },
-        { href: '/admin-portal/transactions', label: 'Semua Transaksi', icon: ReceiptText, iconClass: 'text-sky-600', active: url.includes('/transactions') },
+        { href: '/admin-portal', label: pick('Ringkasan Platform', 'Platform Overview'), icon: LayoutDashboard, iconClass: 'text-purple-600', active: url === '/admin-portal' || url === '/admin' },
+        { href: '/admin-portal/categories', label: pick('Kelola Kategori', 'Manage Categories'), icon: Folders, iconClass: 'text-dunia-blue', active: url.includes('/categories') },
+        { href: '/admin-portal/guides', label: pick('Panduan Chatbot Ikan', 'Fish Care Guides'), icon: BookOpen, iconClass: 'text-emerald-600', active: url.includes('/guides') },
+        { href: '/admin-portal/users', label: pick('Manajemen Pengguna', 'User Management'), icon: Users, iconClass: 'text-amber-600', badge: pendingSellerCount, active: url.includes('/users') },
+        { href: '/admin-portal/transactions', label: pick('Semua Transaksi', 'All Transactions'), icon: ReceiptText, iconClass: 'text-sky-600', active: url.includes('/transactions') },
     ];
 
     return (
@@ -34,11 +36,11 @@ export default function AdminLayout({ children, title }) {
                     <div className="flex items-center gap-2 sm:gap-4 min-w-0">
                         <Link
                             href="/"
-                            aria-label="Kembali ke Marketplace"
+                            aria-label={pick('Kembali ke Marketplace', 'Back to Marketplace')}
                             className="p-1.5 -ml-1.5 sm:p-0 sm:ml-0 rounded-lg text-slate-400 hover:text-white flex items-center gap-1.5 text-xs font-semibold shrink-0 transition"
                         >
                             <ArrowLeft className="w-4 h-4" />
-                            <span className="hidden sm:inline">Kembali ke Marketplace</span>
+                            <span className="hidden sm:inline">{pick('Kembali ke Marketplace', 'Back to Marketplace')}</span>
                         </Link>
                         <span className="hidden sm:inline text-slate-700">|</span>
                         <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
@@ -49,7 +51,8 @@ export default function AdminLayout({ children, title }) {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 sm:gap-4 text-xs shrink-0">
+                    <div className="flex items-center gap-2.5 sm:gap-4 text-xs shrink-0">
+                        <LanguageSwitcher variant="overlay" />
                         <span className="hidden sm:inline font-semibold text-slate-300 max-w-[160px] truncate">{auth.user.name}</span>
                         <Link
                             href="/logout"
@@ -57,7 +60,7 @@ export default function AdminLayout({ children, title }) {
                             as="button"
                             className="font-semibold text-rose-400 hover:text-rose-300 transition whitespace-nowrap"
                         >
-                            Keluar
+                            {pick('Keluar', 'Sign Out')}
                         </Link>
                     </div>
                 </div>

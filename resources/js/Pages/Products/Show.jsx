@@ -21,6 +21,7 @@ import {
     Store,
     Thermometer,
 } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
 
 const fallbackFish =
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='450' viewBox='0 0 600 450' fill='none'%3E%3Crect width='600' height='450' fill='%23f4f4f5'/%3E%3Cpath d='M300 155 C380 155 435 205 435 235 C435 265 380 315 300 315 C245 315 190 265 145 280 L145 190 C190 205 245 155 300 155 Z' fill='%23001454' opacity='0.22'/%3E%3C/svg%3E";
@@ -33,36 +34,36 @@ function formatPrice(price) {
     }).format(price);
 }
 
-function getSexLabel(sex) {
+function getSexLabel(sex, isEn) {
     switch (sex) {
         case 'male':
-            return 'Jantan';
+            return isEn ? 'Male' : 'Jantan';
         case 'female':
-            return 'Betina';
+            return isEn ? 'Female' : 'Betina';
         case 'pair':
-            return 'Sepasang';
+            return isEn ? 'Pair' : 'Sepasang';
         default:
             return 'Unsexed';
     }
 }
 
-function getWaterLabel(water) {
+function getWaterLabel(water, isEn) {
     switch (water) {
         case 'saltwater':
-            return 'Air Laut';
+            return isEn ? 'Saltwater' : 'Air Laut';
         case 'brackish':
-            return 'Air Payau';
+            return isEn ? 'Brackish' : 'Air Payau';
         default:
-            return 'Air Tawar';
+            return isEn ? 'Freshwater' : 'Air Tawar';
     }
 }
 
-function getOriginLabel(origin) {
+function getOriginLabel(origin, isEn) {
     switch (origin) {
         case 'wild_caught':
-            return 'Tangkapan Liar';
+            return isEn ? 'Wild Caught' : 'Tangkapan Liar';
         case 'farm_raised':
-            return 'Peternakan';
+            return isEn ? 'Farm Raised' : 'Peternakan';
         default:
             return 'Captive Bred';
     }
@@ -109,6 +110,7 @@ function MetaIconItem({ icon: Icon, label, value }) {
 }
 
 export default function Show({ product, relatedProducts, storeRating }) {
+    const { pick, isEn, trCategory } = useLanguage();
     const [quantity, setQuantity] = useState(1);
     const [adding, setAdding] = useState(false);
     const [buying, setBuying] = useState(false);
@@ -156,37 +158,42 @@ export default function Show({ product, relatedProducts, storeRating }) {
         ? [
               {
                   icon: Thermometer,
-                  label: 'Suhu & pH',
+                  label: pick('Suhu & pH', 'Temp & pH'),
                   value:
                       fish.temp_min != null && fish.ph_min != null
                           ? `${fish.temp_min}–${fish.temp_max}°C · pH ${fish.ph_min}–${fish.ph_max}`
-                          : 'Terukur',
+                          : pick('Terukur', 'Measured'),
               },
               {
                   icon: Droplets,
-                  label: 'Perawatan',
-                  value: [fish.care_level, fish.temperament].filter(Boolean).join(' · ') || 'Standar',
+                  label: pick('Perawatan', 'Care Level'),
+                  value: [fish.care_level, fish.temperament].filter(Boolean).join(' · ') || pick('Standar', 'Standard'),
               },
               {
                   icon: Fish,
-                  label: 'Spesimen',
-                  value: fish.size_stage ? `${getSexLabel(fish.sex)} · ${fish.size_stage}` : getSexLabel(fish.sex),
+                  label: pick('Spesimen', 'Specimen'),
+                  value: fish.size_stage
+                      ? `${getSexLabel(fish.sex, isEn)} · ${fish.size_stage}`
+                      : getSexLabel(fish.sex, isEn),
               },
           ]
         : [
               {
                   icon: Package,
-                  label: 'Kategori',
-                  value: product.category?.name || 'Perlengkapan',
+                  label: pick('Kategori', 'Category'),
+                  value: trCategory(product.category?.name) || pick('Perlengkapan', 'Equipment'),
               },
               {
                   icon: ShieldCheck,
-                  label: 'Stok Penangkar',
-                  value: product.stock > 0 ? `${product.stock} unit siap` : 'Habis',
+                  label: pick('Stok Penangkar', 'Breeder Stock'),
+                  value:
+                      product.stock > 0
+                          ? pick(`${product.stock} unit siap`, `${product.stock} units ready`)
+                          : pick('Habis', 'Sold Out'),
               },
               {
                   icon: Store,
-                  label: 'Asal Toko',
+                  label: pick('Asal Toko', 'Store Location'),
                   value: store?.city || 'Indonesia',
               },
           ];
@@ -206,7 +213,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                         className="inline-flex items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"
                     >
                         <ChevronLeft className="w-3.5 h-3.5" />
-                        Katalog
+                        {pick('Katalog', 'Catalog')}
                     </Link>
                     <span>/</span>
                     {product.category && (
@@ -215,7 +222,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                 href={`/products?category=${product.category.slug}`}
                                 className="hover:text-slate-900 dark:hover:text-white transition"
                             >
-                                {product.category.name}
+                                {trCategory(product.category.name)}
                             </Link>
                             <span>/</span>
                         </>
@@ -242,14 +249,14 @@ export default function Show({ product, relatedProducts, storeRating }) {
 
                             {fish?.water_type && (
                                 <span className="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-white/95 dark:bg-neutral-900/90 text-[11px] font-semibold text-slate-800 dark:text-slate-200 shadow-xs">
-                                    {getWaterLabel(fish.water_type)}
+                                    {getWaterLabel(fish.water_type, isEn)}
                                 </span>
                             )}
 
                             {product.stock <= 0 && (
                                 <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
                                     <span className="px-4 py-1.5 rounded-full bg-white dark:bg-[#111a30] text-rose-600 dark:text-rose-400 font-bold text-xs shadow-sm">
-                                        Stok Habis
+                                        {pick('Stok Habis', 'Out of Stock')}
                                     </span>
                                 </div>
                             )}
@@ -307,7 +314,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                                 className="inline-flex items-center gap-1 rounded-full bg-amber-50 dark:bg-amber-950/50 border border-amber-200/70 dark:border-amber-900/60 px-2 py-0.5 text-[11px] font-semibold text-amber-700 dark:text-amber-300 shrink-0 hover:bg-amber-100/70 transition"
                                             >
                                                 <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                                                {avgRating ? `${avgRating} (${storeRating.count})` : 'Baru'}
+                                                {avgRating ? `${avgRating} (${storeRating.count})` : pick('Baru', 'New')}
                                             </a>
                                         </div>
                                         <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400 truncate">
@@ -320,7 +327,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                     href={`/stores/${store.slug}`}
                                     className="px-4 py-1.5 rounded-full border border-slate-300 dark:border-neutral-700 bg-white dark:bg-[#111a30] hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 transition shrink-0"
                                 >
-                                    Kunjungi Toko
+                                    {pick('Kunjungi Toko', 'Visit Store')}
                                 </Link>
                             </div>
                         )}
@@ -331,7 +338,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                         <div>
                             <div className="flex flex-wrap items-center justify-between gap-2">
                                 <p className="text-xs font-semibold text-[#0267C1] dark:text-sky-400">
-                                    {product.category?.name}
+                                    {trCategory(product.category?.name)}
                                     {fish?.species_name ? ` · ${fish.species_name}` : ''}
                                 </p>
                                 <span
@@ -341,7 +348,9 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                             : 'bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300'
                                     }`}
                                 >
-                                    {product.stock > 0 ? `Stok ${product.stock}` : 'Stok Habis'}
+                                    {product.stock > 0
+                                        ? pick(`Stok ${product.stock}`, `${product.stock} in stock`)
+                                        : pick('Stok Habis', 'Out of Stock')}
                                 </span>
                             </div>
 
@@ -359,7 +368,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                         className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                                     >
                                         <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                                        <span>Rating Toko {avgRating}/5</span>
+                                        <span>{pick(`Rating Toko ${avgRating}/5`, `Store Rating ${avgRating}/5`)}</span>
                                         <span className="text-slate-400">({storeRating.count})</span>
                                     </a>
                                 )}
@@ -367,7 +376,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                         </div>
 
                         {/* Collapsible Description Card */}
-                        <AccordionCard title="Deskripsi" defaultOpen={true}>
+                        <AccordionCard title={pick('Deskripsi', 'Description')} defaultOpen={true}>
                             <p className="whitespace-pre-line text-xs sm:text-[13.5px] leading-relaxed text-slate-600 dark:text-slate-300">
                                 {product.description}
                             </p>
@@ -377,27 +386,27 @@ export default function Show({ product, relatedProducts, storeRating }) {
                         {fish && (
                             <div>
                                 <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">
-                                    Karakteristik Spesimen
+                                    {pick('Karakteristik Spesimen', 'Specimen Characteristics')}
                                 </p>
                                 <div className="flex flex-wrap gap-2">
                                     <span className="px-3 py-1 rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#0e1424] text-xs font-medium text-slate-700 dark:text-slate-200">
-                                        {getWaterLabel(fish.water_type)}
+                                        {getWaterLabel(fish.water_type, isEn)}
                                     </span>
                                     <span className="px-3 py-1 rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#0e1424] text-xs font-medium text-slate-700 dark:text-slate-200">
-                                        {getSexLabel(fish.sex)}
+                                        {getSexLabel(fish.sex, isEn)}
                                     </span>
                                     {fish.size_stage && (
                                         <span className="px-3 py-1 rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#0e1424] text-xs font-medium text-slate-700 dark:text-slate-200">
-                                            Ukuran {fish.size_stage}
+                                            {pick('Ukuran', 'Size')} {fish.size_stage}
                                         </span>
                                     )}
                                     {fish.min_tank_liters && (
                                         <span className="px-3 py-1 rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#0e1424] text-xs font-medium text-slate-700 dark:text-slate-200">
-                                            Tank min. {fish.min_tank_liters}L
+                                            {pick('Tank min.', 'Min. tank')} {fish.min_tank_liters}L
                                         </span>
                                     )}
                                     <span className="px-3 py-1 rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#0e1424] text-xs font-medium text-slate-700 dark:text-slate-200">
-                                        {getOriginLabel(fish.breeding_origin)}
+                                        {getOriginLabel(fish.breeding_origin, isEn)}
                                     </span>
                                 </div>
                             </div>
@@ -411,7 +420,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                         <button
                                             type="button"
                                             onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                            aria-label="Kurangi jumlah"
+                                            aria-label={pick('Kurangi jumlah', 'Decrease quantity')}
                                             className="w-8 h-8 rounded-full bg-slate-900 hover:bg-slate-700 dark:bg-slate-800 text-white flex items-center justify-center transition"
                                         >
                                             <Minus className="w-3.5 h-3.5" />
@@ -424,7 +433,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                             onClick={() =>
                                                 setQuantity(Math.min(product.stock, quantity + 1))
                                             }
-                                            aria-label="Tambah jumlah"
+                                            aria-label={pick('Tambah jumlah', 'Increase quantity')}
                                             className="w-8 h-8 rounded-full bg-slate-900 hover:bg-slate-700 dark:bg-slate-800 text-white flex items-center justify-center transition"
                                         >
                                             <Plus className="w-3.5 h-3.5" />
@@ -440,12 +449,12 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                         {added ? (
                                             <>
                                                 <Check className="w-4 h-4 text-emerald-600" />
-                                                Masuk Keranjang
+                                                {pick('Masuk Keranjang', 'In Cart')}
                                             </>
                                         ) : (
                                             <>
                                                 <ShoppingCart className="w-4 h-4" />
-                                                {adding ? 'Menambahkan...' : 'Keranjang'}
+                                                {adding ? pick('Menambahkan...', 'Adding...') : pick('Keranjang', 'Add to Cart')}
                                             </>
                                         )}
                                     </button>
@@ -456,49 +465,49 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                         disabled={adding || buying}
                                         className="flex-1 min-w-[140px] h-11 px-5 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-[#0684E5] dark:hover:bg-[#0267C1] text-white text-xs sm:text-sm font-semibold shadow-[0_6px_18px_rgba(15,23,42,0.18)] flex items-center justify-center transition disabled:opacity-50"
                                     >
-                                        {buying ? 'Memproses...' : 'Beli Sekarang'}
+                                        {buying ? pick('Memproses...', 'Processing...') : pick('Beli Sekarang', 'Buy Now')}
                                     </button>
                                 </div>
 
                                 {added && (
                                     <div className="flex items-center justify-between gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900 px-4 py-2.5 text-xs font-medium text-emerald-800 dark:text-emerald-300">
-                                        <span>Produk berhasil ditambahkan ke keranjang Anda.</span>
+                                        <span>{pick('Produk berhasil ditambahkan ke keranjang Anda.', 'Product added to your cart.')}</span>
                                         <Link
                                             href="/cart"
                                             className="font-bold underline underline-offset-4 shrink-0"
                                         >
-                                            Lihat Keranjang
+                                            {pick('Lihat Keranjang', 'View Cart')}
                                         </Link>
                                     </div>
                                 )}
                             </div>
                         ) : (
                             <div className="rounded-2xl bg-slate-100 dark:bg-slate-800/70 p-4 text-sm font-medium text-slate-600 dark:text-slate-300">
-                                Produk ini sedang habis dari penangkar.
+                                {pick('Produk ini sedang habis dari penangkar.', 'This item is currently out of stock from the breeder.')}
                             </div>
                         )}
 
                         {/* Collapsible Shipping & DOA Card (2x2 circular icon grid) */}
-                        <AccordionCard title="Pengiriman & Garansi" defaultOpen={true}>
+                        <AccordionCard title={pick('Pengiriman & Garansi', 'Shipping & Guarantee')} defaultOpen={true}>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <MetaIconItem
                                     icon={ShieldCheck}
-                                    label="Garansi Hidup"
-                                    value="DOA 100% Ikan Selamat"
+                                    label={pick('Garansi Hidup', 'Live Guarantee')}
+                                    value={pick('DOA 100% Ikan Selamat', '100% Live Arrival (DOA)')}
                                 />
                                 <MetaIconItem
                                     icon={Package}
-                                    label="Kemasan"
-                                    value="Oksigen Ganda + Boks"
+                                    label={pick('Kemasan', 'Packaging')}
+                                    value={pick('Oksigen Ganda + Boks', 'Double O₂ + Insulated Box')}
                                 />
                                 <MetaIconItem
                                     icon={Clock}
-                                    label="Estimasi Kirim"
+                                    label={pick('Estimasi Kirim', 'Shipping Estimate')}
                                     value="Instant / Nextday"
                                 />
                                 <MetaIconItem
                                     icon={MapPin}
-                                    label="Asal Pengiriman"
+                                    label={pick('Asal Pengiriman', 'Ships From')}
                                     value={store ? `${store.city}, ${store.province}` : 'Indonesia'}
                                 />
                             </div>
@@ -506,7 +515,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                             {store?.doa_policy && (
                                 <p className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
                                     <span className="font-semibold text-slate-700 dark:text-slate-200">
-                                        Kebijakan Toko:{' '}
+                                        {pick('Kebijakan Toko:', 'Store Policy:')}{' '}
                                     </span>
                                     {store.doa_policy}
                                 </p>
@@ -515,16 +524,16 @@ export default function Show({ product, relatedProducts, storeRating }) {
 
                         {/* Collapsible Fish Parameter Details Card */}
                         {fish && (
-                            <AccordionCard title="Data Air & Spesifikasi" defaultOpen={false}>
+                            <AccordionCard title={pick('Data Air & Spesifikasi', 'Water Parameters & Specs')} defaultOpen={false}>
                                 <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-xs">
                                     <div>
-                                        <dt className="text-slate-400 dark:text-slate-500">Spesies</dt>
+                                        <dt className="text-slate-400 dark:text-slate-500">{pick('Spesies', 'Species')}</dt>
                                         <dd className="mt-0.5 font-semibold italic text-slate-900 dark:text-white">
                                             {fish.species_name}
                                         </dd>
                                     </div>
                                     <div>
-                                        <dt className="text-slate-400 dark:text-slate-500">Suhu Ideal</dt>
+                                        <dt className="text-slate-400 dark:text-slate-500">{pick('Suhu Ideal', 'Ideal Temp')}</dt>
                                         <dd className="mt-0.5 font-semibold text-slate-900 dark:text-white tabular-nums">
                                             {fish.temp_min != null
                                                 ? `${fish.temp_min}–${fish.temp_max} °C`
@@ -532,25 +541,25 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                         </dd>
                                     </div>
                                     <div>
-                                        <dt className="text-slate-400 dark:text-slate-500">Rentang pH</dt>
+                                        <dt className="text-slate-400 dark:text-slate-500">{pick('Rentang pH', 'pH Range')}</dt>
                                         <dd className="mt-0.5 font-semibold text-slate-900 dark:text-white tabular-nums">
                                             {fish.ph_min != null ? `${fish.ph_min}–${fish.ph_max}` : '—'}
                                         </dd>
                                     </div>
                                     <div>
-                                        <dt className="text-slate-400 dark:text-slate-500">Volume Tank</dt>
+                                        <dt className="text-slate-400 dark:text-slate-500">{pick('Volume Tank', 'Tank Volume')}</dt>
                                         <dd className="mt-0.5 font-semibold text-slate-900 dark:text-white tabular-nums">
                                             {fish.min_tank_liters ? `${fish.min_tank_liters} L` : '—'}
                                         </dd>
                                     </div>
                                     <div>
-                                        <dt className="text-slate-400 dark:text-slate-500">Pakan Utama</dt>
+                                        <dt className="text-slate-400 dark:text-slate-500">{pick('Pakan Utama', 'Primary Diet')}</dt>
                                         <dd className="mt-0.5 font-semibold text-slate-900 dark:text-white">
                                             {fish.diet_type || '—'}
                                         </dd>
                                     </div>
                                     <div>
-                                        <dt className="text-slate-400 dark:text-slate-500">Temperamen</dt>
+                                        <dt className="text-slate-400 dark:text-slate-500">{pick('Temperamen', 'Temperament')}</dt>
                                         <dd className="mt-0.5 font-semibold capitalize text-slate-900 dark:text-white">
                                             {fish.temperament || '—'}
                                         </dd>
@@ -569,13 +578,13 @@ export default function Show({ product, relatedProducts, storeRating }) {
                     <section className="mt-12 sm:mt-16 pt-10 sm:pt-12 border-t border-slate-200/80 dark:border-neutral-800">
                         <div className="flex items-center justify-between gap-3">
                             <h2 className="text-xl sm:text-2xl font-bold tracking-[-0.02em] text-slate-900 dark:text-white">
-                                Produk Serupa
+                                {pick('Produk Serupa', 'Similar Products')}
                             </h2>
                             <Link
                                 href={`/products?category=${product.category?.slug || ''}`}
                                 className="text-xs sm:text-sm font-semibold text-[#0267C1] dark:text-sky-400 hover:underline"
                             >
-                                Lihat semua
+                                {pick('Lihat semua', 'View all')}
                             </Link>
                         </div>
 

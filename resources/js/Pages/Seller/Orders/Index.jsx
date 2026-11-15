@@ -1,8 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
 import SellerLayout from '@/Layouts/SellerLayout';
 import { Package, ArrowRight, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
 
 export default function Index({ store, orders }) {
+    const { pick, trOrderStatus } = useLanguage();
     const formatPrice = (price) => {
         return new Intl.NumberFormat('id-ID', {
             style: 'currency',
@@ -12,33 +14,37 @@ export default function Index({ store, orders }) {
     };
 
     const getStatusBadge = (status) => {
+        const label = trOrderStatus(status);
         switch (status) {
             case 'pending_payment':
-                return { label: 'Menunggu Bayar', bg: 'bg-amber-50 text-amber-700' };
+                return { label, bg: 'bg-amber-50 text-amber-700' };
             case 'awaiting_confirmation':
-                return { label: 'Perlu Verifikasi', bg: 'bg-blue-100 text-blue-800' };
+                return { label, bg: 'bg-blue-100 text-blue-800' };
             case 'processing':
-                return { label: 'Siap Kirim', bg: 'bg-purple-100 text-purple-800' };
+                return { label, bg: 'bg-purple-100 text-purple-800' };
             case 'shipped':
-                return { label: 'Sedang Dikirim', bg: 'bg-indigo-100 text-indigo-800' };
+                return { label, bg: 'bg-indigo-100 text-indigo-800' };
             case 'delivered':
-                return { label: 'Selesai', bg: 'bg-emerald-100 text-emerald-800' };
+                return { label, bg: 'bg-emerald-100 text-emerald-800' };
             default:
-                return { label: 'Batal', bg: 'bg-rose-100 text-rose-800' };
+                return { label, bg: 'bg-rose-100 text-rose-800' };
         }
     };
 
     return (
         <SellerLayout>
-            <Head title="Pesanan Masuk Toko - Portal Penjual" />
+            <Head title={pick('Pesanan Masuk Toko - Portal Penjual', 'Incoming Store Orders — Seller Portal')} />
 
             <div className="space-y-6">
                 <div>
                     <h1 className="text-xl sm:text-2xl font-extrabold text-dunia-navy">
-                        Pesanan Masuk Toko
+                        {pick('Pesanan Masuk Toko', 'Incoming Store Orders')}
                     </h1>
                     <p className="text-xs text-slate-500 mt-1">
-                        Verifikasi bukti transfer pembeli, siapkan packing oksigen ikan, dan masukkan nomor resi pengiriman.
+                        {pick(
+                            'Verifikasi bukti transfer pembeli, siapkan packing oksigen ikan, dan masukkan nomor resi pengiriman.',
+                            'Verify buyer transfer proofs, prepare oxygenated fish packing, and enter courier tracking numbers.'
+                        )}
                     </p>
                 </div>
 
@@ -81,7 +87,9 @@ export default function Index({ store, orders }) {
 
                                         <div className="flex items-center justify-between gap-3 pt-2 border-t border-slate-100">
                                             <div>
-                                                <span className="block text-[10px] text-slate-400">Total Tagihan</span>
+                                                <span className="block text-[10px] text-slate-400">
+                                                    {pick('Total Tagihan', 'Total Due')}
+                                                </span>
                                                 <span className="font-extrabold text-sm text-dunia-blue tabular-nums">
                                                     {formatPrice(order.grand_total)}
                                                 </span>
@@ -90,7 +98,7 @@ export default function Index({ store, orders }) {
                                                 href={`/seller/orders/${order.id}`}
                                                 className="px-3.5 py-2 rounded-xl bg-sky-50 text-dunia-navy hover:bg-sky-100 font-bold text-xs inline-flex items-center gap-1.5 transition"
                                             >
-                                                Detail & Proses
+                                                {pick('Detail & Proses', 'Manage Order')}
                                                 <ArrowRight className="w-3.5 h-3.5" />
                                             </Link>
                                         </div>
@@ -104,13 +112,13 @@ export default function Index({ store, orders }) {
                             <table className="w-full text-left text-xs">
                                 <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
                                     <tr>
-                                        <th className="p-4">No. Pesanan</th>
-                                        <th className="p-4">Pembeli</th>
-                                        <th className="p-4">Item Ikan</th>
-                                        <th className="p-4">Total</th>
-                                        <th className="p-4">Status Pesanan</th>
-                                        <th className="p-4">Status Bayar</th>
-                                        <th className="p-4 text-right">Aksi</th>
+                                        <th className="p-4">{pick('No. Pesanan', 'Order No.')}</th>
+                                        <th className="p-4">{pick('Pembeli', 'Buyer')}</th>
+                                        <th className="p-4">{pick('Item Ikan', 'Fish Items')}</th>
+                                        <th className="p-4">{pick('Total', 'Total')}</th>
+                                        <th className="p-4">{pick('Status Pesanan', 'Order Status')}</th>
+                                        <th className="p-4">{pick('Status Bayar', 'Payment Status')}</th>
+                                        <th className="p-4 text-right">{pick('Aksi', 'Action')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
@@ -160,7 +168,7 @@ export default function Index({ store, orders }) {
                                                         href={`/seller/orders/${order.id}`}
                                                         className="px-3 py-1.5 rounded-xl bg-sky-50 text-dunia-navy hover:bg-sky-100 font-bold text-[11px] inline-flex items-center gap-1 transition"
                                                     >
-                                                        Detail & Proses
+                                                        {pick('Detail & Proses', 'Manage Order')}
                                                         <ArrowRight className="w-3.5 h-3.5" />
                                                     </Link>
                                                 </td>
@@ -174,8 +182,12 @@ export default function Index({ store, orders }) {
                 ) : (
                     <div className="p-12 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-xs space-y-2">
                         <Package className="w-10 h-10 text-slate-300 mx-auto" />
-                        <p className="font-bold text-slate-700">Belum ada pesanan masuk untuk toko Anda</p>
-                        <p className="text-slate-400">Pesanan dari pembeli akan muncul di halaman ini.</p>
+                        <p className="font-bold text-slate-700">
+                            {pick('Belum ada pesanan masuk untuk toko Anda', 'No incoming orders for your store yet')}
+                        </p>
+                        <p className="text-slate-400">
+                            {pick('Pesanan dari pembeli akan muncul di halaman ini.', 'Buyer orders will appear here.')}
+                        </p>
                     </div>
                 )}
             </div>

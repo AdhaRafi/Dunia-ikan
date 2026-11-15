@@ -17,8 +17,10 @@ import {
     RefreshCw,
     ExternalLink
 } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
 
 export default function Show({ order, midtransClientKey, isMidtransProduction }) {
+    const { isEn, pick, trOrderStatus } = useLanguage();
     const store = order.store;
     const [confirming, setConfirming] = useState(false);
     const [loadingSnap, setLoadingSnap] = useState(false);
@@ -54,7 +56,10 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
             });
             const result = await res.json();
             if (!res.ok) {
-                alert(result.message || 'Gagal memuat sesi pembayaran Midtrans');
+                alert(
+                    result.message ||
+                        pick('Gagal memuat sesi pembayaran Midtrans', 'Failed to initialize Midtrans payment session')
+                );
                 return;
             }
 
@@ -71,17 +76,27 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                         });
                     },
                     onError: (snapResult) => {
-                        alert('Pembayaran gagal atau dibatalkan.');
+                        alert(pick('Pembayaran gagal atau dibatalkan.', 'Payment failed or cancelled.'));
                     },
                     onClose: () => {
                         // User menutup pop-up Snap
                     }
                 });
             } else {
-                alert('Script Midtrans Snap sedang dimuat, silakan klik kembali dalam beberapa detik.');
+                alert(
+                    pick(
+                        'Script Midtrans Snap sedang dimuat, silakan klik kembali dalam beberapa detik.',
+                        'Midtrans Snap script is still loading, please try again in a few seconds.'
+                    )
+                );
             }
         } catch (err) {
-            alert('Terjadi kesalahan koneksi saat memanggil Midtrans.');
+            alert(
+                pick(
+                    'Terjadi kesalahan koneksi saat memanggil Midtrans.',
+                    'Connection error while contacting Midtrans.'
+                )
+            );
         } finally {
             setLoadingSnap(false);
         }
@@ -108,7 +123,14 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
     };
 
     const handleConfirmDelivery = () => {
-        if (confirm('Konfirmasi bahwa paket ikan hias telah Anda terima dengan selamat?')) {
+        if (
+            confirm(
+                pick(
+                    'Konfirmasi bahwa paket ikan hias telah Anda terima dengan selamat?',
+                    'Confirm that your ornamental fish package arrived safely?'
+                )
+            )
+        ) {
             setConfirming(true);
             router.post(`/orders/${order.order_number}/confirm`, {}, {
                 preserveScroll: true,
@@ -126,39 +148,44 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
     };
 
     const steps = [
-        { key: 'pending_payment', label: 'Menunggu Bayar' },
-        { key: 'awaiting_confirmation', label: 'Verifikasi' },
-        { key: 'processing', label: 'Diproses' },
-        { key: 'shipped', label: 'Dikirim' },
-        { key: 'delivered', label: 'Selesai' },
+        { key: 'pending_payment', label: pick('Menunggu Bayar', 'Awaiting Payment') },
+        { key: 'awaiting_confirmation', label: pick('Verifikasi', 'Verification') },
+        { key: 'processing', label: pick('Diproses', 'Processing') },
+        { key: 'shipped', label: pick('Dikirim', 'Shipped') },
+        { key: 'delivered', label: pick('Selesai', 'Delivered') },
     ];
 
     const currentStepIndex = steps.findIndex((s) => s.key === order.status);
 
     return (
         <AppLayout>
-            <Head title={`Pesanan ${order.order_number} - Dunia Ikan`} />
+            <Head title={`${pick('Pesanan', 'Order')} ${order.order_number} - Dunia Ikan`} />
 
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
                 {/* Back button */}
                 <Link href="/orders" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-dunia-blue transition">
                     <ArrowLeft className="w-4 h-4" />
-                    Kembali ke Daftar Pesanan
+                    {pick('Kembali ke Daftar Pesanan', 'Back to Orders')}
                 </Link>
 
                 {/* Order Header */}
                 <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-6">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
                         <div>
-                            <span className="text-xs text-slate-400 font-semibold">Nomor Pesanan</span>
+                            <span className="text-xs text-slate-400 font-semibold">
+                                {pick('Nomor Pesanan', 'Order Number')}
+                            </span>
                             <h1 className="text-2xl font-extrabold text-dunia-navy">{order.order_number}</h1>
                             <p className="text-xs text-slate-500 mt-0.5">
-                                Dibuat pada {new Date(order.created_at).toLocaleString('id-ID')}
+                                {pick('Dibuat pada', 'Placed on')}{' '}
+                                {new Date(order.created_at).toLocaleString(isEn ? 'en-US' : 'id-ID')}
                             </p>
                         </div>
 
                         <div className="text-right">
-                            <span className="text-xs text-slate-400 font-semibold">Total Tagihan</span>
+                            <span className="text-xs text-slate-400 font-semibold">
+                                {pick('Total Tagihan', 'Total Due')}
+                            </span>
                             <p className="text-2xl font-extrabold text-dunia-blue">
                                 {formatPrice(order.grand_total)}
                             </p>
@@ -199,7 +226,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                         </div>
                     ) : (
                         <div className="p-3 bg-rose-50 text-rose-700 font-bold text-xs rounded-xl text-center">
-                            Pesanan ini telah dibatalkan.
+                            {pick('Pesanan ini telah dibatalkan.', 'This order has been cancelled.')}
                         </div>
                     )}
                 </div>
@@ -210,17 +237,23 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2 font-bold text-indigo-900 text-sm">
                                 <Truck className="w-5 h-5 text-indigo-600" />
-                                <span>Informasi Pengiriman Ikan</span>
+                                <span>{pick('Informasi Pengiriman Ikan', 'Fish Shipment Info')}</span>
                             </div>
                             <span className="px-2.5 py-0.5 rounded-full bg-indigo-600 text-white font-bold text-[10px]">
-                                Sedang Dikirim
+                                {trOrderStatus('shipped')}
                             </span>
                         </div>
                         <p className="text-indigo-800">
-                            Kurir: <strong>{order.shipping_courier || 'Kurir Khusus Ikan'}</strong> | No. Resi: <strong className="font-mono text-sm">{order.shipping_tracking_number}</strong>
+                            {pick('Kurir:', 'Courier:')}{' '}
+                            <strong>{order.shipping_courier || pick('Kurir Khusus Ikan', 'Live Fish Courier')}</strong> |{' '}
+                            {pick('No. Resi:', 'Tracking No.:')}{' '}
+                            <strong className="font-mono text-sm">{order.shipping_tracking_number}</strong>
                         </p>
                         <p className="text-slate-500 text-[11px]">
-                            * Ikan dikemas dengan tabung oksigen bertekanan dan kotak styrofoam tahan suhu.
+                            {pick(
+                                '* Ikan dikemas dengan tabung oksigen bertekanan dan kotak styrofoam tahan suhu.',
+                                '* Fish are packed with pressurized oxygen and temperature-insulated styrofoam boxes.'
+                            )}
                         </p>
 
                         {order.status === 'shipped' && (
@@ -231,7 +264,9 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                                     className="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition cursor-pointer flex items-center gap-2"
                                 >
                                     <CheckCircle2 className="w-4 h-4" />
-                                    {confirming ? 'Menyimpan...' : 'Konfirmasi Paket Diterima'}
+                                    {confirming
+                                        ? pick('Menyimpan...', 'Saving...')
+                                        : pick('Konfirmasi Paket Diterima', 'Confirm Package Received')}
                                 </button>
                             </div>
                         )}
@@ -246,14 +281,20 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                                 <CheckCircle2 className="w-5 h-5" />
                             </div>
                             <div>
-                                <h4 className="text-sm font-extrabold text-emerald-950">Pembayaran Terverifikasi (Lunas)</h4>
+                                <h4 className="text-sm font-extrabold text-emerald-950">
+                                    {pick('Pembayaran Terverifikasi (Lunas)', 'Payment Verified (Paid)')}
+                                </h4>
                                 <p className="text-emerald-700 mt-0.5">
-                                    {order.payment_notes || 'Pembayaran telah divalidasi dan pesanan diteruskan ke penangkar.'}
+                                    {order.payment_notes ||
+                                        pick(
+                                            'Pembayaran telah divalidasi dan pesanan diteruskan ke penangkar.',
+                                            'Payment has been validated and forwarded to the breeder store.'
+                                        )}
                                 </p>
                             </div>
                         </div>
                         <span className="px-3 py-1 rounded-full bg-emerald-600 text-white font-extrabold text-[11px] shrink-0">
-                            LUNAS
+                            {pick('LUNAS', 'PAID')}
                         </span>
                     </div>
                 )}
@@ -264,10 +305,10 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                         <div className="flex items-center justify-between pb-3 border-b border-slate-100 gap-2">
                             <div className="flex items-center gap-2 text-sm font-bold text-dunia-navy">
                                 <CreditCard className="w-4 h-4 text-dunia-blue" />
-                                <span>Penyelesaian Pembayaran Pesanan</span>
+                                <span>{pick('Penyelesaian Pembayaran Pesanan', 'Complete Order Payment')}</span>
                             </div>
                             <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">
-                                Menunggu Pembayaran
+                                {trOrderStatus('pending_payment')}
                             </span>
                         </div>
 
@@ -280,13 +321,16 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                                     </div>
                                     <div>
                                         <h4 className="text-sm font-extrabold text-dunia-navy flex items-center gap-2">
-                                            <span>Pembayaran Otomatis Midtrans</span>
+                                            <span>{pick('Pembayaran Otomatis Midtrans', 'Midtrans Instant Payment')}</span>
                                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-600 text-white">
                                                 Instant
                                             </span>
                                         </h4>
                                         <p className="text-xs text-slate-500 mt-0.5">
-                                            QRIS (GoPay/ShopeePay/BCA) & Virtual Account (BCA, Mandiri, BRI, BNI). Langsung lunas otomatis!
+                                            {pick(
+                                                'QRIS (GoPay/ShopeePay/BCA) & Virtual Account (BCA, Mandiri, BRI, BNI). Langsung lunas otomatis!',
+                                                'QRIS (GoPay/ShopeePay/BCA) & Virtual Account (BCA, Mandiri, BRI, BNI). Verified automatically!'
+                                            )}
                                         </p>
                                     </div>
                                 </div>
@@ -298,17 +342,21 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                                         className="px-5 py-2.5 rounded-xl bg-dunia-blue hover:bg-sky-600 text-white font-extrabold text-xs shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
                                     >
                                         <Zap className="w-4 h-4 fill-white" />
-                                        {loadingSnap ? 'Memuat Snap...' : 'Bayar Sekarang (Midtrans)'}
+                                        {loadingSnap
+                                            ? pick('Memuat Snap...', 'Loading Snap...')
+                                            : pick('Bayar Sekarang (Midtrans)', 'Pay Now (Midtrans)')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleCheckStatus}
                                         disabled={checkingStatus}
                                         className="px-3 py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-                                        title="Cek Status Pembayaran dari Midtrans"
+                                        title={pick('Cek Status Pembayaran dari Midtrans', 'Check Payment Status via Midtrans')}
                                     >
                                         <RefreshCw className={`w-3.5 h-3.5 ${checkingStatus ? 'animate-spin' : ''}`} />
-                                        <span className="hidden sm:inline">{checkingStatus ? 'Mengecek...' : 'Cek Status'}</span>
+                                        <span className="hidden sm:inline">
+                                            {checkingStatus ? pick('Mengecek...', 'Checking...') : pick('Cek Status', 'Check Status')}
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -317,39 +365,54 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                         {/* Manual Transfer / QRIS / COD fallback section */}
                         {order.payment_method === 'bank_transfer' && (
                             <div className="p-4 rounded-xl bg-sky-50/80 border border-sky-100 space-y-2 text-xs">
-                                <p className="font-bold text-slate-800">Atau Transfer Manual ke Rekening Toko ({store?.name}):</p>
+                                <p className="font-bold text-slate-800">
+                                    {pick('Atau Transfer Manual ke Rekening Toko', 'Or Bank Transfer to Store Account')} ({store?.name}):
+                                </p>
                                 <div className="space-y-1 font-mono text-sm">
                                     <p>Bank: <strong className="font-sans text-dunia-navy">{store?.bank_name || 'BCA'}</strong></p>
-                                    <p>No. Rekening: <strong className="text-dunia-blue text-base font-bold">{store?.bank_account_number || '7820192837'}</strong></p>
-                                    <p>Atas Nama: <strong className="font-sans text-slate-800">{store?.bank_account_name || store?.name}</strong></p>
+                                    <p>{pick('No. Rekening:', 'Account Number:')} <strong className="text-dunia-blue text-base font-bold">{store?.bank_account_number || '7820192837'}</strong></p>
+                                    <p>{pick('Atas Nama:', 'Account Name:')} <strong className="font-sans text-slate-800">{store?.bank_account_name || store?.name}</strong></p>
                                 </div>
                                 <p className="text-[11px] text-slate-500 pt-1">
-                                    Transfer sesuai nominal persis: <strong>{formatPrice(order.grand_total)}</strong>
+                                    {pick('Transfer sesuai nominal persis:', 'Transfer the exact amount:')}{' '}
+                                    <strong>{formatPrice(order.grand_total)}</strong>
                                 </p>
                             </div>
                         )}
 
                         {order.payment_method === 'qris' && (
                             <div className="p-4 rounded-xl bg-teal-50/80 border border-teal-100 space-y-3 text-xs text-center">
-                                <p className="font-bold text-teal-900">Atau Scan QRIS Manual Toko ({store?.name}):</p>
+                                <p className="font-bold text-teal-900">
+                                    {pick('Atau Scan QRIS Manual Toko', 'Or Scan Store Static QRIS')} ({store?.name}):
+                                </p>
                                 {store?.qris_image ? (
                                     <img src={`/storage/${store.qris_image}`} alt="QRIS Toko" className="w-48 h-48 mx-auto object-contain border rounded-xl bg-white p-2" />
                                 ) : (
                                     <div className="w-44 h-44 bg-white border border-teal-200 rounded-xl mx-auto flex items-center justify-center text-teal-600 font-bold">
-                                        [QRIS TOKO STATIS]
+                                        {pick('[QRIS TOKO STATIS]', '[STATIC STORE QRIS]')}
                                     </div>
                                 )}
                                 <p className="text-[11px] text-slate-500">
-                                    Scan melalui GoPay, OVO, Dana, ShopeePay, atau BCA Mobile
+                                    {pick(
+                                        'Scan melalui GoPay, OVO, Dana, ShopeePay, atau BCA Mobile',
+                                        'Scan via GoPay, OVO, Dana, ShopeePay, or any Indonesian mobile banking app'
+                                    )}
                                 </p>
                             </div>
                         )}
 
                         {order.payment_method === 'cod' && (
                             <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
-                                <p className="font-bold">Pembayaran Tunai (Cash on Delivery)</p>
+                                <p className="font-bold">
+                                    {pick('Pembayaran Tunai (Cash on Delivery)', 'Cash on Delivery (COD)')}
+                                </p>
                                 <p>
-                                    Siapkan uang pas sebesar <strong>{formatPrice(order.grand_total)}</strong> saat kurir toko mengantarkan ikan ke alamat Anda.
+                                    {pick('Siapkan uang pas sebesar', 'Please prepare exact cash of')}{' '}
+                                    <strong>{formatPrice(order.grand_total)}</strong>{' '}
+                                    {pick(
+                                        'saat kurir toko mengantarkan ikan ke alamat Anda.',
+                                        'when the store courier delivers to your address.'
+                                    )}
                                 </p>
                             </div>
                         )}
@@ -359,10 +422,16 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                             <form onSubmit={handleUploadProof} className="pt-4 border-t border-slate-100 space-y-4">
                                 <div className="space-y-1">
                                     <label className="block text-xs font-bold text-slate-700 uppercase">
-                                        Unggah Foto Bukti Transfer Manual (Opsional jika bayar via transfer manual)
+                                        {pick(
+                                            'Unggah Foto Bukti Transfer Manual (Opsional jika bayar via transfer manual)',
+                                            'Upload Manual Transfer Receipt (Optional if paying by manual transfer)'
+                                        )}
                                     </label>
                                     <p className="text-[11px] text-slate-400">
-                                        Format JPEG, PNG, JPG maksimal 3MB. Jika bayar via tombol Midtrans di atas, Anda tidak perlu mengunggah bukti.
+                                        {pick(
+                                            'Format JPEG, PNG, JPG maksimal 3MB. Jika bayar via tombol Midtrans di atas, Anda tidak perlu mengunggah bukti.',
+                                            'JPEG, PNG, JPG up to 3MB. If you paid using Midtrans above, no receipt upload is required.'
+                                        )}
                                     </p>
                                 </div>
 
@@ -378,11 +447,17 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
 
                                 <div>
                                     <label className="block text-xs font-semibold text-slate-600 mb-1">
-                                        Catatan Pembayaran (Opsional, e.g. nama rekening pengirim):
+                                        {pick(
+                                            'Catatan Pembayaran (Opsional, e.g. nama rekening pengirim):',
+                                            'Payment Notes (Optional, e.g. sender account name):'
+                                        )}
                                     </label>
                                     <input
                                         type="text"
-                                        placeholder="Contoh: Transfer dari rekening BCA a.n Andi"
+                                        placeholder={pick(
+                                            'Contoh: Transfer dari rekening BCA a.n Andi',
+                                            'Example: Transfer from BCA account under Andi'
+                                        )}
                                         value={data.payment_notes}
                                         onChange={(e) => setData('payment_notes', e.target.value)}
                                         className="w-full text-xs p-2.5 rounded-xl border border-slate-200"
@@ -395,19 +470,23 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                                     className="px-5 py-2.5 rounded-xl bg-dunia-blue text-white font-bold text-xs hover:bg-sky-600 disabled:opacity-50 transition cursor-pointer flex items-center gap-2"
                                 >
                                     <Upload className="w-4 h-4" />
-                                    {processing ? 'Mengunggah...' : 'Kirim Bukti Pembayaran'}
+                                    {processing
+                                        ? pick('Mengunggah...', 'Uploading...')
+                                        : pick('Kirim Bukti Pembayaran', 'Submit Payment Proof')}
                                 </button>
 
                                 {order.payment_proof && (
                                     <div className="pt-3 flex items-center gap-3">
-                                        <span className="text-xs text-slate-500">Bukti yang telah diunggah:</span>
+                                        <span className="text-xs text-slate-500">
+                                            {pick('Bukti yang telah diunggah:', 'Uploaded proof:')}
+                                        </span>
                                         <a
                                             href={`/storage/${order.payment_proof}`}
                                             target="_blank"
                                             rel="noreferrer"
                                             className="text-xs font-bold text-dunia-blue underline"
                                         >
-                                            Lihat Bukti Terkirim
+                                            {pick('Lihat Bukti Terkirim', 'View Submitted Proof')}
                                         </a>
                                     </div>
                                 )}
@@ -420,7 +499,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                 <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-4">
                     <h3 className="font-bold text-sm text-dunia-navy uppercase tracking-wider flex items-center gap-2 pb-3 border-b border-slate-100">
                         <Store className="w-4 h-4 text-dunia-marine" />
-                        Detail Ikan & Produk dari {store?.name}
+                        {pick('Detail Ikan & Produk dari', 'Items from')} {store?.name}
                     </h3>
 
                     <div className="divide-y divide-slate-100">
@@ -429,7 +508,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                                 <div>
                                     <p className="font-bold text-slate-800 text-sm">{item.product_name}</p>
                                     <p className="text-slate-500">
-                                        {item.quantity} ekor x {formatPrice(item.price)}
+                                        {item.quantity} {pick('ekor', 'pcs')} x {formatPrice(item.price)}
                                     </p>
                                 </div>
                                 <p className="font-bold text-slate-900 text-sm">
@@ -441,15 +520,15 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
 
                     <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
                         <div className="flex justify-between">
-                            <span>Subtotal Produk:</span>
+                            <span>{pick('Subtotal Produk:', 'Items Subtotal:')}</span>
                             <span className="font-bold text-slate-800">{formatPrice(order.total_product_amount)}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span>Biaya Pengiriman & Box Oksigen:</span>
+                            <span>{pick('Biaya Pengiriman & Box Oksigen:', 'Shipping & Oxygen Packing:')}</span>
                             <span className="font-bold text-slate-800">{formatPrice(order.shipping_cost)}</span>
                         </div>
                         <div className="flex justify-between font-bold text-dunia-navy text-sm pt-2 border-t border-slate-200">
-                            <span>Total Tagihan:</span>
+                            <span>{pick('Total Tagihan:', 'Grand Total:')}</span>
                             <span className="text-dunia-blue font-extrabold text-base">{formatPrice(order.grand_total)}</span>
                         </div>
                     </div>
@@ -458,21 +537,29 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                 {/* Recipient Details & DOA Policy Reminder */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-white p-5 rounded-2xl border border-sky-100 text-xs space-y-2">
-                        <p className="font-bold text-dunia-navy uppercase">Alamat Penerima:</p>
+                        <p className="font-bold text-dunia-navy uppercase">
+                            {pick('Alamat Penerima:', 'Recipient Address:')}
+                        </p>
                         <p className="font-semibold text-slate-800">{order.shipping_recipient_name} ({order.shipping_phone})</p>
                         <p className="text-slate-600">{order.shipping_address}</p>
                         {order.shipping_notes && (
-                            <p className="text-slate-400 italic">Catatan: {order.shipping_notes}</p>
+                            <p className="text-slate-400 italic">
+                                {pick('Catatan:', 'Notes:')} {order.shipping_notes}
+                            </p>
                         )}
                     </div>
 
                     <div className="bg-sky-50/70 p-5 rounded-2xl border border-sky-100 text-xs space-y-2">
                         <p className="font-bold text-dunia-navy uppercase flex items-center gap-1.5">
                             <ShieldCheck className="w-4 h-4 text-dunia-aqua" />
-                            Kebijakan Garansi Ikan Hidup (DOA):
+                            {pick('Kebijakan Garansi Ikan Hidup (DOA):', 'Live Arrival Guarantee (DOA Policy):')}
                         </p>
                         <p className="text-slate-600 leading-relaxed">
-                            {store?.doa_policy || 'Wajib menyertakan video unboxing utuh tanpa jeda maksimal 2 jam setelah ikan diterima.'}
+                            {store?.doa_policy ||
+                                pick(
+                                    'Wajib menyertakan video unboxing utuh tanpa jeda maksimal 2 jam setelah ikan diterima.',
+                                    'An unedited continuous unboxing video within 2 hours of delivery is required for DOA claims.'
+                                )}
                         </p>
                     </div>
                 </div>

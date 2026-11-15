@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import UserAvatar from '@/Components/UserAvatar';
+import { useLanguage } from '@/lib/i18n';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
@@ -22,26 +23,19 @@ const formatPrice = (price) =>
         maximumFractionDigits: 0,
     }).format(price || 0);
 
-const formatDate = (dateString) => {
+const formatDate = (dateString, locale) => {
     if (!dateString) {
         return '';
     }
-    return new Intl.DateTimeFormat('id-ID', {
+    return new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'id-ID', {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
     }).format(new Date(dateString));
 };
 
-const ORDER_STATUS_LABELS = {
-    pending_payment: 'Menunggu Pembayaran',
-    awaiting_confirmation: 'Menunggu Konfirmasi',
-    processing: 'Diproses',
-    shipped: 'Dikirim',
-    delivered: 'Selesai',
-};
-
 export default function Edit({ mustVerifyEmail, status, recentOrders = [], orderStats = {} }) {
+    const { locale, pick, trOrderStatus } = useLanguage();
     const { auth } = usePage().props;
     const user = auth?.user;
     const [activeTab, setActiveTab] = useState('profile');
@@ -82,7 +76,9 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                 forceFormData: true,
                 preserveScroll: true,
                 onError: (errors) => {
-                    setAvatarError(errors.avatar || 'Gagal mengunggah foto profil.');
+                    setAvatarError(
+                        errors.avatar || pick('Gagal mengunggah foto profil.', 'Failed to upload profile photo.')
+                    );
                     setAvatarPreview(null);
                 },
                 onFinish: () => {
@@ -117,16 +113,16 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
 
     const roleLabel =
         user?.role === 'admin'
-            ? 'Administrator'
+            ? pick('Administrator', 'Administrator')
             : user?.role === 'seller'
-              ? 'Penangkar Terverifikasi'
+              ? pick('Penangkar Terverifikasi', 'Verified Breeder')
               : user?.seller_status === 'pending'
-                ? 'Pembeli · Menunggu Verifikasi Penjual'
+                ? pick('Pembeli · Menunggu Verifikasi Penjual', 'Buyer · Seller Verification Pending')
                 : user?.seller_status === 'rejected'
-                  ? 'Pembeli · Pengajuan Penjual Ditolak'
-                  : 'Pembeli Terdaftar';
+                  ? pick('Pembeli · Pengajuan Penjual Ditolak', 'Buyer · Seller Application Rejected')
+                  : pick('Pembeli Terdaftar', 'Registered Buyer');
 
-    const joinedAt = formatDate(user?.created_at);
+    const joinedAt = formatDate(user?.created_at, locale);
     const totalOrdersCount =
         (orderStats?.pending || 0) +
         (orderStats?.processing || 0) +
@@ -134,9 +130,9 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
         (orderStats?.delivered || 0);
 
     const tabs = [
-        { id: 'profile', label: 'Profil', icon: UserIcon },
-        { id: 'orders', label: 'Pesanan', icon: Package, badge: totalOrdersCount },
-        { id: 'security', label: 'Keamanan & Akses', icon: Shield },
+        { id: 'profile', label: pick('Profil', 'Profile'), icon: UserIcon },
+        { id: 'orders', label: pick('Pesanan', 'Orders'), icon: Package, badge: totalOrdersCount },
+        { id: 'security', label: pick('Keamanan & Akses', 'Security & Access'), icon: Shield },
     ];
 
     const activeTabMeta = tabs.find((t) => t.id === activeTab) || tabs[0];
@@ -144,7 +140,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
 
     return (
         <AppLayout>
-            <Head title="Profil — Dunia Ikan" />
+            <Head title={pick('Profil — Dunia Ikan', 'Profile — Dunia Ikan')} />
 
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
                 <div className="rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-neutral-800 overflow-hidden shadow-xs">
@@ -152,7 +148,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                         {/* Left Settings Sub-Sidebar */}
                         <aside className="md:col-span-3 border-b md:border-b-0 md:border-r border-slate-100 dark:border-neutral-800 bg-[#fbfbfc] dark:bg-[#0b101d] p-3.5 sm:p-4">
                             <p className="px-2 md:px-3 mb-2 text-[11px] font-semibold text-slate-400 dark:text-neutral-500">
-                                Akun Saya
+                                {pick('Akun Saya', 'My Account')}
                             </p>
 
                             <nav className="flex flex-wrap md:flex-col gap-1.5 md:gap-1">
@@ -188,7 +184,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                     className="w-auto md:w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-[13px] font-medium text-slate-600 dark:text-neutral-400 hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-slate-900 dark:hover:text-white transition"
                                 >
                                     <MapPin className="w-4 h-4 shrink-0" strokeWidth={1.75} />
-                                    <span className="whitespace-nowrap">Buku Alamat</span>
+                                    <span className="whitespace-nowrap">{pick('Buku Alamat', 'Address Book')}</span>
                                 </Link>
 
                                 {user?.role === 'seller' && (
@@ -197,7 +193,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                         className="w-auto md:w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-[13px] font-medium text-slate-600 dark:text-neutral-400 hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-slate-900 dark:hover:text-white transition"
                                     >
                                         <Store className="w-4 h-4 shrink-0" strokeWidth={1.75} />
-                                        <span className="whitespace-nowrap">Toko Saya</span>
+                                        <span className="whitespace-nowrap">{pick('Toko Saya', 'My Store')}</span>
                                     </Link>
                                 )}
 
@@ -208,7 +204,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                     >
                                         <span className="flex items-center gap-2">
                                             <Store className="w-4 h-4 shrink-0" strokeWidth={1.75} />
-                                            <span className="whitespace-nowrap">Status Penjual</span>
+                                            <span className="whitespace-nowrap">{pick('Status Penjual', 'Seller Status')}</span>
                                         </span>
                                         <span
                                             className={`px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${
@@ -217,7 +213,9 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                                     : 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-300'
                                             }`}
                                         >
-                                            {user.seller_status === 'pending' ? 'Pending' : 'Ditolak'}
+                                            {user.seller_status === 'pending'
+                                                ? pick('Pending', 'Pending')
+                                                : pick('Ditolak', 'Rejected')}
                                         </span>
                                     </Link>
                                 )}
@@ -228,7 +226,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                         <div className="md:col-span-9 min-w-0 flex flex-col">
                             {/* Breadcrumb Bar */}
                             <div className="h-12 px-6 border-b border-slate-100 dark:border-neutral-800 flex items-center gap-2 text-xs text-slate-400 dark:text-neutral-500">
-                                <span>Akun Saya</span>
+                                <span>{pick('Akun Saya', 'My Account')}</span>
                                 <span>/</span>
                                 <span className="flex items-center gap-1.5 font-semibold text-slate-900 dark:text-white">
                                     <ActiveIcon className="w-3.5 h-3.5" strokeWidth={1.8} />
@@ -248,7 +246,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                         <div className="flex items-end gap-4">
                                             <label
                                                 className="relative group cursor-pointer"
-                                                title="Ganti foto profil"
+                                                title={pick('Ganti foto profil', 'Change profile photo')}
                                             >
                                                 <UserAvatar
                                                     user={user}
@@ -269,7 +267,9 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
 
                                             <div className="flex items-center gap-3 pb-1 text-xs">
                                                 <label className="font-medium text-slate-600 dark:text-neutral-300 hover:text-slate-900 dark:hover:text-white underline underline-offset-4 decoration-slate-300 dark:decoration-neutral-700 cursor-pointer transition">
-                                                    {avatarBusy ? 'Mengunggah...' : 'Ganti foto'}
+                                                    {avatarBusy
+                                                        ? pick('Mengunggah...', 'Uploading...')
+                                                        : pick('Ganti foto', 'Change photo')}
                                                     <input
                                                         type="file"
                                                         accept="image/png,image/jpeg,image/webp"
@@ -285,7 +285,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                                         disabled={avatarBusy}
                                                         className="font-medium text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition"
                                                     >
-                                                        Hapus
+                                                        {pick('Hapus', 'Remove')}
                                                     </button>
                                                 )}
                                             </div>
@@ -303,7 +303,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                             </h1>
                                             <BadgeCheck
                                                 className="w-5 h-5 text-[#0684E5] shrink-0"
-                                                aria-label="Akun terdaftar"
+                                                aria-label={pick('Akun terdaftar', 'Registered account')}
                                             />
                                         </div>
                                         <p className="text-xs sm:text-[13px] text-slate-500 dark:text-neutral-400 mt-0.5">
@@ -333,10 +333,10 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                         {/* Compact Monochrome Status Strip */}
                                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                             {[
-                                                { label: 'Menunggu Bayar', count: orderStats?.pending || 0 },
-                                                { label: 'Diproses', count: orderStats?.processing || 0 },
-                                                { label: 'Dikirim', count: orderStats?.shipped || 0 },
-                                                { label: 'Selesai', count: orderStats?.delivered || 0 },
+                                                { label: pick('Menunggu Bayar', 'Pending'), count: orderStats?.pending || 0 },
+                                                { label: pick('Diproses', 'Processing'), count: orderStats?.processing || 0 },
+                                                { label: pick('Dikirim', 'Shipped'), count: orderStats?.shipped || 0 },
+                                                { label: pick('Selesai', 'Delivered'), count: orderStats?.delivered || 0 },
                                             ].map((stat) => (
                                                 <div
                                                     key={stat.label}
@@ -355,13 +355,13 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                         <div className="rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-neutral-800 overflow-hidden">
                                             <div className="px-6 py-4 border-b border-slate-100 dark:border-neutral-800 flex items-center justify-between">
                                                 <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
-                                                    Pesanan Terakhir
+                                                    {pick('Pesanan Terakhir', 'Recent Orders')}
                                                 </h2>
                                                 <Link
                                                     href="/orders"
                                                     className="text-xs font-medium text-slate-600 dark:text-neutral-300 hover:text-slate-900 dark:hover:text-white underline underline-offset-4"
                                                 >
-                                                    Semua Pesanan
+                                                    {pick('Semua Pesanan', 'All Orders')}
                                                 </Link>
                                             </div>
 
@@ -375,13 +375,13 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                                         >
                                                             <div className="space-y-0.5">
                                                                 <p className="text-xs sm:text-[13px] font-semibold text-slate-900 dark:text-white">
-                                                                    {order.store?.name || 'Toko Penangkar'} ·{' '}
+                                                                    {order.store?.name || pick('Toko Penangkar', 'Breeder Store')} ·{' '}
                                                                     <span className="font-mono text-slate-500 dark:text-neutral-400 font-normal">
                                                                         {order.order_number}
                                                                     </span>
                                                                 </p>
                                                                 <p className="text-[11px] text-slate-400 dark:text-neutral-500">
-                                                                    {ORDER_STATUS_LABELS[order.status] || 'Dibatalkan'}
+                                                                    {trOrderStatus(order.status)}
                                                                 </p>
                                                             </div>
                                                             <span className="text-xs sm:text-[13px] font-semibold text-slate-900 dark:text-white tabular-nums">
@@ -392,12 +392,12 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                                 </div>
                                             ) : (
                                                 <div className="px-6 py-10 text-center text-xs text-slate-400 dark:text-neutral-500">
-                                                    Belum ada riwayat pesanan.{' '}
+                                                    {pick('Belum ada riwayat pesanan.', 'No order history yet.')}{' '}
                                                     <Link
                                                         href="/products"
                                                         className="text-slate-900 dark:text-white underline underline-offset-4 ml-1"
                                                     >
-                                                        Jelajahi katalog
+                                                        {pick('Jelajahi katalog', 'Browse catalog')}
                                                     </Link>
                                                 </div>
                                             )}

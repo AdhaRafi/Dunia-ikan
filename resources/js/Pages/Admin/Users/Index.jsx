@@ -2,15 +2,17 @@ import { useState } from 'react';
 import { Head, router } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { CheckCircle2, Clock, Store, XCircle } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
 
 const SELLER_STATUS_BADGE = {
-    pending: { label: 'Menunggu Verifikasi', className: 'bg-amber-100 text-amber-800' },
-    approved: { label: 'Disetujui', className: 'bg-emerald-100 text-emerald-800' },
-    rejected: { label: 'Ditolak', className: 'bg-rose-100 text-rose-700' },
-    none: { label: 'Pembeli Biasa', className: 'bg-slate-100 text-slate-600' },
+    pending: { id: 'Menunggu Verifikasi', en: 'Pending Verification', className: 'bg-amber-100 text-amber-800' },
+    approved: { id: 'Disetujui', en: 'Approved', className: 'bg-emerald-100 text-emerald-800' },
+    rejected: { id: 'Ditolak', en: 'Rejected', className: 'bg-rose-100 text-rose-700' },
+    none: { id: 'Pembeli Biasa', en: 'Regular Buyer', className: 'bg-slate-100 text-slate-600' },
 };
 
 export default function Index({ users, filters, pendingCount = 0 }) {
+    const { pick } = useLanguage();
     const [search, setSearch] = useState(filters?.q || '');
     const [role, setRole] = useState(filters?.role || '');
     const [sellerStatus, setSellerStatus] = useState(filters?.seller_status || '');
@@ -50,15 +52,15 @@ export default function Index({ users, filters, pendingCount = 0 }) {
 
     return (
         <AdminLayout>
-            <Head title="Manajemen Pengguna - Panel Admin" />
+            <Head title={pick('Manajemen Pengguna - Panel Admin', 'User Management - Admin Panel')} />
 
             <div className="space-y-6">
                 <div>
                     <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-                        Manajemen Pengguna & Verifikasi Penjual
+                        {pick('Manajemen Pengguna & Verifikasi Penjual', 'User Management & Seller Verification')}
                     </h1>
                     <p className="text-xs text-slate-500 mt-1">
-                        Kelola peran akun serta setujui atau tolak pengajuan calon penjual baru di Dunia Ikan.
+                        {pick('Kelola peran akun serta setujui atau tolak pengajuan calon penjual baru di Dunia Ikan.', 'Manage account roles and approve or reject new seller applications on Dunia Ikan.')}
                     </p>
                 </div>
 
@@ -70,10 +72,10 @@ export default function Index({ users, filters, pendingCount = 0 }) {
                             </div>
                             <div>
                                 <p className="font-bold">
-                                    {pendingCount} Pengajuan Penjual Menunggu Persetujuan
+                                    {pendingCount} {pick('Pengajuan Penjual Menunggu Persetujuan', 'Seller Applications Awaiting Approval')}
                                 </p>
                                 <p className="text-amber-700 mt-0.5">
-                                    Klik Setujui agar pengguna dapat membuka toko, atau Tolak jika belum memenuhi syarat.
+                                    {pick('Klik Setujui agar pengguna dapat membuka toko, atau Tolak jika belum memenuhi syarat.', 'Click Approve so users can open a store, or Reject if requirements are not met.')}
                                 </p>
                             </div>
                         </div>
@@ -87,7 +89,7 @@ export default function Index({ users, filters, pendingCount = 0 }) {
                             }}
                             className="px-3.5 py-2 rounded-xl bg-amber-600 text-white font-bold text-xs hover:bg-amber-700 transition whitespace-nowrap self-start sm:self-auto"
                         >
-                            {sellerStatus === 'pending' ? 'Tampilkan Semua' : 'Filter Menunggu Acc'}
+                            {sellerStatus === 'pending' ? pick('Tampilkan Semua', 'Show All') : pick('Filter Menunggu Acc', 'Filter Pending')}
                         </button>
                     </div>
                 )}
@@ -96,7 +98,7 @@ export default function Index({ users, filters, pendingCount = 0 }) {
                 <form onSubmit={handleSearch} className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row gap-3">
                     <input
                         type="text"
-                        placeholder="Cari nama, email, atau rencana nama toko..."
+                        placeholder={pick('Cari nama, email, atau rencana nama toko...', 'Search name, email, or planned store name...')}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="flex-1 text-xs p-2.5 rounded-xl border border-slate-200"
@@ -109,11 +111,11 @@ export default function Index({ users, filters, pendingCount = 0 }) {
                         }}
                         className="text-xs p-2.5 rounded-xl border border-slate-200 bg-white"
                     >
-                        <option value="">Semua Status Penjual</option>
-                        <option value="pending">Menunggu Verifikasi</option>
-                        <option value="approved">Disetujui</option>
-                        <option value="rejected">Ditolak</option>
-                        <option value="none">Pembeli Biasa</option>
+                        <option value="">{pick('Semua Status Penjual', 'All Seller Statuses')}</option>
+                        <option value="pending">{pick('Menunggu Verifikasi', 'Pending Verification')}</option>
+                        <option value="approved">{pick('Disetujui', 'Approved')}</option>
+                        <option value="rejected">{pick('Ditolak', 'Rejected')}</option>
+                        <option value="none">{pick('Pembeli Biasa', 'Regular Buyer')}</option>
                     </select>
                     <select
                         value={role}
@@ -123,16 +125,16 @@ export default function Index({ users, filters, pendingCount = 0 }) {
                         }}
                         className="text-xs p-2.5 rounded-xl border border-slate-200 bg-white"
                     >
-                        <option value="">Semua Peran</option>
-                        <option value="buyer">Pembeli (Buyer)</option>
-                        <option value="seller">Penjual (Seller)</option>
-                        <option value="admin">Administrator</option>
+                        <option value="">{pick('Semua Peran', 'All Roles')}</option>
+                        <option value="buyer">{pick('Pembeli (Buyer)', 'Buyer')}</option>
+                        <option value="seller">{pick('Penjual (Seller)', 'Seller')}</option>
+                        <option value="admin">{pick('Administrator', 'Administrator')}</option>
                     </select>
                     <button
                         type="submit"
                         className="px-4 py-2.5 rounded-xl bg-dunia-blue text-white font-bold text-xs hover:bg-sky-600 transition"
                     >
-                        Cari
+                        {pick('Cari', 'Search')}
                     </button>
                 </form>
 
@@ -141,11 +143,11 @@ export default function Index({ users, filters, pendingCount = 0 }) {
                     <table className="w-full text-left text-xs min-w-[760px]">
                         <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
                             <tr>
-                                <th className="p-4">Pengguna</th>
-                                <th className="p-4">Pengajuan / Toko</th>
-                                <th className="p-4">Status Verifikasi</th>
-                                <th className="p-4">Peran</th>
-                                <th className="p-4 text-right">Verifikasi & Aksi</th>
+                                <th className="p-4">{pick('Pengguna', 'User')}</th>
+                                <th className="p-4">{pick('Pengajuan / Toko', 'Application / Store')}</th>
+                                <th className="p-4">{pick('Status Verifikasi', 'Verification Status')}</th>
+                                <th className="p-4">{pick('Peran', 'Role')}</th>
+                                <th className="p-4 text-right">{pick('Verifikasi & Aksi', 'Verification & Actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -185,7 +187,7 @@ export default function Index({ users, filters, pendingCount = 0 }) {
                                         </td>
                                         <td className="p-4">
                                             <span className={`inline-block px-2.5 py-0.5 rounded-full font-bold text-[10px] ${statusMeta.className}`}>
-                                                {statusMeta.label}
+                                                {pick(statusMeta.id, statusMeta.en)}
                                             </span>
                                         </td>
                                         <td className="p-4">
@@ -196,7 +198,7 @@ export default function Index({ users, filters, pendingCount = 0 }) {
                                                     ? 'bg-blue-100 text-blue-800'
                                                     : 'bg-slate-100 text-slate-700'
                                             }`}>
-                                                {user.role}
+                                                {user.role === 'admin' ? 'Admin' : user.role === 'seller' ? pick('Penjual', 'Seller') : pick('Pembeli', 'Buyer')}
                                             </span>
                                         </td>
                                         <td className="p-4 text-right">
@@ -209,7 +211,7 @@ export default function Index({ users, filters, pendingCount = 0 }) {
                                                             className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-[11px] hover:bg-emerald-700 transition"
                                                         >
                                                             <CheckCircle2 className="w-3.5 h-3.5" />
-                                                            Setujui
+                                                            {pick('Setujui', 'Approve')}
                                                         </button>
                                                         <button
                                                             type="button"
@@ -217,18 +219,18 @@ export default function Index({ users, filters, pendingCount = 0 }) {
                                                             className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-rose-200 bg-rose-50 text-rose-700 font-bold text-[11px] hover:bg-rose-100 transition"
                                                         >
                                                             <XCircle className="w-3.5 h-3.5" />
-                                                            Tolak
+                                                            {pick('Tolak', 'Reject')}
                                                         </button>
                                                     </>
                                                 )}
                                                 <select
-                                                    aria-label={`Peran ${user.name}`}
+                                                    aria-label={`${pick('Peran', 'Role')} ${user.name}`}
                                                     value={user.role}
                                                     onChange={(e) => handleChangeRole(user.id, e.target.value)}
                                                     className="text-xs py-1 px-2 rounded-lg border border-slate-200 bg-white font-semibold cursor-pointer"
                                                 >
-                                                    <option value="buyer">Pembeli</option>
-                                                    <option value="seller">Penjual</option>
+                                                    <option value="buyer">{pick('Pembeli', 'Buyer')}</option>
+                                                    <option value="seller">{pick('Penjual', 'Seller')}</option>
                                                     <option value="admin">Admin</option>
                                                 </select>
                                             </div>

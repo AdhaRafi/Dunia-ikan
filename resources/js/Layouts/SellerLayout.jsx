@@ -13,9 +13,11 @@ import {
     X
 } from 'lucide-react';
 import { useState } from 'react';
+import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
 
 export default function SellerLayout({ children, title }) {
     const { url, props } = usePage();
+    const { pick } = useLanguage();
     const { auth, flash } = props;
     const store = auth?.user?.store;
     const [showFlash, setShowFlash] = useState(true);
@@ -23,28 +25,28 @@ export default function SellerLayout({ children, title }) {
     const navItems = [
         {
             href: '/seller/products',
-            label: 'Produk & Morf Ikan',
+            label: pick('Produk & Morf Ikan', 'Products & Morphs'),
             icon: Fish,
             iconClass: 'text-dunia-blue',
             active: url === '/seller/products' || /^\/seller\/products\/\d+\/edit/.test(url),
         },
         {
             href: '/seller/products/create',
-            label: 'Tambah Produk Baru',
+            label: pick('Tambah Produk Baru', 'Add New Product'),
             icon: PlusCircle,
             iconClass: 'text-emerald-600',
             active: url.startsWith('/seller/products/create'),
         },
         {
             href: '/seller/orders',
-            label: 'Pesanan Masuk',
+            label: pick('Pesanan Masuk', 'Incoming Orders'),
             icon: Package,
             iconClass: 'text-amber-600',
             active: url.startsWith('/seller/orders'),
         },
         {
             href: '/seller/store',
-            label: 'Profil & Garansi DOA',
+            label: pick('Profil & Garansi DOA', 'Store & DOA Policy'),
             icon: ShieldCheck,
             iconClass: 'text-dunia-marine',
             active: url.startsWith('/seller/store'),
@@ -59,11 +61,11 @@ export default function SellerLayout({ children, title }) {
                     <div className="flex items-center gap-2 sm:gap-4 min-w-0">
                         <Link
                             href="/"
-                            aria-label="Kembali ke Toko Publik"
+                            aria-label={pick('Kembali ke Toko Publik', 'Back to Public Storefront')}
                             className="p-1.5 -ml-1.5 sm:p-0 sm:ml-0 rounded-lg text-slate-500 hover:text-dunia-navy hover:bg-slate-100 sm:hover:bg-transparent flex items-center gap-1.5 text-xs font-semibold shrink-0 transition"
                         >
                             <ArrowLeft className="w-4 h-4" />
-                            <span className="hidden sm:inline">Kembali ke Toko Publik</span>
+                            <span className="hidden sm:inline">{pick('Kembali ke Toko Publik', 'Back to Storefront')}</span>
                         </Link>
                         <span className="hidden sm:inline text-slate-300">|</span>
                         <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
@@ -71,17 +73,18 @@ export default function SellerLayout({ children, title }) {
                                 DUNIA<span className="text-dunia-blue">IKAN</span>
                             </span>
                             <span className="px-1.5 sm:px-2 py-0.5 rounded-md bg-blue-100 text-dunia-blue text-[10px] sm:text-[11px] font-bold uppercase whitespace-nowrap">
-                                Portal Penjual
+                                {pick('Portal Penjual', 'Seller Portal')}
                             </span>
                         </div>
                     </div>
 
                     <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                        <LanguageSwitcher />
                         <Link
                             href="/profile"
                             className="flex items-center gap-2 rounded-full p-0.5 sm:pr-2 hover:bg-slate-100 transition"
-                            title="Pengaturan Profil Akun"
-                            aria-label="Pengaturan Profil Akun"
+                            title={pick('Pengaturan Profil Akun', 'Account Profile Settings')}
+                            aria-label={pick('Pengaturan Profil Akun', 'Account Profile Settings')}
                         >
                             <UserAvatar user={auth.user} className="w-7 h-7 text-[11px]" />
                             <span className="hidden sm:inline text-sm font-semibold text-slate-800 max-w-[160px] truncate">
@@ -94,7 +97,7 @@ export default function SellerLayout({ children, title }) {
                             as="button"
                             className="px-2 py-1 text-xs font-semibold text-slate-500 hover:text-rose-600 transition whitespace-nowrap shrink-0"
                         >
-                            Keluar
+                            {pick('Keluar', 'Sign Out')}
                         </Link>
                     </div>
                 </div>
@@ -137,7 +140,7 @@ export default function SellerLayout({ children, title }) {
                                 <Store className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div className="min-w-0">
-                                <p className="font-bold text-slate-900 truncate text-sm">{store?.name || 'Toko Belum Dinamai'}</p>
+                                <p className="font-bold text-slate-900 truncate text-sm">{store?.name || pick('Toko Belum Dinamai', 'Unnamed Store')}</p>
                                 <p className="text-xs text-slate-500 truncate">{store?.city || 'Indonesia'}</p>
                             </div>
                         </div>

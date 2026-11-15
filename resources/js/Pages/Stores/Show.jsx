@@ -4,6 +4,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
 import Reveal from '@/Components/Reveal';
 import StoreRatingSection from '@/Components/StoreRatingSection';
+import { useLanguage } from '@/lib/i18n';
 
 function formatPrice(price) {
     return new Intl.NumberFormat('id-ID', {
@@ -14,12 +15,13 @@ function formatPrice(price) {
 }
 
 export default function Show({ store, products, storeRating }) {
+    const { pick } = useLanguage();
     const featured = products?.data?.[0];
     const avgRating = storeRating?.count > 0 ? Number(storeRating.average).toFixed(1) : null;
 
     return (
         <AppLayout>
-            <Head title={`${store.name} — Toko Penangkar`} />
+            <Head title={`${store.name} — ${pick('Toko Penangkar', 'Breeder Store')}`} />
 
             <section className="bg-field4 text-white">
                 <div className="container-page grid gap-8 py-12 md:py-16 lg:grid-cols-12 lg:items-end">
@@ -45,9 +47,10 @@ export default function Show({ store, products, storeRating }) {
                         </h1>
 
                         <p className="mt-5 max-w-[48ch] text-[20px] leading-snug">
-                            Penangkar ikan hias di {store.city},{' '}
-                            {store.province}. Setiap produk membawa kebijakan
-                            garansi hidup toko ini.
+                            {pick(
+                                `Penangkar ikan hias di ${store.city}, ${store.province}. Setiap produk membawa kebijakan garansi hidup toko ini.`,
+                                `Ornamental fish breeder in ${store.city}, ${store.province}. Every item carries this store's live arrival guarantee policy.`,
+                            )}
                         </p>
 
                         <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[16px] text-white/80">
@@ -57,13 +60,15 @@ export default function Show({ store, products, storeRating }) {
                                 className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white hover:bg-white/25 transition"
                             >
                                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                                {avgRating ? `${avgRating}/5 (${storeRating.count} ulasan)` : 'Belum ada rating'}
+                                {avgRating
+                                    ? pick(`${avgRating}/5 (${storeRating.count} ulasan)`, `${avgRating}/5 (${storeRating.count} reviews)`)
+                                    : pick('Belum ada rating', 'No ratings yet')}
                             </a>
                             <Link
                                 href="/products"
                                 className="press underline decoration-2 underline-offset-4 hover:text-white"
                             >
-                                Katalog
+                                {pick('Katalog', 'Catalog')}
                             </Link>
                         </div>
                     </div>
@@ -97,22 +102,25 @@ export default function Show({ store, products, storeRating }) {
                 <div className="grid gap-8 lg:grid-cols-12">
                     <Reveal className="lg:col-span-7">
                         <h2 className="text-[20px] font-medium tracking-[-0.02em]">
-                            Tentang toko
+                            {pick('Tentang toko', 'About the store')}
                         </h2>
                         <p className="mt-3 max-w-[62ch] whitespace-pre-line text-[16px] leading-relaxed">
                             {store.description ||
-                                'Belum ada deskripsi untuk toko ini.'}
+                                pick('Belum ada deskripsi untuk toko ini.', 'No description provided for this store yet.')}
                         </p>
                     </Reveal>
 
                     <Reveal className="lg:col-span-5" delay={80}>
                         <div className="bg-surface p-6">
                             <h2 className="text-[20px] font-medium tracking-[-0.02em]">
-                                Garansi hidup
+                                {pick('Garansi hidup', 'Live arrival guarantee')}
                             </h2>
                             <p className="mt-3 text-[16px] leading-relaxed">
                                 {store.doa_policy ||
-                                    'Garansi hidup standar berlaku dengan video unboxing tanpa jeda.'}
+                                    pick(
+                                        'Garansi hidup standar berlaku dengan video unboxing tanpa jeda.',
+                                        'Standard live arrival guarantee applies with an unedited unboxing video.',
+                                    )}
                             </p>
                         </div>
                     </Reveal>
@@ -121,9 +129,9 @@ export default function Show({ store, products, storeRating }) {
 
             <section className="container-page pb-24">
                 <Reveal className="flex flex-wrap items-end justify-between gap-3">
-                    <h2 className="head-type">Produk toko</h2>
+                    <h2 className="head-type">{pick('Produk toko', 'Store catalog')}</h2>
                     <p className="text-[16px] tabular-nums text-muted">
-                        {products?.total ?? 0} produk
+                        {products?.total ?? 0} {pick('produk', 'items')}
                     </p>
                 </Reveal>
 
@@ -137,14 +145,14 @@ export default function Show({ store, products, storeRating }) {
                     </div>
                 ) : (
                     <p className="mt-6 bg-surface p-6 text-[16px]">
-                        Toko ini belum memiliki produk aktif.
+                        {pick('Toko ini belum memiliki produk aktif.', 'This store does not have any active products yet.')}
                     </p>
                 )}
 
                 {products?.links?.length > 3 && (
                     <nav
                         className="mt-12 flex flex-wrap gap-1.5"
-                        aria-label="Halaman produk toko"
+                        aria-label={pick('Halaman produk toko', 'Store product pages')}
                     >
                         {products.links.map((link, index) => (
                             <Link

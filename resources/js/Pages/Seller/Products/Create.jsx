@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Head, useForm, Link } from '@inertiajs/react';
 import SellerLayout from '@/Layouts/SellerLayout';
 import { Fish, ArrowLeft, Upload, Sparkles, HeartPulse, Save } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
 
 export default function Create({ categories }) {
+    const { pick, trCategory } = useLanguage();
     const { data, setData, post, processing, errors } = useForm({
         category_id: categories?.[0]?.id || '',
         name: '',
@@ -39,21 +41,24 @@ export default function Create({ categories }) {
 
     return (
         <SellerLayout>
-            <Head title="Tambah Produk Ikan Baru - Portal Penjual" />
+            <Head title={pick('Tambah Produk Ikan Baru - Portal Penjual', 'Add New Fish Product — Seller Portal')} />
 
             <div className="space-y-6">
                 <Link href="/seller/products" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-dunia-blue transition">
                     <ArrowLeft className="w-4 h-4" />
-                    Kembali ke Daftar Produk
+                    {pick('Kembali ke Daftar Produk', 'Back to Products')}
                 </Link>
 
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-6">
                     <div>
                         <h1 className="text-xl font-extrabold text-dunia-navy">
-                            Tambah Produk / Ikan Baru
+                            {pick('Tambah Produk / Ikan Baru', 'Add New Product / Fish')}
                         </h1>
                         <p className="text-xs text-slate-500 mt-1">
-                            Lengkapi spesifikasi morfologi ikan untuk mempermudah calon pembeli menemukan spesimen yang tepat.
+                            {pick(
+                                'Lengkapi spesifikasi morfologi ikan untuk mempermudah calon pembeli menemukan spesimen yang tepat.',
+                                'Complete the fish morphology specs so buyers can easily find the right specimen.'
+                            )}
                         </p>
                     </div>
 
@@ -61,12 +66,14 @@ export default function Create({ categories }) {
                         {/* Section 1: Informasi Dasar */}
                         <div className="space-y-4">
                             <h2 className="font-bold text-slate-900 uppercase text-xs pb-2 border-b border-slate-100">
-                                1. Informasi Utama Produk
+                                {pick('1. Informasi Utama Produk', '1. Main Product Info')}
                             </h2>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Kategori</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        {pick('Kategori', 'Category')}
+                                    </label>
                                     <select
                                         value={data.category_id}
                                         onChange={(e) => {
@@ -81,16 +88,21 @@ export default function Create({ categories }) {
                                         required
                                     >
                                         {categories?.map((cat) => (
-                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                            <option key={cat.id} value={cat.id}>{trCategory(cat.name)}</option>
                                         ))}
                                     </select>
                                 </div>
 
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Nama Produk / Varian Ikan</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        {pick('Nama Produk / Varian Ikan', 'Product Name / Fish Variant')}
+                                    </label>
                                     <input
                                         type="text"
-                                        placeholder="Contoh: Cupang Halfmoon Rosetail Super Red"
+                                        placeholder={pick(
+                                            'Contoh: Cupang Halfmoon Rosetail Super Red',
+                                            'Example: Halfmoon Rosetail Super Red Betta'
+                                        )}
                                         value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
                                         className="w-full p-2.5 rounded-xl border border-slate-200"
@@ -102,7 +114,9 @@ export default function Create({ categories }) {
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Harga (Rp)</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        {pick('Harga (Rp)', 'Price (IDR)')}
+                                    </label>
                                     <input
                                         type="number"
                                         placeholder="175000"
@@ -115,7 +129,9 @@ export default function Create({ categories }) {
                                 </div>
 
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">Jumlah Stok Tersedia (Ekor/Item)</label>
+                                    <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        {pick('Jumlah Stok Tersedia (Ekor/Item)', 'Available Stock (Qty)')}
+                                    </label>
                                     <input
                                         type="number"
                                         value={data.stock}
@@ -128,10 +144,14 @@ export default function Create({ categories }) {
                             </div>
 
                             <div>
-                                <label className="block font-bold text-slate-700 uppercase mb-1">Foto Produk Ikan</label>
+                                <label className="block font-bold text-slate-700 uppercase mb-1">
+                                    {pick('Foto Produk Ikan', 'Product Image')}
+                                </label>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
-                                        <span className="text-slate-500 block mb-1">Unggah Berkas Foto (Maks 3MB)</span>
+                                        <span className="text-slate-500 block mb-1">
+                                            {pick('Unggah Berkas Foto (Maks 3MB)', 'Upload Photo File (Max 3MB)')}
+                                        </span>
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -140,7 +160,9 @@ export default function Create({ categories }) {
                                         />
                                     </div>
                                     <div>
-                                        <span className="text-slate-500 block mb-1">Atau Masukkan URL Gambar Langsung</span>
+                                        <span className="text-slate-500 block mb-1">
+                                            {pick('Atau Masukkan URL Gambar Langsung', 'Or Enter Direct Image URL')}
+                                        </span>
                                         <input
                                             type="url"
                                             placeholder="https://images.unsplash.com/..."
@@ -153,10 +175,15 @@ export default function Create({ categories }) {
                             </div>
 
                             <div>
-                                <label className="block font-bold text-slate-700 uppercase mb-1">Deskripsi Lengkap</label>
+                                <label className="block font-bold text-slate-700 uppercase mb-1">
+                                    {pick('Deskripsi Lengkap', 'Full Description')}
+                                </label>
                                 <textarea
                                     rows={3}
-                                    placeholder="Jelaskan kondisi mental, riwayat perawatan pakan, kebersihan packing, dll..."
+                                    placeholder={pick(
+                                        'Jelaskan kondisi mental, riwayat perawatan pakan, kebersihan packing, dll...',
+                                        'Describe temperament, feeding history, quarantine/packing care, etc...'
+                                    )}
                                     value={data.description}
                                     onChange={(e) => setData('description', e.target.value)}
                                     className="w-full p-2.5 rounded-xl border border-slate-200"
@@ -171,7 +198,10 @@ export default function Create({ categories }) {
                             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                                 <h2 className="font-bold text-dunia-navy uppercase text-xs flex items-center gap-1.5">
                                     <HeartPulse className="w-4 h-4 text-dunia-marine" />
-                                    2. Karakteristik Biologi & Morfologi Ikan (MorphMarket Specs)
+                                    {pick(
+                                        '2. Karakteristik Biologi & Morfologi Ikan (MorphMarket Specs)',
+                                        '2. Fish Biology & Morphology Specs'
+                                    )}
                                 </h2>
 
                                 <label className="flex items-center gap-2 cursor-pointer">
@@ -181,7 +211,9 @@ export default function Create({ categories }) {
                                         onChange={(e) => setData('is_fish', e.target.checked)}
                                         className="rounded-sm text-dunia-blue"
                                     />
-                                    <span className="font-bold text-slate-700">Produk ini adalah Ikan Hias</span>
+                                    <span className="font-bold text-slate-700">
+                                        {pick('Produk ini adalah Ikan Hias', 'This product is a live fish')}
+                                    </span>
                                 </label>
                             </div>
 
@@ -189,7 +221,9 @@ export default function Create({ categories }) {
                                 <div className="bg-sky-50/50 p-5 rounded-2xl border border-sky-100 space-y-4">
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Nama Ilmiah / Spesies</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Nama Ilmiah / Spesies', 'Scientific Name / Species')}
+                                            </label>
                                             <input
                                                 type="text"
                                                 placeholder="e.g. Betta splendens"
@@ -200,7 +234,9 @@ export default function Create({ categories }) {
                                         </div>
 
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Mutasi Morfologi / Varian (Morph)</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Mutasi Morfologi / Varian (Morph)', 'Morph Trait / Variant')}
+                                            </label>
                                             <input
                                                 type="text"
                                                 placeholder="e.g. Rosetail Super Red, Maru Yellow, Avatar"
@@ -213,21 +249,25 @@ export default function Create({ categories }) {
 
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Jenis Kelamin</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Jenis Kelamin', 'Sex')}
+                                            </label>
                                             <select
                                                 value={data.sex}
                                                 onChange={(e) => setData('sex', e.target.value)}
                                                 className="w-full p-2 rounded-xl border border-slate-200 bg-white"
                                             >
-                                                <option value="male">♂ Jantan (Male)</option>
-                                                <option value="female">♀ Betina (Female)</option>
-                                                <option value="pair">Sepasang (Pair)</option>
+                                                <option value="male">{pick('♂ Jantan (Male)', '♂ Male')}</option>
+                                                <option value="female">{pick('♀ Betina (Female)', '♀ Female')}</option>
+                                                <option value="pair">{pick('Sepasang (Pair)', 'Pair')}</option>
                                                 <option value="unsexed">Unsexed</option>
                                             </select>
                                         </div>
 
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Ukuran / Fase Hidup</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Ukuran / Fase Hidup', 'Size / Life Stage')}
+                                            </label>
                                             <input
                                                 type="text"
                                                 placeholder="e.g. M (3.5 - 4 cm) / Juvenile"
@@ -238,22 +278,26 @@ export default function Create({ categories }) {
                                         </div>
 
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Tipe Habitat Air</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Tipe Habitat Air', 'Water Type')}
+                                            </label>
                                             <select
                                                 value={data.water_type}
                                                 onChange={(e) => setData('water_type', e.target.value)}
                                                 className="w-full p-2 rounded-xl border border-slate-200 bg-white"
                                             >
-                                                <option value="freshwater">Air Tawar (Freshwater)</option>
-                                                <option value="saltwater">Air Laut (Saltwater)</option>
-                                                <option value="brackish">Air Payau (Brackish)</option>
+                                                <option value="freshwater">{pick('Air Tawar (Freshwater)', 'Freshwater')}</option>
+                                                <option value="saltwater">{pick('Air Laut (Saltwater)', 'Saltwater')}</option>
+                                                <option value="brackish">{pick('Air Payau (Brackish)', 'Brackish')}</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Min. Tank (Liter)</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Min. Tank (Liter)', 'Min. Tank (Liters)')}
+                                            </label>
                                             <input
                                                 type="number"
                                                 placeholder="15"
@@ -264,7 +308,9 @@ export default function Create({ categories }) {
                                         </div>
 
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Suhu Min (°C)</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Suhu Min (°C)', 'Min Temp (°C)')}
+                                            </label>
                                             <input
                                                 type="number"
                                                 step="0.5"
@@ -276,7 +322,9 @@ export default function Create({ categories }) {
                                         </div>
 
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Suhu Max (°C)</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Suhu Max (°C)', 'Max Temp (°C)')}
+                                            </label>
                                             <input
                                                 type="number"
                                                 step="0.5"
@@ -288,7 +336,9 @@ export default function Create({ categories }) {
                                         </div>
 
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">pH Ideal (Min-Max)</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('pH Ideal (Min-Max)', 'Ideal pH (Min-Max)')}
+                                            </label>
                                             <div className="flex items-center gap-1">
                                                 <input
                                                     type="number"
@@ -313,37 +363,43 @@ export default function Create({ categories }) {
 
                                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Tingkat Perawatan</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Tingkat Perawatan', 'Care Level')}
+                                            </label>
                                             <select
                                                 value={data.care_level}
                                                 onChange={(e) => setData('care_level', e.target.value)}
                                                 className="w-full p-2 rounded-xl border border-slate-200 bg-white"
                                             >
-                                                <option value="pemula">Pemula / Mudah</option>
-                                                <option value="menengah">Menengah</option>
-                                                <option value="mahir">Mahir / Sulit</option>
+                                                <option value="pemula">{pick('Pemula / Mudah', 'Beginner / Easy')}</option>
+                                                <option value="menengah">{pick('Menengah', 'Intermediate')}</option>
+                                                <option value="mahir">{pick('Mahir / Sulit', 'Advanced / Expert')}</option>
                                             </select>
                                         </div>
 
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Temperamen</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Temperamen', 'Temperament')}
+                                            </label>
                                             <select
                                                 value={data.temperament}
                                                 onChange={(e) => setData('temperament', e.target.value)}
                                                 className="w-full p-2 rounded-xl border border-slate-200 bg-white"
                                             >
-                                                <option value="damai">Damai (Peaceful)</option>
-                                                <option value="semi-agresif">Semi-Agresif</option>
-                                                <option value="agresif">Agresif / Teritorial</option>
+                                                <option value="damai">{pick('Damai (Peaceful)', 'Peaceful')}</option>
+                                                <option value="semi-agresif">{pick('Semi-Agresif', 'Semi-Aggressive')}</option>
+                                                <option value="agresif">{pick('Agresif / Teritorial', 'Aggressive / Territorial')}</option>
                                                 <option value="predator">Predator</option>
                                             </select>
                                         </div>
 
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Tipe Pakan</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Tipe Pakan', 'Diet Type')}
+                                            </label>
                                             <input
                                                 type="text"
-                                                placeholder="e.g. Pelet & Cacing"
+                                                placeholder={pick('e.g. Pelet & Cacing', 'e.g. Pellets & Bloodworms')}
                                                 value={data.diet_type}
                                                 onChange={(e) => setData('diet_type', e.target.value)}
                                                 className="w-full p-2 rounded-xl border border-slate-200 bg-white"
@@ -351,15 +407,17 @@ export default function Create({ categories }) {
                                         </div>
 
                                         <div>
-                                            <label className="block font-bold text-slate-700 mb-1">Asal Pembiakan</label>
+                                            <label className="block font-bold text-slate-700 mb-1">
+                                                {pick('Asal Pembiakan', 'Breeding Origin')}
+                                            </label>
                                             <select
                                                 value={data.breeding_origin}
                                                 onChange={(e) => setData('breeding_origin', e.target.value)}
                                                 className="w-full p-2 rounded-xl border border-slate-200 bg-white"
                                             >
-                                                <option value="captive_bred">Captive Bred (Budidaya)</option>
-                                                <option value="farm_raised">Farm Raised (Kolam)</option>
-                                                <option value="wild_caught">Tangkapan Liar</option>
+                                                <option value="captive_bred">{pick('Captive Bred (Budidaya)', 'Captive Bred')}</option>
+                                                <option value="farm_raised">{pick('Farm Raised (Kolam)', 'Farm Raised')}</option>
+                                                <option value="wild_caught">{pick('Tangkapan Liar', 'Wild Caught')}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -373,7 +431,7 @@ export default function Create({ categories }) {
                                 href="/seller/products"
                                 className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold"
                             >
-                                Batal
+                                {pick('Batal', 'Cancel')}
                             </Link>
                             <button
                                 type="submit"
@@ -381,7 +439,9 @@ export default function Create({ categories }) {
                                 className="px-6 py-2.5 rounded-xl bg-dunia-blue text-white font-bold hover:bg-sky-600 transition flex items-center gap-2 shadow-xs cursor-pointer"
                             >
                                 <Save className="w-4 h-4" />
-                                {processing ? 'Menyimpan...' : 'Simpan Produk Ikan'}
+                                {processing
+                                    ? pick('Menyimpan...', 'Saving...')
+                                    : pick('Simpan Produk Ikan', 'Save Product')}
                             </button>
                         </div>
                     </form>

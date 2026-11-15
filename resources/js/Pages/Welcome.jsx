@@ -3,31 +3,63 @@ import { Head, Link } from '@inertiajs/react';
 import { Minus, Plus } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
+import { useLanguage } from '@/lib/i18n';
 
 const FAQ_ITEMS = [
     {
-        question: 'Apakah garansi ikan hidup 100% berlaku di seluruh Indonesia?',
-        answer: 'Ya, setiap pengiriman ikan hias dari penangkar terverifikasi dilindungi garansi DOA (Dead on Arrival) dengan syarat melampirkan video unboxing tanpa jeda saat paket diterima.',
+        id: {
+            question: 'Apakah garansi ikan hidup 100% berlaku di seluruh Indonesia?',
+            answer: 'Ya, setiap pengiriman ikan hias dari penangkar terverifikasi dilindungi garansi DOA (Dead on Arrival) dengan syarat melampirkan video unboxing tanpa jeda saat paket diterima.',
+        },
+        en: {
+            question: 'Does the 100% live arrival guarantee apply across Indonesia?',
+            answer: 'Yes, every ornamental fish shipment from verified breeders is covered by our DOA (Dead on Arrival) guarantee as long as you provide a continuous unboxing video upon delivery.',
+        },
     },
     {
-        question: 'Bagaimana standar packing agar ikan tetap aman selama pengiriman?',
-        answer: 'Penangkar memakai kantong oksigen ganda bertekanan, air kondisi stabil, serta boks styrofoam atau insulasi thermal sesuai jarak pengiriman.',
+        id: {
+            question: 'Bagaimana standar packing agar ikan tetap aman selama pengiriman?',
+            answer: 'Penangkar memakai kantong oksigen ganda bertekanan, air kondisi stabil, serta boks styrofoam atau insulasi thermal sesuai jarak pengiriman.',
+        },
+        en: {
+            question: 'What packing standards keep fish safe during shipping?',
+            answer: 'Breeders use double pressurized oxygen bags, conditioned water, and insulated styrofoam or thermal boxes matched to shipping distance.',
+        },
     },
     {
-        question: 'Bagaimana cara memilih ikan air tawar atau air laut di katalog?',
-        answer: 'Anda bisa langsung klik menu Air Tawar atau Air Laut di sidebar, atau gunakan filter Tipe Air di halaman Katalog lengkap beserta informasi pH dan suhu ideal.',
+        id: {
+            question: 'Bagaimana cara memilih ikan air tawar atau air laut di katalog?',
+            answer: 'Anda bisa langsung klik menu Air Tawar atau Air Laut di sidebar, atau gunakan filter Tipe Air di halaman Katalog lengkap beserta informasi pH dan suhu ideal.',
+        },
+        en: {
+            question: 'How do I browse freshwater or saltwater fish in the catalog?',
+            answer: 'Select Freshwater or Saltwater directly from the sidebar, or use the Water Type filter on the full Catalog page with ideal pH and temperature notes.',
+        },
     },
     {
-        question: 'Kapan dana pembayaran diteruskan ke toko penangkar?',
-        answer: 'Pembayaran ditahan sementara oleh sistem dan baru diteruskan setelah pesanan dikonfirmasi diterima dalam kondisi baik atau melewati batas waktu konfirmasi.',
+        id: {
+            question: 'Kapan dana pembayaran diteruskan ke toko penangkar?',
+            answer: 'Pembayaran ditahan sementara oleh sistem dan baru diteruskan setelah pesanan dikonfirmasi diterima dalam kondisi baik atau melewati batas waktu konfirmasi.',
+        },
+        en: {
+            question: 'When is payment released to the breeder store?',
+            answer: 'Payment is held securely in escrow and only released after you confirm the order arrived healthy or once the confirmation window closes.',
+        },
     },
     {
-        question: 'Apakah penangkar atau toko aquascape bisa berjualan di sini?',
-        answer: 'Bisa. Anda cukup mendaftar akun lalu melengkapi profil toko di menu Buka Toko untuk mulai menayangkan stok ikan hias, tanaman, dan perlengkapan akuarium.',
+        id: {
+            question: 'Apakah penangkar atau toko aquascape bisa berjualan di sini?',
+            answer: 'Bisa. Anda cukup mendaftar akun lalu melengkapi profil toko di menu Buka Toko untuk mulai menayangkan stok ikan hias, tanaman, dan perlengkapan akuarium.',
+        },
+        en: {
+            question: 'Can breeders or aquascape stores sell on Dunia Ikan?',
+            answer: 'Yes. Register an account, apply as a seller or complete your store profile, and list your fish stock, aquatic plants, and tank gear after verification.',
+        },
     },
 ];
 
 export default function Welcome({ categories, featuredFish, featuredStores, stats }) {
+    const { pick, isEn } = useLanguage();
     const [selectedTab, setSelectedTab] = useState('all');
     const [openFaq, setOpenFaq] = useState(0);
 
@@ -44,7 +76,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
     // MorphMarket-style clean shop categories grid (fish species, aquarium tools, care & aquatic plants)
     const shopCategories = [
         {
-            title: 'Cupang',
+            title: pick('Cupang', 'Betta Fish'),
             image: '/images/categories/cupang.jpg',
             link: '/products?category=ikan-hias&q=cupang',
         },
@@ -69,22 +101,22 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
             link: '/products?water_type=freshwater&q=tetra',
         },
         {
-            title: 'Filter Aquarium',
+            title: pick('Filter Aquarium', 'Aquarium Filter'),
             image: '/images/categories/filter-aquarium.jpg',
             link: '/products?category=perlengkapan-aquarium&q=filter',
         },
         {
-            title: 'Tank Aquarium',
+            title: pick('Tank Aquarium', 'Aquarium Tank'),
             image: '/images/categories/tank-aquarium.jpg',
             link: '/products?category=perlengkapan-aquarium&q=aquarium',
         },
         {
-            title: 'Pakan & Pelet',
+            title: pick('Pakan & Pelet', 'Food & Pellets'),
             image: '/images/categories/pakan-ikan.jpg',
             link: '/products?category=pakan-ikan',
         },
         {
-            title: 'Perawatan Air',
+            title: pick('Perawatan Air', 'Water Care'),
             image: '/images/categories/perawatan-air.jpg',
             link: '/products?category=perawatan-ikan',
         },
@@ -99,7 +131,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
             link: '/products?category=aquascape&q=bucephalandra',
         },
         {
-            title: 'Tanaman Hias',
+            title: pick('Tanaman Hias', 'Aquatic Plants'),
             image: '/images/categories/tanaman-hias.jpg',
             link: '/products?category=aquascape',
         },
@@ -107,7 +139,12 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
 
     return (
         <AppLayout>
-            <Head title="Dunia Ikan : Marketplace Ikan Hias & Mutasi Genetik (Morph) Captive-Bred" />
+            <Head
+                title={pick(
+                    'Dunia Ikan : Marketplace Ikan Hias & Mutasi Genetik (Morph) Captive-Bred',
+                    'Dunia Ikan: Captive-Bred Ornamental Fish & Genetic Morph Marketplace',
+                )}
+            />
 
             {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner (Living Aquarium Habitat) */}
             <section className="relative w-full overflow-hidden bg-black min-h-[460px] sm:min-h-[500px] lg:min-h-[540px] flex items-center border-b border-neutral-800">
@@ -126,7 +163,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         <source src="/videos/aquarium-hero.mp4" type="video/mp4" />
                         <img
                             src="/images/hero/aquarium-poster.webp"
-                            alt="Akuarium Ikan Hias Dunia Ikan"
+                            alt={pick('Akuarium Ikan Hias Dunia Ikan', 'Dunia Ikan Ornamental Aquarium')}
                             className="w-full h-full object-cover object-center select-none"
                         />
                     </video>
@@ -145,7 +182,10 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                 Join Dunia Ikan
                             </h1>
                             <p className="text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
-                                Akses langsung ke peternak bersertifikasi di seluruh Indonesia. Temukan mutasi morph langka, lelang galur murni, dan garansi ikan hidup 100% sampai tujuan!
+                                {pick(
+                                    'Akses langsung ke peternak bersertifikasi di seluruh Indonesia. Temukan mutasi morph langka, lelang galur murni, dan garansi ikan hidup 100% sampai tujuan!',
+                                    'Direct access to verified breeders across Indonesia. Discover rare genetic morphs, purebred strains, and a 100% live arrival guarantee to your door!',
+                                )}
                             </p>
                         </div>
 
@@ -155,13 +195,13 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                 href="/products" 
                                 className="px-7 py-3 rounded-full bg-white text-black dark:bg-[#4AB8BD] dark:text-[#001454] font-bold text-xs sm:text-sm hover:bg-neutral-200 dark:hover:bg-[#38a2a7] transition shadow-sm"
                             >
-                                Jelajahi Katalog
+                                {pick('Jelajahi Katalog', 'Explore Catalog')}
                             </Link>
                             <Link 
                                 href="/register" 
                                 className="px-7 py-3 rounded-full border border-neutral-600 dark:border-neutral-700 text-white font-semibold text-xs sm:text-sm hover:bg-white/10 hover:border-neutral-400 transition"
                             >
-                                Buat Akun
+                                {pick('Buat Akun', 'Create Account')}
                             </Link>
                         </div>
                     </div>
@@ -173,13 +213,13 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 <section className="space-y-4">
                     <div className="flex items-center justify-between gap-2">
                         <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
-                            Kategori Toko
+                            {pick('Kategori Toko', 'Shop by Category')}
                         </h2>
                         <Link
                             href="/products"
                             className="text-xs font-semibold text-neutral-500 hover:text-[#001454] dark:text-neutral-400 dark:hover:text-white transition"
                         >
-                            Lihat Semua
+                            {pick('Lihat Semua', 'View All')}
                         </Link>
                     </div>
 
@@ -210,16 +250,16 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 <section className="space-y-5 pt-2">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
-                            Produk Terbaru
+                            {pick('Produk Terbaru', 'Latest Arrivals')}
                         </h2>
 
                         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 text-xs font-semibold">
                             {[
-                                { id: 'all', label: 'Semua' },
-                                { id: 'freshwater', label: 'Air Tawar' },
-                                { id: 'saltwater', label: 'Air Laut' },
-                                { id: 'male', label: 'Jantan' },
-                                { id: 'female', label: 'Betina' },
+                                { id: 'all', label: pick('Semua', 'All') },
+                                { id: 'freshwater', label: pick('Air Tawar', 'Freshwater') },
+                                { id: 'saltwater', label: pick('Air Laut', 'Saltwater') },
+                                { id: 'male', label: pick('Jantan', 'Male') },
+                                { id: 'female', label: pick('Betina', 'Female') },
                             ].map((tab) => (
                                 <button
                                     key={tab.id}
@@ -249,13 +289,13 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                     <section className="space-y-6 border-t border-slate-200/80 dark:border-neutral-800 pt-10">
                         <div className="flex items-center justify-between gap-2">
                             <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
-                                Toko Pilihan
+                                {pick('Toko Pilihan', 'Featured Stores')}
                             </h2>
                             <Link
                                 href="/products"
                                 className="text-xs font-semibold text-neutral-500 hover:text-[#001454] dark:text-neutral-400 dark:hover:text-white transition"
                             >
-                                Lihat Semua
+                                {pick('Lihat Semua', 'View All')}
                             </Link>
                         </div>
 
@@ -291,17 +331,20 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         <div className="rounded-3xl bg-[#0f172a] dark:bg-[#111a30] border border-slate-800 p-6 sm:p-8 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-5">
                             <div className="space-y-1">
                                 <h3 className="text-lg sm:text-xl font-bold tracking-tight">
-                                    Punya Farm atau Toko Aquascape?
+                                    {pick('Punya Farm atau Toko Aquascape?', 'Own a Farm or Aquascape Store?')}
                                 </h3>
                                 <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
-                                    Pasarkan ikan hias, alat akuarium, dan tanaman aquascape Anda langsung ke penghobi di seluruh Indonesia.
+                                    {pick(
+                                        'Pasarkan ikan hias, alat akuarium, dan tanaman aquascape Anda langsung ke penghobi di seluruh Indonesia.',
+                                        'Reach ornamental fish hobbyists across Indonesia with verified listings for fish, tank gear, and aquascape plants.',
+                                    )}
                                 </p>
                             </div>
                             <Link
                                 href="/seller/register"
                                 className="px-6 py-2.5 rounded-full bg-white text-[#0f172a] font-bold text-xs hover:bg-slate-100 transition whitespace-nowrap self-start sm:self-auto"
                             >
-                                Buka Toko
+                                {pick('Buka Toko', 'Open Store')}
                             </Link>
                         </div>
                     </section>
@@ -313,21 +356,24 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         {/* Left Column: Heading at top, Helper Subtext + Pill CTA at bottom */}
                         <div className="lg:col-span-5 flex flex-col justify-between gap-7">
                             <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-semibold tracking-[-0.03em] leading-[1.12] text-slate-900 dark:text-white">
-                                Pertanyaan Umum
+                                {pick('Pertanyaan Umum', 'Common Questions')}
                                 <br />
-                                dari para pembeli.
+                                {pick('dari para pembeli.', 'from our buyers.')}
                             </h2>
 
                             <div>
                                 <p className="max-w-[34ch] text-xs sm:text-[13.5px] leading-relaxed text-slate-500 dark:text-slate-400">
-                                    Tim dan asisten Kiko kami selalu siap membantu dengan jawaban cepat, jelas, dan tepercaya kapan pun Anda butuh.
+                                    {pick(
+                                        'Tim dan asisten Kiko kami selalu siap membantu dengan jawaban cepat, jelas, dan tepercaya kapan pun Anda butuh.',
+                                        'Our team and Kiko assistant are always ready with fast, clear, and trusted answers whenever you need help.',
+                                    )}
                                 </p>
                                 <button
                                     type="button"
                                     onClick={() => window.dispatchEvent(new CustomEvent('dunia-ikan:open-chat'))}
                                     className="mt-4 inline-flex items-center justify-center rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-950 px-5 py-2.5 text-xs sm:text-[13px] font-semibold shadow-[0_6px_18px_rgba(15,23,42,0.18)] active:scale-[0.99] transition"
                                 >
-                                    Tanya Kiko
+                                    {pick('Tanya Kiko', 'Ask Kiko')}
                                 </button>
                             </div>
                         </div>
@@ -336,9 +382,10 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         <div className="lg:col-span-7 space-y-3">
                             {FAQ_ITEMS.map((item, index) => {
                                 const isExpanded = openFaq === index;
+                                const copy = isEn ? item.en : item.id;
                                 return (
                                     <button
-                                        key={item.question}
+                                        key={copy.question}
                                         type="button"
                                         onClick={() => setOpenFaq(isExpanded ? null : index)}
                                         aria-expanded={isExpanded}
@@ -346,7 +393,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                     >
                                         <div className="flex items-center justify-between gap-4">
                                             <span className="text-sm sm:text-[15px] font-semibold leading-snug text-slate-900 dark:text-white">
-                                                {item.question}
+                                                {copy.question}
                                             </span>
                                             <span className="shrink-0 w-6 h-6 rounded-full border border-slate-400/75 dark:border-slate-500 inline-flex items-center justify-center text-slate-600 dark:text-slate-300">
                                                 {isExpanded ? (
@@ -359,7 +406,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
 
                                         {isExpanded && (
                                             <p className="mt-2.5 pr-8 text-xs sm:text-[13.5px] leading-relaxed text-slate-500 dark:text-slate-400">
-                                                {item.answer}
+                                                {copy.answer}
                                             </p>
                                         )}
                                     </button>
