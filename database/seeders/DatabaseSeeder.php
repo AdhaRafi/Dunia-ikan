@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         if (User::where('email', 'admin@duniaikan.test')->exists() && Category::exists()) {
-            $this->call(StoreReviewSeeder::class);
+            $this->call([
+                FishSpeciesExpansionSeeder::class,
+                StoreReviewSeeder::class,
+            ]);
 
             return;
         }
@@ -482,7 +485,10 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
-        // 9. Ulasan & Rating Toko Awal
-        $this->call(StoreReviewSeeder::class);
+        // 9. Ekspansi Spesies Ikan & Ulasan Toko Awal
+        $this->call([
+            FishSpeciesExpansionSeeder::class,
+            StoreReviewSeeder::class,
+        ]);
     }
 }

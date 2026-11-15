@@ -293,6 +293,22 @@ class SecurityHardeningTest extends TestCase
         $productRes->assertStatus(200);
         $productRes->assertSee('Cupang', false);
 
+        $this->get('/products?water_type=saltwater')
+            ->assertStatus(200)
+            ->assertSee('Ocellaris Clownfish', false);
+
+        $this->get('/products?water_type=brackish')
+            ->assertStatus(200)
+            ->assertSee('Archerfish', false);
+
+        $this->get('/products?q=arwana')
+            ->assertStatus(200)
+            ->assertSee('Arwana Super Red', false);
+
+        $this->get('/products?q=badut')
+            ->assertStatus(200)
+            ->assertSee('Ikan Badut', false);
+
         $txRes = $this->actingAs($admin)->get('/admin-portal/transactions?q=DI-&status=cancelled');
         $txRes->assertStatus(200);
     }

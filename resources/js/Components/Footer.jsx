@@ -85,13 +85,18 @@ export default function Footer() {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/products?category=cupang" className="hover:text-black dark:hover:text-white transition">
-                                        {pick('Cupang / Betta', 'Betta Fish')}
+                                    <Link href="/products?water_type=brackish" className="hover:text-black dark:hover:text-white transition">
+                                        {pick('Air Payau', 'Brackish')}
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/products?category=channa" className="hover:text-black dark:hover:text-white transition">
-                                        {pick('Channa Predator', 'Channa Snakehead')}
+                                    <Link href="/products?category=ikan-hias&q=arwana" className="hover:text-black dark:hover:text-white transition">
+                                        {pick('Arwana & Predator', 'Arowana & Predator')}
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/products?category=ikan-hias&q=cupang" className="hover:text-black dark:hover:text-white transition">
+                                        {pick('Cupang & Channa', 'Betta & Channa')}
                                     </Link>
                                 </li>
                                 <li>

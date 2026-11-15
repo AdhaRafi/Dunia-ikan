@@ -65,14 +65,17 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
     const [openFaq, setOpenFaq] = useState(0);
 
     // Filter items based on quick chips
-    const displayedProducts = featuredFish?.filter((item) => {
-        if (selectedTab === 'all') return true;
-        if (selectedTab === 'freshwater') return item.fish_detail?.water_type === 'freshwater';
-        if (selectedTab === 'saltwater') return item.fish_detail?.water_type === 'saltwater';
-        if (selectedTab === 'male') return item.fish_detail?.sex === 'male';
-        if (selectedTab === 'female') return item.fish_detail?.sex === 'female';
-        return true;
-    }) || [];
+    const displayedProducts = (
+        featuredFish?.filter((item) => {
+            if (selectedTab === 'all') return true;
+            if (selectedTab === 'freshwater') return item.fish_detail?.water_type === 'freshwater';
+            if (selectedTab === 'saltwater') return item.fish_detail?.water_type === 'saltwater';
+            if (selectedTab === 'brackish') return item.fish_detail?.water_type === 'brackish';
+            if (selectedTab === 'male') return item.fish_detail?.sex === 'male';
+            if (selectedTab === 'female') return item.fish_detail?.sex === 'female';
+            return true;
+        }) || []
+    ).slice(0, 8);
 
     // MorphMarket-style clean shop categories grid (fish species, aquarium tools, care & aquatic plants)
     const shopCategories = [
@@ -85,6 +88,26 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
             title: 'Channa',
             image: '/images/categories/channa.jpg',
             link: '/products?category=ikan-hias&q=channa',
+        },
+        {
+            title: 'Arwana',
+            image: '/images/categories/arwana.jpg',
+            link: '/products?category=ikan-hias&q=arwana',
+        },
+        {
+            title: 'Koi',
+            image: '/images/categories/koi.jpg',
+            link: '/products?category=ikan-hias&q=koi',
+        },
+        {
+            title: pick('Mas Koki', 'Goldfish'),
+            image: '/images/categories/mas-koki.jpg',
+            link: '/products?category=ikan-hias&q=koki',
+        },
+        {
+            title: 'Louhan',
+            image: '/images/categories/louhan.jpg',
+            link: '/products?category=ikan-hias&q=louhan',
         },
         {
             title: 'Discus',
@@ -100,6 +123,16 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
             title: 'Neon Tetra',
             image: '/images/categories/neon-tetra.jpg',
             link: '/products?water_type=freshwater&q=tetra',
+        },
+        {
+            title: pick('Ikan Badut', 'Clownfish'),
+            image: '/images/categories/clownfish.jpg',
+            link: '/products?water_type=saltwater&q=badut',
+        },
+        {
+            title: 'Blue Tang',
+            image: '/images/categories/blue-tang.jpg',
+            link: '/products?water_type=saltwater&q=tang',
         },
         {
             title: pick('Filter Aquarium', 'Aquarium Filter'),
@@ -271,6 +304,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                 { id: 'all', label: pick('Semua', 'All') },
                                 { id: 'freshwater', label: pick('Air Tawar', 'Freshwater') },
                                 { id: 'saltwater', label: pick('Air Laut', 'Saltwater') },
+                                { id: 'brackish', label: pick('Air Payau', 'Brackish') },
                                 { id: 'male', label: pick('Jantan', 'Male') },
                                 { id: 'female', label: pick('Betina', 'Female') },
                             ].map((tab) => (

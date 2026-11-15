@@ -15,13 +15,28 @@ class HomeController extends Controller
     {
         $categories = Category::withCount('products')->get();
 
-        $featuredFish = Product::with(['store', 'category', 'fishDetail'])
+        $allFeaturedFish = Product::with(['store', 'category', 'fishDetail'])
             ->where('is_active', true)
             ->where('stock', '>', 0)
             ->whereHas('category', fn ($query) => $query->where('slug', 'ikan-hias'))
-            ->latest()
-            ->take(8)
+            ->orderByDesc('id')
+            ->take(48)
             ->get();
+
+        // Interleave freshwater, saltwater, and brackish so "All" showcases every habitat
+        $buckets = [
+            $allFeaturedFish->filter(fn ($p) => ($p->fishDetail?->water_type ?? 'freshwater') === 'freshwater')->values(),
+            $allFeaturedFish->filter(fn ($p) => $p->fishDetail?->water_type === 'saltwater')->values(),
+            $allFeaturedFish->filter(fn ($p) => $p->fishDetail?->water_type === 'brackish')->values(),
+        ];
+        $featuredFish = collect();
+        while (collect($buckets)->contains(fn ($b) => $b->isNotEmpty())) {
+            foreach ($buckets as $bucket) {
+                if ($bucket->isNotEmpty()) {
+                    $featuredFish->push($bucket->shift());
+                }
+            }
+        }
 
         $featuredSupplies = Product::with(['store', 'category'])
             ->where('is_active', true)
@@ -38,6 +53,7 @@ class HomeController extends Controller
 
         $featuredStores = Store::where('is_active', true)
             ->withCount('products')
+            ->orderBy('id')
             ->take(6)
             ->get();
 
