@@ -47,13 +47,13 @@ COPY --from=frontend /app/public/build /app/public/build
 COPY Caddyfile /etc/frankenphp/Caddyfile
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
-RUN rm -f /app/.env /app/.env.local /app/database/*.sqlite* /app/public/hot \
+RUN rm -f /app/.env /app/.env.local /app/database/*.sqlite* /app/public/hot /app/bootstrap/cache/*.php \
     && sed -i 's/\r$//' /etc/frankenphp/Caddyfile /usr/local/bin/docker-entrypoint.sh \
     && chmod +x /usr/local/bin/docker-entrypoint.sh \
     && mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
     && php artisan package:discover --ansi --no-interaction \
     && php artisan filament:assets --ansi --no-interaction \
-    && php artisan storage:link --force --no-interaction || true \
+    && ln -sfn /tmp/storage/app/public /app/public/storage \
     && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 80

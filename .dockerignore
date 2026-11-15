@@ -27,6 +27,7 @@ public/js/filament
 public/fonts/filament
 public/hot
 public/storage
+bootstrap/cache/*.php
 storage/logs/*
 storage/framework/cache/data/*
 storage/framework/sessions/*
