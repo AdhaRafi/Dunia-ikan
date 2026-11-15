@@ -385,12 +385,12 @@ class SecurityHardeningTest extends TestCase
     {
         config([
             'services.gemini.api_key' => 'AIzaTestGeminiKey',
-            'services.gemini.model' => 'gemini-3.8-flash',
+            'services.gemini.model' => 'gemini-3.5-flash-lite',
         ]);
 
         Http::preventStrayRequests();
         Http::fake([
-            'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent*' => Http::response([
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent' => Http::response([
                 'candidates' => [[
                     'content' => [
                         'parts' => [[
@@ -408,5 +408,12 @@ class SecurityHardeningTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonPath('is_fallback', false)
             ->assertJsonPath('assistant_message.message', 'Halo! Ini jawaban AI Kiko.');
+
+        Http::assertSent(function ($request) {
+            return str_starts_with($request->url(), 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent')
+                && ! str_contains($request->url(), 'AIzaTestGeminiKey')
+                && $request->hasHeader('x-goog-api-key', 'AIzaTestGeminiKey')
+                && data_get($request->data(), 'generationConfig.thinkingConfig.thinkingLevel') === 'low';
+        });
     }
 }

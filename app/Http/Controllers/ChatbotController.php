@@ -148,7 +148,7 @@ class ChatbotController extends Controller
 
         // Siapkan respons AI atau Fallback
         $apiKey = config('services.gemini.api_key');
-        $model = config('services.gemini.model', 'gemini-3.8-flash');
+        $model = config('services.gemini.model', 'gemini-3.5-flash-lite');
         $assistantReply = null;
         $isFallback = false;
 
@@ -166,7 +166,6 @@ Pedoman Penting:
 {$guidesContext}
 3. Gaya bahasa: Ramah, bersahabat, profesional, solutif, mudah dipahami pemula. Jawab dalam Bahasa Indonesia yang baik.";
 
-                $contents = [];
                 $parts = [
                     ['text' => $systemPrompt."\n\nPertanyaan Pembeli:\n".$userMessage],
                 ];
@@ -180,12 +179,37 @@ Pedoman Penting:
                     ];
                 }
 
-                $contents[] = ['role' => 'user', 'parts' => $parts];
+                $payload = [
+                    'contents' => [
+                        ['role' => 'user', 'parts' => $parts],
+                    ],
+                ];
 
-                $response = Http::timeout(15)->post(
-                    "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}",
-                    ['contents' => $contents]
-                );
+                // Limit reasoning latency on Gemini 3.x / 4.x models and keep answers crisp.
+                if (str_starts_with($model, 'gemini-3') || str_starts_with($model, 'gemini-4')) {
+                    $payload['generationConfig'] = [
+                        'thinkingConfig' => [
+                            'thinkingLevel' => 'low',
+                        ],
+                        'maxOutputTokens' => 1024,
+                    ];
+                }
+
+                // Force IPv4 in containerized runtimes to avoid IPv6 egress stalls.
+                $httpOptions = defined('CURL_IPRESOLVE_V4')
+                    ? ['curl' => [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]]
+                    : [];
+
+                $response = Http::withHeaders([
+                    'x-goog-api-key' => $apiKey,
+                ])
+                    ->withOptions($httpOptions)
+                    ->connectTimeout(5)
+                    ->timeout(25)
+                    ->post(
+                        "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent",
+                        $payload
+                    );
 
                 if ($response->successful()) {
                     $json = $response->json();

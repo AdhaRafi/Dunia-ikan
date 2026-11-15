@@ -208,7 +208,7 @@ export default function Index({ products, categories, cities, filters }) {
                                 placeholder={pick('Cari ikan, filter, tanaman...', 'Search fish, filters, plants...')}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="flex-1 bg-transparent border-0 p-0 text-xs text-[#001454] dark:text-white placeholder:text-slate-400 focus:ring-0 focus:outline-none"
+                                className="flex-1 min-w-0 bg-transparent border-0 p-0 text-xs text-[#001454] dark:text-white placeholder:text-slate-400 focus:ring-0 focus:outline-none"
                             />
                             <button
                                 type="submit"
@@ -480,7 +480,7 @@ export default function Index({ products, categories, cities, filters }) {
                         </aside>
 
                         {/* Right Catalog Grid */}
-                        <main className="lg:col-span-9 space-y-8">
+                        <div className="lg:col-span-9 min-w-0 space-y-8">
                             {products?.data?.length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
                                     {products.data.map((product) => (
@@ -528,7 +528,7 @@ export default function Index({ products, categories, cities, filters }) {
                                     ))}
                                 </div>
                             )}
-                        </main>
+                        </div>
                     </div>
                 </div>
             </div>
