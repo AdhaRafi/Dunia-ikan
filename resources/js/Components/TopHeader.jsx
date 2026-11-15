@@ -214,7 +214,7 @@ export default function TopHeader({
 
     return (
         <header className="sticky top-0 z-40 transform-gpu bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-md border-b border-[#1E80A0]/10 dark:border-neutral-800 transition-colors">
-            <div className="h-14 sm:h-16 px-3 sm:px-6 lg:px-8 w-full flex items-center justify-between gap-2 sm:gap-6">
+            <div className="h-14 sm:h-16 pl-3 pr-3 sm:pl-4 sm:pr-6 md:pl-3 lg:pr-8 w-full flex items-center justify-between gap-2 sm:gap-6">
                 {/* Left: Mobile Menu Trigger + Brand + Desktop Search Bar */}
                 <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0 max-w-3xl">
                     {/* Mobile Hamburger Trigger */}
