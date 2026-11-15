@@ -53,6 +53,10 @@ export default function ForgotPassword({ status }) {
                         value={data.email}
                         className="mt-1.5"
                         placeholder={pick('nama@email.com', 'name@email.com')}
+                        autoComplete="username"
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        spellCheck={false}
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
                         required

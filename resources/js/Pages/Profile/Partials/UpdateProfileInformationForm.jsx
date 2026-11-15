@@ -93,6 +93,9 @@ export default function UpdateProfileInformation({
                             onChange={(e) => setData('email', e.target.value)}
                             required
                             autoComplete="username"
+                            autoCapitalize="none"
+                            autoCorrect="off"
+                            spellCheck={false}
                             className="w-full bg-transparent border-0 rounded-md px-2 py-1 -mx-2 text-xs sm:text-[13px] font-medium text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-900/50 focus:bg-slate-50 dark:focus:bg-slate-900/70 focus:ring-1 focus:ring-slate-300 dark:focus:ring-neutral-700 transition"
                         />
                         <InputError className="mt-1" message={errors.email} />

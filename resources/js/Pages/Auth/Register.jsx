@@ -149,6 +149,9 @@ export default function Register() {
                         className="mt-1.5"
                         placeholder="nama@email.com"
                         autoComplete="username"
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        spellCheck={false}
                         onChange={(e) => setData('email', e.target.value)}
                         required
                     />

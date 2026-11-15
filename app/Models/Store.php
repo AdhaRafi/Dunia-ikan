@@ -30,6 +30,14 @@ class Store extends Model
         'is_active',
     ];
 
+    protected $hidden = [
+        'bank_name',
+        'bank_account_number',
+        'bank_account_name',
+        'qris_image',
+        'address',
+    ];
+
     protected $appends = [
         'logo_url',
     ];

@@ -103,7 +103,16 @@ export default function Index({
 
     return (
         <AppLayout>
-            <Head title={pick('Panduan Kesehatan Ikan — Dunia Ikan', 'Fish Care & Health Guides — Dunia Ikan')} />
+            <Head title={pick('Panduan Kesehatan Ikan — Dunia Ikan', 'Fish Care & Health Guides — Dunia Ikan')}>
+                <meta
+                    head-key="description"
+                    name="description"
+                    content={pick(
+                        'Kumpulan panduan diagnosa penyakit ikan hias, karantina, kualitas air, dan perawatan dari aquarist Dunia Ikan.',
+                        'Curated fish health guides covering disease symptoms, quarantine, and water quality care from Dunia Ikan.',
+                    )}
+                />
+            </Head>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-9 space-y-8 sm:space-y-10">
                 {/* 1. Editorial Knowledge Hub Hero */}

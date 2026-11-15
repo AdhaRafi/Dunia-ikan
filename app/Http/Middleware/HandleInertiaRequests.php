@@ -34,6 +34,13 @@ class HandleInertiaRequests extends Middleware
         $user = $request->user();
         if ($user) {
             $user->loadMissing('store');
+            $user->store?->makeVisible([
+                'bank_name',
+                'bank_account_number',
+                'bank_account_name',
+                'qris_image',
+                'address',
+            ]);
         }
 
         $cartCount = 0;
@@ -46,6 +53,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user,
             ],
+            'canUseDemoAccounts' => ! app()->isProduction() || (bool) config('app.demo_mode', false),
             'pendingSellerCount' => fn () => $user?->isAdmin()
                 ? User::where('seller_status', 'pending')->count()
                 : 0,

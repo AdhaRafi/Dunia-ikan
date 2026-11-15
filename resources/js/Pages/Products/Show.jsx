@@ -200,7 +200,13 @@ export default function Show({ product, relatedProducts, storeRating }) {
 
     return (
         <AppLayout>
-            <Head title={`${product.name} — Dunia Ikan`} />
+            <Head title={`${product.name} — Dunia Ikan`}>
+                <meta
+                    head-key="description"
+                    name="description"
+                    content={String(product.description || product.name).slice(0, 155)}
+                />
+            </Head>
 
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
                 {/* Breadcrumb */}

@@ -144,7 +144,16 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                     'Dunia Ikan : Marketplace Ikan Hias & Mutasi Genetik (Morph) Captive-Bred',
                     'Dunia Ikan: Captive-Bred Ornamental Fish & Genetic Morph Marketplace',
                 )}
-            />
+            >
+                <meta
+                    head-key="description"
+                    name="description"
+                    content={pick(
+                        'Belanja ikan hias captive-bred, morph langka, tanaman aquascape, dan perlengkapan akuarium terkurasi dengan garansi ikan hidup 100%.',
+                        'Shop captive-bred ornamental fish, rare morphs, aquatic plants, and aquarium supplies with a 100% live arrival guarantee.',
+                    )}
+                />
+            </Head>
 
             {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner (Living Aquarium Habitat) */}
             <section className="relative w-full overflow-hidden bg-black min-h-[460px] sm:min-h-[500px] lg:min-h-[540px] flex items-center border-b border-neutral-800">
@@ -155,11 +164,10 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         loop
                         muted
                         playsInline
-                        preload="auto"
+                        preload="metadata"
                         poster="/images/hero/aquarium-poster.webp"
                         className="w-full h-full object-cover object-center select-none"
                     >
-                        <source src="/videos/aquarium-hero.webm" type="video/webm" />
                         <source src="/videos/aquarium-hero.mp4" type="video/mp4" />
                         <img
                             src="/images/hero/aquarium-poster.webp"
@@ -235,6 +243,8 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                     <img
                                         src={group.image}
                                         alt={group.title}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                                     />
                                 </div>
@@ -311,6 +321,8 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                             <img
                                                 src={store.logo_url}
                                                 alt={store.name}
+                                                loading="lazy"
+                                                decoding="async"
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                             />
                                         ) : (

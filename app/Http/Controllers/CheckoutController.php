@@ -92,6 +92,10 @@ class CheckoutController extends Controller
 
                 foreach ($grouped as $storeId => $items) {
                     $store = $items->first()->product->store;
+                    if (! $store || ! $store->is_active) {
+                        throw new \DomainException('Salah satu toko dalam keranjang Anda sedang tidak aktif.');
+                    }
+
                     $storeTotal = 0;
 
                     // Validasi dan kurangi stok untuk setiap item dengan locking
@@ -101,11 +105,11 @@ class CheckoutController extends Controller
                             ->first();
 
                         if (! $product || ! $product->is_active) {
-                            throw new \Exception("Produk '{$item->product->name}' sudah tidak aktif atau tidak ditemukan.");
+                            throw new \DomainException("Produk '{$item->product->name}' sudah tidak aktif atau tidak ditemukan.");
                         }
 
                         if ($product->stock < $item->quantity) {
-                            throw new \Exception("Stok untuk '{$product->name}' tidak mencukupi. Tersedia: {$product->stock}, diminta: {$item->quantity}.");
+                            throw new \DomainException("Stok untuk '{$product->name}' tidak mencukupi. Tersedia: {$product->stock}, diminta: {$item->quantity}.");
                         }
 
                         $storeTotal += ($item->quantity * $product->price);
@@ -153,8 +157,12 @@ class CheckoutController extends Controller
                 // Hapus keranjang setelah checkout sukses
                 CartItem::where('user_id', $user->id)->delete();
             });
-        } catch (\Throwable $e) {
+        } catch (\DomainException $e) {
             return back()->with('error', 'Checkout gagal: '.$e->getMessage());
+        } catch (\Throwable $e) {
+            report($e);
+
+            return back()->with('error', 'Checkout gagal diproses. Silakan coba beberapa saat lagi.');
         }
 
         if (count($createdOrders) === 1) {

@@ -50,7 +50,15 @@ class OrderController extends Controller
     public function verifyPayment(Request $request, int $id): RedirectResponse
     {
         $store = $request->user()->store;
+        if (! $store) {
+            abort(403);
+        }
+
         $order = Order::where('store_id', $store->id)->where('id', $id)->firstOrFail();
+
+        if ($order->payment_status === 'verified' || in_array($order->status, ['shipped', 'delivered', 'cancelled'], true)) {
+            return back()->with('error', 'Status pesanan saat ini tidak dapat diubah melalui verifikasi pembayaran.');
+        }
 
         $validated = $request->validate([
             'payment_status' => 'required|in:verified,rejected',
@@ -78,7 +86,19 @@ class OrderController extends Controller
     public function updateShipping(Request $request, int $id): RedirectResponse
     {
         $store = $request->user()->store;
+        if (! $store) {
+            abort(403);
+        }
+
         $order = Order::where('store_id', $store->id)->where('id', $id)->firstOrFail();
+
+        if (in_array($order->status, ['delivered', 'cancelled'], true)) {
+            return back()->with('error', 'Pesanan yang sudah selesai atau dibatalkan tidak dapat diperbarui.');
+        }
+
+        if ($order->payment_method !== 'cod' && $order->payment_status !== 'verified') {
+            return back()->with('error', 'Verifikasi pembayaran terlebih dahulu sebelum memasukkan nomor resi.');
+        }
 
         $validated = $request->validate([
             'shipping_courier' => 'required|string|max:50',

@@ -4,12 +4,13 @@ import InputLabel from '@/Components/InputLabel';
 import PasswordInput from '@/Components/PasswordInput';
 import TextInput from '@/Components/TextInput';
 import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Store, User } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
 
 export default function Login({ status, canResetPassword }) {
     const { pick } = useLanguage();
+    const { canUseDemoAccounts = false } = usePage().props;
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -67,6 +68,9 @@ export default function Login({ status, canResetPassword }) {
                         className="mt-1.5"
                         placeholder={pick('nama@email.com', 'name@email.com')}
                         autoComplete="username"
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        spellCheck={false}
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
                         required
@@ -117,36 +121,40 @@ export default function Login({ status, canResetPassword }) {
                 </button>
             </form>
 
-            <div className="my-5 flex items-center gap-3">
-                <div className="h-px flex-1 bg-slate-200 dark:bg-neutral-800" />
-                <span className="text-[11px] font-medium text-slate-400 dark:text-slate-500">
-                    {pick('atau isi akun demo', 'or try a demo account')}
-                </span>
-                <div className="h-px flex-1 bg-slate-200 dark:bg-neutral-800" />
-            </div>
+            {canUseDemoAccounts && (
+                <>
+                    <div className="my-5 flex items-center gap-3">
+                        <div className="h-px flex-1 bg-slate-200 dark:bg-neutral-800" />
+                        <span className="text-[11px] font-medium text-slate-400 dark:text-slate-500">
+                            {pick('atau isi akun demo', 'or try a demo account')}
+                        </span>
+                        <div className="h-px flex-1 bg-slate-200 dark:bg-neutral-800" />
+                    </div>
 
-            <div className="grid grid-cols-2 gap-2.5">
-                <button
-                    type="button"
-                    onClick={() => fillDemo('pembeli@duniaikan.test')}
-                    className="h-10 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800/80 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-neutral-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-1.5 transition"
-                >
-                    <User className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-                    {pick('Pembeli', 'Buyer')}
-                </button>
-                <button
-                    type="button"
-                    onClick={() => fillDemo('penjual1@duniaikan.test')}
-                    className="h-10 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800/80 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-neutral-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-1.5 transition"
-                >
-                    <Store className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-                    {pick('Penjual', 'Seller')}
-                </button>
-            </div>
-            <p className="mt-2 text-center text-[11px] text-slate-400 dark:text-slate-500">
-                {pick('Kata sandi akun demo:', 'Demo account password:')}{' '}
-                <span className="font-medium text-slate-500 dark:text-slate-400">password</span>
-            </p>
+                    <div className="grid grid-cols-2 gap-2.5">
+                        <button
+                            type="button"
+                            onClick={() => fillDemo('pembeli@duniaikan.test')}
+                            className="h-10 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800/80 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-neutral-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-1.5 transition"
+                        >
+                            <User className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                            {pick('Pembeli', 'Buyer')}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => fillDemo('penjual1@duniaikan.test')}
+                            className="h-10 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800/80 dark:hover:bg-slate-800 border border-slate-200/70 dark:border-neutral-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-1.5 transition"
+                        >
+                            <Store className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                            {pick('Penjual', 'Seller')}
+                        </button>
+                    </div>
+                    <p className="mt-2 text-center text-[11px] text-slate-400 dark:text-slate-500">
+                        {pick('Kata sandi akun demo:', 'Demo account password:')}{' '}
+                        <span className="font-medium text-slate-500 dark:text-slate-400">password</span>
+                    </p>
+                </>
+            )}
 
             <p className="mt-5 text-center text-[13px] text-slate-500 dark:text-slate-400">
                 {pick('Belum punya akun?', "Don't have an account?")}{' '}

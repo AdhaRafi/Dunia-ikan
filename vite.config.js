@@ -10,4 +10,23 @@ export default defineConfig({
         }),
         react(),
     ],
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('lucide-react')) {
+                            return 'vendor-icons';
+                        }
+                        if (id.includes('@inertiajs') || id.includes('axios')) {
+                            return 'vendor-inertia';
+                        }
+                        if (id.includes('react')) {
+                            return 'vendor-react';
+                        }
+                    }
+                },
+            },
+        },
+    },
 });

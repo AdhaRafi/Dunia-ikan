@@ -51,6 +51,9 @@ export default function ResetPassword({ token, email }) {
                         value={data.email}
                         className="mt-1.5"
                         autoComplete="username"
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        spellCheck={false}
                         onChange={(e) => setData('email', e.target.value)}
                     />
                     <InputError message={errors.email} className="mt-1.5" />

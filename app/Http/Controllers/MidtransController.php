@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class MidtransController extends Controller
@@ -20,6 +21,12 @@ class MidtransController extends Controller
             ->where('order_number', $orderNumber)
             ->where('buyer_id', $request->user()->id)
             ->firstOrFail();
+
+        if ($order->status === 'cancelled') {
+            return response()->json([
+                'message' => 'Pesanan ini telah dibatalkan.',
+            ], 400);
+        }
 
         if ($order->payment_status === 'verified') {
             return response()->json([
@@ -76,7 +83,7 @@ class MidtransController extends Controller
         ];
 
         try {
-            $response = Http::withoutVerifying()
+            $response = Http::timeout(15)
                 ->withBasicAuth($serverKey, '')
                 ->acceptJson()
                 ->post($baseUrl, $payload);
@@ -92,18 +99,29 @@ class MidtransController extends Controller
                 ]);
             }
 
+            Log::warning('Midtrans Snap API error', [
+                'order_number' => $order->order_number,
+                'status' => $response->status(),
+            ]);
+
             return response()->json([
-                'message' => 'Gagal membuat sesi transaksi Midtrans: '.($response->json('error_messages.0') ?? $response->body()),
+                'message' => 'Gagal membuat sesi transaksi Midtrans. Silakan coba lagi.',
             ], 422);
         } catch (\Throwable $e) {
+            Log::error('Midtrans Snap API connection failed', [
+                'order_number' => $order->order_number,
+                'error' => $e->getMessage(),
+            ]);
+
             return response()->json([
-                'message' => 'Koneksi ke Midtrans gagal: '.$e->getMessage(),
+                'message' => 'Koneksi ke layanan pembayaran gagal. Silakan coba lagi.',
             ], 500);
         }
     }
 
     /**
      * Callback dari frontend saat Snap popup selesai bayar.
+     * Status pembayaran tetap diverifikasi ulang ke API Midtrans di sisi server.
      */
     public function finish(Request $request, string $orderNumber): RedirectResponse
     {
@@ -111,35 +129,13 @@ class MidtransController extends Controller
             ->where('buyer_id', $request->user()->id)
             ->firstOrFail();
 
-        $result = $request->input('result');
-        $transactionStatus = $result['transaction_status'] ?? null;
-        $paymentType = $result['payment_type'] ?? 'midtrans';
+        $sync = $this->syncOrderStatusFromMidtrans($order);
 
-        if (in_array($transactionStatus, ['settlement', 'capture', 'success'])) {
-            $order->update([
-                'payment_status' => 'verified',
-                'status' => 'processing',
-                'payment_notes' => 'Lunas via Midtrans ('.$paymentType.')',
-            ]);
-
-            return back()->with('success', 'Pembayaran berhasil dikonfirmasi! Pesanan Anda segera diproses oleh penangkar.');
-        }
-
-        if ($transactionStatus === 'pending') {
-            $order->update([
-                'payment_status' => 'paid',
-                'status' => 'awaiting_confirmation',
-                'payment_notes' => 'Menunggu verifikasi settlement Midtrans ('.$paymentType.')',
-            ]);
-
-            return back()->with('success', 'Transaksi diterima dan menunggu pembayaran/settlement.');
-        }
-
-        return back()->with('info', 'Status transaksi: '.($transactionStatus ?? 'Menunggu penyelesaian.'));
+        return back()->with($sync['flash'], $sync['message']);
     }
 
     /**
-     * Cek status pembayaran langsung ke Midtrans API (solusi praktis saat dev localhost tanpa ngrok).
+     * Cek status pembayaran langsung ke Midtrans API.
      */
     public function checkStatus(Request $request, string $orderNumber): RedirectResponse
     {
@@ -147,49 +143,9 @@ class MidtransController extends Controller
             ->where('buyer_id', $request->user()->id)
             ->firstOrFail();
 
-        $serverKey = config('services.midtrans.server_key');
-        $isProduction = (bool) config('services.midtrans.is_production');
+        $sync = $this->syncOrderStatusFromMidtrans($order);
 
-        $baseUrl = $isProduction
-            ? 'https://api.midtrans.com/v2/'
-            : 'https://api.sandbox.midtrans.com/v2/';
-
-        $response = Http::withoutVerifying()
-            ->withBasicAuth($serverKey, '')
-            ->acceptJson()
-            ->get($baseUrl.$order->order_number.'/status');
-
-        if ($response->successful()) {
-            $status = $response->json('transaction_status');
-            $fraud = $response->json('fraud_status');
-            $paymentType = $response->json('payment_type');
-
-            if ($status === 'settlement' || ($status === 'capture' && $fraud === 'accept')) {
-                $order->update([
-                    'payment_status' => 'verified',
-                    'status' => 'processing',
-                    'payment_notes' => 'Lunas via Midtrans ('.$paymentType.')',
-                ]);
-
-                return back()->with('success', 'Pembayaran berhasil terverifikasi LUNAS oleh Midtrans!');
-            }
-
-            if ($status === 'pending') {
-                return back()->with('info', 'Status transaksi di Midtrans: PENDING (Menunggu Pembeli Menyelesaikan Pembayaran).');
-            }
-
-            if (in_array($status, ['cancel', 'deny', 'expire'])) {
-                $order->update([
-                    'payment_status' => 'unpaid',
-                    'status' => 'cancelled',
-                    'payment_notes' => 'Transaksi dibatalkan Midtrans: '.$status,
-                ]);
-
-                return back()->with('error', 'Transaksi telah kadaluarsa atau dibatalkan oleh Midtrans.');
-            }
-        }
-
-        return back()->with('info', 'Status saat ini belum lunas di Midtrans. Silakan selesaikan pembayaran terlebih dahulu.');
+        return back()->with($sync['flash'], $sync['message']);
     }
 
     /**
@@ -197,7 +153,7 @@ class MidtransController extends Controller
      */
     public function notification(Request $request): JsonResponse
     {
-        $serverKey = config('services.midtrans.server_key');
+        $serverKey = (string) config('services.midtrans.server_key');
         $orderId = (string) $request->input('order_id');
         $statusCode = (string) $request->input('status_code');
         $grossAmount = (string) $request->input('gross_amount');
@@ -205,7 +161,7 @@ class MidtransController extends Controller
 
         $expectedSignature = hash('sha512', $orderId.$statusCode.$grossAmount.$serverKey);
 
-        if ($signature !== $expectedSignature) {
+        if ($serverKey === '' || ! hash_equals($expectedSignature, $signature)) {
             return response()->json(['message' => 'Invalid signature key'], 403);
         }
 
@@ -216,15 +172,15 @@ class MidtransController extends Controller
 
         $transactionStatus = $request->input('transaction_status');
         $fraudStatus = $request->input('fraud_status');
-        $paymentType = $request->input('payment_type') ?? 'midtrans';
+        $paymentType = (string) ($request->input('payment_type') ?? 'midtrans');
 
         if ($transactionStatus === 'settlement' || ($transactionStatus === 'capture' && $fraudStatus === 'accept')) {
             $order->update([
                 'payment_status' => 'verified',
-                'status' => 'processing',
+                'status' => in_array($order->status, ['shipped', 'delivered'], true) ? $order->status : 'processing',
                 'payment_notes' => 'Lunas via Midtrans Webhook ('.$paymentType.')',
             ]);
-        } elseif (in_array($transactionStatus, ['cancel', 'deny', 'expire'])) {
+        } elseif (in_array($transactionStatus, ['cancel', 'deny', 'expire'], true) && $order->payment_status !== 'verified') {
             $order->update([
                 'payment_status' => 'unpaid',
                 'status' => 'cancelled',
@@ -233,5 +189,92 @@ class MidtransController extends Controller
         }
 
         return response()->json(['status' => 'OK']);
+    }
+
+    /**
+     * @return array{flash: string, message: string}
+     */
+    private function syncOrderStatusFromMidtrans(Order $order): array
+    {
+        if ($order->payment_status === 'verified') {
+            return [
+                'flash' => 'success',
+                'message' => 'Pembayaran pesanan ini sudah terverifikasi lunas.',
+            ];
+        }
+
+        $serverKey = (string) config('services.midtrans.server_key');
+        if ($serverKey === '') {
+            return [
+                'flash' => 'info',
+                'message' => 'Transaksi dicatat. Menunggu konfirmasi pembayaran dari server Midtrans.',
+            ];
+        }
+
+        $isProduction = (bool) config('services.midtrans.is_production');
+        $baseUrl = $isProduction
+            ? 'https://api.midtrans.com/v2/'
+            : 'https://api.sandbox.midtrans.com/v2/';
+
+        try {
+            $response = Http::timeout(15)
+                ->withBasicAuth($serverKey, '')
+                ->acceptJson()
+                ->get($baseUrl.$order->order_number.'/status');
+        } catch (\Throwable $e) {
+            Log::warning('Midtrans status check failed', [
+                'order_number' => $order->order_number,
+                'error' => $e->getMessage(),
+            ]);
+
+            return [
+                'flash' => 'info',
+                'message' => 'Status pembayaran sedang diperiksa. Silakan muat ulang sebentar lagi.',
+            ];
+        }
+
+        if ($response->successful()) {
+            $status = $response->json('transaction_status');
+            $fraud = $response->json('fraud_status');
+            $paymentType = (string) ($response->json('payment_type') ?? 'midtrans');
+
+            if ($status === 'settlement' || ($status === 'capture' && $fraud === 'accept')) {
+                $order->update([
+                    'payment_status' => 'verified',
+                    'status' => in_array($order->status, ['shipped', 'delivered'], true) ? $order->status : 'processing',
+                    'payment_notes' => 'Lunas via Midtrans ('.$paymentType.')',
+                ]);
+
+                return [
+                    'flash' => 'success',
+                    'message' => 'Pembayaran berhasil terverifikasi lunas oleh Midtrans!',
+                ];
+            }
+
+            if ($status === 'pending') {
+                return [
+                    'flash' => 'info',
+                    'message' => 'Transaksi diterima dan menunggu penyelesaian pembayaran di Midtrans.',
+                ];
+            }
+
+            if (in_array($status, ['cancel', 'deny', 'expire'], true) && $order->payment_status !== 'verified') {
+                $order->update([
+                    'payment_status' => 'unpaid',
+                    'status' => 'cancelled',
+                    'payment_notes' => 'Transaksi dibatalkan Midtrans: '.$status,
+                ]);
+
+                return [
+                    'flash' => 'error',
+                    'message' => 'Transaksi telah kadaluarsa atau dibatalkan oleh Midtrans.',
+                ];
+            }
+        }
+
+        return [
+            'flash' => 'info',
+            'message' => 'Status saat ini belum lunas di Midtrans. Silakan selesaikan pembayaran terlebih dahulu.',
+        ];
     }
 }

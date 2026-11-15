@@ -71,7 +71,13 @@ export default function Show({ guide, relatedGuides = [] }) {
 
     return (
         <AppLayout>
-            <Head title={`${guide.title} — ${pick('Panduan Dunia Ikan', 'Dunia Ikan Guides')}`} />
+            <Head title={`${guide.title} — ${pick('Panduan Dunia Ikan', 'Dunia Ikan Guides')}`}>
+                <meta
+                    head-key="description"
+                    name="description"
+                    content={String(guide.symptoms || guide.care_instructions || guide.title).slice(0, 155)}
+                />
+            </Head>
 
             <article className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-9 space-y-7 sm:space-y-9">
                 {/* Breadcrumb */}

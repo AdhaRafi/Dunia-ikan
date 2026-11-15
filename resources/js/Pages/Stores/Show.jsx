@@ -21,7 +21,13 @@ export default function Show({ store, products, storeRating }) {
 
     return (
         <AppLayout>
-            <Head title={`${store.name} — ${pick('Toko Penangkar', 'Breeder Store')}`} />
+            <Head title={`${store.name} — ${pick('Toko Penangkar', 'Breeder Store')}`}>
+                <meta
+                    head-key="description"
+                    name="description"
+                    content={String(store.description || `${store.name} — ${store.city}, ${store.province}`).slice(0, 155)}
+                />
+            </Head>
 
             <section className="bg-field4 text-white">
                 <div className="container-page grid gap-8 py-12 md:py-16 lg:grid-cols-12 lg:items-end">

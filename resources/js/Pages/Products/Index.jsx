@@ -152,7 +152,16 @@ export default function Index({ products, categories, cities, filters }) {
 
     return (
         <AppLayout>
-            <Head title={`${bannerTitle} — Dunia Ikan`} />
+            <Head title={`${bannerTitle} — Dunia Ikan`}>
+                <meta
+                    head-key="description"
+                    name="description"
+                    content={pick(
+                        'Jelajahi katalog ikan hias captive-bred, morph langka, tanaman aquascape, pakan, dan perlengkapan akuarium Dunia Ikan.',
+                        'Browse curated captive-bred ornamental fish, rare morphs, aquatic plants, and aquarium equipment on Dunia Ikan.',
+                    )}
+                />
+            </Head>
 
             {/* Editorial Top Banner */}
             <section className="relative h-60 sm:h-72 lg:h-80 w-full overflow-hidden bg-[#0b1320]">

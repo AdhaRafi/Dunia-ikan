@@ -46,10 +46,10 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        $product = Product::findOrFail($validated['product_id']);
+        $product = Product::with('store')->findOrFail($validated['product_id']);
 
-        if (! $product->is_active) {
-            return back()->with('error', 'Produk sedang tidak aktif.');
+        if (! $product->is_active || ! $product->store || ! $product->store->is_active) {
+            return back()->with('error', 'Produk atau toko sedang tidak aktif.');
         }
 
         $existing = CartItem::where('user_id', $request->user()->id)

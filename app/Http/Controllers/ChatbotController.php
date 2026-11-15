@@ -16,21 +16,26 @@ class ChatbotController extends Controller
 {
     public function getHistory(Request $request): JsonResponse
     {
-        $sessionToken = $request->input('session_token') ?? $request->session()->getId();
         $user = $request->user();
+        $sessionToken = $this->resolveSessionToken($request, false);
+        $session = $sessionToken
+            ? ChatSession::where('session_token', $sessionToken)
+                ->when($user, fn ($q) => $q->where('user_id', $user->id))
+                ->when(! $user, fn ($q) => $q->whereNull('user_id'))
+                ->first()
+            : null;
 
-        $session = ChatSession::where(function ($q) use ($user, $sessionToken) {
-            if ($user) {
-                $q->where('user_id', $user->id)->orWhere('session_token', $sessionToken);
-            } else {
-                $q->where('session_token', $sessionToken);
+        if (! $session && $user) {
+            $session = ChatSession::where('user_id', $user->id)->latest()->first();
+            if ($session) {
+                $sessionToken = $session->session_token;
             }
-        })->latest()->first();
+        }
 
         if (! $session) {
             return response()->json([
                 'messages' => [],
-                'session_token' => $sessionToken,
+                'session_token' => $sessionToken ?? $this->ensureBoundSessionToken($request),
             ]);
         }
 
@@ -38,7 +43,7 @@ class ChatbotController extends Controller
 
         return response()->json([
             'session_id' => $session->id,
-            'session_token' => $sessionToken,
+            'session_token' => $session->session_token,
             'messages' => $messages,
         ]);
     }
@@ -48,23 +53,29 @@ class ChatbotController extends Controller
         $request->validate([
             'message' => 'required|string|max:1000',
             'session_token' => 'nullable|string|max:100',
-            'image' => 'nullable|image|max:3072',
+            'image' => 'nullable|file|image|mimes:jpeg,png,jpg,webp|max:3072',
         ]);
 
         $userMessage = trim($request->input('message'));
         $user = $request->user();
-        $sessionToken = $request->input('session_token') ?: ($request->session()->getId() ?: Str::random(32));
+        $sessionToken = $this->resolveSessionToken($request, true);
 
-        // Ambil atau buat sesi chat
-        $session = ChatSession::firstOrCreate(
-            ['session_token' => $sessionToken],
-            [
+        // Ambil atau buat sesi chat yang terikat ketat ke pemilik sesi ini
+        $session = ChatSession::where('session_token', $sessionToken)->first();
+
+        if ($session && $session->user_id !== null && (! $user || $session->user_id !== $user->id)) {
+            return response()->json([
+                'message' => 'Akses ke sesi percakapan ditolak.',
+            ], 403);
+        }
+
+        if (! $session) {
+            $session = ChatSession::create([
+                'session_token' => $sessionToken,
                 'user_id' => $user?->id,
                 'title' => Str::limit($userMessage, 40),
-            ]
-        );
-
-        if ($user && ! $session->user_id) {
+            ]);
+        } elseif ($user && ! $session->user_id) {
             $session->update(['user_id' => $user->id]);
         }
 
@@ -245,5 +256,59 @@ Pedoman Penting:
             'recommended_products' => $recommendedProductsData,
             'is_fallback' => $isFallback,
         ]);
+    }
+
+    private function resolveSessionToken(Request $request, bool $createIfMissing): ?string
+    {
+        $user = $request->user();
+        $requested = trim((string) $request->input('session_token', ''));
+        $bound = (string) $request->session()->get('chat_session_token', '');
+
+        if ($user) {
+            if ($requested !== '') {
+                $owned = ChatSession::where('session_token', $requested)
+                    ->where(function ($q) use ($user, $bound, $requested) {
+                        $q->where('user_id', $user->id);
+                        if ($bound !== '' && hash_equals($bound, $requested)) {
+                            $q->orWhereNull('user_id');
+                        }
+                    })
+                    ->first();
+
+                if ($owned) {
+                    $request->session()->put('chat_session_token', $owned->session_token);
+
+                    return $owned->session_token;
+                }
+            }
+
+            $existingOwned = ChatSession::where('user_id', $user->id)->latest()->first();
+            if ($existingOwned) {
+                $request->session()->put('chat_session_token', $existingOwned->session_token);
+
+                return $existingOwned->session_token;
+            }
+
+            return $createIfMissing ? $this->ensureBoundSessionToken($request) : null;
+        }
+
+        if ($bound !== '') {
+            return $bound;
+        }
+
+        return $createIfMissing ? $this->ensureBoundSessionToken($request) : null;
+    }
+
+    private function ensureBoundSessionToken(Request $request): string
+    {
+        $bound = (string) $request->session()->get('chat_session_token', '');
+        if ($bound !== '') {
+            return $bound;
+        }
+
+        $token = Str::random(40);
+        $request->session()->put('chat_session_token', $token);
+
+        return $token;
     }
 }

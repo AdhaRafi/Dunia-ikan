@@ -87,13 +87,21 @@ class StoreProfileController extends Controller
             ->with('success', 'Selamat! Toko Anda berhasil didaftarkan di Dunia Ikan.');
     }
 
-    public function edit(Request $request): Response
+    public function edit(Request $request): Response|RedirectResponse
     {
         $store = $request->user()->store;
 
         if (! $store) {
             return redirect()->route('seller.store.create');
         }
+
+        $store->makeVisible([
+            'bank_name',
+            'bank_account_number',
+            'bank_account_name',
+            'qris_image',
+            'address',
+        ]);
 
         return Inertia::render('Seller/Store/Edit', [
             'store' => $store,
@@ -119,9 +127,9 @@ class StoreProfileController extends Controller
             'bank_name' => 'nullable|string|max:50',
             'bank_account_number' => 'nullable|string|max:50',
             'bank_account_name' => 'nullable|string|max:100',
-            'logo' => 'nullable|image|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'remove_logo' => 'nullable|boolean',
-            'qris_image' => 'nullable|image|max:2048',
+            'qris_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         if ($request->hasFile('logo')) {

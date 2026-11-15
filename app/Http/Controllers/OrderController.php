@@ -30,6 +30,13 @@ class OrderController extends Controller
             ->where('buyer_id', $request->user()->id)
             ->firstOrFail();
 
+        $order->store?->makeVisible([
+            'bank_name',
+            'bank_account_number',
+            'bank_account_name',
+            'qris_image',
+        ]);
+
         return Inertia::render('Orders/Show', [
             'order' => $order,
             'midtransClientKey' => config('services.midtrans.client_key'),
@@ -42,6 +49,10 @@ class OrderController extends Controller
         $order = Order::where('order_number', $orderNumber)
             ->where('buyer_id', $request->user()->id)
             ->firstOrFail();
+
+        if ($order->payment_status === 'verified' || in_array($order->status, ['processing', 'shipped', 'delivered', 'cancelled'], true)) {
+            return back()->with('error', 'Status pesanan saat ini tidak memungkinkan unggah ulang bukti pembayaran.');
+        }
 
         $request->validate([
             'payment_proof' => 'required|image|mimes:jpeg,png,jpg,webp|max:3072',

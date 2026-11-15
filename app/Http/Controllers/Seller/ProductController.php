@@ -59,8 +59,8 @@ class ProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric|min:1000',
             'stock' => 'required|integer|min:0',
-            'image_file' => 'nullable|image|max:3072',
-            'image_url' => 'nullable|url|max:500',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
+            'image_url' => 'nullable|url:http,https|max:500',
             'is_active' => 'boolean',
 
             // Atribut Khusus Ikan (MorphMarket-inspired traits)
@@ -154,8 +154,8 @@ class ProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric|min:1000',
             'stock' => 'required|integer|min:0',
-            'image_file' => 'nullable|image|max:3072',
-            'image_url' => 'nullable|url|max:500',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
+            'image_url' => 'nullable|url:http,https|max:500',
             'is_active' => 'boolean',
 
             'is_fish' => 'boolean',

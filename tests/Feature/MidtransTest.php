@@ -18,6 +18,11 @@ class MidtransTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        config([
+            'services.midtrans.server_key' => config('services.midtrans.server_key') ?: 'SB-Mid-server-TestKey123',
+            'services.midtrans.client_key' => config('services.midtrans.client_key') ?: 'SB-Mid-client-TestKey123',
+            'services.midtrans.is_production' => false,
+        ]);
         $this->seed();
     }
 

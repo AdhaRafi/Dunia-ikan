@@ -4,8 +4,51 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="theme-color" content="#0d2e92">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        @php
+            $seoTitle = config('app.name', 'Dunia Ikan');
+            $seoDescription = 'Marketplace ikan hias captive-bred, mutasi morph, perlengkapan akuarium terkurasi, dan asisten perawatan ikan Kiko di seluruh Indonesia.';
+            $seoImage = asset('images/hero/aquarium-poster.webp');
+
+            $props = $page['props'] ?? [];
+            if (! empty($props['product']['name'])) {
+                $seoTitle = $props['product']['name'].' — Dunia Ikan';
+                $seoDescription = \Illuminate\Support\Str::limit(strip_tags((string) ($props['product']['description'] ?? $seoDescription)), 155);
+                if (! empty($props['product']['image'])) {
+                    $seoImage = str_starts_with($props['product']['image'], 'http')
+                        ? $props['product']['image']
+                        : url($props['product']['image']);
+                }
+            } elseif (! empty($props['store']['name'])) {
+                $seoTitle = $props['store']['name'].' — Toko Penangkar Dunia Ikan';
+                $seoDescription = \Illuminate\Support\Str::limit(strip_tags((string) ($props['store']['description'] ?? $seoDescription)), 155);
+                if (! empty($props['store']['logo_url'])) {
+                    $seoImage = str_starts_with($props['store']['logo_url'], 'http')
+                        ? $props['store']['logo_url']
+                        : url($props['store']['logo_url']);
+                }
+            } elseif (! empty($props['guide']['title'])) {
+                $seoTitle = $props['guide']['title'].' — Panduan Dunia Ikan';
+                $seoDescription = \Illuminate\Support\Str::limit(strip_tags((string) ($props['guide']['symptoms'] ?? $props['guide']['care_instructions'] ?? $seoDescription)), 155);
+            }
+        @endphp
+
+        <title inertia>{{ $seoTitle }}</title>
+        <meta inertia name="description" head-key="description" content="{{ $seoDescription }}">
+        <meta name="robots" content="{{ request()->is('admin*', 'seller*', 'cart*', 'checkout*', 'orders*', 'profile*', 'addresses*', 'dashboard*') ? 'noindex, nofollow' : 'index, follow' }}">
+        <link rel="canonical" href="{{ url()->current() }}">
+
+        <meta property="og:site_name" content="{{ config('app.name', 'Dunia Ikan') }}">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{ $seoTitle }}">
+        <meta property="og:description" content="{{ $seoDescription }}">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:image" content="{{ $seoImage }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $seoTitle }}">
+        <meta name="twitter:description" content="{{ $seoDescription }}">
+        <meta name="twitter:image" content="{{ $seoImage }}">
 
         <!-- Favicon -->
         <link rel="icon" type="image/png" sizes="64x64" href="{{ asset('favicon.png') }}?v=2">
