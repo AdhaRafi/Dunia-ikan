@@ -196,14 +196,10 @@ Pedoman Penting:
                 }
 
                 // Force IPv4 in containerized runtimes to avoid IPv6 egress stalls.
-                $httpOptions = defined('CURL_IPRESOLVE_V4')
-                    ? ['curl' => [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]]
-                    : [];
-
                 $response = Http::withHeaders([
                     'x-goog-api-key' => $apiKey,
                 ])
-                    ->withOptions($httpOptions)
+                    ->withOptions(['force_ip_resolve' => 'v4'])
                     ->connectTimeout(5)
                     ->timeout(25)
                     ->post(
