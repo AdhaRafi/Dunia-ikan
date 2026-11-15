@@ -17,7 +17,9 @@ class GuideController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
                     ->orWhere('fish_type', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%")
                     ->orWhere('symptoms', 'like', "%{$search}%")
+                    ->orWhere('possible_causes', 'like', "%{$search}%")
                     ->orWhere('care_instructions', 'like', "%{$search}%");
             });
         }
@@ -27,11 +29,17 @@ class GuideController extends Controller
         }
 
         $guides = $query->latest()->paginate(9)->withQueryString();
-        $categories = FishGuide::where('is_active', true)->distinct()->pluck('category');
+        $categoryCounts = FishGuide::where('is_active', true)
+            ->selectRaw('category, count(*) as total')
+            ->groupBy('category')
+            ->pluck('total', 'category');
+        $categories = $categoryCounts->keys()->values();
 
         return Inertia::render('Guides/Index', [
             'guides' => $guides,
             'categories' => $categories,
+            'categoryCounts' => $categoryCounts,
+            'totalGuides' => $categoryCounts->sum(),
             'filters' => $request->only(['q', 'category']),
         ]);
     }

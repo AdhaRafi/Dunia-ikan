@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Address;
+use App\Models\FishGuide;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -257,6 +258,35 @@ class MarketplaceTest extends TestCase
                 ->where('storeRating.canReview', true)
                 ->where('storeRating.userReview.rating', 5)
                 ->where('storeRating.count', fn ($c) => $c >= 1)
+            );
+    }
+
+    public function test_guides_hub_and_detail_pages_render_with_category_counts_and_search(): void
+    {
+        $this->get('/guides')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->component('Guides/Index')
+                ->where('totalGuides', fn ($total) => $total >= 4)
+                ->has('categories')
+                ->has('categoryCounts')
+                ->where('guides.data', fn ($items) => count($items) >= 1)
+            );
+
+        $this->get('/guides?q=parasit')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->component('Guides/Index')
+                ->where('guides.total', fn ($total) => $total >= 1)
+            );
+
+        $guideId = FishGuide::where('is_active', true)->value('id');
+
+        $this->get("/guides/{$guideId}")
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->component('Guides/Show')
+                ->where('guide.id', $guideId)
             );
     }
 }
