@@ -290,9 +290,10 @@ class MarketplaceTest extends TestCase
             );
     }
 
-    public function test_live_visitor_stats_increment_once_per_session_day_and_skip_bots(): void
+    public function test_live_visitor_stats_resist_incognito_bot_and_ip_flood_abuse(): void
     {
-        $this->get('/')
+        $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/131.0'])
+            ->get('/')
             ->assertStatus(200)
             ->assertInertia(fn ($page) => $page
                 ->where('visitorStats.today', 1)
@@ -301,7 +302,8 @@ class MarketplaceTest extends TestCase
             );
 
         // Same session on subsequent navigation should not inflate today's count
-        $this->get('/products')
+        $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/131.0'])
+            ->get('/products')
             ->assertStatus(200)
             ->assertInertia(fn ($page) => $page
                 ->where('visitorStats.today', 1)
@@ -309,9 +311,30 @@ class MarketplaceTest extends TestCase
                 ->where('visitorStats.year', 1)
             );
 
-        // A new visitor session increments all three counters live
+        // Clearing cookies / opening Incognito from same IP + User-Agent does NOT inflate count
         $this->flushSession();
-        $this->get('/')
+        $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/131.0'])
+            ->get('/')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->where('visitorStats.today', 1)
+                ->where('visitorStats.month', 1)
+                ->where('visitorStats.year', 1)
+            );
+
+        // Crawlers and CLI HTTP clients (e.g. Googlebot, curl) are ignored
+        $this->flushSession();
+        $this->withServerVariables(['REMOTE_ADDR' => '203.0.113.5'])
+            ->withHeaders(['User-Agent' => 'curl/8.5.0'])
+            ->get('/')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page->where('visitorStats.today', 1));
+
+        // A genuinely distinct visitor IP increments all three counters live
+        $this->flushSession();
+        $this->withServerVariables(['REMOTE_ADDR' => '203.0.113.10'])
+            ->withHeaders(['User-Agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)'])
+            ->get('/')
             ->assertStatus(200)
             ->assertInertia(fn ($page) => $page
                 ->where('visitorStats.today', 2)
@@ -319,15 +342,24 @@ class MarketplaceTest extends TestCase
                 ->where('visitorStats.year', 2)
             );
 
-        // Search engine bots should not increment visitor statistics
+        // Rotating fake User-Agents from a single flood IP is capped at 10 per day
+        for ($i = 1; $i <= 12; $i++) {
+            $this->flushSession();
+            $this->withServerVariables(['REMOTE_ADDR' => '198.51.100.7'])
+                ->withHeaders(['User-Agent' => "CustomBrowser/{$i}.0"])
+                ->get('/')
+                ->assertStatus(200);
+        }
+
         $this->flushSession();
-        $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; Googlebot/2.1)'])
+        $this->withServerVariables(['REMOTE_ADDR' => '198.51.100.8'])
+            ->withHeaders(['User-Agent' => 'curl/8.5.0'])
             ->get('/')
             ->assertStatus(200)
             ->assertInertia(fn ($page) => $page
-                ->where('visitorStats.today', 2)
-                ->where('visitorStats.month', 2)
-                ->where('visitorStats.year', 2)
+                ->where('visitorStats.today', 12)
+                ->where('visitorStats.month', 12)
+                ->where('visitorStats.year', 12)
             );
     }
 }

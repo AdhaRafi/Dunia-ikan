@@ -108,7 +108,9 @@ Route::get('/sitemap.xml', function (): HttpResponse {
 })->name('sitemap');
 
 // Chatbot Asisten Dunia Ikan
-Route::get('/chatbot/history', [ChatbotController::class, 'getHistory'])->name('chatbot.history');
+Route::get('/chatbot/history', [ChatbotController::class, 'getHistory'])
+    ->middleware('throttle:60,1')
+    ->name('chatbot.history');
 Route::post('/chatbot/message', [ChatbotController::class, 'sendMessage'])
     ->middleware('throttle:20,1')
     ->name('chatbot.message');
