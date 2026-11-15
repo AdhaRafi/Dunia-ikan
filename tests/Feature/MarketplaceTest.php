@@ -194,4 +194,69 @@ class MarketplaceTest extends TestCase
         $this->assertNull($store->logo_url);
         Storage::disk('public')->assertMissing($savedPath);
     }
+
+    public function test_buyers_can_rate_stores_and_product_detail_exposes_store_rating(): void
+    {
+        $product = Product::with('store')->whereHas('fishDetail')->first();
+        $store = $product->store;
+        $buyer = User::where('role', 'buyer')->first();
+        $owner = $store->user;
+
+        // Guest cannot post a review
+        $this->post("/stores/{$store->slug}/reviews", [
+            'rating' => 5,
+            'comment' => 'Mantap',
+        ])->assertRedirect('/login');
+
+        // Store owner cannot rate their own store
+        $this->actingAs($owner)->post("/stores/{$store->slug}/reviews", [
+            'rating' => 5,
+            'comment' => 'Toko saya sendiri',
+        ])->assertSessionHas('error');
+
+        $this->assertDatabaseMissing('store_reviews', [
+            'store_id' => $store->id,
+            'user_id' => $owner->id,
+        ]);
+
+        // Buyer submits a valid rating
+        $this->actingAs($buyer)->post("/stores/{$store->slug}/reviews", [
+            'rating' => 4,
+            'comment' => 'Ikan datang lincah dan packing aman.',
+        ])->assertSessionHas('success');
+
+        $this->assertDatabaseHas('store_reviews', [
+            'store_id' => $store->id,
+            'user_id' => $buyer->id,
+            'rating' => 4,
+        ]);
+
+        // Buyer can update their existing rating cleanly
+        $this->actingAs($buyer)->post("/stores/{$store->slug}/reviews", [
+            'rating' => 5,
+            'comment' => 'Update setelah 2 hari ikan tetap sehat!',
+        ])->assertSessionHas('success');
+
+        $this->assertDatabaseHas('store_reviews', [
+            'store_id' => $store->id,
+            'user_id' => $buyer->id,
+            'rating' => 5,
+            'comment' => 'Update setelah 2 hari ikan tetap sehat!',
+        ]);
+
+        // Invalid rating is rejected
+        $this->actingAs($buyer)->post("/stores/{$store->slug}/reviews", [
+            'rating' => 6,
+        ])->assertSessionHasErrors('rating');
+
+        // Product detail & store pages return storeRating props cleanly
+        $this->actingAs($buyer)->get("/products/{$product->slug}")
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->component('Products/Show')
+                ->where('storeRating.canReview', true)
+                ->where('storeRating.userReview.rating', 5)
+                ->where('storeRating.count', fn ($c) => $c >= 1)
+            );
+    }
 }

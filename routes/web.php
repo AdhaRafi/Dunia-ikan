@@ -19,6 +19,7 @@ use App\Http\Controllers\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Seller\StoreProfileController as SellerStoreProfileController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\StoreReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -91,6 +92,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');
     Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
     Route::post('/addresses/{address}/primary', [AddressController::class, 'setPrimary'])->name('addresses.set-primary');
+
+    // Store Rating & Reviews
+    Route::post('/stores/{slug}/reviews', [StoreReviewController::class, 'store'])->name('stores.reviews.store');
 
     // Seller Registration (Buka Toko)
     Route::get('/seller/register', [SellerStoreProfileController::class, 'create'])->name('seller.store.create');

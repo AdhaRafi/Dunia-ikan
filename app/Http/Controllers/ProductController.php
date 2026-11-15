@@ -114,7 +114,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function show(string $slug): Response
+    public function show(Request $request, string $slug): Response
     {
         $product = Product::with(['store', 'category', 'fishDetail'])
             ->where('slug', $slug)
@@ -133,6 +133,7 @@ class ProductController extends Controller
         return Inertia::render('Products/Show', [
             'product' => $product,
             'relatedProducts' => $relatedProducts,
+            'storeRating' => $product->store?->ratingSummary($request->user()),
         ]);
     }
 }

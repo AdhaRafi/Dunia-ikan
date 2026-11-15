@@ -471,5 +471,8 @@ class DatabaseSeeder extends Seeder
             'source' => 'Dasar Siklus Nitrogen Aquascape & Akuarium Tropis',
             'is_active' => true,
         ]);
+
+        // 9. Ulasan & Rating Toko Awal
+        $this->call(StoreReviewSeeder::class);
     }
 }

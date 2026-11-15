@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Store;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class StoreController extends Controller
 {
-    public function show(string $slug): Response
+    public function show(Request $request, string $slug): Response
     {
         $store = Store::with(['user:id,name,avatar'])
             ->where('slug', $slug)
@@ -24,6 +25,7 @@ class StoreController extends Controller
         return Inertia::render('Stores/Show', [
             'store' => $store,
             'products' => $products,
+            'storeRating' => $store->ratingSummary($request->user()),
         ]);
     }
 }

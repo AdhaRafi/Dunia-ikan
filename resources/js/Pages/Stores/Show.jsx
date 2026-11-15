@@ -1,7 +1,9 @@
 import { Head, Link } from '@inertiajs/react';
+import { Star } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
 import Reveal from '@/Components/Reveal';
+import StoreRatingSection from '@/Components/StoreRatingSection';
 
 function formatPrice(price) {
     return new Intl.NumberFormat('id-ID', {
@@ -11,8 +13,9 @@ function formatPrice(price) {
     }).format(price);
 }
 
-export default function Show({ store, products }) {
+export default function Show({ store, products, storeRating }) {
     const featured = products?.data?.[0];
+    const avgRating = storeRating?.count > 0 ? Number(storeRating.average).toFixed(1) : null;
 
     return (
         <AppLayout>
@@ -49,6 +52,13 @@ export default function Show({ store, products }) {
 
                         <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[16px] text-white/80">
                             <span>{store.phone}</span>
+                            <a
+                                href="#rating-toko"
+                                className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white hover:bg-white/25 transition"
+                            >
+                                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                                {avgRating ? `${avgRating}/5 (${storeRating.count} ulasan)` : 'Belum ada rating'}
+                            </a>
                             <Link
                                 href="/products"
                                 className="press underline decoration-2 underline-offset-4 hover:text-white"
@@ -153,6 +163,8 @@ export default function Show({ store, products }) {
                         ))}
                     </nav>
                 )}
+
+                <StoreRatingSection store={store} storeRating={storeRating} />
             </section>
         </AppLayout>
     );
