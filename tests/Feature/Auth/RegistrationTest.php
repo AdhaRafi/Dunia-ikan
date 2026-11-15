@@ -157,7 +157,7 @@ class RegistrationTest extends TestCase
             ->assertStatus(403);
 
         // Filament Users management page renders cleanly for admin
-        $this->actingAs($admin)
+        $this->actingAs($admin, 'admin')
             ->get('/admin/users')
             ->assertStatus(200);
     }
@@ -172,7 +172,7 @@ class RegistrationTest extends TestCase
             ->assertRedirect(url('/admin'));
 
         foreach (['/admin', '/admin/categories', '/admin/products', '/admin/stores', '/admin/orders'] as $filamentPath) {
-            $this->actingAs($admin)->get($filamentPath)->assertStatus(200);
+            $this->actingAs($admin, 'admin')->get($filamentPath)->assertStatus(200);
         }
 
         foreach (['/admin-portal', '/admin-portal/categories', '/admin-portal/guides', '/admin-portal/users', '/admin-portal/transactions'] as $portalPath) {

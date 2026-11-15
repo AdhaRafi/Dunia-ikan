@@ -62,7 +62,7 @@ export default function AdminLayout({ children, title }) {
                         <LanguageSwitcher variant="overlay" />
                         <span className="hidden sm:inline font-semibold text-slate-300 max-w-[160px] truncate">{auth.user.name}</span>
                         <Link
-                            href="/logout"
+                            href="/admin-portal/logout"
                             method="post"
                             as="button"
                             className="font-semibold text-rose-400 hover:text-rose-300 transition whitespace-nowrap"

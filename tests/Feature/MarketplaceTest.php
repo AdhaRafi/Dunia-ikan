@@ -7,9 +7,11 @@ use App\Models\FishGuide;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use Filament\Auth\Pages\Login as FilamentLogin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class MarketplaceTest extends TestCase
@@ -120,9 +122,12 @@ class MarketplaceTest extends TestCase
     {
         $buyer = User::where('role', 'buyer')->first();
 
-        // Buyer trying to access admin
-        $adminResponse = $this->actingAs($buyer)->get('/admin');
-        $adminResponse->assertStatus(403);
+        // Buyer logged in on web guard trying to reach /admin gets sent to separate admin login
+        $this->actingAs($buyer)->get('/admin')->assertRedirect('/admin/login');
+
+        // Buyer cannot authenticate into /admin panel even on admin guard, and cannot access /admin-portal
+        $this->actingAs($buyer, 'admin')->get('/admin')->assertStatus(403);
+        $this->actingAs($buyer)->get('/admin-portal')->assertStatus(403);
 
         // Buyer trying to access seller products
         $sellerResponse = $this->actingAs($buyer)->get('/seller/products');
@@ -482,5 +487,45 @@ class MarketplaceTest extends TestCase
             );
 
         $this->getJson('/api/tidak-ada')->assertStatus(404)->assertJsonStructure(['message']);
+    }
+
+    public function test_admin_can_log_in_separately_while_buyer_session_remains_active(): void
+    {
+        $buyer = User::where('role', 'buyer')->firstOrFail();
+        $admin = User::where('role', 'admin')->firstOrFail();
+
+        // Log in as buyer on default web guard
+        $this->post('/login', [
+            'email' => $buyer->email,
+            'password' => 'password',
+        ])->assertRedirect(route('dashboard', absolute: false));
+
+        $this->assertAuthenticatedAs($buyer, 'web');
+
+        // Buyer visiting /admin is prompted to sign in at /admin/login instead of 403
+        $this->get('/admin')->assertRedirect('/admin/login');
+        $this->get('/admin/login')->assertStatus(200);
+
+        // Log into admin panel via Filament Livewire login while web buyer remains logged in
+        Livewire::test(FilamentLogin::class)
+            ->fillForm([
+                'email' => $admin->email,
+                'password' => 'password',
+            ])
+            ->call('authenticate')
+            ->assertHasNoFormErrors();
+
+        $this->assertAuthenticatedAs($admin, 'admin');
+        $this->assertAuthenticatedAs($buyer, 'web');
+
+        // Both admin panels and buyer storefront routes work concurrently
+        $this->get('/admin')->assertStatus(200);
+        $this->get('/admin-portal')->assertStatus(200);
+        $this->get('/orders')->assertStatus(200);
+
+        // Logging out of admin keeps the buyer web session intact
+        $this->post('/admin/logout')->assertRedirect('/admin/login');
+        $this->assertGuest('admin');
+        $this->assertAuthenticatedAs($buyer, 'web');
     }
 }
