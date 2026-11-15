@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher_round"
+        android:shortcutId="server_settings"
+        android:shortcutLongLabel="@string/shortcut_server_long"
+        android:shortcutShortLabel="@string/shortcut_server_short">
+        <intent
+            android:action="id.duniaikan.app.ACTION_SERVER_SETTINGS"
+            android:targetClass="id.duniaikan.app.MainActivity"
+            android:targetPackage="id.duniaikan.app" />
+    </shortcut>
+</shortcuts>

@@ -1,8 +1,29 @@
 # Dunia Ikan — Marketplace Ikan Hias & Aquascape
 
+![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?style=flat-square&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.3%2F8.4-777BB4?style=flat-square&logo=php&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Inertia.js](https://img.shields.io/badge/Inertia.js-v2-9553E9?style=flat-square)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Filament](https://img.shields.io/badge/Filament-v5-FDAE4B?style=flat-square)
+![Kotlin](https://img.shields.io/badge/Android-Kotlin-7F52FF?style=flat-square&logo=kotlin&logoColor=white)
+
 **Dunia Ikan** adalah platform marketplace multi-penjual untuk ikan hias tropis (air tawar, air laut, air payau), varian/morph genetik, serta flora dan perlengkapan aquascape yang terinspirasi dari pola taksonomi dan standar keselamatan hewan [MorphMarket](https://www.morphmarket.com/).
 
-Platform ini dibangun menggunakan **Laravel 13 (PHP 8.3/8.4)**, **React 18 + Inertia.js v2**, **Tailwind CSS 3**, **Filament v5**, **Midtrans Snap**, **Cloudflare Turnstile**, serta **Asisten AI Kiko (Google Gemini)**.
+---
+
+## Tech Stack
+
+| Lapisan | Teknologi |
+| --- | --- |
+| **Backend & Auth** | Laravel 13 (`^13.17`), PHP 8.3/8.4, Laravel Breeze, Laravel Sanctum, Ziggy |
+| **Frontend & UI** | React 18, Inertia.js v2, Vite 6, Tailwind CSS 3, Headless UI, Lucide React |
+| **Admin Panel** | Filament v5 (`/admin`) + Portal Admin Inertia (`/admin-portal`) |
+| **Database** | PostgreSQL (produksi), SQLite / MySQL (pengembangan lokal) |
+| **Integrasi & Keamanan** | Midtrans Snap, Cloudflare Turnstile, Google Gemini AI (Asisten Kiko) |
+| **Aplikasi Android** | Kotlin WebView native (`android/`, Gradle, Splash Screen, Server Switcher) |
+| **Container & Deploy** | Docker multi-stage, FrankenPHP + Caddy (`Caddyfile`), Vercel (`vercel.json`) |
+| **Testing & Formatter** | PHPUnit 12, Laravel Pint |
 
 ---
 
@@ -70,6 +91,7 @@ Platform ini dibangun menggunakan **Laravel 13 (PHP 8.3/8.4)**, **React 18 + Ine
 │   └── console.php                         # Perintah Artisan CLI
 ├── tests/
 │   └── Feature/                            # PHPUnit suite (Auth, MarketplaceTest, MidtransTest, ProfileTest, SecurityHardeningTest)
+├── android/                                # Aplikasi Android WebView (Kotlin, splash screen & server switcher)
 ├── Caddyfile                               # Konfigurasi webserver FrankenPHP/Caddy + blokir akses /build/manifest.json
 ├── Dockerfile.vercel                       # Multi-stage Docker image (Node 22 + FrankenPHP PHP 8.4)
 ├── docker-entrypoint.sh                    # Inisialisasi container saat boot (migrasi, optimasi cache, start FrankenPHP)
@@ -173,3 +195,14 @@ php vendor/bin/pint --test --format agent
 Repository ini dilengkapi `vercel.json` (`"framework": "container"`), `Dockerfile.vercel`, `docker-entrypoint.sh`, dan `Caddyfile` (FrankenPHP PHP 8.4). Untuk deploy produksi:
 1. Atur environment variable di platform hosting (`APP_KEY`, `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, `DB_CONNECTION=pgsql`, `DB_URL` / koneksi PostgreSQL, `SESSION_SECURE_COOKIE=true`, `TURNSTILE_*`, `MIDTRANS_*`, `GEMINI_*`).
 2. Pastikan `APP_DEMO_MODE=false` pada deployment publik.
+
+---
+
+## Aplikasi Android (`android/`)
+
+Companion app Android WebView (`id.duniaikan.app`, Kotlin) dilengkapi layar loading (splash screen) dan pengalih server (produksi `https://dunia-ikan.vercel.app`, emulator `10.0.2.2:8000`, USB `127.0.0.1:8000`, atau IP LAN lokal). Build APK debug:
+```bash
+cd android
+./gradlew assembleDebug
+```
+*(Folder `android/` dikecualikan dari build container melalui `.dockerignore` dan `.vercelignore`.)*

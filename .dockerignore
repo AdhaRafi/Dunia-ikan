@@ -2,6 +2,7 @@
 .claude
 .codex
 .cursor
+android
 .env
 .env.*
 !.env.example
