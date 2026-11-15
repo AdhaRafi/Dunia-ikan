@@ -8,6 +8,8 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Response;
 
 $app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -39,6 +41,24 @@ $app = Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
+
+        $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
+            $status = $response->getStatusCode();
+
+            if (
+                ! $request->is('api/*', 'sanctum/*', 'midtrans/*', 'storage/*', 'images/*')
+                && ! $request->expectsJson()
+                && in_array($status, [404, 403], true)
+            ) {
+                return Inertia::render('Errors/HttpError', [
+                    'status' => $status,
+                ])
+                    ->toResponse($request)
+                    ->setStatusCode($status);
+            }
+
+            return $response;
+        });
     })->create();
 
 if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL']) || getenv('VERCEL')) {

@@ -455,4 +455,32 @@ class MarketplaceTest extends TestCase
             'status' => 'pending_payment',
         ]);
     }
+
+    public function test_custom_inertia_error_pages_render_for_404_and_403_html_requests(): void
+    {
+        $this->get('/halaman-yang-tidak-pernah-ada')
+            ->assertStatus(404)
+            ->assertInertia(fn ($page) => $page
+                ->component('Errors/HttpError')
+                ->where('status', 404)
+            );
+
+        $this->get('/products/ikan-fiktif-404')
+            ->assertStatus(404)
+            ->assertInertia(fn ($page) => $page
+                ->component('Errors/HttpError')
+                ->where('status', 404)
+            );
+
+        $buyer = User::where('role', 'buyer')->firstOrFail();
+        $this->actingAs($buyer)
+            ->get('/admin')
+            ->assertStatus(403)
+            ->assertInertia(fn ($page) => $page
+                ->component('Errors/HttpError')
+                ->where('status', 403)
+            );
+
+        $this->getJson('/api/tidak-ada')->assertStatus(404)->assertJsonStructure(['message']);
+    }
 }
