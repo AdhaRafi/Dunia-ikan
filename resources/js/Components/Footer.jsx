@@ -38,33 +38,27 @@ export default function Footer() {
                             )}
                         </p>
 
-                        {/* Live Website Visitor Counter */}
-                        <div className="max-w-xs rounded-xl border border-neutral-200/90 dark:border-neutral-800 bg-neutral-50/80 dark:bg-white/[0.03] px-3.5 py-3 space-y-2">
-                            <div className="flex items-center justify-between gap-2">
-                                <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-900 dark:text-white">
-                                    {pick('Pengunjung Website', 'Website Visitors')}
-                                </span>
-                                <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                    Live
-                                </span>
-                            </div>
-                            <dl className="space-y-1 text-xs text-neutral-600 dark:text-neutral-300">
-                                <div className="flex items-center justify-between gap-3">
+                        {/* Website Visitor Counter */}
+                        <div className="pt-2 max-w-[230px] space-y-2">
+                            <h4 className="font-bold text-neutral-900 dark:text-white text-xs">
+                                {pick('Pengunjung Website', 'Website Visitors')}
+                            </h4>
+                            <dl className="space-y-1 text-xs text-neutral-500 dark:text-neutral-400">
+                                <div className="flex items-center justify-between gap-4">
                                     <dt>{pick('Pengunjung Hari ini :', 'Visitors Today :')}</dt>
-                                    <dd className="font-semibold tabular-nums text-neutral-900 dark:text-white">
+                                    <dd className="tabular-nums text-neutral-700 dark:text-neutral-200">
                                         {formatVisits(visitorStats?.today)}
                                     </dd>
                                 </div>
-                                <div className="flex items-center justify-between gap-3">
+                                <div className="flex items-center justify-between gap-4">
                                     <dt>{pick('Pengunjung Bulan ini :', 'Visitors This Month :')}</dt>
-                                    <dd className="font-semibold tabular-nums text-neutral-900 dark:text-white">
+                                    <dd className="tabular-nums text-neutral-700 dark:text-neutral-200">
                                         {formatVisits(visitorStats?.month)}
                                     </dd>
                                 </div>
-                                <div className="flex items-center justify-between gap-3">
+                                <div className="flex items-center justify-between gap-4">
                                     <dt>{pick('Pengunjung Tahun ini :', 'Visitors This Year :')}</dt>
-                                    <dd className="font-semibold tabular-nums text-neutral-900 dark:text-white">
+                                    <dd className="tabular-nums text-neutral-700 dark:text-neutral-200">
                                         {formatVisits(visitorStats?.year)}
                                     </dd>
                                 </div>
