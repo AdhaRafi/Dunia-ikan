@@ -34,11 +34,11 @@ export default function Index({ categories }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (editingCategory) {
-            put(`/admin/categories/${editingCategory.id}`, {
+            put(`/admin-portal/categories/${editingCategory.id}`, {
                 onSuccess: () => setShowForm(false),
             });
         } else {
-            post('/admin/categories', {
+            post('/admin-portal/categories', {
                 onSuccess: () => setShowForm(false),
             });
         }
@@ -46,7 +46,7 @@ export default function Index({ categories }) {
 
     const handleDelete = (id, name) => {
         if (confirm(pick(`Hapus kategori "${name}"?`, `Delete category "${name}"?`))) {
-            router.delete(`/admin/categories/${id}`);
+            router.delete(`/admin-portal/categories/${id}`);
         }
     };
 

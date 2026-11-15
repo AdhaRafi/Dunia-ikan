@@ -46,23 +46,23 @@ export default function Index({ guides }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (editingGuide) {
-            put(`/admin/guides/${editingGuide.id}`, {
+            put(`/admin-portal/guides/${editingGuide.id}`, {
                 onSuccess: () => setShowForm(false),
             });
         } else {
-            post('/admin/guides', {
+            post('/admin-portal/guides', {
                 onSuccess: () => setShowForm(false),
             });
         }
     };
 
     const handleToggleActive = (id) => {
-        router.post(`/admin/guides/${id}/toggle`);
+        router.post(`/admin-portal/guides/${id}/toggle`);
     };
 
     const handleDelete = (id, title) => {
         if (confirm(pick(`Hapus panduan "${title}"?`, `Delete guide "${title}"?`))) {
-            router.delete(`/admin/guides/${id}`);
+            router.delete(`/admin-portal/guides/${id}`);
         }
     };
 

@@ -51,7 +51,14 @@ export default function AdminLayout({ children, title }) {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2.5 sm:gap-4 text-xs shrink-0">
+                    <div className="flex items-center gap-2 sm:gap-4 text-xs shrink-0">
+                        <a
+                            href="/admin"
+                            className="px-2 sm:px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold border border-slate-700 transition whitespace-nowrap"
+                        >
+                            <span className="hidden sm:inline">{pick('Panel Filament', 'Filament Panel')}</span>
+                            <span className="sm:hidden">Filament</span>
+                        </a>
                         <LanguageSwitcher variant="overlay" />
                         <span className="hidden sm:inline font-semibold text-slate-300 max-w-[160px] truncate">{auth.user.name}</span>
                         <Link

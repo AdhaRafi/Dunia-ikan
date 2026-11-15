@@ -99,7 +99,7 @@ export default function Dashboard({ stats, recentOrders }) {
                         <h2 className="font-bold text-sm text-slate-900 uppercase tracking-wider">
                             {pick('Transaksi Terbaru Platform', 'Latest Platform Transactions')}
                         </h2>
-                        <Link href="/admin/transactions" className="text-xs font-bold text-dunia-blue hover:text-sky-700 flex items-center gap-1">
+                        <Link href="/admin-portal/transactions" className="text-xs font-bold text-dunia-blue hover:text-sky-700 flex items-center gap-1">
                             {pick('Buka Semua Transaksi', 'View All Transactions')} <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
                     </div>

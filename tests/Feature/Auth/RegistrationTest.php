@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Category;
+use App\Models\FishGuide;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -158,5 +160,57 @@ class RegistrationTest extends TestCase
         $this->actingAs($admin)
             ->get('/admin/users')
             ->assertStatus(200);
+    }
+
+    public function test_admin_dashboard_and_portal_crud_routes_are_connected(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $buyer = User::factory()->create(['role' => 'buyer', 'seller_status' => 'none']);
+
+        $this->actingAs($admin)
+            ->get('/dashboard')
+            ->assertRedirect(url('/admin'));
+
+        foreach (['/admin', '/admin/categories', '/admin/products', '/admin/stores', '/admin/orders'] as $filamentPath) {
+            $this->actingAs($admin)->get($filamentPath)->assertStatus(200);
+        }
+
+        foreach (['/admin-portal', '/admin-portal/categories', '/admin-portal/guides', '/admin-portal/users', '/admin-portal/transactions'] as $portalPath) {
+            $this->actingAs($admin)->get($portalPath)->assertStatus(200);
+        }
+
+        $this->actingAs($admin)
+            ->post('/admin-portal/categories', [
+                'name' => 'Udang Hias',
+                'description' => 'Caridina & Neocaridina',
+            ])
+            ->assertSessionHas('success');
+
+        $category = Category::where('slug', 'udang-hias')->firstOrFail();
+        $this->actingAs($admin)
+            ->delete("/admin-portal/categories/{$category->id}")
+            ->assertSessionHas('success');
+
+        $this->actingAs($admin)
+            ->post('/admin-portal/guides', [
+                'title' => 'Karantina Ikan Baru',
+                'fish_type' => 'Semua Ikan',
+                'category' => 'Perawatan Dasar',
+                'symptoms' => 'Stres perjalanan',
+                'possible_causes' => 'Aklimatisasi mendadak',
+                'care_instructions' => 'Apungkan kantong 15 menit',
+                'is_active' => true,
+            ])
+            ->assertSessionHas('success');
+
+        $guide = FishGuide::where('title', 'Karantina Ikan Baru')->firstOrFail();
+        $this->actingAs($admin)->post("/admin-portal/guides/{$guide->id}/toggle")->assertSessionHas('success');
+        $this->assertFalse($guide->fresh()->is_active);
+        $this->actingAs($admin)->delete("/admin-portal/guides/{$guide->id}")->assertSessionHas('success');
+
+        $this->actingAs($admin)
+            ->post("/admin-portal/users/{$buyer->id}/role", ['role' => 'seller'])
+            ->assertSessionHas('success');
+        $this->assertSame('seller', $buyer->fresh()->role);
     }
 }

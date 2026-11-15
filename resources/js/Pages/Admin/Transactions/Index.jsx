@@ -12,7 +12,7 @@ export default function Index({ orders, filters }) {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        router.get('/admin/transactions', { q: search, status, payment_status: paymentStatus }, { preserveState: true });
+        router.get('/admin-portal/transactions', { q: search, status, payment_status: paymentStatus }, { preserveState: true });
     };
 
     const formatPrice = (price) => {
@@ -51,7 +51,7 @@ export default function Index({ orders, filters }) {
                         value={status}
                         onChange={(e) => {
                             setStatus(e.target.value);
-                            router.get('/admin/transactions', { q: search, status: e.target.value, payment_status: paymentStatus }, { preserveState: true });
+                            router.get('/admin-portal/transactions', { q: search, status: e.target.value, payment_status: paymentStatus }, { preserveState: true });
                         }}
                         className="text-xs p-2.5 rounded-xl border border-slate-200 bg-white"
                     >
@@ -68,7 +68,7 @@ export default function Index({ orders, filters }) {
                         value={paymentStatus}
                         onChange={(e) => {
                             setPaymentStatus(e.target.value);
-                            router.get('/admin/transactions', { q: search, status, payment_status: e.target.value }, { preserveState: true });
+                            router.get('/admin-portal/transactions', { q: search, status, payment_status: e.target.value }, { preserveState: true });
                         }}
                         className="text-xs p-2.5 rounded-xl border border-slate-200 bg-white"
                     >
