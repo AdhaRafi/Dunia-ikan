@@ -55,7 +55,12 @@ Route::middleware('auth')->group(function () {
             return Inertia::location(url('/admin'));
         }
         if ($user->isSeller()) {
-            return redirect()->route('seller.products.index');
+            return $user->store
+                ? redirect()->route('seller.products.index')
+                : redirect()->route('seller.store.create');
+        }
+        if ($user->isPendingSeller()) {
+            return redirect()->route('seller.store.create');
         }
 
         return redirect()->route('orders.index');
@@ -139,6 +144,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin-portal')->name('admin.'
 
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::post('/users/{user}/role', [AdminUserController::class, 'updateRole'])->name('users.update-role');
+    Route::post('/users/{user}/approve-seller', [AdminUserController::class, 'approveSeller'])->name('users.approve-seller');
+    Route::post('/users/{user}/reject-seller', [AdminUserController::class, 'rejectSeller'])->name('users.reject-seller');
 
     Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('transactions.index');
 });

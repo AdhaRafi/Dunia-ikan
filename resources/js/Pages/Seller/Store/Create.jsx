@@ -1,14 +1,37 @@
-import { Head, useForm, Link } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { Store, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
+import {
+    ArrowLeft,
+    ArrowRight,
+    CheckCircle2,
+    Clock,
+    ShieldCheck,
+    Store,
+    XCircle,
+} from 'lucide-react';
 
-export default function Create() {
-    const { data, setData, post, processing, errors } = useForm({
-        name: '',
+export default function Create({
+    verificationStatus = 'none',
+    pendingStoreName = '',
+    applicationNote = '',
+}) {
+    const { auth } = usePage().props;
+    const user = auth?.user;
+    const isVerifiedSeller = user?.role === 'seller' || user?.role === 'admin';
+    const isPending = !isVerifiedSeller && verificationStatus === 'pending';
+    const isRejected = !isVerifiedSeller && verificationStatus === 'rejected';
+
+    const applicationForm = useForm({
+        seller_store_name: pendingStoreName || '',
+        seller_application_note: applicationNote || '',
+    });
+
+    const storeForm = useForm({
+        name: pendingStoreName || '',
         city: 'Kota Bandung',
         province: 'Jawa Barat',
         address: '',
-        phone: '',
+        phone: user?.phone || '',
         description: '',
         doa_policy: 'Garansi 100% ikan hidup sampai tujuan ke seluruh Pulau Jawa & Bali. Syarat klaim wajib menyertakan video unboxing utuh tanpa jeda maksimal 2 jam setelah paket tiba.',
         bank_name: 'BCA',
@@ -16,159 +39,303 @@ export default function Create() {
         bank_account_name: '',
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmitApplication = (e) => {
         e.preventDefault();
-        post('/seller/register');
+        applicationForm.post('/seller/register');
+    };
+
+    const handleSubmitStore = (e) => {
+        e.preventDefault();
+        storeForm.post('/seller/register');
     };
 
     return (
         <AppLayout>
             <Head title="Buka Toko Penangkar Ikan - Dunia Ikan" />
 
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
-                <Link href="/" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-dunia-blue transition">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
+                <Link
+                    href="/"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-dunia-blue dark:text-slate-400 dark:hover:text-sky-400 transition"
+                >
                     <ArrowLeft className="w-4 h-4" />
                     Kembali
                 </Link>
 
-                <div className="bg-white p-8 rounded-3xl border border-sky-100 shadow-md space-y-6">
-                    <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
-                        <div className="w-12 h-12 rounded-2xl bg-dunia-blue/10 text-dunia-blue flex items-center justify-center font-bold">
-                            <Store className="w-6 h-6" />
+                {isPending && (
+                    <div className="bg-white dark:bg-[#0e1424] p-6 sm:p-8 rounded-3xl border border-amber-200 dark:border-amber-500/30 shadow-sm space-y-5">
+                        <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                                <Clock className="w-6 h-6" />
+                            </div>
+                            <div className="space-y-1">
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300">
+                                    Menunggu Verifikasi Admin
+                                </span>
+                                <h1 className="text-xl sm:text-2xl font-extrabold text-dunia-navy dark:text-white pt-1">
+                                    Pengajuan Akun Penjual Sedang Ditinjau
+                                </h1>
+                                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                                    Terima kasih telah mendaftar sebagai calon penangkar di Dunia Ikan. Admin kami akan memeriksa pengajuan Anda terlebih dahulu sebelum fitur toko diaktifkan.
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <h1 className="text-xl sm:text-2xl font-extrabold text-dunia-navy">
-                                Pendaftaran Toko Penangkar Ikan
-                            </h1>
-                            <p className="text-xs text-slate-500">
-                                Mulai jual ikan hias, mutasi morph, dan aquascape dengan garansi hidup terstandarisasi.
-                            </p>
+
+                        <div className="rounded-2xl bg-slate-50 dark:bg-[#0b101d] border border-slate-200/80 dark:border-neutral-800 p-4 space-y-2.5 text-xs">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                                <span className="text-slate-500 dark:text-slate-400">Nama Rencana Toko</span>
+                                <span className="font-bold text-slate-900 dark:text-white">
+                                    {pendingStoreName || '-'}
+                                </span>
+                            </div>
+                            {applicationNote && (
+                                <div className="pt-2 border-t border-slate-200/70 dark:border-neutral-800">
+                                    <span className="block text-slate-500 dark:text-slate-400 mb-0.5">Catatan Pengajuan</span>
+                                    <p className="text-slate-700 dark:text-slate-200">{applicationNote}</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-3 pt-1">
+                            <Link
+                                href="/products"
+                                className="px-5 py-2.5 rounded-xl bg-[#0684E5] text-white font-bold text-xs hover:bg-[#0060aa] transition"
+                            >
+                                Jelajahi Katalog Ikan
+                            </Link>
+                            <Link
+                                href="/profile"
+                                className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-neutral-700 text-slate-700 dark:text-slate-200 font-semibold text-xs hover:bg-slate-50 dark:hover:bg-neutral-800 transition"
+                            >
+                                Buka Profil Saya
+                            </Link>
                         </div>
                     </div>
+                )}
 
-                    <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-                        <div>
-                            <label className="block font-bold text-slate-700 uppercase mb-1">Nama Toko Penangkar</label>
-                            <input
-                                type="text"
-                                placeholder="Contoh: Bandung Betta Champion"
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
-                                className="w-full p-3 rounded-xl border border-slate-200"
-                                required
-                            />
-                            {errors.name && <p className="text-rose-600 mt-1">{errors.name}</p>}
+                {!isVerifiedSeller && !isPending && (
+                    <div className="bg-white dark:bg-[#0e1424] p-6 sm:p-8 rounded-3xl border border-sky-100 dark:border-neutral-800 shadow-md space-y-6">
+                        {isRejected && (
+                            <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-500/30 flex items-start gap-3 text-xs text-rose-800 dark:text-rose-200">
+                                <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+                                <div>
+                                    <p className="font-bold">Pengajuan Sebelumnya Ditolak</p>
+                                    <p className="mt-0.5 text-rose-700 dark:text-rose-300">
+                                        Anda dapat memperbarui nama toko dan informasi penangkar di bawah untuk mengajukan verifikasi ulang.
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-neutral-800">
+                            <div className="w-12 h-12 rounded-2xl bg-dunia-blue/10 text-dunia-blue flex items-center justify-center font-bold shrink-0">
+                                <Store className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h1 className="text-xl sm:text-2xl font-extrabold text-dunia-navy dark:text-white">
+                                    Ajukan Verifikasi Akun Penjual
+                                </h1>
+                                <p className="text-xs text-slate-500 dark:text-slate-400">
+                                    Setiap calon penjual perlu verifikasi admin sebelum dapat membuka toko dan menambahkan produk.
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <form onSubmit={handleSubmitApplication} className="space-y-4 text-xs">
                             <div>
-                                <label className="block font-bold text-slate-700 uppercase mb-1">Kota / Kabupaten</label>
+                                <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
+                                    Nama Rencana Toko / Farm
+                                </label>
                                 <input
                                     type="text"
-                                    placeholder="Contoh: Kota Bandung"
-                                    value={data.city}
-                                    onChange={(e) => setData('city', e.target.value)}
-                                    className="w-full p-3 rounded-xl border border-slate-200"
+                                    placeholder="Contoh: Bandung Betta Champion"
+                                    value={applicationForm.data.seller_store_name}
+                                    onChange={(e) => applicationForm.setData('seller_store_name', e.target.value)}
+                                    className="w-full p-3 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
                                     required
                                 />
-                                {errors.city && <p className="text-rose-600 mt-1">{errors.city}</p>}
+                                {applicationForm.errors.seller_store_name && (
+                                    <p className="text-rose-600 mt-1">{applicationForm.errors.seller_store_name}</p>
+                                )}
                             </div>
 
                             <div>
-                                <label className="block font-bold text-slate-700 uppercase mb-1">Nomor Kontak Toko / WhatsApp</label>
+                                <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
+                                    Catatan untuk Admin (Opsional)
+                                </label>
+                                <textarea
+                                    rows={3}
+                                    placeholder="Ceritakan jenis ikan hias / perlengkapan yang ingin dijual dan kota domisili..."
+                                    value={applicationForm.data.seller_application_note}
+                                    onChange={(e) => applicationForm.setData('seller_application_note', e.target.value)}
+                                    className="w-full p-3 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                                />
+                                {applicationForm.errors.seller_application_note && (
+                                    <p className="text-rose-600 mt-1">{applicationForm.errors.seller_application_note}</p>
+                                )}
+                            </div>
+
+                            <div className="pt-2">
+                                <button
+                                    type="submit"
+                                    disabled={applicationForm.processing}
+                                    className="w-full py-3.5 px-6 rounded-2xl bg-[#0684E5] text-white font-bold text-sm hover:bg-[#0060aa] transition flex items-center justify-center gap-2 shadow-lg shadow-[#0684E5]/20"
+                                >
+                                    {applicationForm.processing ? 'Mengirim Pengajuan...' : 'Kirim Pengajuan Penjual'}
+                                    <ArrowRight className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                )}
+
+                {isVerifiedSeller && (
+                    <div className="bg-white dark:bg-[#0e1424] p-6 sm:p-8 rounded-3xl border border-sky-100 dark:border-neutral-800 shadow-md space-y-6">
+                        <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-500/30 flex items-center gap-2.5 text-xs text-emerald-800 dark:text-emerald-200">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                            <span>
+                                Akun penjual Anda telah disetujui admin. Lengkapi detail toko untuk mulai berjualan.
+                            </span>
+                        </div>
+
+                        <div className="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-neutral-800">
+                            <div className="w-12 h-12 rounded-2xl bg-dunia-blue/10 text-dunia-blue flex items-center justify-center font-bold">
+                                <Store className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h1 className="text-xl sm:text-2xl font-extrabold text-dunia-navy dark:text-white">
+                                    Pendaftaran Toko Penangkar Ikan
+                                </h1>
+                                <p className="text-xs text-slate-500 dark:text-slate-400">
+                                    Mulai jual ikan hias, mutasi morph, dan aquascape dengan garansi hidup terstandarisasi.
+                                </p>
+                            </div>
+                        </div>
+
+                        <form onSubmit={handleSubmitStore} className="space-y-4 text-xs">
+                            <div>
+                                <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Nama Toko Penangkar</label>
                                 <input
                                     type="text"
-                                    placeholder="0812xxxx"
-                                    value={data.phone}
-                                    onChange={(e) => setData('phone', e.target.value)}
-                                    className="w-full p-3 rounded-xl border border-slate-200"
+                                    placeholder="Contoh: Bandung Betta Champion"
+                                    value={storeForm.data.name}
+                                    onChange={(e) => storeForm.setData('name', e.target.value)}
+                                    className="w-full p-3 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
                                     required
                                 />
-                                {errors.phone && <p className="text-rose-600 mt-1">{errors.phone}</p>}
+                                {storeForm.errors.name && <p className="text-rose-600 mt-1">{storeForm.errors.name}</p>}
                             </div>
-                        </div>
 
-                        <div>
-                            <label className="block font-bold text-slate-700 uppercase mb-1">Alamat Farm / Toko Lengkap</label>
-                            <textarea
-                                rows={2}
-                                placeholder="Alamat lengkap lokasi farm atau workshop..."
-                                value={data.address}
-                                onChange={(e) => setData('address', e.target.value)}
-                                className="w-full p-3 rounded-xl border border-slate-200"
-                                required
-                            />
-                            {errors.address && <p className="text-rose-600 mt-1">{errors.address}</p>}
-                        </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Kota / Kabupaten</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Contoh: Kota Bandung"
+                                        value={storeForm.data.city}
+                                        onChange={(e) => storeForm.setData('city', e.target.value)}
+                                        className="w-full p-3 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                                        required
+                                    />
+                                    {storeForm.errors.city && <p className="text-rose-600 mt-1">{storeForm.errors.city}</p>}
+                                </div>
 
-                        <div>
-                            <label className="block font-bold text-slate-700 uppercase mb-1">Deskripsi & Spesialisasi Toko</label>
-                            <textarea
-                                rows={3}
-                                placeholder="Jelaskan jenis ikan atau variasi yang biasa Anda tangkarkan..."
-                                value={data.description}
-                                onChange={(e) => setData('description', e.target.value)}
-                                className="w-full p-3 rounded-xl border border-slate-200"
-                            />
-                        </div>
+                                <div>
+                                    <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Nomor Kontak Toko / WhatsApp</label>
+                                    <input
+                                        type="text"
+                                        placeholder="0812xxxx"
+                                        value={storeForm.data.phone}
+                                        onChange={(e) => storeForm.setData('phone', e.target.value)}
+                                        className="w-full p-3 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                                        required
+                                    />
+                                    {storeForm.errors.phone && <p className="text-rose-600 mt-1">{storeForm.errors.phone}</p>}
+                                </div>
+                            </div>
 
-                        {/* DOA Guarantee Policy */}
-                        <div className="p-4 rounded-2xl bg-sky-50/80 border border-sky-100 space-y-2">
-                            <label className="block font-bold text-dunia-navy uppercase flex items-center gap-1.5">
-                                <ShieldCheck className="w-4 h-4 text-dunia-aqua" />
-                                Kebijakan Garansi Ikan Hidup (Live Arrival Policy)
-                            </label>
-                            <p className="text-[11px] text-slate-500">
-                                Tuliskan syarat klaim untuk pembeli (seperti video unboxing tanpa jeda, batas waktu lapor, dll).
-                            </p>
-                            <textarea
-                                rows={3}
-                                value={data.doa_policy}
-                                onChange={(e) => setData('doa_policy', e.target.value)}
-                                className="w-full p-2.5 rounded-xl border border-slate-200 bg-white"
-                            />
-                        </div>
-
-                        {/* Rekening Bank untuk Penerimaan Pembayaran */}
-                        <div className="pt-2 border-t border-slate-100 space-y-3">
-                            <p className="font-bold text-slate-700 uppercase text-xs">Rekening Pembayaran Toko</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <input
-                                    type="text"
-                                    placeholder="Nama Bank (e.g. BCA)"
-                                    value={data.bank_name}
-                                    onChange={(e) => setData('bank_name', e.target.value)}
-                                    className="p-2.5 rounded-xl border border-slate-200"
+                            <div>
+                                <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Alamat Farm / Toko Lengkap</label>
+                                <textarea
+                                    rows={2}
+                                    placeholder="Alamat lengkap lokasi farm atau workshop..."
+                                    value={storeForm.data.address}
+                                    onChange={(e) => storeForm.setData('address', e.target.value)}
+                                    className="w-full p-3 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                                    required
                                 />
-                                <input
-                                    type="text"
-                                    placeholder="Nomor Rekening"
-                                    value={data.bank_account_number}
-                                    onChange={(e) => setData('bank_account_number', e.target.value)}
-                                    className="p-2.5 rounded-xl border border-slate-200"
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Atas Nama Pemilik Rekening"
-                                    value={data.bank_account_name}
-                                    onChange={(e) => setData('bank_account_name', e.target.value)}
-                                    className="p-2.5 rounded-xl border border-slate-200"
+                                {storeForm.errors.address && <p className="text-rose-600 mt-1">{storeForm.errors.address}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Deskripsi & Spesialisasi Toko</label>
+                                <textarea
+                                    rows={3}
+                                    placeholder="Jelaskan jenis ikan atau variasi yang biasa Anda tangkarkan..."
+                                    value={storeForm.data.description}
+                                    onChange={(e) => storeForm.setData('description', e.target.value)}
+                                    className="w-full p-3 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
                                 />
                             </div>
-                        </div>
 
-                        <div className="pt-4">
-                            <button
-                                type="submit"
-                                disabled={processing}
-                                className="w-full py-3.5 px-6 rounded-2xl bg-dunia-blue text-white font-bold text-sm hover:bg-sky-600 transition flex items-center justify-center gap-2 shadow-lg shadow-dunia-blue/20"
-                            >
-                                {processing ? 'Mendaftarkan Toko...' : 'Selesaikan Pendaftaran Toko'}
-                                <ArrowRight className="w-4 h-4" />
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                            {/* DOA Guarantee Policy */}
+                            <div className="p-4 rounded-2xl bg-sky-50/80 dark:bg-sky-950/20 border border-sky-100 dark:border-sky-500/20 space-y-2">
+                                <label className="block font-bold text-dunia-navy dark:text-sky-300 uppercase flex items-center gap-1.5">
+                                    <ShieldCheck className="w-4 h-4 text-dunia-aqua" />
+                                    Kebijakan Garansi Ikan Hidup (Live Arrival Policy)
+                                </label>
+                                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                                    Tuliskan syarat klaim untuk pembeli (seperti video unboxing tanpa jeda, batas waktu lapor, dll).
+                                </p>
+                                <textarea
+                                    rows={3}
+                                    value={storeForm.data.doa_policy}
+                                    onChange={(e) => storeForm.setData('doa_policy', e.target.value)}
+                                    className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 dark:text-white"
+                                />
+                            </div>
+
+                            {/* Rekening Bank untuk Penerimaan Pembayaran */}
+                            <div className="pt-2 border-t border-slate-100 dark:border-neutral-800 space-y-3">
+                                <p className="font-bold text-slate-700 dark:text-slate-300 uppercase text-xs">Rekening Pembayaran Toko</p>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <input
+                                        type="text"
+                                        placeholder="Nama Bank (e.g. BCA)"
+                                        value={storeForm.data.bank_name}
+                                        onChange={(e) => storeForm.setData('bank_name', e.target.value)}
+                                        className="p-2.5 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Nomor Rekening"
+                                        value={storeForm.data.bank_account_number}
+                                        onChange={(e) => storeForm.setData('bank_account_number', e.target.value)}
+                                        className="p-2.5 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Atas Nama Pemilik Rekening"
+                                        value={storeForm.data.bank_account_name}
+                                        onChange={(e) => storeForm.setData('bank_account_name', e.target.value)}
+                                        className="p-2.5 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="pt-4">
+                                <button
+                                    type="submit"
+                                    disabled={storeForm.processing}
+                                    className="w-full py-3.5 px-6 rounded-2xl bg-[#0684E5] text-white font-bold text-sm hover:bg-[#0060aa] transition flex items-center justify-center gap-2 shadow-lg shadow-[#0684E5]/20"
+                                >
+                                    {storeForm.processing ? 'Mendaftarkan Toko...' : 'Selesaikan Pendaftaran Toko'}
+                                    <ArrowRight className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                )}
             </div>
         </AppLayout>
     );

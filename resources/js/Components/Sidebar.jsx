@@ -182,7 +182,12 @@ export default function Sidebar({
         ...(user?.role === 'buyer'
             ? [
                   {
-                      label: 'Buka Toko',
+                      label:
+                          user?.seller_status === 'pending'
+                              ? 'Menunggu Acc Toko'
+                              : user?.seller_status === 'rejected'
+                                ? 'Pengajuan Ditolak'
+                                : 'Buka Toko',
                       href: '/seller/register',
                       icon: Store,
                       active: pathname.startsWith('/seller/register'),

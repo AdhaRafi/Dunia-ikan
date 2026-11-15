@@ -42,6 +42,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'penjual1@duniaikan.test',
             'phone' => '082123456781',
             'role' => 'seller',
+            'seller_status' => 'approved',
+            'seller_reviewed_at' => now(),
             'password' => Hash::make('password'),
         ]);
 
@@ -67,6 +69,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'penjual2@duniaikan.test',
             'phone' => '085712345672',
             'role' => 'seller',
+            'seller_status' => 'approved',
+            'seller_reviewed_at' => now(),
             'password' => Hash::make('password'),
         ]);
 

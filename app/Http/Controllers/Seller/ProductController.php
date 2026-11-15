@@ -18,8 +18,7 @@ class ProductController extends Controller
     {
         $store = $request->user()->store;
         if (! $store) {
-            return redirect()->route('seller.store.create')
-                ->with('error', 'Silakan lengkapi profil toko Anda terlebih dahulu.');
+            return redirect()->route('seller.store.create');
         }
 
         $products = Product::with(['category', 'fishDetail'])

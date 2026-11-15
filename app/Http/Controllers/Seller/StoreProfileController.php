@@ -20,7 +20,12 @@ class StoreProfileController extends Controller
             return redirect()->route('seller.store.edit');
         }
 
-        return Inertia::render('Seller/Store/Create');
+        return Inertia::render('Seller/Store/Create', [
+            'verificationStatus' => $user->seller_status ?? 'none',
+            'pendingStoreName' => $user->seller_store_name,
+            'applicationNote' => $user->seller_application_note,
+            'reviewedAt' => $user->seller_reviewed_at?->toISOString(),
+        ]);
     }
 
     public function registerStore(Request $request): RedirectResponse
@@ -29,6 +34,32 @@ class StoreProfileController extends Controller
 
         if ($user->store) {
             return redirect()->route('seller.store.edit');
+        }
+
+        // Buyers must be approved by an admin before creating an active store.
+        if (! $user->isSeller() && ! $user->isAdmin()) {
+            if ($user->isPendingSeller()) {
+                return back()->with('error', 'Pengajuan akun penjual Anda sedang menunggu verifikasi admin.');
+            }
+
+            $application = $request->validate([
+                'seller_store_name' => 'required|string|max:120',
+                'seller_application_note' => 'nullable|string|max:500',
+            ], [
+                'seller_store_name.required' => 'Nama rencana toko atau farm wajib diisi.',
+            ]);
+
+            $note = trim((string) ($application['seller_application_note'] ?? ''));
+
+            $user->update([
+                'seller_status' => 'pending',
+                'seller_store_name' => trim((string) $application['seller_store_name']),
+                'seller_application_note' => $note !== '' ? $note : null,
+                'seller_reviewed_at' => null,
+            ]);
+
+            return redirect()->route('seller.store.create')
+                ->with('success', 'Pengajuan akun penjual berhasil dikirim! Mohon tunggu persetujuan admin.');
         }
 
         $validated = $request->validate([
@@ -46,16 +77,11 @@ class StoreProfileController extends Controller
 
         $slug = Str::slug($validated['name']);
 
-        $store = Store::create([
+        Store::create([
             'user_id' => $user->id,
             'slug' => $slug,
             ...$validated,
         ]);
-
-        // Upgrade role to seller jika belum
-        if ($user->role === 'buyer') {
-            $user->update(['role' => 'seller']);
-        }
 
         return redirect()->route('seller.products.index')
             ->with('success', 'Selamat! Toko Anda berhasil didaftarkan di Dunia Ikan.');

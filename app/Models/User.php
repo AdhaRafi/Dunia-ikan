@@ -31,6 +31,10 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'phone',
         'role',
+        'seller_status',
+        'seller_store_name',
+        'seller_application_note',
+        'seller_reviewed_at',
         'avatar',
         'password',
     ];
@@ -74,6 +78,7 @@ class User extends Authenticatable implements FilamentUser
     {
         return [
             'email_verified_at' => 'datetime',
+            'seller_reviewed_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
@@ -91,6 +96,40 @@ class User extends Authenticatable implements FilamentUser
     public function isBuyer(): bool
     {
         return $this->role === 'buyer';
+    }
+
+    public function isPendingSeller(): bool
+    {
+        return $this->role === 'buyer' && $this->seller_status === 'pending';
+    }
+
+    public function isRejectedSeller(): bool
+    {
+        return $this->role === 'buyer' && $this->seller_status === 'rejected';
+    }
+
+    /**
+     * Approve a buyer's seller verification request and grant seller role.
+     */
+    public function approveSellerApplication(): void
+    {
+        $this->update([
+            'role' => 'seller',
+            'seller_status' => 'approved',
+            'seller_reviewed_at' => now(),
+        ]);
+    }
+
+    /**
+     * Reject a buyer's seller verification request and keep buyer privileges.
+     */
+    public function rejectSellerApplication(): void
+    {
+        $this->update([
+            'role' => 'buyer',
+            'seller_status' => 'rejected',
+            'seller_reviewed_at' => now(),
+        ]);
     }
 
     public function store(): HasOne

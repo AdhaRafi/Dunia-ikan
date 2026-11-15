@@ -425,8 +425,24 @@ export default function TopHeader({
 
                                     {user.role === 'buyer' && (
                                         <div className="border-t border-[#1E80A0]/10 dark:border-neutral-800 my-1 pt-1">
-                                            <Link href="/seller/register" className="block px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#0684E5] dark:text-cyan-400 font-bold transition">
-                                                Buka Toko Penangkar
+                                            <Link href="/seller/register" className="flex items-center justify-between gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 text-[#0684E5] dark:text-cyan-400 font-bold transition">
+                                                <span>
+                                                    {user.seller_status === 'pending'
+                                                        ? 'Status Penjual'
+                                                        : user.seller_status === 'rejected'
+                                                          ? 'Ajukan Ulang Toko'
+                                                          : 'Buka Toko Penangkar'}
+                                                </span>
+                                                {user.seller_status === 'pending' && (
+                                                    <span className="px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
+                                                        Pending
+                                                    </span>
+                                                )}
+                                                {user.seller_status === 'rejected' && (
+                                                    <span className="px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-700 text-[10px] font-bold">
+                                                        Ditolak
+                                                    </span>
+                                                )}
                                             </Link>
                                         </div>
                                     )}

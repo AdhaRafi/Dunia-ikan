@@ -119,8 +119,12 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
         user?.role === 'admin'
             ? 'Administrator'
             : user?.role === 'seller'
-            ? 'Penangkar Terverifikasi'
-            : 'Pembeli Terdaftar';
+              ? 'Penangkar Terverifikasi'
+              : user?.seller_status === 'pending'
+                ? 'Pembeli · Menunggu Verifikasi Penjual'
+                : user?.seller_status === 'rejected'
+                  ? 'Pembeli · Pengajuan Penjual Ditolak'
+                  : 'Pembeli Terdaftar';
 
     const joinedAt = formatDate(user?.created_at);
     const totalOrdersCount =
@@ -194,6 +198,27 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                     >
                                         <Store className="w-4 h-4 shrink-0" strokeWidth={1.75} />
                                         <span className="whitespace-nowrap">Toko Saya</span>
+                                    </Link>
+                                )}
+
+                                {user?.role === 'buyer' && (user?.seller_status === 'pending' || user?.seller_status === 'rejected') && (
+                                    <Link
+                                        href="/seller/register"
+                                        className="w-auto md:w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-xs sm:text-[13px] font-medium text-slate-600 dark:text-neutral-400 hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-slate-900 dark:hover:text-white transition"
+                                    >
+                                        <span className="flex items-center gap-2">
+                                            <Store className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+                                            <span className="whitespace-nowrap">Status Penjual</span>
+                                        </span>
+                                        <span
+                                            className={`px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${
+                                                user.seller_status === 'pending'
+                                                    ? 'bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300'
+                                                    : 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-300'
+                                            }`}
+                                        >
+                                            {user.seller_status === 'pending' ? 'Pending' : 'Ditolak'}
+                                        </span>
                                     </Link>
                                 )}
                             </nav>

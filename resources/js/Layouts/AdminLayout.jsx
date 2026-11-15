@@ -15,14 +15,14 @@ import { useState } from 'react';
 
 export default function AdminLayout({ children, title }) {
     const { url, props } = usePage();
-    const { auth, flash } = props;
+    const { auth, flash, pendingSellerCount = 0 } = props;
     const [showFlash, setShowFlash] = useState(true);
 
     const navItems = [
         { href: '/admin-portal', label: 'Ringkasan Platform', icon: LayoutDashboard, iconClass: 'text-purple-600', active: url === '/admin-portal' || url === '/admin' },
         { href: '/admin-portal/categories', label: 'Kelola Kategori', icon: Folders, iconClass: 'text-dunia-blue', active: url.includes('/categories') },
         { href: '/admin-portal/guides', label: 'Panduan Chatbot Ikan', icon: BookOpen, iconClass: 'text-emerald-600', active: url.includes('/guides') },
-        { href: '/admin-portal/users', label: 'Manajemen Pengguna', icon: Users, iconClass: 'text-amber-600', active: url.includes('/users') },
+        { href: '/admin-portal/users', label: 'Manajemen Pengguna', icon: Users, iconClass: 'text-amber-600', badge: pendingSellerCount, active: url.includes('/users') },
         { href: '/admin-portal/transactions', label: 'Semua Transaksi', icon: ReceiptText, iconClass: 'text-sky-600', active: url.includes('/transactions') },
     ];
 
@@ -109,6 +109,11 @@ export default function AdminLayout({ children, title }) {
                                 >
                                     <Icon className={`w-4 h-4 shrink-0 ${item.iconClass}`} />
                                     <span>{item.label}</span>
+                                    {item.badge > 0 && (
+                                        <span className="ml-auto px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
+                                            {item.badge}
+                                        </span>
+                                    )}
                                 </Link>
                             );
                         })}

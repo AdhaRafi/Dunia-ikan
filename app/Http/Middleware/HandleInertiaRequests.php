@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -45,6 +46,9 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user,
             ],
+            'pendingSellerCount' => fn () => $user?->isAdmin()
+                ? User::where('seller_status', 'pending')->count()
+                : 0,
             'cartCount' => $cartCount,
             'navCategories' => fn () => Category::select('id', 'name', 'slug')->get(),
             'flash' => [
