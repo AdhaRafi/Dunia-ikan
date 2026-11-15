@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from '@inertiajs/react';
-import { ArrowLeft, Fish } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import BrandWordmark from '@/Components/BrandWordmark';
 import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
 
@@ -77,13 +77,6 @@ export default function GuestLayout({
 
                 <main className="lg:col-span-6 flex flex-col justify-center px-3 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-9">
                     <div className="mx-auto w-full max-w-[356px]">
-                        <Link
-                            href="/"
-                            aria-label="Dunia Ikan Beranda"
-                            className="mb-3.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#eef2ff] dark:bg-indigo-950/60 text-[#2448f5] dark:text-sky-400 border border-indigo-100 dark:border-indigo-900/60 hover:scale-105 transition-transform"
-                        >
-                            <Fish className="h-5 w-5" />
-                        </Link>
                         {children}
                     </div>
                 </main>
