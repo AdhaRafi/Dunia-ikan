@@ -21,50 +21,50 @@ export default function HttpError({ status = 404 }) {
         : pick('yang terputus.', 'went wrong.');
 
     return (
-        <div className="min-h-screen bg-[#056BC4] flex items-center justify-center p-4 sm:p-8 lg:p-12 selection:bg-sky-200 selection:text-[#001454]">
+        <div className="min-h-screen w-full bg-white flex flex-col overflow-x-clip selection:bg-sky-200 selection:text-[#001454]">
             <Head title={title} />
 
-            <div className="w-full max-w-[920px] bg-white rounded-[22px] sm:rounded-[28px] shadow-[0_28px_60px_-14px_rgba(0,20,84,0.38)] overflow-hidden pb-11 sm:pb-14">
-                {/* Card Top Navigation */}
-                <header className="px-6 sm:px-12 pt-7 sm:pt-9 pb-2 flex items-center justify-between gap-4">
-                    <Link
-                        href="/"
-                        className="shrink-0 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#056BC4] rounded-lg"
-                    >
-                        <BrandWordmark variant="default" className="h-8 sm:h-9" />
+            {/* Top Navigation */}
+            <header className="w-full px-5 sm:px-8 lg:px-12 pt-6 sm:pt-8 pb-2 flex items-center justify-between gap-4 shrink-0">
+                <Link
+                    href="/"
+                    className="shrink-0 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#056BC4] rounded-lg"
+                >
+                    <BrandWordmark variant="default" className="h-8 sm:h-9" />
+                </Link>
+
+                <nav className="hidden sm:flex items-center gap-8 text-[13px] font-medium text-slate-600">
+                    <Link href="/products" className="hover:text-[#056BC4] transition">
+                        {pick('Katalog Ikan', 'Products')}
                     </Link>
+                    <Link href="/guides" className="hover:text-[#056BC4] transition">
+                        {pick('Panduan Ikan', 'Care Guides')}
+                    </Link>
+                    <Link href="/cart" className="hover:text-[#056BC4] transition">
+                        {pick('Keranjang', 'Cart')}
+                    </Link>
+                </nav>
 
-                    <nav className="hidden sm:flex items-center gap-7 text-[13px] font-medium text-slate-600">
-                        <Link href="/products" className="hover:text-[#056BC4] transition">
-                            {pick('Katalog Ikan', 'Products')}
-                        </Link>
-                        <Link href="/guides" className="hover:text-[#056BC4] transition">
-                            {pick('Panduan Ikan', 'Care Guides')}
-                        </Link>
-                        <Link href="/cart" className="hover:text-[#056BC4] transition">
-                            {pick('Keranjang', 'Cart')}
-                        </Link>
-                    </nav>
+                {authUser ? (
+                    <Link
+                        href="/orders"
+                        className="text-[13px] font-bold text-[#056BC4] hover:underline whitespace-nowrap"
+                    >
+                        {pick('Pesanan Saya', 'My Orders')}
+                    </Link>
+                ) : (
+                    <Link
+                        href="/login"
+                        className="text-[13px] font-bold text-[#056BC4] hover:underline whitespace-nowrap"
+                    >
+                        {pick('Masuk', 'Sign in')}
+                    </Link>
+                )}
+            </header>
 
-                    {authUser ? (
-                        <Link
-                            href="/orders"
-                            className="text-[13px] font-bold text-[#056BC4] hover:underline whitespace-nowrap"
-                        >
-                            {pick('Pesanan Saya', 'My Orders')}
-                        </Link>
-                    ) : (
-                        <Link
-                            href="/login"
-                            className="text-[13px] font-bold text-[#056BC4] hover:underline whitespace-nowrap"
-                        >
-                            {pick('Masuk', 'Sign in')}
-                        </Link>
-                    )}
-                </header>
-
-                {/* Monoline Disconnected Plug & Edge-to-Edge Cables */}
-                <div className="relative pt-4 sm:pt-6">
+            {/* Full-Viewport Disconnected Plug & Edge-to-Edge Cables */}
+            <main className="flex-1 flex flex-col justify-center pb-14 sm:pb-20">
+                <div className="relative w-full">
                     <svg
                         viewBox="0 0 1000 176"
                         fill="none"
@@ -150,12 +150,12 @@ export default function HttpError({ status = 404 }) {
                     </svg>
 
                     {/* Center Numeric Error Code & Copy */}
-                    <div className="px-6 text-center mt-1 sm:-mt-16 relative z-10 space-y-4">
-                        <h1 className="text-[76px] sm:text-[102px] font-black leading-none tracking-tight text-[#252525]">
+                    <div className="px-6 text-center mt-2 sm:-mt-[6.5%] relative z-10 space-y-4">
+                        <h1 className="text-[80px] sm:text-[110px] lg:text-[124px] font-black leading-none tracking-tight text-[#252525]">
                             {headline}
                         </h1>
 
-                        <p className="text-lg sm:text-[21px] font-medium text-[#2A2A2A] leading-snug max-w-md mx-auto">
+                        <p className="text-lg sm:text-[22px] font-medium text-[#2A2A2A] leading-snug max-w-md mx-auto">
                             {messageLine1}
                             <br />
                             {messageLine2}
@@ -182,7 +182,7 @@ export default function HttpError({ status = 404 }) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     );
 }
