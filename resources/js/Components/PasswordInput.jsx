@@ -1,17 +1,21 @@
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import TextInput from '@/Components/TextInput';
 
 /**
  * Password input wrapping TextInput with a show/hide visibility toggle.
  */
-export default function PasswordInput({ className = '', wrapperClassName = '', ...props }) {
+export default forwardRef(function PasswordInput(
+    { className = '', wrapperClassName = '', ...props },
+    ref,
+) {
     const [visible, setVisible] = useState(false);
 
     return (
         <div className={`relative ${wrapperClassName}`}>
             <TextInput
                 {...props}
+                ref={ref}
                 type={visible ? 'text' : 'password'}
                 className={`pr-10 ${className}`}
             />
@@ -25,4 +29,4 @@ export default function PasswordInput({ className = '', wrapperClassName = '', .
             </button>
         </div>
     );
-}
+});
