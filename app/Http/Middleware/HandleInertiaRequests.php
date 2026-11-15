@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Services\TurnstileVerifier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -63,10 +64,51 @@ class HandleInertiaRequests extends Middleware
                 : 0,
             'cartCount' => $cartCount,
             'navCategories' => fn () => Category::select('id', 'name', 'slug')->get(),
+            'visitorStats' => fn () => $this->recordAndGetVisitorStats($request),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
             ],
+        ];
+    }
+
+    /**
+     * Record unique daily session visits and return live visitor counters.
+     *
+     * @return array{today: int, month: int, year: int}
+     */
+    private function recordAndGetVisitorStats(Request $request): array
+    {
+        $now = now()->timezone('Asia/Jakarta');
+        $keys = [
+            'today' => ['visitors:day:'.$now->format('Y-m-d'), $now->copy()->addDays(2)],
+            'month' => ['visitors:month:'.$now->format('Y-m'), $now->copy()->addDays(45)],
+            'year' => ['visitors:year:'.$now->format('Y'), $now->copy()->addDays(400)],
+        ];
+
+        $todayStamp = $now->format('Y-m-d');
+        $isBot = preg_match('/bot|crawl|spider|slurp|bingpreview|lighthouse/i', (string) $request->userAgent()) === 1;
+        $shouldCount = $request->isMethod('GET')
+            && $request->hasSession()
+            && ! $isBot
+            && ! $request->headers->has('X-Inertia-Partial-Data')
+            && ! $request->is('api/*', 'up', 'sitemap.xml', 'robots.txt', 'chatbot/*');
+
+        if ($shouldCount && $request->session()->get('visitor_counted_date') !== $todayStamp) {
+            foreach ($keys as [$key, $expiresAt]) {
+                Cache::add($key, 0, $expiresAt);
+                if (Cache::increment($key) === false) {
+                    Cache::put($key, 1, $expiresAt);
+                }
+            }
+
+            $request->session()->put('visitor_counted_date', $todayStamp);
+        }
+
+        return [
+            'today' => (int) Cache::get($keys['today'][0], 0),
+            'month' => (int) Cache::get($keys['month'][0], 0),
+            'year' => (int) Cache::get($keys['year'][0], 0),
         ];
     }
 }

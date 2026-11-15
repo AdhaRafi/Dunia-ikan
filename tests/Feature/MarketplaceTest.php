@@ -289,4 +289,45 @@ class MarketplaceTest extends TestCase
                 ->where('guide.id', $guideId)
             );
     }
+
+    public function test_live_visitor_stats_increment_once_per_session_day_and_skip_bots(): void
+    {
+        $this->get('/')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->where('visitorStats.today', 1)
+                ->where('visitorStats.month', 1)
+                ->where('visitorStats.year', 1)
+            );
+
+        // Same session on subsequent navigation should not inflate today's count
+        $this->get('/products')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->where('visitorStats.today', 1)
+                ->where('visitorStats.month', 1)
+                ->where('visitorStats.year', 1)
+            );
+
+        // A new visitor session increments all three counters live
+        $this->flushSession();
+        $this->get('/')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->where('visitorStats.today', 2)
+                ->where('visitorStats.month', 2)
+                ->where('visitorStats.year', 2)
+            );
+
+        // Search engine bots should not increment visitor statistics
+        $this->flushSession();
+        $this->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; Googlebot/2.1)'])
+            ->get('/')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->where('visitorStats.today', 2)
+                ->where('visitorStats.month', 2)
+                ->where('visitorStats.year', 2)
+            );
+    }
 }

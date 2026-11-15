@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { Check } from 'lucide-react';
 import BrandWordmark from '@/Components/BrandWordmark';
 import { useLanguage } from '@/lib/i18n';
 
 export default function Footer() {
-    const { pick } = useLanguage();
+    const { visitorStats } = usePage().props;
+    const { pick, isEn } = useLanguage();
     const [email, setEmail] = useState('');
     const [subscribed, setSubscribed] = useState(false);
+
+    const formatVisits = (value) => new Intl.NumberFormat(isEn ? 'en-US' : 'id-ID').format(value ?? 0);
 
     const handleNewsletterSubmit = (e) => {
         e.preventDefault();
@@ -34,6 +37,39 @@ export default function Footer() {
                                 "Indonesia's first marketplace for captive-bred ornamental fish and genetic morphs with a 100% live arrival guarantee.",
                             )}
                         </p>
+
+                        {/* Live Website Visitor Counter */}
+                        <div className="max-w-xs rounded-xl border border-neutral-200/90 dark:border-neutral-800 bg-neutral-50/80 dark:bg-white/[0.03] px-3.5 py-3 space-y-2">
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-900 dark:text-white">
+                                    {pick('Pengunjung Website', 'Website Visitors')}
+                                </span>
+                                <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                    Live
+                                </span>
+                            </div>
+                            <dl className="space-y-1 text-xs text-neutral-600 dark:text-neutral-300">
+                                <div className="flex items-center justify-between gap-3">
+                                    <dt>{pick('Pengunjung Hari ini :', 'Visitors Today :')}</dt>
+                                    <dd className="font-semibold tabular-nums text-neutral-900 dark:text-white">
+                                        {formatVisits(visitorStats?.today)}
+                                    </dd>
+                                </div>
+                                <div className="flex items-center justify-between gap-3">
+                                    <dt>{pick('Pengunjung Bulan ini :', 'Visitors This Month :')}</dt>
+                                    <dd className="font-semibold tabular-nums text-neutral-900 dark:text-white">
+                                        {formatVisits(visitorStats?.month)}
+                                    </dd>
+                                </div>
+                                <div className="flex items-center justify-between gap-3">
+                                    <dt>{pick('Pengunjung Tahun ini :', 'Visitors This Year :')}</dt>
+                                    <dd className="font-semibold tabular-nums text-neutral-900 dark:text-white">
+                                        {formatVisits(visitorStats?.year)}
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
                     </div>
 
                     {/* 4 Navigation Columns (Skincare, Newsletter, Connect, Support) */}
