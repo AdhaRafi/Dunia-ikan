@@ -1,6 +1,7 @@
 import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
+import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function ForgotPassword({ status }) {
@@ -15,56 +16,56 @@ export default function ForgotPassword({ status }) {
     };
 
     return (
-        <GuestLayout>
+        <GuestLayout
+            eyebrow="Pemulihan akses akun"
+            headline="Dapatkan tautan aman untuk mengatur ulang kata sandi akun Anda."
+        >
             <Head title="Lupa password — Dunia Ikan" />
 
-            <h1 className="display-type">Lupa password</h1>
-            <p className="mt-4 max-w-[40ch] text-[20px] leading-snug">
-                Masukkan email akun Anda. Kami kirim tautan untuk membuat
-                password baru.
+            <h1 className="text-[24px] sm:text-[26px] font-bold tracking-[-0.025em] text-slate-900 dark:text-white">
+                Lupa kata sandi
+            </h1>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-slate-500 dark:text-slate-400">
+                Masukkan email akun Anda. Kami akan mengirimkan tautan untuk membuat kata sandi baru.
             </p>
 
             {status && (
-                <p className="mt-5 bg-field4 px-4 py-3 text-[16px] text-white">
+                <p className="mt-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900 px-3.5 py-2.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
                     {status}
                 </p>
             )}
 
-            <form onSubmit={submit} className="mt-6 space-y-4">
+            <form onSubmit={submit} className="mt-5 space-y-4">
                 <div>
-                    <label
-                        htmlFor="email"
-                        className="block text-[16px] font-medium"
-                    >
-                        Email
-                    </label>
+                    <InputLabel htmlFor="email" value="Email" />
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 w-full"
+                        className="mt-1.5"
+                        placeholder="nama@email.com"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
                         required
                     />
-                    <InputError message={errors.email} className="mt-1" />
+                    <InputError message={errors.email} className="mt-1.5" />
                 </div>
 
                 <button
                     type="submit"
                     disabled={processing}
-                    className="press w-full bg-ink px-4 py-3 text-[16px] font-medium text-bone hover:bg-accent disabled:opacity-50"
+                    className={authPrimaryButtonClass}
                 >
-                    {processing ? 'Mengirim' : 'Kirim tautan'}
+                    {processing ? 'Mengirim...' : 'Kirim Tautan Pemulihan'}
                 </button>
             </form>
 
-            <p className="mt-6 text-[16px] text-muted">
-                Ingat password?{' '}
+            <p className="mt-5 text-center text-[13px] text-slate-500 dark:text-slate-400">
+                Ingat kata sandi Anda?{' '}
                 <Link
                     href="/login"
-                    className="text-ink underline decoration-1 underline-offset-4 hover:text-accent"
+                    className="font-semibold text-[#2448f5] dark:text-sky-400 hover:underline"
                 >
                     Masuk
                 </Link>

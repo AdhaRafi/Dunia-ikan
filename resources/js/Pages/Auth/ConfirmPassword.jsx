@@ -1,7 +1,7 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
+import PasswordInput from '@/Components/PasswordInput';
+import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function ConfirmPassword() {
@@ -18,37 +18,40 @@ export default function ConfirmPassword() {
     };
 
     return (
-        <GuestLayout>
+        <GuestLayout
+            eyebrow="Keamanan akun"
+            headline="Verifikasi identitas Anda sebelum mengakses pengaturan sensitif."
+        >
             <Head title="Konfirmasi password — Dunia Ikan" />
 
-            <h1 className="display-type">Konfirmasi</h1>
-            <p className="mt-4 max-w-[40ch] text-[20px] leading-snug">
-                Area ini terlindungi. Masukkan password Anda untuk melanjutkan.
+            <h1 className="text-[24px] sm:text-[26px] font-bold tracking-[-0.025em] text-slate-900 dark:text-white">
+                Konfirmasi
+            </h1>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-slate-500 dark:text-slate-400">
+                Area ini terlindungi. Masukkan kata sandi Anda untuk melanjutkan.
             </p>
 
-            <form onSubmit={submit} className="mt-6 space-y-4">
+            <form onSubmit={submit} className="mt-5 space-y-4">
                 <div>
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
+                    <InputLabel htmlFor="password" value="Kata sandi" />
+                    <PasswordInput
                         id="password"
-                        type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 w-full"
+                        wrapperClassName="mt-1.5"
+                        placeholder="Masukkan kata sandi"
                         isFocused={true}
                         onChange={(e) => setData('password', e.target.value)}
                     />
-
-                    <InputError message={errors.password} className="mt-1" />
+                    <InputError message={errors.password} className="mt-1.5" />
                 </div>
 
                 <button
                     type="submit"
                     disabled={processing}
-                    className="press w-full bg-ink px-4 py-3 text-[16px] font-medium text-bone hover:bg-accent disabled:opacity-50"
+                    className={authPrimaryButtonClass}
                 >
-                    {processing ? 'Memeriksa' : 'Lanjutkan'}
+                    {processing ? 'Memeriksa...' : 'Lanjutkan'}
                 </button>
             </form>
         </GuestLayout>

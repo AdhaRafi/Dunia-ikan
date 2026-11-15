@@ -7,7 +7,7 @@ export default function InputLabel({
     return (
         <label
             {...props}
-            className={`block text-[16px] font-medium text-ink ${className}`}
+            className={`block text-[13px] font-semibold text-slate-700 dark:text-slate-200 ${className}`}
         >
             {value ? value : children}
         </label>
