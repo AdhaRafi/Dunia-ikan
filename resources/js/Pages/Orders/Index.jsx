@@ -13,7 +13,14 @@ export default function Index({ orders }) {
         }).format(price);
     };
 
-    const getStatusBadge = (status) => {
+    const getStatusBadge = (status, paymentMethod) => {
+        if (paymentMethod === 'cod' && status === 'pending_payment') {
+            return {
+                label: pick('COD · Diproses', 'COD · Processing'),
+                bg: 'bg-purple-50 text-purple-700 border-purple-200',
+            };
+        }
+
         const label = trOrderStatus(status);
         switch (status) {
             case 'pending_payment':
@@ -51,7 +58,7 @@ export default function Index({ orders }) {
                 {orders?.data?.length > 0 ? (
                     <div className="space-y-4">
                         {orders.data.map((order) => {
-                            const badge = getStatusBadge(order.status);
+                            const badge = getStatusBadge(order.status, order.payment_method);
                             return (
                                 <div
                                     key={order.id}
@@ -117,7 +124,9 @@ export default function Index({ orders }) {
                                             href={`/orders/${order.order_number}`}
                                             className="px-4 py-2 rounded-xl bg-sky-50 hover:bg-sky-100 text-dunia-navy font-bold text-xs flex items-center gap-1.5 transition"
                                         >
-                                            {pick('Lihat Detail & Bukti Pembayaran', 'View Details & Payment Proof')}
+                                            {order.payment_method === 'cod'
+                                                ? pick('Lihat Detail Pesanan', 'View Order Details')
+                                                : pick('Lihat Detail & Bukti Pembayaran', 'View Details & Payment Proof')}
                                             <ArrowRight className="w-3.5 h-3.5" />
                                         </Link>
                                     </div>

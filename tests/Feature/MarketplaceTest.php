@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Address;
 use App\Models\FishGuide;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -361,5 +362,50 @@ class MarketplaceTest extends TestCase
                 ->where('visitorStats.month', 12)
                 ->where('visitorStats.year', 12)
             );
+    }
+
+    public function test_cod_checkout_skips_pending_payment_blocks_midtrans_and_verifies_on_delivery(): void
+    {
+        $buyer = User::where('role', 'buyer')->first();
+        $address = Address::where('user_id', $buyer->id)->first();
+        $product = Product::where('stock', '>', 5)->with('store.user')->first();
+        $seller = $product->store->user;
+
+        $this->actingAs($buyer)->post('/cart', [
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
+
+        $response = $this->actingAs($buyer)->post('/checkout', [
+            'address_id' => $address->id,
+            'payment_method' => 'cod',
+        ]);
+
+        $order = Order::where('buyer_id', $buyer->id)->latest('id')->first();
+        $this->assertNotNull($order);
+        $this->assertSame('cod', $order->payment_method);
+        $this->assertSame('processing', $order->status);
+        $this->assertSame('unpaid', $order->payment_status);
+        $response->assertRedirect(route('orders.show', $order->order_number));
+
+        $this->actingAs($buyer)
+            ->postJson("/orders/{$order->order_number}/snap-token")
+            ->assertStatus(400)
+            ->assertJsonPath('message', 'Pesanan COD dibayar tunai saat kurir tiba dan tidak menggunakan pembayaran Midtrans.');
+
+        $this->actingAs($seller)
+            ->post("/seller/orders/{$order->id}/shipping", [
+                'shipping_courier' => 'Kurir Toko',
+                'shipping_tracking_number' => 'COD-RESI-001',
+            ])
+            ->assertSessionHas('success');
+
+        $this->actingAs($buyer)
+            ->post("/orders/{$order->order_number}/confirm")
+            ->assertSessionHas('success');
+
+        $order->refresh();
+        $this->assertSame('delivered', $order->status);
+        $this->assertSame('verified', $order->payment_status);
     }
 }

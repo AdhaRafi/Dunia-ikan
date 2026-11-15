@@ -23,6 +23,7 @@ import { useLanguage } from '@/lib/i18n';
 export default function Show({ order, midtransClientKey, isMidtransProduction }) {
     const { isEn, pick, trOrderStatus } = useLanguage();
     const store = order.store;
+    const isCod = order.payment_method === 'cod';
     const [confirming, setConfirming] = useState(false);
     const [loadingSnap, setLoadingSnap] = useState(false);
     const [checkingStatus, setCheckingStatus] = useState(false);
@@ -78,10 +79,10 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
     };
 
     useEffect(() => {
-        if (midtransClientKey) {
+        if (!isCod && midtransClientKey) {
             ensureSnapLoaded(midtransClientKey, isMidtransProduction).catch(() => {});
         }
-    }, [midtransClientKey, isMidtransProduction]);
+    }, [isCod, midtransClientKey, isMidtransProduction]);
 
     const handlePayMidtrans = async () => {
         setLoadingSnap(true);
@@ -172,15 +173,25 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
         }).format(price);
     };
 
-    const steps = [
-        { key: 'pending_payment', label: pick('Menunggu Bayar', 'Awaiting Payment') },
-        { key: 'awaiting_confirmation', label: pick('Verifikasi', 'Verification') },
-        { key: 'processing', label: pick('Diproses', 'Processing') },
-        { key: 'shipped', label: pick('Dikirim', 'Shipped') },
-        { key: 'delivered', label: pick('Selesai', 'Delivered') },
-    ];
+    const steps = isCod
+        ? [
+              { key: 'pending_payment', label: pick('Pesanan Dibuat', 'Order Placed') },
+              { key: 'processing', label: pick('Diproses', 'Processing') },
+              { key: 'shipped', label: pick('Dikirim', 'Shipped') },
+              { key: 'delivered', label: pick('Selesai & Bayar Tunai', 'Delivered & Paid') },
+          ]
+        : [
+              { key: 'pending_payment', label: pick('Menunggu Bayar', 'Awaiting Payment') },
+              { key: 'awaiting_confirmation', label: pick('Verifikasi', 'Verification') },
+              { key: 'processing', label: pick('Diproses', 'Processing') },
+              { key: 'shipped', label: pick('Dikirim', 'Shipped') },
+              { key: 'delivered', label: pick('Selesai', 'Delivered') },
+          ];
 
-    const currentStepIndex = steps.findIndex((s) => s.key === order.status);
+    const resolvedStepIndex = steps.findIndex((s) => s.key === order.status);
+    const currentStepIndex = resolvedStepIndex >= 0
+        ? resolvedStepIndex
+        : (isCod && order.status === 'awaiting_confirmation' ? 1 : 0);
 
     return (
         <AppLayout>
@@ -324,8 +335,44 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                     </div>
                 )}
 
+                {/* COD Info Card */}
+                {order.payment_status !== 'verified' && order.status !== 'cancelled' && isCod && (
+                    <div className="bg-white p-6 rounded-2xl border border-amber-200 shadow-xs space-y-4">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-100 gap-2">
+                            <div className="flex items-center gap-2 text-sm font-bold text-dunia-navy">
+                                <Truck className="w-4 h-4 text-amber-600" />
+                                <span>{pick('Pembayaran Tunai di Tempat (COD)', 'Cash on Delivery (COD)')}</span>
+                            </div>
+                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                                {order.status === 'shipped'
+                                    ? trOrderStatus('shipped')
+                                    : pick('Langsung Diproses · Bayar saat Tiba', 'Processing · Pay on Delivery')}
+                            </span>
+                        </div>
+                        <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-950 space-y-1.5">
+                            <p className="font-bold">
+                                {pick(
+                                    'Pesanan langsung diteruskan ke penangkar tanpa pembayaran online.',
+                                    'Order goes straight to the breeder — no online payment needed.'
+                                )}
+                            </p>
+                            <p>
+                                {pick(
+                                    'Anda tidak perlu memilih metode pembayaran atau membayar melalui Midtrans. Siapkan uang tunai pas sebesar',
+                                    'No Midtrans payment selection or receipt upload is required. Prepare exact cash of'
+                                )}{' '}
+                                <strong>{formatPrice(order.grand_total)}</strong>{' '}
+                                {pick(
+                                    'saat kurir mengantarkan ikan ke alamat Anda.',
+                                    'when the courier delivers your order.'
+                                )}
+                            </p>
+                        </div>
+                    </div>
+                )}
+
                 {/* Bank / QRIS Instructions & Midtrans Gateway */}
-                {order.payment_status !== 'verified' && order.status !== 'cancelled' && (
+                {order.payment_status !== 'verified' && order.status !== 'cancelled' && !isCod && (
                     <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-6">
                         <div className="flex items-center justify-between pb-3 border-b border-slate-100 gap-2">
                             <div className="flex items-center gap-2 text-sm font-bold text-dunia-navy">
@@ -428,22 +475,6 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                                     {pick(
                                         'Scan melalui GoPay, OVO, Dana, ShopeePay, atau BCA Mobile',
                                         'Scan via GoPay, OVO, Dana, ShopeePay, or any Indonesian mobile banking app'
-                                    )}
-                                </p>
-                            </div>
-                        )}
-
-                        {order.payment_method === 'cod' && (
-                            <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
-                                <p className="font-bold">
-                                    {pick('Pembayaran Tunai (Cash on Delivery)', 'Cash on Delivery (COD)')}
-                                </p>
-                                <p>
-                                    {pick('Siapkan uang pas sebesar', 'Please prepare exact cash of')}{' '}
-                                    <strong>{formatPrice(order.grand_total)}</strong>{' '}
-                                    {pick(
-                                        'saat kurir toko mengantarkan ikan ke alamat Anda.',
-                                        'when the store courier delivers to your address.'
                                     )}
                                 </p>
                             </div>

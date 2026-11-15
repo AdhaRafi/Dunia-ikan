@@ -56,6 +56,10 @@ class OrderController extends Controller
 
         $order = Order::where('store_id', $store->id)->where('id', $id)->firstOrFail();
 
+        if ($order->payment_method === 'cod') {
+            return back()->with('error', 'Pesanan COD tidak memerlukan verifikasi pembayaran di muka. Silakan langsung proses pengiriman.');
+        }
+
         if ($order->payment_status === 'verified' || in_array($order->status, ['shipped', 'delivered', 'cancelled'], true)) {
             return back()->with('error', 'Status pesanan saat ini tidak dapat diubah melalui verifikasi pembayaran.');
         }

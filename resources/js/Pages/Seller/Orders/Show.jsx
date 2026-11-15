@@ -79,7 +79,27 @@ export default function Show({ store, order }) {
                     </div>
                 </div>
 
-                {/* Step 1: Verifikasi Pembayaran Manual */}
+                {/* Step 1: Pembayaran Tunai di Tempat (COD) vs Verifikasi Pembayaran Manual */}
+                {order.payment_method === 'cod' ? (
+                    <div className="bg-amber-50/70 p-6 rounded-2xl border border-amber-200 shadow-xs space-y-2 text-xs">
+                        <h2 className="font-bold text-sm text-amber-950 uppercase tracking-wider flex items-center gap-2">
+                            <Truck className="w-4 h-4 text-amber-700" />
+                            {pick('1. Pembayaran Tunai di Tempat (COD)', '1. Cash on Delivery (COD)')}
+                        </h2>
+                        <p className="text-amber-900 leading-relaxed">
+                            {pick(
+                                'Pembeli memilih COD sehingga tidak ada pembayaran online atau bukti transfer di muka. Anda dapat langsung mengemas ikan dan memasukkan kurir & nomor resi di bawah. Kurir menagih tunai sebesar',
+                                'The buyer chose COD, so no online payment or upfront transfer proof is needed. You can pack the order right away and enter the courier & tracking details below. Collect cash upon delivery of'
+                            )}{' '}
+                            <strong>{formatPrice(order.grand_total)}</strong>.
+                        </p>
+                        {order.payment_status === 'verified' && (
+                            <p className="font-bold text-emerald-700">
+                                {pick('Status: Pembayaran COD telah diterima & selesai.', 'Status: COD payment collected & completed.')}
+                            </p>
+                        )}
+                    </div>
+                ) : (
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
                     <h2 className="font-bold text-sm text-dunia-navy uppercase tracking-wider flex items-center gap-2 pb-3 border-b border-slate-100">
                         <CreditCard className="w-4 h-4 text-dunia-blue" />
@@ -156,6 +176,7 @@ export default function Show({ store, order }) {
                         </div>
                     </div>
                 </div>
+                )}
 
                 {/* Step 2: Input Kurir & Nomor Resi Pengiriman */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">

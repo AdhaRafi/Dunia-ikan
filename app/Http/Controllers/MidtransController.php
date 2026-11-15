@@ -28,6 +28,12 @@ class MidtransController extends Controller
             ], 400);
         }
 
+        if ($order->payment_method === 'cod') {
+            return response()->json([
+                'message' => 'Pesanan COD dibayar tunai saat kurir tiba dan tidak menggunakan pembayaran Midtrans.',
+            ], 400);
+        }
+
         if ($order->payment_status === 'verified') {
             return response()->json([
                 'message' => 'Pesanan ini sudah lunas diverifikasi.',

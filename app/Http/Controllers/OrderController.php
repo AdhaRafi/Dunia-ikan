@@ -50,6 +50,10 @@ class OrderController extends Controller
             ->where('buyer_id', $request->user()->id)
             ->firstOrFail();
 
+        if ($order->payment_method === 'cod') {
+            return back()->with('error', 'Pesanan COD tidak memerlukan unggah bukti pembayaran.');
+        }
+
         if ($order->payment_status === 'verified' || in_array($order->status, ['processing', 'shipped', 'delivered', 'cancelled'], true)) {
             return back()->with('error', 'Status pesanan saat ini tidak memungkinkan unggah ulang bukti pembayaran.');
         }
@@ -88,9 +92,16 @@ class OrderController extends Controller
             return back()->with('error', 'Pesanan belum dalam status dikirim.');
         }
 
-        $order->update([
+        $updates = [
             'status' => 'delivered',
-        ]);
+        ];
+
+        if ($order->payment_method === 'cod') {
+            $updates['payment_status'] = 'verified';
+            $updates['payment_notes'] = $order->payment_notes ?: 'Pembayaran COD diterima saat pesanan tiba.';
+        }
+
+        $order->update($updates);
 
         return back()->with('success', 'Terima kasih! Pesanan telah dikonfirmasi selesai.');
     }

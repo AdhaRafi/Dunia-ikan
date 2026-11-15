@@ -84,9 +84,10 @@ class CheckoutController extends Controller
         }
 
         $createdOrders = [];
+        $isCod = $validated['payment_method'] === 'cod';
 
         try {
-            DB::transaction(function () use ($cartItems, $user, $address, $validated, &$createdOrders) {
+            DB::transaction(function () use ($cartItems, $user, $address, $validated, $isCod, &$createdOrders) {
                 // Kelompokkan item per toko (karena setiap toko adalah pesanan terpisah)
                 $grouped = $cartItems->groupBy(fn ($item) => $item->product->store_id);
 
@@ -124,7 +125,7 @@ class CheckoutController extends Controller
                         'order_number' => $orderNumber,
                         'buyer_id' => $user->id,
                         'store_id' => $storeId,
-                        'status' => 'pending_payment',
+                        'status' => $isCod ? 'processing' : 'pending_payment',
                         'payment_method' => $validated['payment_method'],
                         'payment_status' => 'unpaid',
                         'total_product_amount' => $storeTotal,
@@ -167,10 +168,20 @@ class CheckoutController extends Controller
 
         if (count($createdOrders) === 1) {
             return redirect()->route('orders.show', $createdOrders[0]->order_number)
-                ->with('success', 'Pesanan berhasil dibuat! Silakan selesaikan pembayaran.');
+                ->with(
+                    'success',
+                    $isCod
+                        ? 'Pesanan COD berhasil dibuat! Toko akan segera memproses dan mengirimkan pesanan Anda.'
+                        : 'Pesanan berhasil dibuat! Silakan selesaikan pembayaran.'
+                );
         }
 
         return redirect()->route('orders.index')
-            ->with('success', count($createdOrders).' pesanan berhasil dibuat untuk masing-masing toko.');
+            ->with(
+                'success',
+                $isCod
+                    ? count($createdOrders).' pesanan COD berhasil dibuat dan langsung diproses masing-masing toko.'
+                    : count($createdOrders).' pesanan berhasil dibuat untuk masing-masing toko.'
+            );
     }
 }

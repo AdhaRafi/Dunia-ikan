@@ -344,8 +344,8 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                         </p>
                                         <p className="text-[11px] text-slate-500 leading-snug">
                                             {pick(
-                                                'Khusus kurir toko lokal / pengiriman sameday terjangkau.',
-                                                'Available for local store couriers and nearby same-day delivery.'
+                                                'Langsung checkout tanpa bayar online. Bayar tunai saat kurir tiba.',
+                                                'Instant checkout without online payment. Pay cash when courier arrives.'
                                             )}
                                         </p>
                                     </div>
@@ -431,16 +431,23 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                     ? pick('Memproses Pesanan...', 'Processing Order...')
                                     : !data.address_id
                                         ? pick('Pilih / Tambah Alamat untuk Lanjut', 'Select or Add Address to Continue')
-                                        : pick('Buat & Konfirmasi Pesanan', 'Place & Confirm Order')}
+                                        : data.payment_method === 'cod'
+                                            ? pick('Buat Pesanan COD', 'Place COD Order')
+                                            : pick('Buat & Konfirmasi Pesanan', 'Place & Confirm Order')}
                             </button>
 
                             <div className="p-3 rounded-xl bg-sky-50 text-[11px] text-sky-900 flex items-start gap-2">
                                 <ShieldCheck className="w-4 h-4 text-[#4AB8BD] shrink-0 mt-0.5" />
                                 <p>
-                                    {pick(
-                                        'Stok dikunci otomatis saat pesanan dibuat. Anda dapat melihat detail rekening dan mengunggah bukti transfer setelah ini.',
-                                        'Stock is automatically reserved once placed. You can view account details and upload payment proof right after.'
-                                    )}
+                                    {data.payment_method === 'cod'
+                                        ? pick(
+                                            'Pesanan COD langsung diproses penangkar tanpa perlu pilih metode pembayaran online. Siapkan uang pas saat kurir tiba.',
+                                            'Your COD order goes straight to the breeder without online payment selection. Prepare exact cash when the courier arrives.'
+                                        )
+                                        : pick(
+                                            'Stok dikunci otomatis saat pesanan dibuat. Anda dapat melihat detail rekening dan mengunggah bukti transfer setelah ini.',
+                                            'Stock is automatically reserved once placed. You can view account details and upload payment proof right after.'
+                                        )}
                                 </p>
                             </div>
                         </div>
