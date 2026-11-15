@@ -38,9 +38,9 @@ class MidtransController extends Controller
         $clientKey = config('services.midtrans.client_key');
         $isProduction = (bool) config('services.midtrans.is_production');
 
-        if (empty($serverKey)) {
+        if (empty($serverKey) || empty($clientKey)) {
             return response()->json([
-                'message' => 'Kunci MIDTRANS_SERVER_KEY belum dikonfigurasi di server.',
+                'message' => 'Pembayaran otomatis Midtrans belum aktif: MIDTRANS_SERVER_KEY dan MIDTRANS_CLIENT_KEY belum dikonfigurasi di server.',
             ], 500);
         }
 
@@ -83,13 +83,26 @@ class MidtransController extends Controller
         ];
 
         try {
-            $response = Http::timeout(15)
+            // Force IPv4 in containerized runtimes to avoid IPv6 egress stalls.
+            $response = Http::withOptions(['force_ip_resolve' => 'v4'])
+                ->connectTimeout(5)
+                ->timeout(15)
                 ->withBasicAuth($serverKey, '')
                 ->acceptJson()
                 ->post($baseUrl, $payload);
 
             if ($response->successful()) {
                 $token = $response->json('token');
+                if (empty($token)) {
+                    Log::warning('Midtrans Snap API returned empty token', [
+                        'order_number' => $order->order_number,
+                    ]);
+
+                    return response()->json([
+                        'message' => 'Token transaksi Midtrans tidak tersedia. Silakan coba lagi.',
+                    ], 422);
+                }
+
                 $order->update(['snap_token' => $token]);
 
                 return response()->json([
@@ -102,7 +115,14 @@ class MidtransController extends Controller
             Log::warning('Midtrans Snap API error', [
                 'order_number' => $order->order_number,
                 'status' => $response->status(),
+                'errors' => $response->json('error_messages'),
             ]);
+
+            if ($response->status() === 401) {
+                return response()->json([
+                    'message' => 'Kunci Midtrans tidak valid atau tidak sesuai dengan mode Sandbox/Production.',
+                ], 422);
+            }
 
             return response()->json([
                 'message' => 'Gagal membuat sesi transaksi Midtrans. Silakan coba lagi.',
@@ -217,7 +237,9 @@ class MidtransController extends Controller
             : 'https://api.sandbox.midtrans.com/v2/';
 
         try {
-            $response = Http::timeout(15)
+            $response = Http::withOptions(['force_ip_resolve' => 'v4'])
+                ->connectTimeout(5)
+                ->timeout(15)
                 ->withBasicAuth($serverKey, '')
                 ->acceptJson()
                 ->get($baseUrl.$order->order_number.'/status');

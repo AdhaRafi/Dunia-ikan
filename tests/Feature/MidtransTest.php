@@ -133,4 +133,63 @@ class MidtransTest extends TestCase
 
         $response->assertStatus(403);
     }
+
+    public function test_snap_token_reports_clear_error_when_keys_missing_or_unauthorized(): void
+    {
+        $buyer = User::where('role', 'buyer')->firstOrFail();
+        $store = Store::firstOrFail();
+        $product = Product::firstOrFail();
+
+        $order = Order::create([
+            'order_number' => 'DI-MISS-001',
+            'buyer_id' => $buyer->id,
+            'store_id' => $store->id,
+            'status' => 'pending_payment',
+            'payment_method' => 'midtrans',
+            'payment_status' => 'unpaid',
+            'total_product_amount' => 50000,
+            'shipping_cost' => 20000,
+            'grand_total' => 70000,
+            'shipping_recipient_name' => 'Budi Tester',
+            'shipping_phone' => '081234567890',
+            'shipping_city' => 'Bandung',
+            'shipping_address' => 'Jl. Ikan Hias No. 1',
+        ]);
+
+        OrderItem::create([
+            'order_id' => $order->id,
+            'product_id' => $product->id,
+            'product_name' => $product->name,
+            'price' => 50000,
+            'quantity' => 1,
+            'subtotal' => 50000,
+        ]);
+
+        config([
+            'services.midtrans.server_key' => null,
+            'services.midtrans.client_key' => null,
+        ]);
+
+        $this->actingAs($buyer)
+            ->postJson("/orders/{$order->order_number}/snap-token")
+            ->assertStatus(500)
+            ->assertJsonPath('message', 'Pembayaran otomatis Midtrans belum aktif: MIDTRANS_SERVER_KEY dan MIDTRANS_CLIENT_KEY belum dikonfigurasi di server.');
+
+        config([
+            'services.midtrans.server_key' => 'Mid-server-WrongEnv',
+            'services.midtrans.client_key' => 'Mid-client-WrongEnv',
+            'services.midtrans.is_production' => false,
+        ]);
+
+        Http::fake([
+            'https://app.sandbox.midtrans.com/snap/v1/transactions' => Http::response([
+                'error_messages' => ['Access denied due to unauthorized transaction, please check client or server key'],
+            ], 401),
+        ]);
+
+        $this->actingAs($buyer)
+            ->postJson("/orders/{$order->order_number}/snap-token")
+            ->assertStatus(422)
+            ->assertJsonPath('message', 'Kunci Midtrans tidak valid atau tidak sesuai dengan mode Sandbox/Production.');
+    }
 }
