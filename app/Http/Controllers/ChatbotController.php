@@ -105,10 +105,10 @@ class ChatbotController extends Controller
         $guideQuery->where(function ($q) use ($searchTerms) {
             foreach ($searchTerms as $term) {
                 if (strlen($term) >= 3) {
-                    $q->orWhere('title', 'like', "%{$term}%")
-                        ->orWhere('fish_type', 'like', "%{$term}%")
-                        ->orWhere('symptoms', 'like', "%{$term}%")
-                        ->orWhere('category', 'like', "%{$term}%");
+                    $q->orWhereLike('title', "%{$term}%")
+                        ->orWhereLike('fish_type', "%{$term}%")
+                        ->orWhereLike('symptoms', "%{$term}%")
+                        ->orWhereLike('category', "%{$term}%");
                 }
             }
         });
@@ -124,11 +124,11 @@ class ChatbotController extends Controller
         $productQuery->where(function ($q) use ($searchTerms) {
             foreach ($searchTerms as $term) {
                 if (strlen($term) >= 3) {
-                    $q->orWhere('name', 'like', "%{$term}%")
+                    $q->orWhereLike('name', "%{$term}%")
                         ->orWhereHas('fishDetail', function ($fq) use ($term) {
-                            $fq->where('species_name', 'like', "%{$term}%")
-                                ->orWhere('morph_trait', 'like', "%{$term}%")
-                                ->orWhere('care_level', 'like', "%{$term}%");
+                            $fq->whereLike('species_name', "%{$term}%")
+                                ->orWhereLike('morph_trait', "%{$term}%")
+                                ->orWhereLike('care_level', "%{$term}%");
                         });
                 }
             }

@@ -31,15 +31,15 @@ class ProductController extends Controller
 
             $query->where(function ($q) use ($terms) {
                 foreach ($terms as $term) {
-                    $q->orWhere('name', 'like', "%{$term}%")
-                        ->orWhere('description', 'like', "%{$term}%")
+                    $q->orWhereLike('name', "%{$term}%")
+                        ->orWhereLike('description', "%{$term}%")
                         ->orWhereHas('fishDetail', function ($fq) use ($term) {
-                            $fq->where('species_name', 'like', "%{$term}%")
-                                ->orWhere('morph_trait', 'like', "%{$term}%");
+                            $fq->whereLike('species_name', "%{$term}%")
+                                ->orWhereLike('morph_trait', "%{$term}%");
                         })
                         ->orWhereHas('category', function ($cq) use ($term) {
-                            $cq->where('name', 'like', "%{$term}%")
-                                ->orWhere('description', 'like', "%{$term}%");
+                            $cq->whereLike('name', "%{$term}%")
+                                ->orWhereLike('description', "%{$term}%");
                         });
                 }
             });
@@ -78,7 +78,7 @@ class ProductController extends Controller
 
         // Filter Kota Penjual
         if ($city = $request->input('city')) {
-            $query->whereHas('store', fn ($q) => $q->where('city', 'like', "%{$city}%"));
+            $query->whereHas('store', fn ($q) => $q->whereLike('city', "%{$city}%"));
         }
 
         // Sorting

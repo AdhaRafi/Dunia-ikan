@@ -16,9 +16,11 @@ class GuideController extends Controller
         $query = FishGuide::query();
 
         if ($search = $request->input('q')) {
-            $query->where('title', 'like', "%{$search}%")
-                ->orWhere('fish_type', 'like', "%{$search}%")
-                ->orWhere('symptoms', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->whereLike('title', "%{$search}%")
+                    ->orWhereLike('fish_type', "%{$search}%")
+                    ->orWhereLike('symptoms', "%{$search}%");
+            });
         }
 
         $guides = $query->latest()->paginate(15)->withQueryString();

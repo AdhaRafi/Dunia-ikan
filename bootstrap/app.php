@@ -9,7 +9,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 
-return Application::configure(basePath: dirname(__DIR__))
+$app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         api: __DIR__.'/../routes/api.php',
@@ -40,3 +40,24 @@ return Application::configure(basePath: dirname(__DIR__))
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
     })->create();
+
+if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL']) || getenv('VERCEL')) {
+    $vercelStoragePath = '/tmp/storage';
+    foreach ([
+        $vercelStoragePath.'/app/public',
+        $vercelStoragePath.'/app/private',
+        $vercelStoragePath.'/framework/cache/data',
+        $vercelStoragePath.'/framework/sessions',
+        $vercelStoragePath.'/framework/testing',
+        $vercelStoragePath.'/framework/views',
+        $vercelStoragePath.'/logs',
+    ] as $directory) {
+        if (! is_dir($directory)) {
+            @mkdir($directory, 0755, true);
+        }
+    }
+
+    $app->useStoragePath($vercelStoragePath);
+}
+
+return $app;

@@ -277,4 +277,22 @@ class SecurityHardeningTest extends TestCase
             ->assertStatus(200)
             ->assertJsonPath('user.email', $buyer->email);
     }
+
+    public function test_database_seeder_is_idempotent_and_search_filters_stay_scoped(): void
+    {
+        $userCountBefore = User::count();
+        $this->seed();
+        $this->assertSame($userCountBefore, User::count());
+
+        $admin = User::where('role', 'admin')->firstOrFail();
+        $guideRes = $this->actingAs($admin)->get('/admin-portal/guides?q=white');
+        $guideRes->assertStatus(200);
+
+        $productRes = $this->get('/products?q=cupang');
+        $productRes->assertStatus(200);
+        $productRes->assertSee('Cupang', false);
+
+        $txRes = $this->actingAs($admin)->get('/admin-portal/transactions?q=DI-&status=cancelled');
+        $txRes->assertStatus(200);
+    }
 }

@@ -15,9 +15,11 @@ class TransactionController extends Controller
         $query = Order::with(['buyer:id,name,email', 'store:id,name', 'items']);
 
         if ($search = $request->input('q')) {
-            $query->where('order_number', 'like', "%{$search}%")
-                ->orWhereHas('buyer', fn ($q) => $q->where('name', 'like', "%{$search}%"))
-                ->orWhereHas('store', fn ($q) => $q->where('name', 'like', "%{$search}%"));
+            $query->where(function ($q) use ($search) {
+                $q->whereLike('order_number', "%{$search}%")
+                    ->orWhereHas('buyer', fn ($bq) => $bq->whereLike('name', "%{$search}%"))
+                    ->orWhereHas('store', fn ($sq) => $sq->whereLike('name', "%{$search}%"));
+            });
         }
 
         if ($status = $request->input('status')) {

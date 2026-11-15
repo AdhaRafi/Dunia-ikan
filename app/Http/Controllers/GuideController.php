@@ -15,12 +15,12 @@ class GuideController extends Controller
 
         if ($search = $request->input('q')) {
             $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('fish_type', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%")
-                    ->orWhere('symptoms', 'like', "%{$search}%")
-                    ->orWhere('possible_causes', 'like', "%{$search}%")
-                    ->orWhere('care_instructions', 'like', "%{$search}%");
+                $q->whereLike('title', "%{$search}%")
+                    ->orWhereLike('fish_type', "%{$search}%")
+                    ->orWhereLike('category', "%{$search}%")
+                    ->orWhereLike('symptoms', "%{$search}%")
+                    ->orWhereLike('possible_causes', "%{$search}%")
+                    ->orWhereLike('care_instructions', "%{$search}%");
             });
         }
 

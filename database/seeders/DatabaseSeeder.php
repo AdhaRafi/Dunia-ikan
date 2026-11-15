@@ -16,6 +16,12 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        if (User::where('email', 'admin@duniaikan.test')->exists() && Category::exists()) {
+            $this->call(StoreReviewSeeder::class);
+
+            return;
+        }
+
         // 1. Akun Admin
         $admin = User::create([
             'name' => 'Administrator Dunia Ikan',
