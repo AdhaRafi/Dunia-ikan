@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { Minus, Plus } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
@@ -59,6 +59,7 @@ const FAQ_ITEMS = [
 ];
 
 export default function Welcome({ categories, featuredFish, featuredStores, stats }) {
+    const { auth } = usePage().props;
     const { pick, isEn } = useLanguage();
     const [selectedTab, setSelectedTab] = useState('all');
     const [openFaq, setOpenFaq] = useState(0);
@@ -205,12 +206,14 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             >
                                 {pick('Jelajahi Katalog', 'Explore Catalog')}
                             </Link>
-                            <Link 
-                                href="/register" 
-                                className="px-7 py-3 rounded-full border border-neutral-600 dark:border-neutral-700 text-white font-semibold text-xs sm:text-sm hover:bg-white/10 hover:border-neutral-400 transition"
-                            >
-                                {pick('Buat Akun', 'Create Account')}
-                            </Link>
+                            {!auth?.user && (
+                                <Link 
+                                    href="/register" 
+                                    className="px-7 py-3 rounded-full border border-neutral-600 dark:border-neutral-700 text-white font-semibold text-xs sm:text-sm hover:bg-white/10 hover:border-neutral-400 transition"
+                                >
+                                    {pick('Buat Akun', 'Create Account')}
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </div>
