@@ -16,6 +16,7 @@ mkdir -p /tmp/storage/app/public \
 if [ -n "${APP_KEY:-}" ]; then
     php artisan config:cache --no-interaction || true
     php artisan view:cache --no-interaction || true
+    php artisan migrate --force --no-interaction || true
 else
     rm -f "${APP_CONFIG_CACHE}" /app/bootstrap/cache/config.php || true
 fi
