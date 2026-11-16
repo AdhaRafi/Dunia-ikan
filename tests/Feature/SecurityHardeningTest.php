@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Filament\Pages\Auth\AdminLogin;
+use App\Filament\Resources\FishGuides\Pages\ListFishGuides;
+use App\Filament\Resources\Orders\Pages\ListOrders;
 use App\Models\Address;
 use App\Models\CartItem;
 use App\Models\ChatMessage;
@@ -263,6 +265,18 @@ class SecurityHardeningTest extends TestCase
         $home->assertHeader('X-Content-Type-Options', 'nosniff');
         $home->assertHeader('X-Frame-Options', 'SAMEORIGIN');
         $home->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+        $home->assertHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+
+        $adminLogin = $this->get('/admin/login');
+        $adminLogin->assertStatus(200);
+        $adminLogin->assertHeader('X-Content-Type-Options', 'nosniff');
+        $adminLogin->assertHeader('X-Frame-Options', 'SAMEORIGIN');
+        $adminLogin->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+        $adminLogin->assertHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+
+        $adminRedirect = $this->get('/admin');
+        $adminRedirect->assertRedirect('/admin/login');
+        $adminRedirect->assertHeader('X-Frame-Options', 'SAMEORIGIN');
 
         $sitemap = $this->get('/sitemap.xml');
         $sitemap->assertStatus(200);
@@ -288,8 +302,14 @@ class SecurityHardeningTest extends TestCase
         $this->assertSame($userCountBefore, User::count());
 
         $admin = User::where('role', 'admin')->firstOrFail();
-        $guideRes = $this->actingAs($admin)->get('/admin-portal/guides?q=white');
-        $guideRes->assertStatus(200);
+        $this->actingAs($admin, 'admin')
+            ->get('/admin-portal/guides')
+            ->assertRedirect('/admin/fish-guides');
+
+        $this->actingAs($admin, 'admin');
+        Livewire::test(ListFishGuides::class)
+            ->searchTable('white')
+            ->assertSee('White Spot');
 
         $productRes = $this->get('/products?q=cupang');
         $productRes->assertStatus(200);
@@ -311,8 +331,18 @@ class SecurityHardeningTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Ikan Badut', false);
 
-        $txRes = $this->actingAs($admin)->get('/admin-portal/transactions?q=DI-&status=cancelled');
-        $txRes->assertStatus(200);
+        $this->actingAs($admin, 'admin')
+            ->get('/admin-portal/transactions')
+            ->assertRedirect('/admin/orders');
+
+        $this->actingAs($admin, 'admin')
+            ->get('/admin/transaction-reports?status=cancelled')
+            ->assertStatus(200);
+
+        $this->actingAs($admin, 'admin');
+        Livewire::test(ListOrders::class)
+            ->searchTable('DI-')
+            ->assertStatus(200);
     }
 
     public function test_turnstile_verification_enforces_action_hostname_and_fails_closed(): void
@@ -499,8 +529,8 @@ class SecurityHardeningTest extends TestCase
 
         Livewire::test(AdminLogin::class)
             ->fillForm([
-                'email' => $admin->email,
-                'password' => 'password',
+                'email' => 'Adminkuy@kuyloh.com',
+                'password' => 'Asikinwow99@1',
             ])
             ->call('authenticate')
             ->assertHasFormErrors(['cf_turnstile_response']);
@@ -508,8 +538,8 @@ class SecurityHardeningTest extends TestCase
 
         Livewire::test(AdminLogin::class)
             ->fillForm([
-                'email' => $admin->email,
-                'password' => 'password',
+                'email' => 'Adminkuy@kuyloh.com',
+                'password' => 'Asikinwow99@1',
                 'cf_turnstile_response' => 'wrong-action-token',
             ])
             ->call('authenticate')
@@ -518,8 +548,8 @@ class SecurityHardeningTest extends TestCase
 
         Livewire::test(AdminLogin::class)
             ->fillForm([
-                'email' => $admin->email,
-                'password' => 'password',
+                'email' => 'Adminkuy@kuyloh.com',
+                'password' => 'Asikinwow99@1',
                 'cf_turnstile_response' => 'valid-admin-token',
             ])
             ->call('authenticate')
@@ -541,12 +571,14 @@ class SecurityHardeningTest extends TestCase
         $this->assertStringNotContainsString('"livewire.', $guestHtml);
 
         $admin = User::where('role', 'admin')->firstOrFail();
-        $adminHtml = $this->actingAs($admin, 'admin')->get('/admin-portal')->assertStatus(200)->getContent();
+        $adminHtml = $this->actingAs($admin, 'admin')->get('/')->assertStatus(200)->getContent();
 
         $this->assertStringContainsString('"admin.dashboard"', $adminHtml);
         $this->assertStringNotContainsString('"filament.admin', $adminHtml);
         $this->assertStringNotContainsString('"midtrans.notification"', $adminHtml);
         $this->assertStringNotContainsString('"storage.local', $adminHtml);
+
+        $this->actingAs($admin, 'admin')->get('/admin-portal')->assertRedirect('/admin');
     }
 
     public function test_public_pages_hide_store_owner_user_id_and_omit_demo_accounts_in_production(): void

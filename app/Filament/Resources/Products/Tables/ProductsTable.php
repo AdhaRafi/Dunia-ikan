@@ -26,7 +26,8 @@ class ProductsTable
                 TextColumn::make('slug')
                     ->searchable(),
                 TextColumn::make('price')
-                    ->money()
+                    ->label('Harga')
+                    ->formatStateUsing(fn (mixed $state): string => 'Rp '.number_format((float) $state, 0, ',', '.'))
                     ->sortable(),
                 TextColumn::make('stock')
                     ->numeric()

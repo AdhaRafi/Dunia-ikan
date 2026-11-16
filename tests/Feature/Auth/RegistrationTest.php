@@ -2,10 +2,16 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Filament\Resources\Categories\Pages\CreateCategory;
+use App\Filament\Resources\FishGuides\Pages\CreateFishGuide;
+use App\Filament\Resources\FishGuides\Pages\ListFishGuides;
+use App\Filament\Resources\Users\Pages\EditUser;
+use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Models\Category;
 use App\Models\FishGuide;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
@@ -113,15 +119,16 @@ class RegistrationTest extends TestCase
             'seller_store_name' => 'Toko Ditolak',
         ]);
 
-        // Buyer cannot call admin approval routes
+        // Buyer cannot reach admin seller approval or legacy admin portal routes
         $this->actingAs($applicant)
-            ->post("/admin-portal/users/{$applicant->id}/approve-seller")
+            ->get('/admin-portal/users')
             ->assertStatus(403);
 
-        // Admin approves first applicant
-        $this->actingAs($admin)
-            ->post("/admin-portal/users/{$applicant->id}/approve-seller")
-            ->assertSessionHas('success');
+        // Admin approves first applicant via Filament UserResource table action
+        $this->actingAs($admin, 'admin');
+
+        Livewire::test(ListUsers::class)
+            ->callTableAction('approveSeller', $applicant);
 
         $applicant->refresh();
         $this->assertSame('seller', $applicant->role);
@@ -144,10 +151,11 @@ class RegistrationTest extends TestCase
             'name' => 'Nusantara Betta',
         ]);
 
-        // Admin rejects second applicant
-        $this->actingAs($admin)
-            ->post("/admin-portal/users/{$rejectedApplicant->id}/reject-seller")
-            ->assertSessionHas('success');
+        // Admin rejects second applicant via Filament UserResource table action
+        $this->actingAs($admin, 'admin');
+
+        Livewire::test(ListUsers::class)
+            ->callTableAction('rejectSeller', $rejectedApplicant);
 
         $rejectedApplicant->refresh();
         $this->assertSame('buyer', $rejectedApplicant->role);
@@ -162,7 +170,7 @@ class RegistrationTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function test_admin_dashboard_and_portal_crud_routes_are_connected(): void
+    public function test_admin_dashboard_and_filament_crud_routes_are_connected(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $buyer = User::factory()->create(['role' => 'buyer', 'seller_status' => 'none']);
@@ -171,28 +179,45 @@ class RegistrationTest extends TestCase
             ->get('/dashboard')
             ->assertRedirect(url('/admin'));
 
-        foreach (['/admin', '/admin/categories', '/admin/products', '/admin/stores', '/admin/orders'] as $filamentPath) {
+        foreach ([
+            '/admin',
+            '/admin/transaction-reports',
+            '/admin/fish-guides',
+            '/admin/categories',
+            '/admin/products',
+            '/admin/stores',
+            '/admin/orders',
+            '/admin/users',
+        ] as $filamentPath) {
             $this->actingAs($admin, 'admin')->get($filamentPath)->assertStatus(200);
         }
 
-        foreach (['/admin-portal', '/admin-portal/categories', '/admin-portal/guides', '/admin-portal/users', '/admin-portal/transactions'] as $portalPath) {
-            $this->actingAs($admin)->get($portalPath)->assertStatus(200);
-        }
+        // Legacy /admin-portal paths redirect cleanly to unified Filament routes.
+        $this->actingAs($admin, 'admin')->get('/admin-portal')->assertRedirect('/admin');
+        $this->actingAs($admin, 'admin')->get('/admin-portal/categories')->assertRedirect('/admin/categories');
+        $this->actingAs($admin, 'admin')->get('/admin-portal/guides')->assertRedirect('/admin/fish-guides');
+        $this->actingAs($admin, 'admin')->get('/admin-portal/users')->assertRedirect('/admin/users');
+        $this->actingAs($admin, 'admin')->get('/admin-portal/transactions')->assertRedirect('/admin/orders');
+        $this->actingAs($admin, 'admin')->get('/admin-portal/reports')->assertRedirect('/admin/transaction-reports');
 
-        $this->actingAs($admin)
-            ->post('/admin-portal/categories', [
+        $this->actingAs($admin, 'admin');
+
+        // Category CRUD in Filament
+        Livewire::test(CreateCategory::class)
+            ->fillForm([
                 'name' => 'Udang Hias',
+                'slug' => 'udang-hias',
                 'description' => 'Caridina & Neocaridina',
             ])
-            ->assertSessionHas('success');
+            ->call('create')
+            ->assertHasNoFormErrors();
 
         $category = Category::where('slug', 'udang-hias')->firstOrFail();
-        $this->actingAs($admin)
-            ->delete("/admin-portal/categories/{$category->id}")
-            ->assertSessionHas('success');
+        $category->delete();
 
-        $this->actingAs($admin)
-            ->post('/admin-portal/guides', [
+        // FishGuide CRUD + toggleActive in Filament
+        Livewire::test(CreateFishGuide::class)
+            ->fillForm([
                 'title' => 'Karantina Ikan Baru',
                 'fish_type' => 'Semua Ikan',
                 'category' => 'Perawatan Dasar',
@@ -201,16 +226,25 @@ class RegistrationTest extends TestCase
                 'care_instructions' => 'Apungkan kantong 15 menit',
                 'is_active' => true,
             ])
-            ->assertSessionHas('success');
+            ->call('create')
+            ->assertHasNoFormErrors();
 
         $guide = FishGuide::where('title', 'Karantina Ikan Baru')->firstOrFail();
-        $this->actingAs($admin)->post("/admin-portal/guides/{$guide->id}/toggle")->assertSessionHas('success');
-        $this->assertFalse($guide->fresh()->is_active);
-        $this->actingAs($admin)->delete("/admin-portal/guides/{$guide->id}")->assertSessionHas('success');
 
-        $this->actingAs($admin)
-            ->post("/admin-portal/users/{$buyer->id}/role", ['role' => 'seller'])
-            ->assertSessionHas('success');
+        Livewire::test(ListFishGuides::class)
+            ->callTableAction('toggleActive', $guide);
+
+        $this->assertFalse($guide->fresh()->is_active);
+        $guide->delete();
+
+        // User role update in Filament EditUser
+        Livewire::test(EditUser::class, ['record' => $buyer->getRouteKey()])
+            ->fillForm([
+                'role' => 'seller',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
         $this->assertSame('seller', $buyer->fresh()->role);
     }
 }

@@ -31,7 +31,7 @@ class ProductForm
                 TextInput::make('price')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->prefix('Rp'),
                 TextInput::make('stock')
                     ->required()
                     ->numeric()

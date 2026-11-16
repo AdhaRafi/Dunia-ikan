@@ -23,10 +23,12 @@ $app = Application::configure(basePath: dirname(__DIR__))
 
         $middleware->statefulApi();
 
+        // Apply SecurityHeaders globally so Filament (/admin/*, /admin/login) and API routes are also hardened
+        $middleware->append(SecurityHeaders::class);
+
         $middleware->web(append: [
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
-            SecurityHeaders::class,
         ]);
 
         $middleware->alias([

@@ -10,12 +10,23 @@ use Filament\Auth\Pages\Login;
 use Filament\Forms\Components\ViewField;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Schema;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AdminLogin extends Login
 {
+    public function getHeading(): string|Htmlable
+    {
+        return 'Login Admin Dunia Ikan';
+    }
+
+    public function getSubheading(): string|Htmlable|null
+    {
+        return 'Masukkan email dan kata sandi administrator untuk mengakses panel.';
+    }
+
     /**
      * Normalize email and verify rate limits and Cloudflare Turnstile before signing in.
      */

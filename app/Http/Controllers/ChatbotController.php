@@ -48,6 +48,26 @@ class ChatbotController extends Controller
         ]);
     }
 
+    public function newSession(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $token = Str::random(40);
+        $request->session()->put('chat_session_token', $token);
+
+        if ($user) {
+            ChatSession::create([
+                'session_token' => $token,
+                'user_id' => $user->id,
+                'title' => 'Percakapan Baru',
+            ]);
+        }
+
+        return response()->json([
+            'session_token' => $token,
+            'messages' => [],
+        ]);
+    }
+
     public function sendMessage(Request $request): JsonResponse
     {
         $request->validate([
@@ -75,8 +95,14 @@ class ChatbotController extends Controller
                 'user_id' => $user?->id,
                 'title' => Str::limit($userMessage, 40),
             ]);
-        } elseif ($user && ! $session->user_id) {
-            $session->update(['user_id' => $user->id]);
+        } else {
+            if ($user && ! $session->user_id) {
+                $session->update(['user_id' => $user->id]);
+            }
+
+            if ($session->title === 'Percakapan Baru') {
+                $session->update(['title' => Str::limit($userMessage, 40)]);
+            }
         }
 
         // Simpan gambar jika diunggah

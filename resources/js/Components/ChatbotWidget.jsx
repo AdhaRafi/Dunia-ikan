@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
     AlertCircle,
     BookOpen,
-    Image as ImageIcon,
-    Loader2,
+    Camera,
+    Fish,
+    Package,
+    Paperclip,
+    PlusCircle,
+    RotateCcw,
     Send,
     X,
 } from 'lucide-react';
@@ -80,26 +84,58 @@ function renderAssistantMessage(text) {
 
 export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
     const { pick } = useLanguage();
+    const { auth } = usePage().props;
+    const rawUserName = auth?.user?.name?.trim() || '';
+    const greetingName =
+        rawUserName.length > 0
+            ? rawUserName.length <= 16
+                ? rawUserName
+                : rawUserName.split(/\s+/)[0]
+            : '';
     const [messages, setMessages] = useState([]);
     const [inputText, setInputText] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [historyLoading, setHistoryLoading] = useState(false);
+    const [historyLoaded, setHistoryLoaded] = useState(false);
+    const [historyError, setHistoryError] = useState(false);
     const [sessionToken, setSessionToken] = useState(null);
     const messagesEndRef = useRef(null);
     const fileInputRef = useRef(null);
+    const cameraInputRef = useRef(null);
 
     useEffect(() => {
-        if (isOpen && messages.length === 0) {
+        if (isOpen && !historyLoaded) {
             fetchHistory();
         }
-    }, [isOpen]);
+    }, [isOpen, historyLoaded]);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (!isOpen) {
+            return;
+        }
+
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                onClose();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen, onClose]);
+
+    useEffect(() => {
+        if (messages.length > 0 || loading) {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
     }, [messages, loading]);
 
     const fetchHistory = async () => {
+        setHistoryLoading(true);
+        setHistoryError(false);
+
         try {
             const token = localStorage.getItem('dunia_ikan_chat_token');
             const res = await axios.get('/chatbot/history', {
@@ -114,22 +150,35 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                 );
             }
 
-            if (res.data.messages && res.data.messages.length > 0) {
-                setMessages(res.data.messages);
-            } else {
-                setMessages([
-                    {
-                        sender: 'assistant',
-                        message: pick(
-                            'Halo! Aku Kiko 🐟, asisten virtual Dunia Ikan. Ada yang bisa kubantu seputar ikan hias atau produk katalog hari ini?',
-                            "Hi! I'm Kiko 🐟, Dunia Ikan's virtual assistant. How can I help you with ornamental fish care or catalog products today?",
-                        ),
-                        created_at: new Date().toISOString(),
-                    },
-                ]);
-            }
+            setMessages(Array.isArray(res.data.messages) ? res.data.messages : []);
+            setHistoryLoaded(true);
         } catch (err) {
             console.error('Failed to load chat history:', err);
+            setHistoryError(true);
+        } finally {
+            setHistoryLoading(false);
+        }
+    };
+
+    const handleNewSession = async () => {
+        if (loading) {
+            return;
+        }
+
+        try {
+            const res = await axios.post('/chatbot/new');
+            if (res.data.session_token) {
+                setSessionToken(res.data.session_token);
+                localStorage.setItem(
+                    'dunia_ikan_chat_token',
+                    res.data.session_token,
+                );
+            }
+            setMessages([]);
+            setHistoryLoaded(true);
+            setHistoryError(false);
+        } catch (err) {
+            console.error('Failed to start a new chat session:', err);
         }
     };
 
@@ -155,6 +204,9 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
 
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
+        }
+        if (cameraInputRef.current) {
+            cameraInputRef.current.value = '';
         }
     };
 
@@ -263,298 +315,620 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
 
             {/* 2. CHATBOT WINDOW (WHEN OPEN) */}
             {isOpen && (
-                <div className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 flex flex-col h-[100dvh] sm:w-[420px] sm:h-[640px] sm:max-h-[92vh]">
+                <div
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={pick('Asisten Kiko Dunia Ikan', 'Dunia Ikan Kiko Assistant')}
+                    className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 flex flex-col h-[100dvh] sm:w-[420px] sm:h-[640px] sm:max-h-[92vh]"
+                >
                     {/* Chat Modal Container */}
-                    <div className="w-full h-full flex flex-col bg-white dark:bg-[#070b14] sm:rounded-2xl sm:border border-slate-200 dark:border-neutral-800 shadow-2xl overflow-hidden transition-all duration-200">
-                        {/* Header */}
-                        <div className="flex shrink-0 items-center justify-between bg-gradient-to-r from-[#001454] via-[#092265] to-[#0d2e92] dark:from-[#0b1325] dark:via-[#0e172e] dark:to-[#111a30] px-4 py-3 text-white border-b border-cyan-500/20">
-                            <div className="flex items-center gap-3">
-                                <div className="relative shrink-0">
-                                    <img
-                                        src="/images/kiko/avatar.png"
-                                        alt="Kiko"
-                                        className="w-10 h-10 rounded-full border border-white/20 bg-slate-900 object-contain p-0.5 shadow-md"
-                                    />
-                                </div>
-                                <div>
-                                    <h3 className="text-sm font-bold leading-tight text-white">
-                                        {pick('Kiko ChatBot', 'Kiko Assistant')}
+                    <div className="relative w-full h-full flex flex-col bg-white dark:bg-[#070b14] sm:rounded-[28px] sm:border border-slate-200/90 dark:border-neutral-800 shadow-2xl overflow-hidden transition-all duration-200">
+                        {/* Soft Cyan/Sky Atmospheric Top Gradient + Sunny Glow Backdrop */}
+                        <div
+                            aria-hidden="true"
+                            className="pointer-events-none absolute inset-x-0 top-0 h-[66%] dark:hidden"
+                            style={{
+                                background:
+                                    'radial-gradient(circle at 12% 10%, rgba(125, 227, 250, 0.62) 0%, rgba(125, 227, 250, 0) 56%), radial-gradient(circle at 92% 8%, rgba(147, 197, 253, 0.58) 0%, rgba(147, 197, 253, 0) 54%), linear-gradient(180deg, rgba(240, 249, 255, 0.45) 0%, rgba(255, 255, 255, 0) 100%)',
+                            }}
+                        />
+                        <div
+                            aria-hidden="true"
+                            className="pointer-events-none absolute inset-x-0 top-0 h-[66%] hidden dark:block"
+                            style={{
+                                background:
+                                    'radial-gradient(circle at 12% 10%, rgba(14, 165, 233, 0.22) 0%, rgba(14, 165, 233, 0) 56%), radial-gradient(circle at 92% 8%, rgba(37, 99, 235, 0.24) 0%, rgba(37, 99, 235, 0) 54%)',
+                            }}
+                        />
+
+                        {/* Floating White Capsule Header Pill */}
+                        <div className="relative z-10 mx-4 mt-3.5 shrink-0 flex items-center justify-between rounded-full bg-white/95 dark:bg-[#111a30]/95 px-3.5 py-2 border border-slate-200/80 dark:border-slate-700/80 shadow-[0_6px_22px_rgba(15,23,42,0.08)]">
+                            <div className="flex items-center gap-2.5 min-w-0">
+                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-50 dark:bg-sky-950/60 text-[#0684E5] dark:text-cyan-400">
+                                    <svg
+                                        viewBox="0 0 28 28"
+                                        fill="none"
+                                        className="h-5 w-5"
+                                        aria-hidden="true"
+                                    >
+                                        <circle
+                                            cx="12.5"
+                                            cy="10"
+                                            r="3.2"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                        />
+                                        <circle
+                                            cx="11.5"
+                                            cy="19"
+                                            r="4.2"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                        />
+                                        <circle
+                                            cx="19"
+                                            cy="15.5"
+                                            r="2.4"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                        />
+                                    </svg>
+                                </span>
+                                <div className="min-w-0">
+                                    <h3 className="text-[13px] font-extrabold leading-tight text-[#001454] dark:text-white truncate">
+                                        Kiko
                                     </h3>
-                                    <p className="text-[11px] text-cyan-200/80">
+                                    <p className="text-[10.5px] font-medium leading-tight text-slate-600 dark:text-slate-300 truncate">
                                         {pick('Asisten Dunia Ikan', 'Dunia Ikan Fish Care AI')}
                                     </p>
                                 </div>
                             </div>
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                className="p-1.5 text-slate-300 hover:text-white rounded-lg hover:bg-white/10 transition"
-                                aria-label={pick('Tutup asisten', 'Close assistant')}
-                            >
-                                <X className="h-5 w-5" />
-                            </button>
+
+                            <div className="flex items-center gap-1 shrink-0">
+                                {messages.length > 0 && (
+                                    <button
+                                        type="button"
+                                        onClick={handleNewSession}
+                                        disabled={loading}
+                                        className="flex h-8 items-center gap-1 rounded-full px-2.5 text-[11px] font-bold text-[#0369A1] dark:text-cyan-300 hover:bg-sky-50 dark:hover:bg-slate-800 transition disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                                        title={pick('Mulai obrolan baru', 'Start new chat')}
+                                    >
+                                        <RotateCcw className="h-3.5 w-3.5" />
+                                        <span>{pick('Baru', 'New')}</span>
+                                    </button>
+                                )}
+                                <button
+                                    type="button"
+                                    onClick={onClose}
+                                    className="flex h-8 w-8 items-center justify-center rounded-full text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                                    aria-label={pick('Tutup asisten', 'Close assistant')}
+                                >
+                                    <X className="h-4 w-4 stroke-[2.2]" />
+                                </button>
+                            </div>
                         </div>
 
-                        {/* Messages Body */}
-                    <div className="flex-1 space-y-4 overflow-y-auto bg-slate-50 dark:bg-[#070b14] p-4">
-                        {messages.map((msg, index) => {
-                            const isUser = msg.sender === 'user';
-
-                            return (
-                                <div
-                                    key={index}
-                                    className={`flex items-start gap-2 ${
-                                        isUser ? 'flex-row-reverse' : 'flex-row'
-                                    }`}
-                                >
-                                    {/* Avatar for assistant */}
-                                    {!isUser && (
+                        {/* Body: Welcome Hero State OR Conversation Messages */}
+                        {messages.length === 0 && !loading ? (
+                            <div className="relative z-10 flex-1 overflow-y-auto px-6 py-4 flex flex-col items-center justify-center text-center">
+                                {historyLoading ? (
+                                    <div className="flex flex-col items-center gap-3">
                                         <img
                                             src="/images/kiko/avatar.png"
                                             alt="Kiko"
-                                            className="w-7 h-7 rounded-full border border-cyan-500/40 bg-slate-900 object-contain shrink-0 shadow-xs mt-1"
+                                            className="h-20 w-20 object-contain opacity-90"
                                         />
-                                    )}
-
-                                    <div
-                                        className={`max-w-[85%] px-4 py-3 text-xs leading-relaxed ${
-                                            isUser
-                                                ? 'bg-[#001454] dark:bg-[#1E80A0] text-white rounded-2xl rounded-tr-xs shadow-xs'
-                                                : 'bg-white dark:bg-[#111a30] text-slate-800 dark:text-neutral-100 rounded-2xl rounded-tl-xs border border-slate-200 dark:border-neutral-700/80 shadow-xs'
-                                        }`}
-                                    >
-                                        {!isUser && (
-                                            <p className="text-[10px] font-bold text-sky-600 dark:text-cyan-400 uppercase tracking-wider mb-1">
-                                                Kiko
-                                            </p>
-                                        )}
-
-                                        {msg.image_path && (
-                                            <div className="mb-2 overflow-hidden rounded-lg">
-                                                <img
-                                                    src={
-                                                        msg.image_path.startsWith('blob:')
-                                                            ? msg.image_path
-                                                            : `/storage/${msg.image_path}`
-                                                    }
-                                                    alt="Unggahan pengguna"
-                                                    className="max-h-48 w-full object-cover"
-                                                />
-                                            </div>
-                                        )}
-
-                                        {isUser ? (
-                                            <div className="whitespace-pre-wrap">
-                                                {msg.message}
-                                            </div>
-                                        ) : (
-                                            renderAssistantMessage(msg.message)
-                                        )}
-
-                                        {msg.fish_guides &&
-                                            msg.fish_guides.length > 0 && (
-                                                <div className="mt-3 space-y-2 border-t border-slate-200 dark:border-neutral-700/60 pt-2.5">
-                                                    <p className="flex items-center gap-1.5 text-[11px] font-bold text-[#001454] dark:text-cyan-300">
-                                                        <BookOpen className="h-3.5 w-3.5 text-sky-500" />
-                                                        {pick('Rujukan panduan resmi', 'Official care guide reference')}
-                                                    </p>
-                                                    {msg.fish_guides.map((guide) => (
-                                                        <Link
-                                                            key={guide.id}
-                                                            href={`/guides/${guide.id}`}
-                                                            className="block border-l-2 border-sky-500 bg-slate-100 dark:bg-[#162240] px-3 py-2 text-[11px] font-medium text-slate-800 dark:text-neutral-200 hover:text-sky-600 dark:hover:text-cyan-400 transition rounded-r-md"
-                                                        >
-                                                            {guide.title}
-                                                        </Link>
-                                                    ))}
-                                                </div>
-                                            )}
-
-                                        {msg.recommended_products &&
-                                            msg.recommended_products.length > 0 && (
-                                                <div className="mt-3 space-y-2 border-t border-slate-200 dark:border-neutral-700/60 pt-2.5">
-                                                    <p className="text-[11px] font-bold text-[#001454] dark:text-cyan-300">
-                                                        {pick('Rekomendasi di katalog', 'Catalog recommendations')}
-                                                    </p>
-                                                    {msg.recommended_products.map(
-                                                        (prod) => (
-                                                            <Link
-                                                                key={prod.id}
-                                                                href={`/products/${prod.slug}`}
-                                                                className="flex items-center gap-2.5 rounded-lg bg-slate-100 dark:bg-[#162240] p-2 hover:bg-slate-200 dark:hover:bg-[#1c2c52] transition"
-                                                            >
-                                                                <img
-                                                                    src={prod.image}
-                                                                    alt={prod.name}
-                                                                    className="h-10 w-10 shrink-0 rounded-md object-cover"
-                                                                />
-                                                                <div className="min-w-0 flex-1">
-                                                                    <p className="truncate text-[11px] font-bold text-slate-800 dark:text-white">
-                                                                        {prod.name}
-                                                                    </p>
-                                                                    <p className="text-[11px] font-extrabold text-sky-600 dark:text-cyan-400 tabular-nums">
-                                                                        Rp{' '}
-                                                                        {new Intl.NumberFormat(
-                                                                            'id-ID',
-                                                                        ).format(
-                                                                            prod.price,
-                                                                        )}
-                                                                    </p>
-                                                                    <p className="truncate text-[10px] text-slate-500 dark:text-neutral-400">
-                                                                        {prod.store_name} · {pick('Stok', 'Stock')} {prod.stock}
-                                                                    </p>
-                                                                </div>
-                                                            </Link>
-                                                        ),
-                                                    )}
-                                                </div>
-                                            )}
+                                        <p className="text-xs font-medium text-slate-600 dark:text-slate-300">
+                                            {pick('Menyiapkan asisten Kiko...', 'Preparing Kiko assistant...')}
+                                        </p>
                                     </div>
-                                </div>
-                            );
-                        })}
+                                ) : (
+                                    <>
+                                        {/* Floating 3 Aquatic Idea Tiles + Animated Kiko Fish Head */}
+                                        <div className="relative flex flex-col items-center mb-3.5">
+                                            <div
+                                                aria-hidden="true"
+                                                className="pointer-events-none absolute -inset-x-10 -top-4 -bottom-2 rounded-full blur-2xl bg-[radial-gradient(circle,rgba(253,224,71,0.34)_0%,rgba(251,191,36,0.14)_52%,transparent_76%)] dark:bg-[radial-gradient(circle,rgba(251,191,36,0.16)_0%,rgba(6,132,229,0.22)_58%,transparent_78%)]"
+                                            />
+                                            <div
+                                                aria-hidden="true"
+                                                className="pointer-events-none absolute -inset-x-10 -top-5 -bottom-2 opacity-35 dark:opacity-20"
+                                                style={{
+                                                    backgroundImage:
+                                                        'radial-gradient(#94a3b8 1px, transparent 1px)',
+                                                    backgroundSize: '9px 9px',
+                                                    WebkitMaskImage:
+                                                        'radial-gradient(circle, black 25%, transparent 72%)',
+                                                    maskImage:
+                                                        'radial-gradient(circle, black 25%, transparent 72%)',
+                                                }}
+                                            />
 
-                        {loading && (
-                            <div className="flex items-center gap-2.5 rounded-2xl bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-4 py-3 text-xs text-slate-600 dark:text-neutral-300 w-fit">
-                                <img
-                                    src="/images/kiko/avatar.png"
-                                    alt="Kiko"
-                                    className="w-5 h-5 rounded-full object-contain shrink-0 animate-spin"
-                                />
-                                <span>{pick('Kiko sedang memeriksa gejala dan katalog...', 'Kiko is checking symptoms and catalog...')}</span>
+                                            {/* 3 Floating Idea Tiles Arc Above Kiko */}
+                                            <div className="relative z-10 flex items-end justify-center gap-2.5">
+                                                <div
+                                                    className="kiko-float"
+                                                    style={{ animationDuration: '3.2s', animationDelay: '0s' }}
+                                                >
+                                                    <div className="flex h-12 w-12 -rotate-12 translate-y-2 items-center justify-center rounded-2xl bg-white dark:bg-[#131d33] border border-slate-100 dark:border-slate-700/80 shadow-[0_8px_18px_rgba(15,23,42,0.08)]">
+                                                        <svg
+                                                            viewBox="0 0 36 36"
+                                                            className="h-7 w-7"
+                                                            aria-hidden="true"
+                                                        >
+                                                            <path
+                                                                d="M8 18c4-6 11-8 18-4l5-4v16l-5-4c-7 4-14 2-18-4Z"
+                                                                fill="#6366F1"
+                                                            />
+                                                            <path
+                                                                d="M15 11l3-4 4 4"
+                                                                fill="#38BDF8"
+                                                            />
+                                                            <circle cx="13" cy="17" r="1.6" fill="#FFFFFF" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+
+                                                <div
+                                                    className="kiko-float"
+                                                    style={{ animationDuration: '3.8s', animationDelay: '-1.2s' }}
+                                                >
+                                                    <div className="flex h-14 w-14 -translate-y-1.5 items-center justify-center rounded-2xl bg-white dark:bg-[#131d33] border border-slate-100 dark:border-slate-700/80 shadow-[0_10px_22px_rgba(15,23,42,0.10)]">
+                                                        <svg
+                                                            viewBox="0 0 40 40"
+                                                            className="h-8 w-8"
+                                                            aria-hidden="true"
+                                                        >
+                                                            <rect
+                                                                x="5"
+                                                                y="10"
+                                                                width="14"
+                                                                height="21"
+                                                                rx="2"
+                                                                fill="#10B981"
+                                                            />
+                                                            <rect
+                                                                x="21"
+                                                                y="10"
+                                                                width="14"
+                                                                height="21"
+                                                                rx="2"
+                                                                fill="#059669"
+                                                            />
+                                                            <rect
+                                                                x="7.5"
+                                                                y="12.5"
+                                                                width="11"
+                                                                height="16"
+                                                                rx="1"
+                                                                fill="#F8FAFC"
+                                                            />
+                                                            <rect
+                                                                x="21.5"
+                                                                y="12.5"
+                                                                width="11"
+                                                                height="16"
+                                                                rx="1"
+                                                                fill="#F1F5F9"
+                                                            />
+                                                            <path
+                                                                d="M11 10h4v9l-2-1.8L11 19v-9Z"
+                                                                fill="#F43F5E"
+                                                            />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+
+                                                <div
+                                                    className="kiko-float"
+                                                    style={{ animationDuration: '3.5s', animationDelay: '-2.1s' }}
+                                                >
+                                                    <div className="flex h-12 w-12 rotate-12 translate-y-2 items-center justify-center rounded-2xl bg-white dark:bg-[#131d33] border border-slate-100 dark:border-slate-700/80 shadow-[0_8px_18px_rgba(15,23,42,0.08)]">
+                                                        <svg
+                                                            viewBox="0 0 36 36"
+                                                            className="h-7 w-7"
+                                                            aria-hidden="true"
+                                                        >
+                                                            <path
+                                                                d="M18 7c4.5 5.4 8 9.6 8 13.5a8 8 0 1 1-16 0C10 16.6 13.5 12.4 18 7Z"
+                                                                fill="#F43F5E"
+                                                            />
+                                                            <path
+                                                                d="M14 19a4 4 0 0 0 4 4"
+                                                                stroke="#FFE4E6"
+                                                                strokeWidth="2.2"
+                                                                strokeLinecap="round"
+                                                                fill="none"
+                                                            />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Gently Floating Kiko Fish Head */}
+                                            <img
+                                                src="/images/kiko/avatar.png"
+                                                alt="Kiko"
+                                                className="kiko-bob relative z-20 -mt-3 h-24 w-24 sm:h-[104px] sm:w-[104px] object-contain drop-shadow-[0_12px_20px_rgba(15,23,42,0.14)] select-none"
+                                            />
+                                        </div>
+
+                                        {/* Personalized Greeting (Logged-in shows name; Guest omits bracket cleanly) */}
+                                        <h3 className="text-[19px] sm:text-[21px] font-extrabold tracking-tight leading-[1.3] text-[#001454] dark:text-white">
+                                            {greetingName
+                                                ? pick(
+                                                      <>
+                                                          Halo, {greetingName}!
+                                                          <br />
+                                                          Ada yang perlu Kiko bantu?
+                                                      </>,
+                                                      <>
+                                                          Hello, {greetingName}!
+                                                          <br />
+                                                          How can Kiko help you?
+                                                      </>,
+                                                  )
+                                                : pick(
+                                                      <>
+                                                          Halo!
+                                                          <br />
+                                                          Ada yang perlu Kiko bantu?
+                                                      </>,
+                                                      <>
+                                                          Hello!
+                                                          <br />
+                                                          How can Kiko help you?
+                                                      </>,
+                                                  )}
+                                        </h3>
+
+                                        {historyError && (
+                                            <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/70 px-3 py-1.5 text-[11px] font-semibold text-rose-700 dark:text-rose-300">
+                                                <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                                                <span>
+                                                    {pick(
+                                                        'Gagal memuat riwayat',
+                                                        'Failed to load history',
+                                                    )}
+                                                </span>
+                                                <button
+                                                    type="button"
+                                                    onClick={fetchHistory}
+                                                    className="underline font-bold hover:text-rose-900 dark:hover:text-white"
+                                                >
+                                                    {pick('Coba lagi', 'Retry')}
+                                                </button>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="relative z-10 flex-1 space-y-4 overflow-y-auto px-4 py-4">
+                                {messages.map((msg, index) => {
+                                    const isUser = msg.sender === 'user';
+
+                                    return (
+                                        <div
+                                            key={index}
+                                            className={`flex items-start gap-2 ${
+                                                isUser
+                                                    ? 'flex-row-reverse'
+                                                    : 'flex-row'
+                                            }`}
+                                        >
+                                            {!isUser && (
+                                                <img
+                                                    src="/images/kiko/avatar.png"
+                                                    alt="Kiko"
+                                                    className="w-7 h-7 rounded-full border border-cyan-500/40 bg-slate-900 object-contain shrink-0 shadow-xs mt-1"
+                                                />
+                                            )}
+
+                                            <div
+                                                className={`max-w-[85%] px-4 py-3 text-xs leading-relaxed ${
+                                                    isUser
+                                                        ? 'bg-[#001454] dark:bg-[#1E80A0] text-white rounded-2xl rounded-tr-xs shadow-xs'
+                                                        : 'bg-white dark:bg-[#111a30] text-slate-800 dark:text-neutral-100 rounded-2xl rounded-tl-xs border border-slate-200 dark:border-neutral-700/80 shadow-xs'
+                                                }`}
+                                            >
+                                                {!isUser && (
+                                                    <p className="text-[10px] font-bold text-[#0369A1] dark:text-cyan-400 uppercase tracking-wider mb-1">
+                                                        Kiko
+                                                    </p>
+                                                )}
+
+                                                {msg.image_path && (
+                                                    <div className="mb-2 overflow-hidden rounded-lg">
+                                                        <img
+                                                            src={
+                                                                msg.image_path.startsWith(
+                                                                    'blob:',
+                                                                )
+                                                                    ? msg.image_path
+                                                                    : `/storage/${msg.image_path}`
+                                                            }
+                                                            alt={pick(
+                                                                'Unggahan pengguna',
+                                                                'User upload',
+                                                            )}
+                                                            className="max-h-48 w-full object-cover"
+                                                        />
+                                                    </div>
+                                                )}
+
+                                                {isUser ? (
+                                                    <div className="whitespace-pre-wrap">
+                                                        {msg.message}
+                                                    </div>
+                                                ) : (
+                                                    renderAssistantMessage(
+                                                        msg.message,
+                                                    )
+                                                )}
+
+                                                {msg.fish_guides &&
+                                                    msg.fish_guides.length >
+                                                        0 && (
+                                                        <div className="mt-3 space-y-2 border-t border-slate-200 dark:border-neutral-700/60 pt-2.5">
+                                                            <p className="flex items-center gap-1.5 text-[11px] font-bold text-[#001454] dark:text-cyan-300">
+                                                                <BookOpen className="h-3.5 w-3.5 text-[#0369A1] dark:text-sky-400" />
+                                                                {pick(
+                                                                    'Rujukan panduan resmi',
+                                                                    'Official care guide reference',
+                                                                )}
+                                                            </p>
+                                                            {msg.fish_guides.map(
+                                                                (guide) => (
+                                                                    <Link
+                                                                        key={
+                                                                            guide.id
+                                                                        }
+                                                                        href={`/guides/${guide.id}`}
+                                                                        className="block border-l-2 border-sky-500 bg-slate-100 dark:bg-[#162240] px-3 py-2 text-[11px] font-medium text-slate-800 dark:text-neutral-200 hover:text-[#0369A1] dark:hover:text-cyan-400 transition rounded-r-md"
+                                                                    >
+                                                                        {
+                                                                            guide.title
+                                                                        }
+                                                                    </Link>
+                                                                ),
+                                                            )}
+                                                        </div>
+                                                    )}
+
+                                                {msg.recommended_products &&
+                                                    msg.recommended_products
+                                                        .length > 0 && (
+                                                        <div className="mt-3 space-y-2 border-t border-slate-200 dark:border-neutral-700/60 pt-2.5">
+                                                            <p className="text-[11px] font-bold text-[#001454] dark:text-cyan-300">
+                                                                {pick(
+                                                                    'Rekomendasi di katalog',
+                                                                    'Catalog recommendations',
+                                                                )}
+                                                            </p>
+                                                            {msg.recommended_products.map(
+                                                                (prod) => (
+                                                                    <Link
+                                                                        key={
+                                                                            prod.id
+                                                                        }
+                                                                        href={`/products/${prod.slug}`}
+                                                                        className="flex items-center gap-2.5 rounded-lg bg-slate-100 dark:bg-[#162240] p-2 hover:bg-slate-200 dark:hover:bg-[#1c2c52] transition"
+                                                                    >
+                                                                        <img
+                                                                            src={
+                                                                                prod.image
+                                                                            }
+                                                                            alt={
+                                                                                prod.name
+                                                                            }
+                                                                            className="h-10 w-10 shrink-0 rounded-md object-cover"
+                                                                        />
+                                                                        <div className="min-w-0 flex-1">
+                                                                            <p className="truncate text-[11px] font-bold text-slate-800 dark:text-white">
+                                                                                {
+                                                                                    prod.name
+                                                                                }
+                                                                            </p>
+                                                                            <p className="text-[11px] font-extrabold text-[#0369A1] dark:text-cyan-400 tabular-nums">
+                                                                                Rp{' '}
+                                                                                {new Intl.NumberFormat(
+                                                                                    'id-ID',
+                                                                                ).format(
+                                                                                    prod.price,
+                                                                                )}
+                                                                            </p>
+                                                                            <p className="truncate text-[10px] text-slate-600 dark:text-neutral-300">
+                                                                                {
+                                                                                    prod.store_name
+                                                                                }{' '}
+                                                                                ·{' '}
+                                                                                {pick(
+                                                                                    'Stok',
+                                                                                    'Stock',
+                                                                                )}{' '}
+                                                                                {
+                                                                                    prod.stock
+                                                                                }
+                                                                            </p>
+                                                                        </div>
+                                                                    </Link>
+                                                                ),
+                                                            )}
+                                                        </div>
+                                                    )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+
+                                {loading && (
+                                    <div className="flex items-center gap-2.5 rounded-2xl bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-4 py-3 text-xs text-slate-700 dark:text-neutral-200 w-fit">
+                                        <img
+                                            src="/images/kiko/avatar.png"
+                                            alt="Kiko"
+                                            className="w-5 h-5 rounded-full object-contain shrink-0 animate-spin"
+                                        />
+                                        <span>
+                                            {pick(
+                                                'Kiko sedang memeriksa gejala dan katalog...',
+                                                'Kiko is checking symptoms and catalog...',
+                                            )}
+                                        </span>
+                                    </div>
+                                )}
+
+                                <div ref={messagesEndRef} />
                             </div>
                         )}
 
-                        <div ref={messagesEndRef} />
-                    </div>
-
-                    {/* Quick Prompts */}
-                    <div className="flex shrink-0 gap-2 overflow-x-auto border-t border-slate-200 dark:border-neutral-800 bg-white dark:bg-[#070b14] px-3 py-2 text-xs">
-                        <button
-                            type="button"
-                            onClick={() =>
-                                handleSendMessage(
-                                    pick(
-                                        'Ikan cupang saya ada bintik putih di sirip, bagaimana penanganannya?',
-                                        'My betta has white spots on its fins, how should I treat it?',
-                                    ),
-                                )
-                            }
-                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-sky-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-cyan-400 px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
-                        >
-                            {pick('Bintik putih', 'White spot / Ich')}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() =>
-                                handleSendMessage(
-                                    pick(
-                                        'Ekor ikan saya robek dan membusuk, apa yang harus dilakukan?',
-                                        'My fish has torn and rotting fins, what should I do?',
-                                    ),
-                                )
-                            }
-                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-sky-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-cyan-400 px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
-                        >
-                            {pick('Busuk sirip', 'Fin rot')}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() =>
-                                handleSendMessage(
-                                    pick(
-                                        'Rekomendasi ikan air tawar yang mudah dipelihara untuk pemula.',
-                                        'Recommend easy freshwater fish for beginners.',
-                                    ),
-                                )
-                            }
-                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-sky-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-cyan-400 px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
-                        >
-                            {pick('Ikan pemula', 'Beginner fish')}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() =>
-                                handleSendMessage(
-                                    pick(
-                                        'Bagaimana syarat dan cara klaim garansi ikan hidup 100% sampai tujuan?',
-                                        'How do I qualify and claim the 100% live arrival guarantee?',
-                                    ),
-                                )
-                            }
-                            className="whitespace-nowrap rounded-full bg-slate-100 dark:bg-[#111a30] hover:bg-sky-50 dark:hover:bg-[#162240] text-slate-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-cyan-400 px-3 py-1 text-[11px] font-medium border border-slate-200/60 dark:border-neutral-700 transition"
-                        >
-                            {pick('Garansi Ikan Hidup', 'Live Arrival DOA')}
-                        </button>
-                    </div>
-
-                    {/* Attached Image Preview */}
-                    {imagePreview && (
-                        <div className="flex shrink-0 items-center justify-between bg-slate-100 dark:bg-[#111a30] px-4 py-2 border-t border-slate-200 dark:border-neutral-800">
-                            <div className="flex min-w-0 items-center gap-2">
-                                <img
-                                    src={imagePreview}
-                                    alt={pick('Pratinjau', 'Preview')}
-                                    className="h-9 w-9 object-cover rounded-md"
-                                />
-                                <span className="truncate text-xs text-slate-600 dark:text-neutral-300">
-                                    {selectedImage?.name}
-                                </span>
-                            </div>
+                        {/* 3 Quick-Action Pill Chips (Pakan, Jenis ikan, Kesehatan ikan) */}
+                        <div className="relative z-10 flex shrink-0 items-center justify-center gap-2 overflow-x-auto px-4 pb-2.5 pt-1 text-xs [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                             <button
                                 type="button"
-                                onClick={removeImage}
-                                className="p-1 text-slate-400 hover:text-rose-500"
-                                aria-label={pick('Hapus gambar', 'Remove image')}
+                                onClick={() =>
+                                    handleSendMessage(
+                                        pick(
+                                            'Rekomendasi pakan ikan hias terbaik yang tersedia di katalog Dunia Ikan.',
+                                            'Recommend the best ornamental fish food available in Dunia Ikan.',
+                                        ),
+                                    )
+                                }
+                                className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-3 py-1.5 text-[11.5px] font-bold text-slate-900 dark:text-neutral-100 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:border-[#0684E5] hover:bg-sky-50/70 dark:hover:bg-[#162240] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
                             >
-                                <X className="h-4 w-4" />
+                                <Package className="h-3.5 w-3.5 text-slate-800 dark:text-slate-200" />
+                                {pick('Pakan', 'Fish food')}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    handleSendMessage(
+                                        pick(
+                                            'Rekomendasi jenis ikan hias air tawar yang populer dan mudah dipelihara.',
+                                            'Recommend popular freshwater ornamental fish species easy to keep.',
+                                        ),
+                                    )
+                                }
+                                className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-3 py-1.5 text-[11.5px] font-bold text-slate-900 dark:text-neutral-100 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:border-[#0684E5] hover:bg-sky-50/70 dark:hover:bg-[#162240] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                            >
+                                <Fish className="h-3.5 w-3.5 text-slate-800 dark:text-slate-200" />
+                                {pick('Jenis ikan', 'Fish species')}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    handleSendMessage(
+                                        pick(
+                                            'Bagaimana mengenali gejala penyakit ikan seperti bintik putih atau busuk sirip dan cara merawatnya?',
+                                            'How do I recognize fish disease symptoms like white spot or fin rot and treat them?',
+                                        ),
+                                    )
+                                }
+                                className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-3 py-1.5 text-[11.5px] font-bold text-slate-900 dark:text-neutral-100 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:border-[#0684E5] hover:bg-sky-50/70 dark:hover:bg-[#162240] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                            >
+                                <PlusCircle className="h-3.5 w-3.5 text-slate-800 dark:text-slate-200" />
+                                {pick('Kesehatan ikan', 'Fish health')}
                             </button>
                         </div>
-                    )}
 
-                    {/* Chat Input Bar */}
-                    <div className="shrink-0 bg-white dark:bg-[#070b14] border-t border-slate-200 dark:border-neutral-800 p-3">
-                        <form
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                handleSendMessage();
-                            }}
-                            className="flex items-center gap-2"
-                        >
-                            <input
-                                type="file"
-                                ref={fileInputRef}
-                                onChange={handleImageSelect}
-                                accept="image/*"
-                                className="hidden"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => fileInputRef.current?.click()}
-                                className="p-2 text-slate-400 hover:text-[#0684E5] rounded-lg hover:bg-slate-100 dark:hover:bg-neutral-800 transition"
-                                title={pick('Unggah foto ikan', 'Upload fish photo')}
+                        {/* Floating Rounded Composer Card */}
+                        <div className="relative z-10 shrink-0 px-4 pb-4 pt-1">
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    handleSendMessage();
+                                }}
+                                className="rounded-[20px] border border-slate-300/90 dark:border-slate-700 focus-within:border-[#0684E5] bg-white dark:bg-[#111a30] shadow-[0_6px_22px_rgba(15,23,42,0.08)] px-3.5 pt-3 pb-2.5 transition"
                             >
-                                <ImageIcon className="h-5 w-5" />
-                            </button>
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleImageSelect}
+                                    accept="image/*"
+                                    className="hidden"
+                                />
+                                <input
+                                    type="file"
+                                    ref={cameraInputRef}
+                                    onChange={handleImageSelect}
+                                    accept="image/*"
+                                    capture="environment"
+                                    className="hidden"
+                                />
 
-                            <input
-                                type="text"
-                                placeholder={pick('Tanya Kiko...', 'Ask Kiko...')}
-                                value={inputText}
-                                onChange={(e) => setInputText(e.target.value)}
-                                className="h-10 min-w-0 flex-1 rounded-xl border border-slate-200 dark:border-neutral-700 bg-slate-50 dark:bg-[#111a30] px-3 text-xs text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-[#0684E5] focus:bg-white dark:focus:bg-[#162240] transition"
-                            />
+                                {imagePreview && (
+                                    <div className="mb-2.5 flex items-center justify-between rounded-xl bg-slate-50 dark:bg-[#162240] px-2.5 py-1.5 border border-slate-200/80 dark:border-slate-700/80">
+                                        <div className="flex min-w-0 items-center gap-2">
+                                            <img
+                                                src={imagePreview}
+                                                alt={pick('Pratinjau', 'Preview')}
+                                                className="h-9 w-9 object-cover rounded-lg"
+                                            />
+                                            <span className="truncate text-xs text-slate-700 dark:text-neutral-200">
+                                                {selectedImage?.name}
+                                            </span>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={removeImage}
+                                            className="flex h-8 w-8 items-center justify-center rounded-full text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition"
+                                            aria-label={pick('Hapus gambar', 'Remove image')}
+                                        >
+                                            <X className="h-4 w-4" />
+                                        </button>
+                                    </div>
+                                )}
 
-                            <button
-                                type="submit"
-                                disabled={loading || (!inputText.trim() && !selectedImage)}
-                                className="h-10 w-10 flex items-center justify-center rounded-xl bg-[#0684E5] text-white font-bold hover:bg-[#0060aa] transition disabled:cursor-not-allowed disabled:opacity-40 shrink-0"
-                                aria-label={pick('Kirim pesan', 'Send message')}
-                            >
-                                <Send className="h-4 w-4" />
-                            </button>
-                        </form>
-                    </div>
+                                <textarea
+                                    rows={2}
+                                    placeholder={pick(
+                                        'Tanya Kiko...',
+                                        'Ask Kiko...',
+                                    )}
+                                    value={inputText}
+                                    onChange={(e) => setInputText(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault();
+                                            handleSendMessage();
+                                        }
+                                    }}
+                                    className="w-full resize-none border-0 bg-transparent p-0 text-[13px] leading-snug text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-none focus:ring-0"
+                                />
+
+                                <div className="mt-2 flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => fileInputRef.current?.click()}
+                                            className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-100/90 dark:bg-slate-800 text-[#0369A1] dark:text-cyan-400 hover:bg-sky-200/80 dark:hover:bg-slate-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                                            title={pick('Unggah foto ikan', 'Upload fish photo')}
+                                            aria-label={pick('Unggah foto ikan', 'Upload fish photo')}
+                                        >
+                                            <Paperclip className="h-4 w-4" />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => cameraInputRef.current?.click()}
+                                            className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-100/90 dark:bg-slate-800 text-[#0369A1] dark:text-cyan-400 hover:bg-sky-200/80 dark:hover:bg-slate-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                                            title={pick('Ambil foto ikan', 'Take fish photo')}
+                                            aria-label={pick('Ambil foto ikan', 'Take fish photo')}
+                                        >
+                                            <Camera className="h-4 w-4" />
+                                        </button>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={loading || (!inputText.trim() && !selectedImage)}
+                                        className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0B1220] dark:bg-[#0684E5] text-white hover:bg-[#001454] dark:hover:bg-[#0573c9] transition disabled:cursor-not-allowed disabled:opacity-35 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] focus-visible:ring-offset-2"
+                                        aria-label={pick('Kirim pesan', 'Send message')}
+                                    >
+                                        <Send className="h-4 w-4 -translate-x-[0.5px] translate-y-[0.5px]" />
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             )}

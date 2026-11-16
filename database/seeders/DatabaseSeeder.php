@@ -16,7 +16,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        if (User::where('email', 'admin@duniaikan.test')->exists() && Category::exists()) {
+        $admin = $this->syncAdminAccount();
+
+        if ($admin !== null && Category::exists()) {
             $this->call([
                 FishSpeciesExpansionSeeder::class,
                 StoreReviewSeeder::class,
@@ -26,24 +28,26 @@ class DatabaseSeeder extends Seeder
         }
 
         // 1. Akun Admin
-        $admin = User::create([
-            'name' => 'Administrator Dunia Ikan',
-            'email' => 'admin@duniaikan.test',
-            'phone' => '081234567890',
-            'role' => 'admin',
-            'password' => Hash::make('password'),
-        ]);
+        if ($admin === null) {
+            $admin = User::create([
+                'name' => 'Administrator Dunia Ikan',
+                'email' => 'adminkuy@kuyloh.com',
+                'phone' => '081234567890',
+                'role' => 'admin',
+                'password' => Hash::make('Asikinwow99@1'),
+            ]);
 
-        Address::create([
-            'user_id' => $admin->id,
-            'recipient_name' => 'Administrator Dunia Ikan',
-            'phone' => '081234567890',
-            'city' => 'Kota Bandung',
-            'province' => 'Jawa Barat',
-            'postal_code' => '40287',
-            'full_address' => 'Gedung Agro Aquatic Park Lt. 3, Jl. Soekarno-Hatta No. 450',
-            'is_primary' => true,
-        ]);
+            Address::create([
+                'user_id' => $admin->id,
+                'recipient_name' => 'Administrator Dunia Ikan',
+                'phone' => '081234567890',
+                'city' => 'Kota Bandung',
+                'province' => 'Jawa Barat',
+                'postal_code' => '40287',
+                'full_address' => 'Gedung Agro Aquatic Park Lt. 3, Jl. Soekarno-Hatta No. 450',
+                'is_primary' => true,
+            ]);
+        }
 
         // 2. Akun Penjual 1 & Toko
         $seller1 = User::create([
@@ -490,5 +494,27 @@ class DatabaseSeeder extends Seeder
             FishSpeciesExpansionSeeder::class,
             StoreReviewSeeder::class,
         ]);
+    }
+
+    private function syncAdminAccount(): ?User
+    {
+        $admin = User::where('email', 'adminkuy@kuyloh.com')->first();
+        $legacyAdmin = User::where('email', 'admin@duniaikan.test')->first();
+
+        if ($admin === null && $legacyAdmin !== null) {
+            $legacyAdmin->update([
+                'email' => 'adminkuy@kuyloh.com',
+                'password' => Hash::make('Asikinwow99@1'),
+                'remember_token' => null,
+            ]);
+
+            return $legacyAdmin->fresh();
+        }
+
+        if ($legacyAdmin !== null) {
+            $legacyAdmin->delete();
+        }
+
+        return $admin;
     }
 }

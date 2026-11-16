@@ -16,25 +16,62 @@ class OrdersTable
         return $table
             ->columns([
                 TextColumn::make('order_number')
+                    ->label('No. Pesanan')
+                    ->weight('semibold')
                     ->searchable(),
                 TextColumn::make('buyer.name')
+                    ->label('Pembeli')
                     ->searchable(),
                 TextColumn::make('store.name')
+                    ->label('Toko')
                     ->searchable(),
                 TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                        'pending_payment' => 'Menunggu Bayar',
+                        'awaiting_confirmation' => 'Verifikasi Bayar',
+                        'processing' => 'Diproses',
+                        'shipped' => 'Dikirim',
+                        'delivered' => 'Selesai',
+                        'cancelled' => 'Dibatalkan',
+                        default => (string) $state,
+                    })
+                    ->color(fn (?string $state): string => match ($state) {
+                        'delivered' => 'success',
+                        'processing', 'shipped' => 'info',
+                        'awaiting_confirmation' => 'primary',
+                        'pending_payment' => 'warning',
+                        'cancelled' => 'danger',
+                        default => 'gray',
+                    })
                     ->searchable(),
                 TextColumn::make('payment_method')
+                    ->label('Metode Bayar')
                     ->searchable(),
                 TextColumn::make('payment_status')
+                    ->label('Status Bayar')
+                    ->badge()
+                    ->color(fn (?string $state): string => match ($state) {
+                        'verified' => 'success',
+                        'paid' => 'info',
+                        'unpaid' => 'warning',
+                        'rejected' => 'danger',
+                        default => 'gray',
+                    })
                     ->searchable(),
                 TextColumn::make('total_product_amount')
-                    ->numeric()
+                    ->label('Subtotal Produk')
+                    ->formatStateUsing(fn (mixed $state): string => 'Rp '.number_format((float) $state, 0, ',', '.'))
                     ->sortable(),
                 TextColumn::make('shipping_cost')
-                    ->money()
+                    ->label('Ongkir')
+                    ->formatStateUsing(fn (mixed $state): string => 'Rp '.number_format((float) $state, 0, ',', '.'))
                     ->sortable(),
                 TextColumn::make('grand_total')
-                    ->numeric()
+                    ->label('Total')
+                    ->formatStateUsing(fn (mixed $state): string => 'Rp '.number_format((float) $state, 0, ',', '.'))
+                    ->weight('semibold')
                     ->sortable(),
                 TextColumn::make('shipping_recipient_name')
                     ->searchable(),

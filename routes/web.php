@@ -1,12 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
-use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\GuideController as AdminGuideController;
-use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
-use App\Http\Controllers\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Auth\AdminLogoutController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CheckoutController;
@@ -115,6 +110,9 @@ Route::get('/chatbot/history', [ChatbotController::class, 'getHistory'])
 Route::post('/chatbot/message', [ChatbotController::class, 'sendMessage'])
     ->middleware('throttle:20,1')
     ->name('chatbot.message');
+Route::post('/chatbot/new', [ChatbotController::class, 'newSession'])
+    ->middleware('throttle:20,1')
+    ->name('chatbot.new');
 
 // Midtrans Webhook Notification (Exempted from CSRF)
 Route::post('/midtrans/notification', [MidtransController::class, 'notification'])->name('midtrans.notification');
@@ -201,30 +199,25 @@ Route::middleware(['auth', 'role:seller,admin'])->prefix('seller')->name('seller
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes
+| Admin Routes (Unified into Filament /admin)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth:admin,web', 'role:admin'])->prefix('admin-portal')->name('admin.')->group(function () {
-    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
-    Route::post('/logout', AdminLogoutController::class)->name('logout');
+Route::middleware(['auth:admin,web', 'role:admin'])->group(function () {
+    Route::get('/admin/transaction-reports/export', [AdminReportController::class, 'exportCsv'])
+        ->name('filament.admin.reports.export');
 
-    Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
-    Route::post('/categories', [AdminCategoryController::class, 'store'])->name('categories.store');
-    Route::put('/categories/{category}', [AdminCategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
-
-    Route::get('/guides', [AdminGuideController::class, 'index'])->name('guides.index');
-    Route::post('/guides', [AdminGuideController::class, 'store'])->name('guides.store');
-    Route::put('/guides/{guide}', [AdminGuideController::class, 'update'])->name('guides.update');
-    Route::post('/guides/{guide}/toggle', [AdminGuideController::class, 'toggleActive'])->name('guides.toggle');
-    Route::delete('/guides/{guide}', [AdminGuideController::class, 'destroy'])->name('guides.destroy');
-
-    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
-    Route::post('/users/{user}/role', [AdminUserController::class, 'updateRole'])->name('users.update-role');
-    Route::post('/users/{user}/approve-seller', [AdminUserController::class, 'approveSeller'])->name('users.approve-seller');
-    Route::post('/users/{user}/reject-seller', [AdminUserController::class, 'rejectSeller'])->name('users.reject-seller');
-
-    Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('transactions.index');
+    // Redirect legacy /admin-portal paths cleanly into the single Filament panel.
+    Route::prefix('admin-portal')->name('admin.')->group(function () {
+        Route::get('/', fn () => redirect('/admin'))->name('dashboard');
+        Route::get('/categories', fn () => redirect('/admin/categories'))->name('categories.index');
+        Route::get('/guides', fn () => redirect('/admin/fish-guides'))->name('guides.index');
+        Route::get('/users', fn () => redirect('/admin/users'))->name('users.index');
+        Route::get('/transactions', fn () => redirect('/admin/orders'))->name('transactions.index');
+        Route::get('/reports', fn (Request $request) => redirect(
+            '/admin/transaction-reports'.($request->getQueryString() ? '?'.$request->getQueryString() : '')
+        ))->name('reports.index');
+        Route::get('/reports/export', [AdminReportController::class, 'exportCsv'])->name('reports.export');
+    });
 });
 
 require __DIR__.'/auth.php';

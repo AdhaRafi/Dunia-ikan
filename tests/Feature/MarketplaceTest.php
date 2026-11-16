@@ -118,6 +118,26 @@ class MarketplaceTest extends TestCase
         ]);
     }
 
+    public function test_authenticated_user_can_start_new_chatbot_session(): void
+    {
+        $buyer = User::where('role', 'buyer')->first();
+
+        $this->actingAs($buyer)->postJson('/chatbot/message', [
+            'message' => 'Halo Kiko',
+        ])->assertStatus(200);
+
+        $reset = $this->actingAs($buyer)->postJson('/chatbot/new');
+        $reset->assertStatus(200)->assertJson(['messages' => []]);
+        $newToken = $reset->json('session_token');
+
+        $history = $this->actingAs($buyer)->getJson('/chatbot/history?session_token='.$newToken);
+        $history->assertStatus(200)
+            ->assertJson([
+                'session_token' => $newToken,
+                'messages' => [],
+            ]);
+    }
+
     public function test_unauthorized_user_cannot_access_seller_or_admin_routes(): void
     {
         $buyer = User::where('role', 'buyer')->first();
@@ -502,25 +522,48 @@ class MarketplaceTest extends TestCase
 
         $this->assertAuthenticatedAs($buyer, 'web');
 
-        // Buyer visiting /admin is prompted to sign in at /admin/login instead of 403
+        // Buyer visiting any /admin panel route is always gated by /admin/login first
         $this->get('/admin')->assertRedirect('/admin/login');
-        $this->get('/admin/login')->assertStatus(200);
+        $this->get('/admin/fish-guides')->assertRedirect('/admin/login');
+        $this->get('/admin/transaction-reports')->assertRedirect('/admin/login');
+        $this->get('/admin/login')
+            ->assertStatus(200)
+            ->assertSee('Login Admin Dunia Ikan');
 
-        // Log into admin panel via Filament Livewire login while web buyer remains logged in
+        // Reject wrong password
         Livewire::test(FilamentLogin::class)
             ->fillForm([
-                'email' => $admin->email,
-                'password' => 'password',
+                'email' => 'Adminkuy@kuyloh.com',
+                'password' => 'wrong-password',
+            ])
+            ->call('authenticate')
+            ->assertHasFormErrors(['email']);
+        $this->assertGuest('admin');
+
+        // Log into admin panel via Filament Livewire login with mixed-case email while web buyer remains logged in
+        Livewire::test(FilamentLogin::class)
+            ->fillForm([
+                'email' => 'Adminkuy@kuyloh.com',
+                'password' => 'Asikinwow99@1',
             ])
             ->call('authenticate')
             ->assertHasNoFormErrors();
 
+        $this->assertSame('adminkuy@kuyloh.com', $admin->email);
         $this->assertAuthenticatedAs($admin, 'admin');
         $this->assertAuthenticatedAs($buyer, 'web');
 
-        // Both admin panels and buyer storefront routes work concurrently
-        $this->get('/admin')->assertStatus(200);
-        $this->get('/admin-portal')->assertStatus(200);
+        // Unified Filament admin dashboard & legacy redirect work while buyer storefront routes stay isolated
+        $this->get('/admin')
+            ->assertStatus(200)
+            ->assertSee('Ringkasan Platform')
+            ->assertSee('Pendapatan Terverifikasi')
+            ->assertSee('Total Penjualan')
+            ->assertSee('Aktivitas Pesanan')
+            ->assertSee('Transaksi Terbesar')
+            ->assertSee('Pesanan Berdasarkan Kota');
+
+        $this->get('/admin-portal')->assertRedirect('/admin');
         $this->get('/orders')->assertStatus(200);
 
         // Logging out of admin keeps the buyer web session intact
