@@ -29,6 +29,7 @@ return [
             'dashboard',
             'login',
             'register',
+            'social.*',
             'password.*',
             'verification.*',
             'logout',

@@ -1,6 +1,7 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PasswordInput from '@/Components/PasswordInput';
+import SocialAuthButtons from '@/Components/SocialAuthButtons';
 import TextInput from '@/Components/TextInput';
 import TurnstileWidget from '@/Components/TurnstileWidget';
 import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
@@ -270,6 +271,8 @@ export default function Register() {
                     </button>
                 </div>
             </form>
+
+            <SocialAuthButtons error={errors.social} mode="register" />
 
             <p className="mt-4 text-center text-[13px] text-slate-500 dark:text-slate-400">
                 {pick('Sudah punya akun?', 'Already have an account?')}{' '}

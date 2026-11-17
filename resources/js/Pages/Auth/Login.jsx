@@ -2,6 +2,7 @@ import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PasswordInput from '@/Components/PasswordInput';
+import SocialAuthButtons from '@/Components/SocialAuthButtons';
 import TextInput from '@/Components/TextInput';
 import TurnstileWidget from '@/Components/TurnstileWidget';
 import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
@@ -145,6 +146,8 @@ export default function Login({
                     {processing ? pick('Memproses...', 'Signing in...') : pick('Masuk', 'Sign In')}
                 </button>
             </form>
+
+            <SocialAuthButtons error={errors.social} mode="login" />
 
             {canUseDemoAccounts && demoAccounts.length > 0 && (
                 <>

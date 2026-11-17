@@ -37,6 +37,8 @@ class User extends Authenticatable implements FilamentUser
         'seller_application_note',
         'seller_reviewed_at',
         'avatar',
+        'google_id',
+        'facebook_id',
         'password',
     ];
 
@@ -68,6 +70,8 @@ class User extends Authenticatable implements FilamentUser
     protected $hidden = [
         'password',
         'remember_token',
+        'google_id',
+        'facebook_id',
     ];
 
     /**
