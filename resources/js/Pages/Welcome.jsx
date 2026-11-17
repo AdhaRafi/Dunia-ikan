@@ -63,6 +63,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
     const { pick, isEn } = useLanguage();
     const [selectedTab, setSelectedTab] = useState('all');
     const [openFaq, setOpenFaq] = useState(0);
+    const [showAllCategories, setShowAllCategories] = useState(false);
 
     // Filter items based on quick chips
     const displayedProducts = (
@@ -171,6 +172,11 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
         },
     ];
 
+    const INITIAL_CATEGORY_COUNT = 12;
+    const visibleCategories = showAllCategories
+        ? shopCategories
+        : shopCategories.slice(0, INITIAL_CATEGORY_COUNT);
+
     return (
         <AppLayout>
             <Head
@@ -258,7 +264,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
 
             <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
                 {/* 2. KATEGORI TOKO (Clean MorphMarket Studio Cutout Cards) */}
-                <section className="space-y-4">
+                <section className="space-y-5">
                     <div className="flex items-center justify-between gap-2">
                         <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
                             {pick('Kategori Toko', 'Shop by Category')}
@@ -267,17 +273,22 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             href="/products"
                             className="text-xs font-semibold text-neutral-500 hover:text-[#001454] dark:text-neutral-400 dark:hover:text-white transition"
                         >
-                            {pick('Lihat Semua', 'View All')}
+                            {pick('Jelajahi Katalog', 'Browse Catalog')}
                         </Link>
                     </div>
 
-                    {/* 12 Clean White-Backdrop Category Tiles (2x6 MorphMarket Grid) */}
+                    {/* Clean White-Backdrop Category Tiles (12 initial -> expandable to full catalog categories) */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
-                        {shopCategories.map((group, idx) => (
+                        {visibleCategories.map((group, idx) => (
                             <Link
                                 key={group.title}
                                 href={group.link}
-                                style={{ '--overlap-i': idx }}
+                                style={{
+                                    '--overlap-i':
+                                        idx >= INITIAL_CATEGORY_COUNT
+                                            ? idx - INITIAL_CATEGORY_COUNT
+                                            : idx,
+                                }}
                                 className="overlap-enter card-hover group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] shadow-[0_2px_8px_rgba(15,23,42,0.03)] flex flex-col items-center overflow-hidden p-3"
                             >
                                 <div className="w-full aspect-square bg-white rounded-xl overflow-hidden flex items-center justify-center p-1">
@@ -295,6 +306,24 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             </Link>
                         ))}
                     </div>
+
+                    {shopCategories.length > INITIAL_CATEGORY_COUNT && (
+                        <div className="flex justify-center pt-1">
+                            <button
+                                type="button"
+                                onClick={() => setShowAllCategories((prev) => !prev)}
+                                aria-expanded={showAllCategories}
+                                className="btn-motion inline-flex items-center justify-center rounded-full border border-slate-300 dark:border-neutral-700 bg-slate-50/90 dark:bg-[#0f172a] hover:bg-white dark:hover:bg-slate-800/90 hover:border-slate-400 dark:hover:border-[#4AB8BD] px-6 py-2 text-xs sm:text-[13px] font-semibold text-slate-900 dark:text-slate-100 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition"
+                            >
+                                {showAllCategories
+                                    ? pick('Tampilkan Lebih Sedikit', 'Show Fewer Categories')
+                                    : pick(
+                                          `Lihat Semua ${shopCategories.length} Kategori`,
+                                          `View All ${shopCategories.length} Categories`,
+                                      )}
+                            </button>
+                        </div>
+                    )}
                 </section>
 
                 {/* 4. PRODUCT GRID */}
@@ -443,6 +472,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             {FAQ_ITEMS.map((item, index) => {
                                 const isExpanded = openFaq === index;
                                 const copy = isEn ? item.en : item.id;
+
                                 return (
                                     <button
                                         key={copy.question}
