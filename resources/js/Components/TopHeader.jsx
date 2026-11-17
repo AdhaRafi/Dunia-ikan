@@ -77,6 +77,10 @@ export default function TopHeader({
     const [searchOpen, setSearchOpen] = useState(false);
     const [catalogOpen, setCatalogOpen] = useState(false);
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+    const [overDarkSection, setOverDarkSection] = useState(
+        () => pathname === '/' || pathname === '/products' || pathname.startsWith('/stores/'),
+    );
+    const [isScrolled, setIsScrolled] = useState(false);
 
     const headerRef = useRef(null);
     const searchInputRef = useRef(null);
@@ -95,9 +99,59 @@ export default function TopHeader({
     const isControlledTheme = typeof controlledDarkMode === 'boolean' && typeof onToggleDarkMode === 'function';
     const darkMode = isControlledTheme ? controlledDarkMode : internalDarkMode;
 
+    // Navbar adopts dark glass when over a dark hero section or when site-wide Dark Mode is active.
+    const isDarkNav = darkMode || overDarkSection;
+
     const catalogItems = buildCatalogDropdownItems(url, pick);
     const storeNavItem = buildStoreNavItem(url, user, pick);
     const isCatalogActive = pathname.startsWith('/products');
+
+    useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
+        let rafId = null;
+        const probeY = 40;
+
+        const syncNavSurface = () => {
+            rafId = null;
+            const darkSections = document.querySelectorAll('[data-nav-theme="dark"]');
+            let touchingDark = false;
+
+            for (const el of darkSections) {
+                const rect = el.getBoundingClientRect();
+                if (rect.top <= probeY && rect.bottom >= probeY) {
+                    touchingDark = true;
+                    break;
+                }
+            }
+
+            setOverDarkSection(touchingDark);
+            setIsScrolled(window.scrollY > 24);
+        };
+
+        const scheduleSync = () => {
+            if (rafId === null) {
+                rafId = window.requestAnimationFrame(syncNavSurface);
+            }
+        };
+
+        syncNavSurface();
+        const postNavRaf = window.requestAnimationFrame(syncNavSurface);
+
+        window.addEventListener('scroll', scheduleSync, { passive: true });
+        window.addEventListener('resize', scheduleSync, { passive: true });
+
+        return () => {
+            window.removeEventListener('scroll', scheduleSync);
+            window.removeEventListener('resize', scheduleSync);
+            window.cancelAnimationFrame(postNavRaf);
+            if (rafId !== null) {
+                window.cancelAnimationFrame(rafId);
+            }
+        };
+    }, [url]);
 
     useEffect(() => {
         const handleOutside = (event) => {
@@ -210,18 +264,41 @@ export default function TopHeader({
         };
     }).filter((group) => group.items.length > 0);
 
+    const iconButtonClass = isDarkNav
+        ? 'text-white/80 hover:text-white hover:bg-white/15'
+        : 'text-[#1E80A0] hover:text-[#001454] hover:bg-[#eef6ff]';
+
+    const getNavLinkClass = (active) =>
+        `glass-nav-link px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 rounded-md ${
+            isDarkNav
+                ? `focus-visible:ring-[#4AB8BD] ${active ? 'text-white font-semibold' : 'text-white/80 hover:text-white font-medium'}`
+                : `focus-visible:ring-[#0684E5] ${active ? 'text-[#001454] font-semibold' : 'text-slate-600 hover:text-[#001454] font-medium'}`
+        }`;
+
     return (
         <header
             ref={headerRef}
             className="sticky top-0 z-40 px-3 sm:px-6 pt-2.5 sm:pt-3 pb-1 pointer-events-none"
         >
-            <div className="pointer-events-auto glass-nav-bar max-w-6xl mx-auto h-14 px-3.5 sm:px-5 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 text-[#001454] dark:text-white transition-colors duration-200">
-                {/* Left: Adaptive Brand Wordmark */}
+            <div
+                className={`pointer-events-auto glass-nav-bar max-w-6xl mx-auto h-14 px-3.5 sm:px-5 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 ${
+                    isDarkNav
+                        ? 'glass-nav-dark text-white'
+                        : 'glass-nav-light text-[#001454]'
+                } ${isScrolled ? 'glass-nav-scrolled' : ''}`}
+            >
+                {/* Left: Smoothly Crossfading Adaptive Brand Wordmark */}
                 <Link
                     href="/"
-                    className="flex items-center shrink-0 hover:opacity-90 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-lg"
+                    className={`flex items-center shrink-0 hover:opacity-90 transition focus-visible:outline-none focus-visible:ring-2 rounded-lg ${
+                        isDarkNav ? 'focus-visible:ring-[#4AB8BD]' : 'focus-visible:ring-[#0684E5]'
+                    }`}
                 >
-                    <BrandWordmark variant="auto" className="h-6 sm:h-7" />
+                    <BrandWordmark
+                        variant="adaptive"
+                        isDarkSurface={isDarkNav}
+                        className="h-6 sm:h-7"
+                    />
                 </Link>
 
                 {/* Center: Floating Glass Links + Glowing Aquatic Hover Underline */}
@@ -233,11 +310,7 @@ export default function TopHeader({
                         href="/"
                         data-active={pathname === '/' ? 'true' : 'false'}
                         aria-current={pathname === '/' ? 'page' : undefined}
-                        className={`glass-nav-link px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-md ${
-                            pathname === '/'
-                                ? 'text-[#001454] dark:text-white font-semibold'
-                                : 'text-slate-600 hover:text-[#001454] dark:text-white/75 dark:hover:text-white font-medium'
-                        }`}
+                        className={getNavLinkClass(pathname === '/')}
                     >
                         {pick('Beranda', 'Home')}
                     </Link>
@@ -254,11 +327,7 @@ export default function TopHeader({
                             data-active={isCatalogActive || catalogOpen ? 'true' : 'false'}
                             aria-expanded={catalogOpen}
                             aria-haspopup="true"
-                            className={`glass-nav-link inline-flex items-center gap-1 px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-md ${
-                                isCatalogActive || catalogOpen
-                                    ? 'text-[#001454] dark:text-white font-semibold'
-                                    : 'text-slate-600 hover:text-[#001454] dark:text-white/75 dark:hover:text-white font-medium'
-                            }`}
+                            className={`${getNavLinkClass(isCatalogActive || catalogOpen)} inline-flex items-center gap-1`}
                         >
                             <span>{pick('Katalog', 'Catalog')}</span>
                             <ChevronDown
@@ -318,11 +387,7 @@ export default function TopHeader({
                         href="/guides"
                         data-active={pathname.startsWith('/guides') ? 'true' : 'false'}
                         aria-current={pathname.startsWith('/guides') ? 'page' : undefined}
-                        className={`glass-nav-link px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-md ${
-                            pathname.startsWith('/guides')
-                                ? 'text-[#001454] dark:text-white font-semibold'
-                                : 'text-slate-600 hover:text-[#001454] dark:text-white/75 dark:hover:text-white font-medium'
-                        }`}
+                        className={getNavLinkClass(pathname.startsWith('/guides'))}
                     >
                         {pick('Panduan', 'Guides')}
                     </Link>
@@ -330,10 +395,16 @@ export default function TopHeader({
                     <button
                         type="button"
                         onClick={() => onOpenChat?.()}
-                        className="glass-nav-link btn-motion inline-flex items-center gap-1.5 px-1 py-1.5 text-[13px] font-medium tracking-[-0.01em] text-slate-600 hover:text-[#001454] dark:text-white/75 dark:hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-md"
+                        className={`${getNavLinkClass(false)} btn-motion inline-flex items-center gap-1.5`}
                     >
                         <span>{pick('Tanya Kiko', 'Ask Kiko')}</span>
-                        <span className="rounded-full bg-[#4AB8BD]/15 border border-[#1E80A0]/25 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#00696D] dark:bg-[#4AB8BD]/20 dark:border-[#4AB8BD]/30 dark:text-[#4AB8BD] leading-none">
+                        <span
+                            className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider leading-none transition-colors duration-300 ${
+                                isDarkNav
+                                    ? 'bg-[#4AB8BD]/20 border border-[#4AB8BD]/35 text-[#8BE8EC]'
+                                    : 'bg-[#4AB8BD]/15 border border-[#1E80A0]/25 text-[#00696D]'
+                            }`}
+                        >
                             AI
                         </span>
                     </button>
@@ -342,17 +413,13 @@ export default function TopHeader({
                         href="/orders"
                         data-active={pathname.startsWith('/orders') ? 'true' : 'false'}
                         aria-current={pathname.startsWith('/orders') ? 'page' : undefined}
-                        className={`glass-nav-link px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-md ${
-                            pathname.startsWith('/orders')
-                                ? 'text-[#001454] dark:text-white font-semibold'
-                                : 'text-slate-600 hover:text-[#001454] dark:text-white/75 dark:hover:text-white font-medium'
-                        }`}
+                        className={getNavLinkClass(pathname.startsWith('/orders'))}
                     >
                         {pick('Pesanan', 'Orders')}
                     </Link>
                 </nav>
 
-                {/* Right: Search Orb, Language/Theme Utilities, Cart, Aquatic CTA & Mobile Trigger */}
+                {/* Right: Search Orb, Language/Theme Utilities, Cart, Adaptive CTA & Mobile Trigger */}
                 <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
                     {/* Search Orb Trigger */}
                     <button
@@ -361,23 +428,25 @@ export default function TopHeader({
                         aria-expanded={searchOpen}
                         aria-label={pick('Cari Produk', 'Search Products')}
                         title={pick('Cari Produk', 'Search Products')}
-                        className={`btn-motion h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full transition-all ${
+                        className={`btn-motion h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full transition-all duration-300 ${
                             searchOpen
-                                ? 'bg-[#001454] text-white dark:bg-[#4AB8BD] dark:text-[#001454] shadow-sm'
-                                : 'text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white hover:bg-[#eef6ff] dark:hover:bg-white/15'
+                                ? isDarkNav
+                                    ? 'bg-[#4AB8BD] text-[#001454] shadow-sm'
+                                    : 'bg-[#001454] text-white shadow-sm'
+                                : iconButtonClass
                         }`}
                     >
                         {searchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
                     </button>
 
                     <div className="hidden sm:block">
-                        <LanguageSwitcher />
+                        <LanguageSwitcher variant={isDarkNav ? 'overlay' : 'default'} />
                     </div>
 
                     <button
                         type="button"
                         onClick={handleToggleTheme}
-                        className="btn-motion h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white hover:bg-[#eef6ff] dark:hover:bg-white/15 hover:rotate-12"
+                        className={`btn-motion h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full hover:rotate-12 transition-colors duration-300 ${iconButtonClass}`}
                         title={darkMode ? pick('Tema Terang', 'Light Theme') : pick('Tema Gelap', 'Dark Theme')}
                         aria-label={pick('Ubah Tema', 'Toggle Theme')}
                     >
@@ -386,17 +455,21 @@ export default function TopHeader({
 
                     <Link
                         href="/products?sort=popular"
-                        className="btn-motion hidden lg:inline-flex relative h-9 w-9 items-center justify-center rounded-full text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#0684E5] dark:hover:text-white hover:bg-[#eef6ff] dark:hover:bg-white/15"
+                        className={`btn-motion hidden lg:inline-flex relative h-9 w-9 items-center justify-center rounded-full transition-colors duration-300 ${iconButtonClass}`}
                         title={pick('Daftar Keinginan', 'Wishlist')}
                         aria-label={pick('Daftar Keinginan', 'Wishlist')}
                     >
                         <Heart className="w-4 h-4" />
-                        <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[#0684E5] dark:bg-[#4AB8BD]" />
+                        <span
+                            className={`absolute top-2 right-2 w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                                isDarkNav ? 'bg-[#4AB8BD]' : 'bg-[#0684E5]'
+                            }`}
+                        />
                     </Link>
 
                     <Link
                         href="/cart"
-                        className="btn-motion relative h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white hover:bg-[#eef6ff] dark:hover:bg-white/15"
+                        className={`btn-motion relative h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full transition-colors duration-300 ${iconButtonClass}`}
                         title={pick('Keranjang Belanja', 'Shopping Cart')}
                         aria-label={pick('Keranjang Belanja', 'Shopping Cart')}
                     >
@@ -416,7 +489,11 @@ export default function TopHeader({
                             {storeNavItem && (
                                 <Link
                                     href={storeNavItem.href}
-                                    className="btn-motion btn-sheen hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-xl bg-[#001454] hover:bg-[#0684E5] dark:bg-[#4AB8BD] dark:hover:bg-[#3aa4a9] text-white dark:text-[#001454] text-xs font-semibold shadow-2xs"
+                                    className={`btn-motion btn-sheen hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-xl text-xs font-semibold shadow-2xs transition-colors duration-300 ${
+                                        isDarkNav
+                                            ? 'bg-white/15 hover:bg-[#4AB8BD] border border-white/20 text-white hover:text-[#001454]'
+                                            : 'bg-[#001454] hover:bg-[#0684E5] text-white'
+                                    }`}
                                 >
                                     {storeNavItem.label}
                                 </Link>
@@ -426,14 +503,22 @@ export default function TopHeader({
                                 <button
                                     type="button"
                                     onClick={() => setUserDropdownOpen((prev) => !prev)}
-                                    className="btn-motion flex items-center gap-1.5 p-0.5 pr-2 rounded-full border border-[#1E80A0]/20 dark:border-white/15 bg-white/70 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 transition"
+                                    className={`btn-motion flex items-center gap-1.5 p-0.5 pr-2 rounded-full border transition-colors duration-300 ${
+                                        isDarkNav
+                                            ? 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
+                                            : 'border-[#1E80A0]/20 bg-white/80 hover:bg-white text-[#001454]'
+                                    }`}
                                     aria-label={pick('Menu Pengguna', 'User Menu')}
                                 >
                                     <UserAvatar user={user} className="w-7 h-7 text-[11px]" />
-                                    <span className="hidden xl:inline text-xs font-semibold text-[#001454] dark:text-white max-w-[92px] truncate">
+                                    <span className="hidden xl:inline text-xs font-semibold max-w-[92px] truncate">
                                         {user.name}
                                     </span>
-                                    <ChevronDown className="w-3.5 h-3.5 text-[#1E80A0] dark:text-white/75" />
+                                    <ChevronDown
+                                        className={`w-3.5 h-3.5 transition-colors duration-300 ${
+                                            isDarkNav ? 'text-white/75' : 'text-[#1E80A0]'
+                                        }`}
+                                    />
                                 </button>
 
                                 {userDropdownOpen && (
@@ -518,13 +603,21 @@ export default function TopHeader({
                         <div className="flex items-center gap-1.5 ml-0.5">
                             <Link
                                 href="/login"
-                                className="hidden sm:inline-flex items-center px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-[#001454] dark:text-white/80 dark:hover:text-white transition"
+                                className={`hidden sm:inline-flex items-center px-2.5 py-1.5 text-xs font-semibold transition-colors duration-300 ${
+                                    isDarkNav
+                                        ? 'text-white/80 hover:text-white'
+                                        : 'text-slate-600 hover:text-[#001454]'
+                                }`}
                             >
                                 {pick('Masuk', 'Log in')}
                             </Link>
                             <Link
                                 href="/register"
-                                className="btn-motion btn-sheen inline-flex items-center px-3.5 py-1.5 rounded-xl bg-[#001454] hover:bg-[#0684E5] dark:bg-white/15 dark:hover:bg-[#4AB8BD] dark:border dark:border-white/20 text-white dark:hover:text-[#001454] font-semibold text-xs shadow-2xs"
+                                className={`btn-motion btn-sheen inline-flex items-center px-3.5 py-1.5 rounded-xl font-semibold text-xs shadow-2xs transition-colors duration-300 ${
+                                    isDarkNav
+                                        ? 'bg-white/15 hover:bg-[#4AB8BD] border border-white/20 text-white hover:text-[#001454]'
+                                        : 'bg-[#001454] hover:bg-[#0684E5] text-white'
+                                }`}
                             >
                                 {pick('Daftar', 'Sign up')}
                             </Link>
@@ -535,7 +628,11 @@ export default function TopHeader({
                     <button
                         type="button"
                         onClick={onOpenMobileSidebar}
-                        className="btn-motion md:hidden inline-flex items-center gap-1.5 h-8 px-2.5 rounded-xl bg-[#f3f2ff] hover:bg-[#e5e9fb] border border-[#1E80A0]/15 text-[#001454] dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white text-xs font-semibold shrink-0"
+                        className={`btn-motion md:hidden inline-flex items-center gap-1.5 h-8 px-2.5 rounded-xl border text-xs font-semibold shrink-0 transition-colors duration-300 ${
+                            isDarkNav
+                                ? 'bg-white/10 hover:bg-white/20 border-white/15 text-white'
+                                : 'bg-[#f3f2ff] hover:bg-[#e5e9fb] border-[#1E80A0]/15 text-[#001454]'
+                        }`}
                         aria-label={pick('Buka Menu Navigasi', 'Open Navigation Menu')}
                     >
                         <svg viewBox="0 0 16 10" className="w-3.5 h-2.5 fill-none stroke-current" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">

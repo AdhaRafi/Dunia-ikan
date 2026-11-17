@@ -164,7 +164,10 @@ export default function Index({ products, categories, cities, filters }) {
             </Head>
 
             {/* Editorial Top Banner */}
-            <section className="-mt-[70px] sm:-mt-[72px] relative h-[300px] sm:h-[348px] lg:h-[380px] w-full overflow-hidden bg-[#0b1320]">
+            <section
+                data-nav-theme="dark"
+                className="-mt-[70px] sm:-mt-[72px] relative h-[300px] sm:h-[348px] lg:h-[380px] w-full overflow-hidden bg-[#0b1320]"
+            >
                 <img
                     src={bannerImage}
                     alt={`${bannerTitle} Dunia Ikan`}

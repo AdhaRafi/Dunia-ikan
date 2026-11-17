@@ -1,24 +1,47 @@
-export default function BrandWordmark({ 
-    className = "h-8", 
-    variant = "auto", // 'auto', 'default', 'white'
-    alt = "Dunia Ikan Aquatic" 
+export default function BrandWordmark({
+    className = 'h-8',
+    variant = 'auto', // 'auto', 'default', 'white', 'adaptive'
+    isDarkSurface = false,
+    alt = 'Dunia Ikan Aquatic',
 }) {
+    if (variant === 'adaptive') {
+        return (
+            <span className="relative inline-flex items-center">
+                <img
+                    src="/images/brand/logo-dunia-ikan.png?v=2"
+                    alt={alt}
+                    className={`w-auto object-contain select-none transition-opacity duration-300 ${className} ${
+                        isDarkSurface ? 'opacity-0' : 'opacity-100'
+                    }`}
+                />
+                <img
+                    src="/images/brand/logo-dunia-ikan-white.png?v=2"
+                    alt=""
+                    aria-hidden="true"
+                    className={`absolute inset-0 w-auto object-contain select-none transition-opacity duration-300 ${className} ${
+                        isDarkSurface ? 'opacity-100' : 'opacity-0'
+                    }`}
+                />
+            </span>
+        );
+    }
+
     if (variant === 'white') {
         return (
-            <img 
-                src="/images/brand/logo-dunia-ikan-white.png?v=2" 
-                alt={alt} 
-                className={`w-auto object-contain select-none ${className}`} 
+            <img
+                src="/images/brand/logo-dunia-ikan-white.png?v=2"
+                alt={alt}
+                className={`w-auto object-contain select-none ${className}`}
             />
         );
     }
 
     if (variant === 'default') {
         return (
-            <img 
-                src="/images/brand/logo-dunia-ikan.png?v=2" 
-                alt={alt} 
-                className={`w-auto object-contain select-none ${className}`} 
+            <img
+                src="/images/brand/logo-dunia-ikan.png?v=2"
+                alt={alt}
+                className={`w-auto object-contain select-none ${className}`}
             />
         );
     }
@@ -26,15 +49,15 @@ export default function BrandWordmark({
     // auto mode: adapts to light/dark class
     return (
         <>
-            <img 
-                src="/images/brand/logo-dunia-ikan.png?v=2" 
-                alt={alt} 
-                className={`w-auto object-contain select-none dark:hidden ${className}`} 
+            <img
+                src="/images/brand/logo-dunia-ikan.png?v=2"
+                alt={alt}
+                className={`w-auto object-contain select-none dark:hidden ${className}`}
             />
-            <img 
-                src="/images/brand/logo-dunia-ikan-white.png?v=2" 
-                alt={alt} 
-                className={`w-auto object-contain select-none hidden dark:block ${className}`} 
+            <img
+                src="/images/brand/logo-dunia-ikan-white.png?v=2"
+                alt={alt}
+                className={`w-auto object-contain select-none hidden dark:block ${className}`}
             />
         </>
     );

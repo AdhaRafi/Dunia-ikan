@@ -29,7 +29,10 @@ export default function Show({ store, products, storeRating }) {
                 />
             </Head>
 
-            <section className="-mt-[70px] sm:-mt-[72px] pt-[70px] sm:pt-[72px] bg-field4 text-white">
+            <section
+                data-nav-theme="dark"
+                className="-mt-[70px] sm:-mt-[72px] pt-[70px] sm:pt-[72px] bg-field4 text-white"
+            >
                 <div className="container-page grid gap-8 py-12 md:py-16 lg:grid-cols-12 lg:items-end">
                     <div className="lg:col-span-7">
                         <div className="flex items-center gap-4 mb-4">
