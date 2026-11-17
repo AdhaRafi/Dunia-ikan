@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use App\Models\Store;
+use App\Support\MediaStorage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -133,14 +133,10 @@ class StoreProfileController extends Controller
         ]);
 
         if ($request->hasFile('logo')) {
-            if ($store->logo && Storage::disk('public')->exists($store->logo)) {
-                Storage::disk('public')->delete($store->logo);
-            }
-            $validated['logo'] = $request->file('logo')->store('stores/logos', 'public');
+            MediaStorage::delete($store->logo);
+            $validated['logo'] = MediaStorage::store($request->file('logo'), 'stores/logos');
         } elseif ($request->boolean('remove_logo')) {
-            if ($store->logo && Storage::disk('public')->exists($store->logo)) {
-                Storage::disk('public')->delete($store->logo);
-            }
+            MediaStorage::delete($store->logo);
             $validated['logo'] = null;
         } else {
             unset($validated['logo']);
@@ -149,10 +145,8 @@ class StoreProfileController extends Controller
         unset($validated['remove_logo']);
 
         if ($request->hasFile('qris_image')) {
-            if ($store->qris_image && Storage::disk('public')->exists($store->qris_image)) {
-                Storage::disk('public')->delete($store->qris_image);
-            }
-            $validated['qris_image'] = $request->file('qris_image')->store('stores/qris', 'public');
+            MediaStorage::delete($store->qris_image);
+            $validated['qris_image'] = MediaStorage::store($request->file('qris_image'), 'stores/qris');
         } else {
             unset($validated['qris_image']);
         }

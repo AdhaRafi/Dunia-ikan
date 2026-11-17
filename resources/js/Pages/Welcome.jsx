@@ -3,6 +3,7 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { Minus, Plus } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
+import StoreLogo from '@/Components/StoreLogo';
 import {
     AquaticBannerOrnaments,
     HeroWaveTransition,
@@ -409,19 +410,11 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                     className="overlap-enter card-hover group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] shadow-[0_2px_8px_rgba(15,23,42,0.03)] flex flex-col overflow-hidden"
                                 >
                                     <div className="w-full aspect-square bg-white dark:bg-slate-900 overflow-hidden flex items-center justify-center border-b border-slate-100 dark:border-neutral-800/80">
-                                        {store.logo_url ? (
-                                            <img
-                                                src={store.logo_url}
-                                                alt={store.name}
-                                                loading="lazy"
-                                                decoding="async"
-                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full bg-slate-50 dark:bg-[#162240] flex items-center justify-center font-extrabold text-3xl text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] transition">
-                                                {store.name.charAt(0).toUpperCase()}
-                                            </div>
-                                        )}
+                                        <StoreLogo
+                                            store={store}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                            fallbackClassName="w-full h-full bg-slate-50 dark:bg-[#162240] flex items-center justify-center font-extrabold text-3xl text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] transition"
+                                        />
                                     </div>
                                     <div className="px-3 py-2.5">
                                         <h3 className="text-xs font-bold text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] truncate transition">

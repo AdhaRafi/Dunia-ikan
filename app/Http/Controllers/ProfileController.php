@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Order;
+use App\Support\MediaStorage;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -52,14 +52,10 @@ class ProfileController extends Controller
         $user->fill($request->safe()->except(['avatar', 'remove_avatar']));
 
         if ($request->hasFile('avatar')) {
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
-            }
-            $user->avatar = $request->file('avatar')->store('avatars', 'public');
+            MediaStorage::delete($user->avatar);
+            $user->avatar = MediaStorage::store($request->file('avatar'), 'avatars');
         } elseif ($request->boolean('remove_avatar')) {
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
-            }
+            MediaStorage::delete($user->avatar);
             $user->avatar = null;
         }
 
@@ -83,9 +79,7 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-            Storage::disk('public')->delete($user->avatar);
-        }
+        MediaStorage::delete($user->avatar);
 
         Auth::logout();
 

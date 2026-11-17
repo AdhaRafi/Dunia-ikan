@@ -7,6 +7,7 @@ use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -36,6 +37,9 @@ Route::get('/products/{slug}', [ProductController::class, 'show'])->name('produc
 Route::get('/stores/{slug}', [StoreController::class, 'show'])->name('stores.show');
 Route::get('/guides', [GuideController::class, 'index'])->name('guides.index');
 Route::get('/guides/{id}', [GuideController::class, 'show'])->name('guides.show');
+Route::get('/storage/{path}', [MediaController::class, 'show'])
+    ->where('path', '^[a-zA-Z0-9_.\-/]+$')
+    ->name('media.show');
 Route::get('/sitemap.xml', function (): HttpResponse {
     $xml = Cache::remember('sitemap.xml', now()->addHour(), function (): string {
         $urls = [

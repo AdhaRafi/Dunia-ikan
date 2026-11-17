@@ -6,6 +6,7 @@ use App\Models\ChatMessage;
 use App\Models\ChatSession;
 use App\Models\FishGuide;
 use App\Models\Product;
+use App\Support\MediaStorage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -111,7 +112,7 @@ class ChatbotController extends Controller
         $imageMime = null;
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $imagePath = $file->store('chat_uploads', 'public');
+            $imagePath = MediaStorage::store($file, 'chat_uploads');
             $imageBase64 = base64_encode(file_get_contents($file->getRealPath()));
             $imageMime = $file->getMimeType();
         }

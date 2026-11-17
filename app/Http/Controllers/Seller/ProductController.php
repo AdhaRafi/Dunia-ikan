@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\FishDetail;
 use App\Models\Product;
+use App\Support\MediaStorage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -83,7 +84,7 @@ class ProductController extends Controller
 
         $imagePath = $validated['image_url'] ?? null;
         if ($request->hasFile('image_file')) {
-            $imagePath = '/storage/'.$request->file('image_file')->store('products', 'public');
+            $imagePath = '/storage/'.MediaStorage::store($request->file('image_file'), 'products');
         }
 
         $slug = Str::slug($validated['name']).'-'.Str::random(5);
@@ -177,7 +178,8 @@ class ProductController extends Controller
 
         $imagePath = $product->image;
         if ($request->hasFile('image_file')) {
-            $imagePath = '/storage/'.$request->file('image_file')->store('products', 'public');
+            MediaStorage::delete($product->image);
+            $imagePath = '/storage/'.MediaStorage::store($request->file('image_file'), 'products');
         } elseif (! empty($validated['image_url'])) {
             $imagePath = $validated['image_url'];
         }
@@ -225,6 +227,7 @@ class ProductController extends Controller
             abort(403);
         }
 
+        MediaStorage::delete($product->image);
         $product->delete();
 
         return back()->with('success', 'Produk berhasil dihapus.');

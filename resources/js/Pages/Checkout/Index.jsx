@@ -105,12 +105,12 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
             <Head title={pick('Checkout Pembelian Ikan - Dunia Ikan', 'Checkout — Dunia Ikan')} />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                <Link href="/cart" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-dunia-blue mb-6 transition">
+                <Link href="/cart" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-dunia-blue dark:hover:text-[#4AB8BD] mb-6 transition">
                     <ArrowLeft className="w-4 h-4" />
                     {pick('Kembali ke Keranjang', 'Back to Cart')}
                 </Link>
 
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-dunia-navy tracking-tight mb-8">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-dunia-navy dark:text-white tracking-tight mb-8">
                     {pick('Checkout Pembelian', 'Checkout')}
                 </h1>
 
@@ -118,10 +118,10 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                     {/* Left Column: Address & Payment Methods */}
                     <div className="lg:col-span-8 space-y-6">
                         {/* 1. Alamat Pengiriman */}
-                        <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-4">
-                            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
-                                <h2 className="font-bold text-sm text-dunia-navy uppercase tracking-wider flex items-center gap-2">
-                                    <MapPin className="w-4 h-4 text-[#0684E5]" />
+                        <div className="bg-white dark:bg-[#0e1424] p-6 rounded-2xl border border-sky-100 dark:border-slate-800 shadow-xs space-y-4">
+                            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+                                <h2 className="font-bold text-sm text-dunia-navy dark:text-white uppercase tracking-wider flex items-center gap-2">
+                                    <MapPin className="w-4 h-4 text-[#0684E5] dark:text-[#4AB8BD]" />
                                     {pick('1. Alamat Tujuan Pengiriman Ikan', '1. Shipping Address')}
                                 </h2>
 
@@ -129,14 +129,14 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                     <button
                                         type="button"
                                         onClick={() => setShowAddressModal(true)}
-                                        className="text-xs font-bold text-[#0684E5] hover:text-[#006783] flex items-center gap-1 cursor-pointer bg-blue-50 px-2.5 py-1.5 rounded-xl transition"
+                                        className="text-xs font-bold text-[#0684E5] dark:text-sky-300 hover:text-[#006783] flex items-center gap-1 cursor-pointer bg-blue-50 dark:bg-[#131d33] px-2.5 py-1.5 rounded-xl transition"
                                     >
                                         <PlusCircle className="w-3.5 h-3.5" />
                                         {pick('+ Tambah Alamat Baru', '+ Add New Address')}
                                     </button>
                                     <Link
                                         href="/addresses"
-                                        className="text-xs font-semibold text-slate-400 hover:text-slate-600 hidden sm:inline"
+                                        className="text-xs font-semibold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hidden sm:inline"
                                     >
                                         {pick('Kelola', 'Manage')}
                                     </Link>
@@ -150,8 +150,8 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             key={addr.id}
                                             className={`block p-4 rounded-xl border cursor-pointer transition ${
                                                 data.address_id === addr.id
-                                                    ? 'bg-sky-50/60 border-[#0684E5] ring-2 ring-[#0684E5]/30'
-                                                    : 'border-slate-200 hover:bg-slate-50'
+                                                    ? 'bg-sky-50/60 dark:bg-[#131d33] border-[#0684E5] ring-2 ring-[#0684E5]/30'
+                                                    : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-[#131d33]/60'
                                             }`}
                                         >
                                             <div className="flex items-start gap-3">
@@ -165,15 +165,15 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                                 />
                                                 <div className="text-xs space-y-1">
                                                     <div className="flex items-center gap-2">
-                                                        <span className="font-bold text-slate-900 text-sm">{addr.recipient_name}</span>
-                                                        <span className="text-slate-500">({addr.phone})</span>
+                                                        <span className="font-bold text-slate-900 dark:text-white text-sm">{addr.recipient_name}</span>
+                                                        <span className="text-slate-500 dark:text-slate-400">({addr.phone})</span>
                                                         {addr.is_primary && (
-                                                            <span className="px-2 py-0.5 rounded-full bg-blue-100 text-[#0684E5] font-bold text-[10px]">
+                                                            <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-[#0684E5]/20 text-[#0684E5] dark:text-sky-300 font-bold text-[10px]">
                                                                 {pick('Utama', 'Primary')}
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <p className="text-slate-600 leading-relaxed">
+                                                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                                                         {addr.full_address}, {addr.city}, {addr.province} {addr.postal_code}
                                                     </p>
                                                 </div>
@@ -182,13 +182,13 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                     ))}
                                 </div>
                             ) : (
-                                <div className="p-5 rounded-2xl bg-amber-50/90 border border-amber-200 text-amber-950 text-xs space-y-3">
+                                <div className="p-5 rounded-2xl bg-amber-50/90 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/70 text-amber-950 dark:text-amber-200 text-xs space-y-3">
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                         <div>
-                                            <p className="font-extrabold text-sm text-amber-900">
+                                            <p className="font-extrabold text-sm text-amber-900 dark:text-amber-100">
                                                 {pick('Anda belum memiliki alamat pengiriman', 'No shipping address yet')}
                                             </p>
-                                            <p className="text-amber-700 mt-0.5">
+                                            <p className="text-amber-700 dark:text-amber-300 mt-0.5">
                                                 {pick(
                                                     'Ikan hidup memerlukan alamat pengiriman yang lengkap untuk kurir dan packing box beroksigen.',
                                                     'Live fish require a complete shipping address for courier delivery and oxygenated packing.'
@@ -208,14 +208,14 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                             )}
 
                             {errors.address_id && (
-                                <p className="text-xs text-rose-600 font-semibold">{errors.address_id}</p>
+                                <p className="text-xs text-rose-600 dark:text-rose-400 font-semibold">{errors.address_id}</p>
                             )}
                         </div>
 
                         {/* 2. Metode Pembayaran Manual */}
-                        <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-4">
-                            <h2 className="font-bold text-sm text-dunia-navy uppercase tracking-wider flex items-center gap-2 pb-3 border-b border-slate-100">
-                                <CreditCard className="w-4 h-4 text-dunia-blue" />
+                        <div className="bg-white dark:bg-[#0e1424] p-6 rounded-2xl border border-sky-100 dark:border-slate-800 shadow-xs space-y-4">
+                            <h2 className="font-bold text-sm text-dunia-navy dark:text-white uppercase tracking-wider flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+                                <CreditCard className="w-4 h-4 text-dunia-blue dark:text-[#4AB8BD]" />
                                 {pick('2. Metode Pembayaran', '2. Payment Method')}
                             </h2>
 
@@ -224,15 +224,15 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                 <label
                                     className={`p-4 rounded-xl border cursor-pointer transition flex flex-col justify-between ${
                                         data.payment_method === 'midtrans'
-                                            ? 'bg-blue-50/70 border-dunia-blue ring-2 ring-dunia-blue'
-                                            : 'border-slate-200 hover:bg-slate-50'
+                                            ? 'bg-blue-50/70 dark:bg-[#131d33] border-dunia-blue ring-2 ring-dunia-blue'
+                                            : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-[#131d33]/60'
                                     }`}
                                 >
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-1.5">
-                                                <Zap className="w-5 h-5 text-dunia-blue" />
-                                                <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-blue-100 text-dunia-blue">
+                                                <Zap className="w-5 h-5 text-dunia-blue dark:text-[#4AB8BD]" />
+                                                <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-blue-100 dark:bg-[#0684E5]/20 text-dunia-blue dark:text-sky-300">
                                                     {pick('Otomatis', 'Instant')}
                                                 </span>
                                             </div>
@@ -245,10 +245,10 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                                 className="text-dunia-blue"
                                             />
                                         </div>
-                                        <p className="font-bold text-sm text-slate-900">
+                                        <p className="font-bold text-sm text-slate-900 dark:text-white">
                                             {pick('Midtrans (QRIS & Virtual Account)', 'Midtrans (QRIS & Virtual Account)')}
                                         </p>
-                                        <p className="text-[11px] text-slate-500 leading-snug">
+                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
                                             {pick(
                                                 'QRIS (GoPay, ShopeePay, DANA, OVO) & Virtual Account (BCA, Mandiri, BRI, BNI).',
                                                 'QRIS (GoPay, ShopeePay, DANA, OVO) & Virtual Account (BCA, Mandiri, BRI, BNI).'
@@ -261,13 +261,13 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                 <label
                                     className={`p-4 rounded-xl border cursor-pointer transition flex flex-col justify-between ${
                                         data.payment_method === 'bank_transfer'
-                                            ? 'bg-sky-50/60 border-dunia-blue ring-1 ring-dunia-blue'
-                                            : 'border-slate-200 hover:bg-slate-50'
+                                            ? 'bg-sky-50/60 dark:bg-[#131d33] border-dunia-blue ring-1 ring-dunia-blue'
+                                            : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-[#131d33]/60'
                                     }`}
                                 >
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
-                                            <CreditCard className="w-5 h-5 text-dunia-blue" />
+                                            <CreditCard className="w-5 h-5 text-dunia-blue dark:text-[#4AB8BD]" />
                                             <input
                                                 type="radio"
                                                 name="payment_method"
@@ -277,10 +277,10 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                                 className="text-dunia-blue"
                                             />
                                         </div>
-                                        <p className="font-bold text-sm text-slate-900">
+                                        <p className="font-bold text-sm text-slate-900 dark:text-white">
                                             {pick('Transfer Manual', 'Bank Transfer')}
                                         </p>
-                                        <p className="text-[11px] text-slate-500 leading-snug">
+                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
                                             {pick(
                                                 'BCA, Mandiri, BRI. Unggah bukti transfer ke rekening toko.',
                                                 'BCA, Mandiri, BRI. Upload your transfer receipt to the store account.'
@@ -293,18 +293,18 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                 <label
                                     className={`p-4 rounded-xl border transition flex flex-col justify-between ${
                                         !supportsManualQris
-                                            ? 'border-slate-200 bg-slate-50/80 opacity-65 cursor-not-allowed'
+                                            ? 'border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/60 opacity-65 cursor-not-allowed'
                                             : data.payment_method === 'qris'
-                                                ? 'bg-sky-50/60 border-dunia-blue ring-1 ring-dunia-blue cursor-pointer'
-                                                : 'border-slate-200 hover:bg-slate-50 cursor-pointer'
+                                                ? 'bg-sky-50/60 dark:bg-[#131d33] border-dunia-blue ring-1 ring-dunia-blue cursor-pointer'
+                                                : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-[#131d33]/60 cursor-pointer'
                                     }`}
                                 >
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-1.5">
-                                                <QrCode className="w-5 h-5 text-teal-600" />
+                                                <QrCode className="w-5 h-5 text-teal-600 dark:text-[#4AB8BD]" />
                                                 {!supportsManualQris && (
-                                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-slate-200 text-slate-600">
+                                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                                                         {pick('Belum tersedia', 'Unavailable')}
                                                     </span>
                                                 )}
@@ -319,10 +319,10 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                                 className="text-dunia-blue disabled:cursor-not-allowed"
                                             />
                                         </div>
-                                        <p className="font-bold text-sm text-slate-900">
+                                        <p className="font-bold text-sm text-slate-900 dark:text-white">
                                             {pick('QRIS Toko Manual', 'Manual Store QRIS')}
                                         </p>
-                                        <p className="text-[11px] text-slate-500 leading-snug">
+                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
                                             {supportsManualQris
                                                 ? pick(
                                                     'Scan barcode QRIS statis dari profil toko penangkar.',
@@ -340,13 +340,13 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                 <label
                                     className={`p-4 rounded-xl border cursor-pointer transition flex flex-col justify-between ${
                                         data.payment_method === 'cod'
-                                            ? 'bg-sky-50/60 border-dunia-blue ring-1 ring-dunia-blue'
-                                            : 'border-slate-200 hover:bg-slate-50'
+                                            ? 'bg-sky-50/60 dark:bg-[#131d33] border-dunia-blue ring-1 ring-dunia-blue'
+                                            : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-[#131d33]/60'
                                     }`}
                                 >
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
-                                            <Banknote className="w-5 h-5 text-amber-600" />
+                                            <Banknote className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                                             <input
                                                 type="radio"
                                                 name="payment_method"
@@ -356,10 +356,10 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                                 className="text-dunia-blue"
                                             />
                                         </div>
-                                        <p className="font-bold text-sm text-slate-900">
+                                        <p className="font-bold text-sm text-slate-900 dark:text-white">
                                             {pick('Bayar di Tempat (COD)', 'Cash on Delivery (COD)')}
                                         </p>
-                                        <p className="text-[11px] text-slate-500 leading-snug">
+                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
                                             {pick(
                                                 'Langsung checkout tanpa bayar online. Bayar tunai saat kurir tiba.',
                                                 'Instant checkout without online payment. Pay cash when courier arrives.'
@@ -371,8 +371,8 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                         </div>
 
                         {/* Catatan Tambahan Pengiriman */}
-                        <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-3">
-                            <label className="block text-xs font-bold text-slate-700 uppercase">
+                        <div className="bg-white dark:bg-[#0e1424] p-6 rounded-2xl border border-sky-100 dark:border-slate-800 shadow-xs space-y-3">
+                            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
                                 {pick('Catatan Khusus Pengiriman (Opsional)', 'Special Delivery Notes (Optional)')}
                             </label>
                             <textarea
@@ -383,37 +383,37 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                 )}
                                 value={data.shipping_notes}
                                 onChange={(e) => setData('shipping_notes', e.target.value)}
-                                className="w-full text-xs p-3 rounded-xl border border-slate-200 focus:outline-hidden focus:border-dunia-aqua"
+                                className="w-full text-xs p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:border-dunia-aqua"
                             />
                         </div>
                     </div>
 
                     {/* Right Column: Breakdown Per Store & Order Finalization */}
                     <div className="lg:col-span-4 space-y-6">
-                        <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-5 sticky top-24">
-                            <h3 className="font-extrabold text-base text-dunia-navy pb-3 border-b border-slate-100">
+                        <div className="bg-white dark:bg-[#0e1424] p-6 rounded-2xl border border-sky-100 dark:border-slate-800 shadow-xs space-y-5 sticky top-24">
+                            <h3 className="font-extrabold text-base text-dunia-navy dark:text-white pb-3 border-b border-slate-100 dark:border-slate-800">
                                 {pick('Rincian Pesanan Toko', 'Order Breakdown by Store')}
                             </h3>
 
                             {/* Store Breakdowns */}
                             <div className="space-y-4">
                                 {groupedCart.map((grp, i) => (
-                                    <div key={i} className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-2">
-                                        <div className="flex items-center justify-between font-bold text-slate-800">
+                                    <div key={i} className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#131d33] border border-slate-100 dark:border-slate-800 text-xs space-y-2">
+                                        <div className="flex items-center justify-between font-bold text-slate-800 dark:text-white">
                                             <span className="flex items-center gap-1.5">
-                                                <Store className="w-3.5 h-3.5 text-dunia-marine" />
+                                                <Store className="w-3.5 h-3.5 text-dunia-marine dark:text-[#4AB8BD]" />
                                                 {grp.store.name}
                                             </span>
                                             <span>{formatPrice(grp.subtotalWithShipping)}</span>
                                         </div>
-                                        <div className="space-y-1 text-slate-500 text-[11px]">
+                                        <div className="space-y-1 text-slate-500 dark:text-slate-400 text-[11px]">
                                             {grp.items.map((it) => (
                                                 <div key={it.id} className="flex justify-between">
                                                     <span className="truncate max-w-[170px]">{it.quantity}x {it.product.name}</span>
                                                     <span>{formatPrice(it.product.price * it.quantity)}</span>
                                                 </div>
                                             ))}
-                                            <div className="flex justify-between pt-1 text-slate-400 border-t border-slate-200">
+                                            <div className="flex justify-between pt-1 text-slate-400 dark:text-slate-500 border-t border-slate-200 dark:border-slate-700">
                                                 <span>{pick('Ongkir Box Styrofoam & Oksigen', 'Styrofoam Box & Oxygen Shipping')}</span>
                                                 <span>{formatPrice(grp.shippingCost)}</span>
                                             </div>
@@ -423,25 +423,25 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                             </div>
 
                             {/* Grand Total Calculation */}
-                            <div className="pt-3 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+                            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2 text-xs text-slate-600 dark:text-slate-400">
                                 <div className="flex justify-between">
                                     <span>{pick('Total Produk:', 'Subtotal:')}</span>
-                                    <span className="font-bold text-slate-800">{formatPrice(totalProducts)}</span>
+                                    <span className="font-bold text-slate-800 dark:text-slate-200">{formatPrice(totalProducts)}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span>{pick('Total Ongkos Kirim:', 'Total Shipping:')}</span>
-                                    <span className="font-bold text-slate-800">{formatPrice(totalShipping)}</span>
+                                    <span className="font-bold text-slate-800 dark:text-slate-200">{formatPrice(totalShipping)}</span>
                                 </div>
-                                <div className="flex justify-between items-center text-sm font-bold text-dunia-navy pt-2 border-t border-slate-200">
+                                <div className="flex justify-between items-center text-sm font-bold text-dunia-navy dark:text-white pt-2 border-t border-slate-200 dark:border-slate-800">
                                     <span>{pick('Total Pembayaran:', 'Grand Total:')}</span>
-                                    <span className="text-xl font-extrabold text-dunia-blue">{formatPrice(grandTotal)}</span>
+                                    <span className="text-xl font-extrabold text-dunia-blue dark:text-[#4AB8BD]">{formatPrice(grandTotal)}</span>
                                 </div>
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={processing || !data.address_id}
-                                className="w-full py-3.5 px-6 rounded-2xl bg-[#0684E5] hover:bg-[#006783] disabled:bg-slate-200 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-extrabold text-sm shadow-lg shadow-blue-500/25 transition flex items-center justify-center gap-2 cursor-pointer"
+                                className="w-full py-3.5 px-6 rounded-2xl bg-[#0684E5] hover:bg-[#006783] disabled:bg-slate-200 dark:disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-extrabold text-sm shadow-lg shadow-blue-500/25 transition flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <CheckCircle2 className="w-4 h-4" />
                                 {processing
@@ -453,7 +453,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             : pick('Buat & Konfirmasi Pesanan', 'Place & Confirm Order')}
                             </button>
 
-                            <div className="p-3 rounded-xl bg-sky-50 text-[11px] text-sky-900 flex items-start gap-2">
+                            <div className="p-3 rounded-xl bg-sky-50 dark:bg-[#131d33] text-[11px] text-sky-900 dark:text-slate-300 flex items-start gap-2">
                                 <ShieldCheck className="w-4 h-4 text-[#4AB8BD] shrink-0 mt-0.5" />
                                 <p>
                                     {data.payment_method === 'cod'
@@ -479,23 +479,23 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                 {/* Modal Tambah Alamat Cepat Langsung di Checkout */}
                 {showAddressModal && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-                        <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95">
-                            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
-                                <h3 className="font-extrabold text-base text-slate-900 flex items-center gap-2">
-                                    <MapPin className="w-5 h-5 text-[#0684E5]" />
+                        <div className="bg-white dark:bg-[#0e1424] border border-slate-200 dark:border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95">
+                            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+                                <h3 className="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+                                    <MapPin className="w-5 h-5 text-[#0684E5] dark:text-[#4AB8BD]" />
                                     {pick('Tambah Alamat Pengiriman Baru', 'Add New Shipping Address')}
                                 </h3>
                                 <button
                                     type="button"
                                     onClick={() => setShowAddressModal(false)}
-                                    className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition"
+                                    className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
                             </div>
 
                             {addressError && (
-                                <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-bold text-rose-700">
+                                <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-xs font-bold text-rose-700 dark:text-rose-300">
                                     {addressError}
                                 </div>
                             )}
@@ -503,7 +503,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                             <form onSubmit={handleSaveAddress} className="space-y-3.5 text-xs">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <div>
-                                        <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
                                             {pick('Nama Penerima', 'Recipient Name')}
                                         </label>
                                         <input
@@ -512,11 +512,11 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             placeholder={pick('Contoh: Budi Santoso', 'Example: Budi Santoso')}
                                             value={addressForm.recipient_name}
                                             onChange={(e) => setAddressForm({ ...addressForm, recipient_name: e.target.value })}
-                                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
                                             {pick('No. WhatsApp / HP', 'WhatsApp / Phone Number')}
                                         </label>
                                         <input
@@ -525,14 +525,14 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             placeholder={pick('Contoh: 081234567890', 'Example: 081234567890')}
                                             value={addressForm.phone}
                                             onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })}
-                                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                     <div className="sm:col-span-2">
-                                        <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
                                             {pick('Kota / Kabupaten', 'City / Regency')}
                                         </label>
                                         <input
@@ -541,11 +541,11 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             placeholder={pick('Contoh: Kota Bandung', 'Example: Bandung')}
                                             value={addressForm.city}
                                             onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
-                                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block font-bold text-slate-700 uppercase mb-1">
+                                        <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
                                             {pick('Kode Pos', 'Postal Code')}
                                         </label>
                                         <input
@@ -554,13 +554,13 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             placeholder="40287"
                                             value={addressForm.postal_code}
                                             onChange={(e) => setAddressForm({ ...addressForm, postal_code: e.target.value })}
-                                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">
+                                    <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
                                         {pick('Provinsi', 'Province')}
                                     </label>
                                     <input
@@ -569,12 +569,12 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                         placeholder={pick('Contoh: Jawa Barat', 'Example: West Java')}
                                         value={addressForm.province}
                                         onChange={(e) => setAddressForm({ ...addressForm, province: e.target.value })}
-                                        className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                        className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block font-bold text-slate-700 uppercase mb-1">
+                                    <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
                                         {pick('Alamat Lengkap (Jalan, RT/RW, No. Rumah)', 'Full Address (Street, House No., Landmark)')}
                                     </label>
                                     <textarea
@@ -586,7 +586,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                         )}
                                         value={addressForm.full_address}
                                         onChange={(e) => setAddressForm({ ...addressForm, full_address: e.target.value })}
-                                        className="w-full p-2.5 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                        className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
                                     />
                                 </div>
 
@@ -594,7 +594,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                     <button
                                         type="button"
                                         onClick={() => setShowAddressModal(false)}
-                                        className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition cursor-pointer"
+                                        className="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold transition cursor-pointer"
                                     >
                                         {pick('Batal', 'Cancel')}
                                     </button>

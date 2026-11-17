@@ -1,5 +1,6 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import BrandWordmark from '@/Components/BrandWordmark';
+import { AquaticCanvasBackdrop } from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
 
 export default function HttpError({ status = 404 }) {
@@ -21,26 +22,27 @@ export default function HttpError({ status = 404 }) {
         : pick('yang terputus.', 'went wrong.');
 
     return (
-        <div className="min-h-screen w-full bg-white flex flex-col overflow-x-clip selection:bg-sky-200 selection:text-[#001454]">
+        <div className="relative isolate min-h-screen w-full aquatic-canvas-ambient flex flex-col overflow-x-clip selection:bg-sky-200 selection:text-[#001454]">
+            <AquaticCanvasBackdrop variant="auth" />
             <Head title={title} />
 
             {/* Top Navigation */}
-            <header className="w-full px-5 sm:px-8 lg:px-12 pt-6 sm:pt-8 pb-2 flex items-center justify-between gap-4 shrink-0">
+            <header className="relative z-10 w-full px-5 sm:px-8 lg:px-12 pt-6 sm:pt-8 pb-2 flex items-center justify-between gap-4 shrink-0">
                 <Link
                     href="/"
                     className="shrink-0 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#056BC4] rounded-lg"
                 >
-                    <BrandWordmark variant="default" className="h-8 sm:h-9" />
+                    <BrandWordmark variant="adaptive" className="h-8 sm:h-9" />
                 </Link>
 
-                <nav className="hidden sm:flex items-center gap-8 text-[13px] font-medium text-slate-600">
-                    <Link href="/products" className="hover:text-[#056BC4] transition">
+                <nav className="hidden sm:flex items-center gap-8 text-[13px] font-medium text-slate-600 dark:text-slate-300">
+                    <Link href="/products" className="hover:text-[#056BC4] dark:hover:text-[#4AB8BD] transition">
                         {pick('Katalog Ikan', 'Products')}
                     </Link>
-                    <Link href="/guides" className="hover:text-[#056BC4] transition">
+                    <Link href="/guides" className="hover:text-[#056BC4] dark:hover:text-[#4AB8BD] transition">
                         {pick('Panduan Ikan', 'Care Guides')}
                     </Link>
-                    <Link href="/cart" className="hover:text-[#056BC4] transition">
+                    <Link href="/cart" className="hover:text-[#056BC4] dark:hover:text-[#4AB8BD] transition">
                         {pick('Keranjang', 'Cart')}
                     </Link>
                 </nav>
@@ -48,14 +50,14 @@ export default function HttpError({ status = 404 }) {
                 {authUser ? (
                     <Link
                         href="/orders"
-                        className="text-[13px] font-bold text-[#056BC4] hover:underline whitespace-nowrap"
+                        className="text-[13px] font-bold text-[#056BC4] dark:text-[#4AB8BD] hover:underline whitespace-nowrap"
                     >
                         {pick('Pesanan Saya', 'My Orders')}
                     </Link>
                 ) : (
                     <Link
                         href="/login"
-                        className="text-[13px] font-bold text-[#056BC4] hover:underline whitespace-nowrap"
+                        className="text-[13px] font-bold text-[#056BC4] dark:text-[#4AB8BD] hover:underline whitespace-nowrap"
                     >
                         {pick('Masuk', 'Sign in')}
                     </Link>
@@ -70,7 +72,7 @@ export default function HttpError({ status = 404 }) {
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true"
-                        className="w-full h-auto block text-[#056BC4]"
+                        className="w-full h-auto block text-[#056BC4] dark:text-[#4AB8BD]"
                     >
                         {/* Top disconnection spark ticks */}
                         <line x1="500" y1="10" x2="500" y2="26" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
@@ -96,27 +98,27 @@ export default function HttpError({ status = 404 }) {
                         {/* Left Male Plug */}
                         <path
                             d="M 398 55 L 412 52 L 412 76 L 398 73 Z"
-                            fill="white"
+                            className="fill-white dark:fill-[#070b14]"
                             stroke="currentColor"
                             strokeWidth="2.6"
                             strokeLinejoin="round"
                         />
                         <path
                             d="M 412 48 C 412 42 416 39 422 39 L 458 39 L 458 89 L 422 89 C 416 89 412 86 412 80 Z"
-                            fill="white"
+                            className="fill-white dark:fill-[#070b14]"
                             stroke="currentColor"
                             strokeWidth="2.6"
                             strokeLinejoin="round"
                         />
                         <line x1="427" y1="50" x2="427" y2="78" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
                         <line x1="441" y1="50" x2="441" y2="78" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-                        <rect x="458" y="49" width="20" height="7" rx="2" fill="white" stroke="currentColor" strokeWidth="2.6" />
-                        <rect x="458" y="72" width="20" height="7" rx="2" fill="white" stroke="currentColor" strokeWidth="2.6" />
+                        <rect x="458" y="49" width="20" height="7" rx="2" className="fill-white dark:fill-[#070b14]" stroke="currentColor" strokeWidth="2.6" />
+                        <rect x="458" y="72" width="20" height="7" rx="2" className="fill-white dark:fill-[#070b14]" stroke="currentColor" strokeWidth="2.6" />
 
                         {/* Right Female Receptacle */}
                         <path
                             d="M 522 39 L 578 39 C 584 39 588 42 588 48 L 588 80 C 588 86 584 89 578 89 L 522 89 Z"
-                            fill="white"
+                            className="fill-white dark:fill-[#070b14]"
                             stroke="currentColor"
                             strokeWidth="2.6"
                             strokeLinejoin="round"
@@ -126,7 +128,7 @@ export default function HttpError({ status = 404 }) {
                         <line x1="573" y1="50" x2="573" y2="78" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
                         <path
                             d="M 588 52 L 602 55 L 602 73 L 588 76 Z"
-                            fill="white"
+                            className="fill-white dark:fill-[#070b14]"
                             stroke="currentColor"
                             strokeWidth="2.6"
                             strokeLinejoin="round"
@@ -151,11 +153,11 @@ export default function HttpError({ status = 404 }) {
 
                     {/* Center Numeric Error Code & Copy */}
                     <div className="px-6 text-center mt-2 sm:-mt-[6.5%] relative z-10 space-y-4">
-                        <h1 className="text-[80px] sm:text-[110px] lg:text-[124px] font-black leading-none tracking-tight text-[#252525]">
+                        <h1 className="text-[80px] sm:text-[110px] lg:text-[124px] font-black leading-none tracking-tight text-[#252525] dark:text-white">
                             {headline}
                         </h1>
 
-                        <p className="text-lg sm:text-[22px] font-medium text-[#2A2A2A] leading-snug max-w-md mx-auto">
+                        <p className="text-lg sm:text-[22px] font-medium text-[#2A2A2A] dark:text-slate-300 leading-snug max-w-md mx-auto">
                             {messageLine1}
                             <br />
                             {messageLine2}
@@ -174,7 +176,7 @@ export default function HttpError({ status = 404 }) {
                                     href="/logout"
                                     method="post"
                                     as="button"
-                                    className="inline-flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold px-6 py-3.5 transition cursor-pointer"
+                                    className="inline-flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-bold px-6 py-3.5 transition cursor-pointer"
                                 >
                                     {pick('Keluar & Ganti Akun', 'Log out & Switch Account')}
                                 </Link>

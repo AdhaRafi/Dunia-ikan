@@ -3,6 +3,7 @@ import { Star } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
 import Reveal from '@/Components/Reveal';
+import StoreLogo from '@/Components/StoreLogo';
 import StoreRatingSection from '@/Components/StoreRatingSection';
 import { AquaticBannerOrnaments, HeroWaveTransition } from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
@@ -38,17 +39,12 @@ export default function Show({ store, products, storeRating }) {
                 <div className="relative z-10 container-page grid gap-8 py-12 md:py-16 lg:grid-cols-12 lg:items-end">
                     <div className="lg:col-span-7">
                         <div className="flex items-center gap-4 mb-4">
-                            {store.logo_url ? (
-                                <img
-                                    src={store.logo_url}
-                                    alt={store.name}
-                                    className="w-14 h-14 rounded-full object-cover border-2 border-white/25 shrink-0"
-                                />
-                            ) : (
-                                <div className="w-14 h-14 rounded-full bg-white/15 flex items-center justify-center font-bold text-xl text-white shrink-0">
-                                    {store.name.charAt(0)}
-                                </div>
-                            )}
+                            <StoreLogo
+                                store={store}
+                                loading="eager"
+                                className="w-14 h-14 rounded-full object-cover border-2 border-white/25 shrink-0"
+                                fallbackClassName="w-14 h-14 rounded-full bg-white/15 flex items-center justify-center font-bold text-xl text-white shrink-0"
+                            />
                             <span className="text-sm text-white/75">
                                 {store.city}, {store.province}
                             </span>

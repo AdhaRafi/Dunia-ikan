@@ -17,17 +17,17 @@ export default function Index({ store, orders }) {
         const label = trOrderStatus(status);
         switch (status) {
             case 'pending_payment':
-                return { label, bg: 'bg-amber-50 text-amber-700' };
+                return { label, bg: 'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300' };
             case 'awaiting_confirmation':
-                return { label, bg: 'bg-blue-100 text-blue-800' };
+                return { label, bg: 'bg-blue-100 text-blue-800 dark:bg-sky-500/20 dark:text-sky-300' };
             case 'processing':
-                return { label, bg: 'bg-purple-100 text-purple-800' };
+                return { label, bg: 'bg-purple-100 text-purple-800 dark:bg-purple-500/20 dark:text-purple-300' };
             case 'shipped':
-                return { label, bg: 'bg-indigo-100 text-indigo-800' };
+                return { label, bg: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-500/20 dark:text-indigo-300' };
             case 'delivered':
-                return { label, bg: 'bg-emerald-100 text-emerald-800' };
+                return { label, bg: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300' };
             default:
-                return { label, bg: 'bg-rose-100 text-rose-800' };
+                return { label, bg: 'bg-rose-100 text-rose-800 dark:bg-rose-500/20 dark:text-rose-300' };
         }
     };
 
@@ -37,10 +37,10 @@ export default function Index({ store, orders }) {
 
             <div className="space-y-6">
                 <div>
-                    <h1 className="text-xl sm:text-2xl font-extrabold text-dunia-navy">
+                    <h1 className="text-xl sm:text-2xl font-extrabold text-dunia-navy dark:text-white">
                         {pick('Pesanan Masuk Toko', 'Incoming Store Orders')}
                     </h1>
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                         {pick(
                             'Verifikasi bukti transfer pembeli, siapkan packing oksigen ikan, dan masukkan nomor resi pengiriman.',
                             'Verify buyer transfer proofs, prepare oxygenated fish packing, and enter courier tracking numbers.'
@@ -49,19 +49,19 @@ export default function Index({ store, orders }) {
                 </div>
 
                 {orders?.data?.length > 0 ? (
-                    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+                    <div className="bg-white dark:bg-[#0e1424] rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
                         {/* Mobile Card List */}
-                        <div className="md:hidden divide-y divide-slate-100">
+                        <div className="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
                             {orders.data.map((order) => {
                                 const badge = getStatusBadge(order.status);
                                 return (
                                     <div key={order.id} className="p-4 space-y-3">
                                         <div className="flex items-start justify-between gap-2">
                                             <div>
-                                                <p className="font-extrabold text-dunia-navy font-mono text-xs">
+                                                <p className="font-extrabold text-dunia-navy dark:text-white font-mono text-xs">
                                                     {order.order_number}
                                                 </p>
-                                                <p className="text-xs font-bold text-slate-800 mt-0.5">
+                                                <p className="text-xs font-bold text-slate-800 dark:text-slate-200 mt-0.5">
                                                     {order.buyer?.name}
                                                 </p>
                                             </div>
@@ -71,23 +71,23 @@ export default function Index({ store, orders }) {
                                                 </span>
                                                 <span className={`px-2 py-0.5 rounded-md font-semibold text-[10px] uppercase ${
                                                     order.payment_status === 'verified'
-                                                        ? 'bg-emerald-50 text-emerald-700'
+                                                        ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300'
                                                         : order.payment_status === 'paid'
-                                                        ? 'bg-blue-50 text-blue-700'
-                                                        : 'bg-slate-100 text-slate-500'
+                                                        ? 'bg-blue-50 text-blue-700 dark:bg-sky-500/15 dark:text-sky-300'
+                                                        : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
                                                 }`}>
                                                     {order.payment_status}
                                                 </span>
                                             </div>
                                         </div>
 
-                                        <p className="text-xs text-slate-600 line-clamp-2">
+                                        <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
                                             {order.items?.map((it) => `${it.quantity}x ${it.product_name}`).join(', ')}
                                         </p>
 
-                                        <div className="flex items-center justify-between gap-3 pt-2 border-t border-slate-100">
+                                        <div className="flex items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
                                             <div>
-                                                <span className="block text-[10px] text-slate-400">
+                                                <span className="block text-[10px] text-slate-400 dark:text-slate-500">
                                                     {pick('Total Tagihan', 'Total Due')}
                                                 </span>
                                                 <span className="font-extrabold text-sm text-dunia-blue tabular-nums">
@@ -96,7 +96,7 @@ export default function Index({ store, orders }) {
                                             </div>
                                             <Link
                                                 href={`/seller/orders/${order.id}`}
-                                                className="px-3.5 py-2 rounded-xl bg-sky-50 text-dunia-navy hover:bg-sky-100 font-bold text-xs inline-flex items-center gap-1.5 transition"
+                                                className="px-3.5 py-2 rounded-xl bg-sky-50 dark:bg-sky-500/15 text-dunia-navy dark:text-sky-300 hover:bg-sky-100 dark:hover:bg-sky-500/25 font-bold text-xs inline-flex items-center gap-1.5 transition"
                                             >
                                                 {pick('Detail & Proses', 'Manage Order')}
                                                 <ArrowRight className="w-3.5 h-3.5" />
@@ -110,7 +110,7 @@ export default function Index({ store, orders }) {
                         {/* Desktop Table */}
                         <div className="hidden md:block overflow-x-auto">
                             <table className="w-full text-left text-xs">
-                                <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
+                                <thead className="bg-slate-50 dark:bg-[#131d33] border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">
                                     <tr>
                                         <th className="p-4">{pick('No. Pesanan', 'Order No.')}</th>
                                         <th className="p-4">{pick('Pembeli', 'Buyer')}</th>
@@ -121,21 +121,21 @@ export default function Index({ store, orders }) {
                                         <th className="p-4 text-right">{pick('Aksi', 'Action')}</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-slate-100">
+                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                                     {orders.data.map((order) => {
                                         const badge = getStatusBadge(order.status);
                                         return (
-                                            <tr key={order.id} className="hover:bg-slate-50/80 transition">
-                                                <td className="p-4 font-extrabold text-dunia-navy font-mono">
+                                            <tr key={order.id} className="hover:bg-slate-50/80 dark:hover:bg-[#131d33]/60 transition">
+                                                <td className="p-4 font-extrabold text-dunia-navy dark:text-white font-mono">
                                                     {order.order_number}
                                                 </td>
 
                                                 <td className="p-4">
-                                                    <p className="font-bold text-slate-800">{order.buyer?.name}</p>
-                                                    <p className="text-[10px] text-slate-400">{order.buyer?.phone || order.buyer?.email}</p>
+                                                    <p className="font-bold text-slate-800 dark:text-slate-200">{order.buyer?.name}</p>
+                                                    <p className="text-[10px] text-slate-400 dark:text-slate-500">{order.buyer?.phone || order.buyer?.email}</p>
                                                 </td>
 
-                                                <td className="p-4 text-slate-600">
+                                                <td className="p-4 text-slate-600 dark:text-slate-300">
                                                     <span className="truncate max-w-[180px] block">
                                                         {order.items?.map((it) => `${it.quantity}x ${it.product_name}`).join(', ')}
                                                     </span>
@@ -154,10 +154,10 @@ export default function Index({ store, orders }) {
                                                 <td className="p-4">
                                                     <span className={`px-2 py-0.5 rounded-md font-semibold text-[10px] uppercase ${
                                                         order.payment_status === 'verified'
-                                                            ? 'bg-emerald-50 text-emerald-700'
+                                                            ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300'
                                                             : order.payment_status === 'paid'
-                                                            ? 'bg-blue-50 text-blue-700'
-                                                            : 'bg-slate-100 text-slate-500'
+                                                            ? 'bg-blue-50 text-blue-700 dark:bg-sky-500/15 dark:text-sky-300'
+                                                            : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
                                                     }`}>
                                                         {order.payment_status}
                                                     </span>
@@ -166,7 +166,7 @@ export default function Index({ store, orders }) {
                                                 <td className="p-4 text-right">
                                                     <Link
                                                         href={`/seller/orders/${order.id}`}
-                                                        className="px-3 py-1.5 rounded-xl bg-sky-50 text-dunia-navy hover:bg-sky-100 font-bold text-[11px] inline-flex items-center gap-1 transition"
+                                                        className="px-3 py-1.5 rounded-xl bg-sky-50 dark:bg-sky-500/15 text-dunia-navy dark:text-sky-300 hover:bg-sky-100 dark:hover:bg-sky-500/25 font-bold text-[11px] inline-flex items-center gap-1 transition"
                                                     >
                                                         {pick('Detail & Proses', 'Manage Order')}
                                                         <ArrowRight className="w-3.5 h-3.5" />
@@ -180,9 +180,9 @@ export default function Index({ store, orders }) {
                         </div>
                     </div>
                 ) : (
-                    <div className="p-12 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-xs space-y-2">
-                        <Package className="w-10 h-10 text-slate-300 mx-auto" />
-                        <p className="font-bold text-slate-700">
+                    <div className="p-12 text-center bg-white dark:bg-[#0e1424] rounded-2xl border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-xs space-y-2">
+                        <Package className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto" />
+                        <p className="font-bold text-slate-700 dark:text-slate-200">
                             {pick('Belum ada pesanan masuk untuk toko Anda', 'No incoming orders for your store yet')}
                         </p>
                         <p className="text-slate-400">

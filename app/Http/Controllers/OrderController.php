@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Support\MediaStorage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -64,12 +64,9 @@ class OrderController extends Controller
         ]);
 
         if ($request->hasFile('payment_proof')) {
-            // Hapus file lama jika ada
-            if ($order->payment_proof && Storage::disk('public')->exists($order->payment_proof)) {
-                Storage::disk('public')->delete($order->payment_proof);
-            }
+            MediaStorage::delete($order->payment_proof);
 
-            $path = $request->file('payment_proof')->store('payment_proofs', 'public');
+            $path = MediaStorage::store($request->file('payment_proof'), 'payment_proofs');
 
             $order->update([
                 'payment_proof' => $path,
