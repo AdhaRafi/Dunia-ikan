@@ -31,7 +31,7 @@ export default function Show({ store, products, storeRating }) {
 
             <section
                 data-nav-theme="dark"
-                className="-mt-[70px] sm:-mt-[72px] pt-[70px] sm:pt-[72px] bg-field4 text-white"
+                className="-mt-16 pt-16 bg-field4 text-white"
             >
                 <div className="container-page grid gap-8 py-12 md:py-16 lg:grid-cols-12 lg:items-end">
                     <div className="lg:col-span-7">

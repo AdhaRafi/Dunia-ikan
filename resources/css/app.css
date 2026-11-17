@@ -215,11 +215,11 @@
         transform: translateY(1px);
     }
 
-    /* Adaptive Floating Aquatic Glassy Navbar & Glowing Hover Underline */
+    /* Full-Width Adaptive Transparent Glassy Navbar & Glowing Hover Underline */
     .glass-nav-bar {
         -webkit-backdrop-filter: blur(16px) saturate(175%);
         backdrop-filter: blur(16px) saturate(175%);
-        border-width: 1px;
+        border-width: 0 0 1px 0;
         border-style: solid;
         transition:
             background-color 420ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -229,38 +229,31 @@
     }
 
     .glass-nav-light {
-        background-color: rgba(255, 255, 255, 0.36);
-        border-color: rgba(30, 128, 160, 0.18);
-        box-shadow:
-            0 8px 24px -10px rgba(0, 20, 84, 0.09),
-            inset 0 1px 0 rgba(255, 255, 255, 0.85);
+        background-color: rgba(255, 255, 255, 0.38);
+        border-color: rgba(30, 128, 160, 0.14);
+        box-shadow: 0 6px 20px -12px rgba(0, 20, 84, 0.08);
     }
 
     .glass-nav-light.glass-nav-scrolled {
-        background-color: rgba(244, 250, 255, 0.56);
-        border-color: rgba(6, 132, 229, 0.24);
+        background-color: rgba(244, 250, 255, 0.58);
+        border-color: rgba(6, 132, 229, 0.18);
         box-shadow:
-            0 16px 38px -10px rgba(0, 20, 84, 0.14),
-            0 4px 12px -4px rgba(6, 132, 229, 0.09),
-            inset 0 1px 0 rgba(255, 255, 255, 0.92);
+            0 12px 30px -12px rgba(0, 20, 84, 0.14),
+            0 2px 10px -4px rgba(6, 132, 229, 0.08);
     }
 
     .glass-nav-dark {
         background-color: rgba(8, 17, 38, 0.14);
-        border-color: rgba(255, 255, 255, 0.22);
-        box-shadow:
-            0 12px 34px -10px rgba(2, 6, 23, 0.28),
-            inset 0 1px 0 rgba(255, 255, 255, 0.26);
+        border-color: rgba(255, 255, 255, 0.14);
+        box-shadow: 0 8px 28px -12px rgba(2, 6, 23, 0.25);
         text-shadow: 0 1px 8px rgba(0, 0, 0, 0.38);
     }
 
     .glass-nav-dark.glass-nav-scrolled,
     .dark .glass-nav-dark.glass-nav-scrolled {
-        background-color: rgba(10, 22, 54, 0.48);
-        border-color: rgba(74, 184, 189, 0.3);
-        box-shadow:
-            0 16px 40px -12px rgba(2, 6, 23, 0.5),
-            inset 0 1px 0 rgba(255, 255, 255, 0.22);
+        background-color: rgba(10, 22, 54, 0.5);
+        border-color: rgba(74, 184, 189, 0.24);
+        box-shadow: 0 12px 32px -12px rgba(2, 6, 23, 0.52);
     }
 
     .glass-nav-link {

@@ -112,7 +112,7 @@ export default function TopHeader({
         }
 
         let rafId = null;
-        const probeY = 40;
+        const probeY = 32;
 
         const syncNavSurface = () => {
             rafId = null;
@@ -278,15 +278,16 @@ export default function TopHeader({
     return (
         <header
             ref={headerRef}
-            className="sticky top-0 z-40 px-3 sm:px-6 pt-2.5 sm:pt-3 pb-1 pointer-events-none"
+            className="sticky top-0 z-40 w-full"
         >
             <div
-                className={`pointer-events-auto glass-nav-bar max-w-6xl mx-auto h-14 px-3.5 sm:px-5 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 ${
+                className={`glass-nav-bar w-full ${
                     isDarkNav
                         ? 'glass-nav-dark text-white'
                         : 'glass-nav-light text-[#001454]'
                 } ${isScrolled ? 'glass-nav-scrolled' : ''}`}
             >
+                <div className="max-w-7xl mx-auto h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 sm:gap-5">
                 {/* Left: Smoothly Crossfading Adaptive Brand Wordmark */}
                 <Link
                     href="/"
@@ -641,11 +642,13 @@ export default function TopHeader({
                         </svg>
                     </button>
                 </div>
+                </div>
             </div>
 
             {/* Frosted Aquatic Centered Search Popover */}
             {searchOpen && (
-                <div className="pointer-events-auto dropdown-in max-w-2xl mx-auto mt-2.5 rounded-2xl bg-white dark:bg-[#0b152d] border border-[#1E80A0]/15 dark:border-[#4AB8BD]/20 p-3.5 shadow-[0_22px_50px_-12px_rgba(0,20,84,0.22)] dark:shadow-[0_24px_54px_-12px_rgba(2,6,23,0.82)] text-[#001454] dark:text-white">
+                <div className="dropdown-in absolute inset-x-0 top-full pt-2.5 px-3 sm:px-6 z-50">
+                    <div className="max-w-2xl mx-auto rounded-2xl bg-white dark:bg-[#0b152d] border border-[#1E80A0]/15 dark:border-[#4AB8BD]/20 p-3.5 shadow-[0_22px_50px_-12px_rgba(0,20,84,0.22)] dark:shadow-[0_24px_54px_-12px_rgba(2,6,23,0.82)] text-[#001454] dark:text-white">
                     <div className="space-y-3">
                         <form onSubmit={handleSearchSubmit} className="relative flex items-center gap-2">
                             <div className="relative flex-1">
@@ -708,6 +711,7 @@ export default function TopHeader({
                             ))}
                         </div>
                     </div>
+                </div>
                 </div>
             )}
         </header>
