@@ -1,18 +1,8 @@
 <?php
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\SystemController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/health', function (): JsonResponse {
-    return response()->json([
-        'status' => 'ok',
-        'service' => config('app.name'),
-    ]);
-});
+Route::get('/health', [SystemController::class, 'health']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request): JsonResponse {
-    return response()->json([
-        'user' => $request->user()?->loadMissing('store'),
-    ]);
-});
+Route::middleware('auth:sanctum')->get('/user', [SystemController::class, 'user']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
 use App\Models\Category;
 use App\Models\FishDetail;
 use App\Models\Product;
@@ -122,6 +123,8 @@ class ProductController extends Controller
             ]);
         }
 
+        HomeController::flushCatalogCache();
+
         return redirect()->route('seller.products.index')
             ->with('success', 'Produk berhasil ditambahkan.');
     }
@@ -216,6 +219,8 @@ class ProductController extends Controller
             );
         }
 
+        HomeController::flushCatalogCache();
+
         return redirect()->route('seller.products.index')
             ->with('success', 'Produk berhasil diperbarui.');
     }
@@ -229,6 +234,7 @@ class ProductController extends Controller
 
         MediaStorage::delete($product->image);
         $product->delete();
+        HomeController::flushCatalogCache();
 
         return back()->with('success', 'Produk berhasil dihapus.');
     }

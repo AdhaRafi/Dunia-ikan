@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
 use App\Models\Store;
 use App\Support\MediaStorage;
 use Illuminate\Http\RedirectResponse;
@@ -83,6 +84,8 @@ class StoreProfileController extends Controller
             ...$validated,
         ]);
 
+        HomeController::flushCatalogCache();
+
         return redirect()->route('seller.products.index')
             ->with('success', 'Selamat! Toko Anda berhasil didaftarkan di Dunia Ikan.');
     }
@@ -154,6 +157,7 @@ class StoreProfileController extends Controller
         $validated['slug'] = Str::slug($validated['name']);
 
         $store->update($validated);
+        HomeController::flushCatalogCache();
 
         return back()->with('success', 'Profil toko dan kebijakan garansi (DOA) berhasil disimpan.');
     }

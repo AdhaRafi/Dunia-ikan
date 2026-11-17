@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -92,8 +93,12 @@ class ProductController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
 
-        $categories = Category::select('id', 'name', 'slug')->get();
-        $cities = Store::where('is_active', true)->distinct()->pluck('city');
+        [$categories, $cities] = Cache::remember('product_filters_v1', now()->addSeconds(120), function (): array {
+            return [
+                Category::select('id', 'name', 'slug')->get(),
+                Store::where('is_active', true)->distinct()->pluck('city'),
+            ];
+        });
 
         return Inertia::render('Products/Index', [
             'products' => $products,

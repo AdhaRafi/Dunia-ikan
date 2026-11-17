@@ -2,10 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Category;
 use App\Models\User;
 use App\Services\TurnstileVerifier;
-use DateTimeInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Middleware;
@@ -63,7 +61,6 @@ class HandleInertiaRequests extends Middleware
                 ? User::where('seller_status', 'pending')->count()
                 : 0,
             'cartCount' => $cartCount,
-            'navCategories' => fn () => Category::select('id', 'name', 'slug')->get(),
             'visitorStats' => fn () => $this->recordAndGetVisitorStats($request),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
@@ -73,7 +70,7 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
-     * Record unique daily visits and return live visitor counters.
+     * Record unique daily visits and return live visitor counters using batched cache reads.
      *
      * @return array{today: int, month: int, year: int}
      */
@@ -98,52 +95,75 @@ class HandleInertiaRequests extends Middleware
             && ! $request->headers->has('X-Inertia-Partial-Data')
             && ! $request->is('api/*', 'up', 'sitemap.xml', 'robots.txt', 'chatbot/*');
 
-        if ($shouldCount && $request->session()->get('visitor_counted_date') !== $todayStamp) {
-            $request->session()->put('visitor_counted_date', $todayStamp);
+        $counterKeys = [
+            $keys['today'][0],
+            $keys['month'][0],
+            $keys['year'][0],
+        ];
 
-            if ($this->claimDailyVisitorSlot($request, $todayStamp, $userAgent, $now->copy()->addDays(2))) {
-                foreach ($keys as [$key, $expiresAt]) {
-                    Cache::add($key, 0, $expiresAt);
-                    if (Cache::increment($key) === false) {
-                        Cache::put($key, 1, $expiresAt);
-                    }
-                }
-            }
+        if (! $shouldCount || $request->session()->get('visitor_counted_date') === $todayStamp) {
+            $cached = Cache::many($counterKeys);
+
+            return [
+                'today' => (int) ($cached[$keys['today'][0]] ?? 0),
+                'month' => (int) ($cached[$keys['month'][0]] ?? 0),
+                'year' => (int) ($cached[$keys['year'][0]] ?? 0),
+            ];
         }
 
-        return [
-            'today' => (int) Cache::get($keys['today'][0], 0),
-            'month' => (int) Cache::get($keys['month'][0], 0),
-            'year' => (int) Cache::get($keys['year'][0], 0),
-        ];
-    }
+        $request->session()->put('visitor_counted_date', $todayStamp);
 
-    /**
-     * Prevent Incognito cookie-clearing and UA-rotation floods from inflating counters.
-     */
-    private function claimDailyVisitorSlot(
-        Request $request,
-        string $todayStamp,
-        string $userAgent,
-        DateTimeInterface $expiresAt
-    ): bool {
         $appKey = (string) config('app.key');
         $ip = (string) ($request->ip() ?: 'unknown');
         $ipHash = hash_hmac('sha256', $ip, $appKey);
         $deviceHash = hash_hmac('sha256', $ip.'|'.strtolower(substr($userAgent, 0, 120)), $appKey);
+        $seenKey = "visitors:seen:{$todayStamp}:{$deviceHash}";
+        $ipBucketKey = "visitors:ip:{$todayStamp}:{$ipHash}";
 
-        if (! Cache::add("visitors:seen:{$todayStamp}:{$deviceHash}", 1, $expiresAt)) {
-            return false;
+        $prefetched = Cache::many([...$counterKeys, $seenKey, $ipBucketKey]);
+        $counts = [
+            'today' => (int) ($prefetched[$keys['today'][0]] ?? 0),
+            'month' => (int) ($prefetched[$keys['month'][0]] ?? 0),
+            'year' => (int) ($prefetched[$keys['year'][0]] ?? 0),
+        ];
+
+        if ($prefetched[$seenKey] !== null) {
+            return $counts;
         }
 
-        $ipBucketKey = "visitors:ip:{$todayStamp}:{$ipHash}";
-        Cache::add($ipBucketKey, 0, $expiresAt);
+        $slotExpiresAt = $now->copy()->addDays(2);
+        if (! Cache::add($seenKey, 1, $slotExpiresAt)) {
+            return $counts;
+        }
+
+        if ($prefetched[$ipBucketKey] === null) {
+            Cache::add($ipBucketKey, 0, $slotExpiresAt);
+        }
+
         $ipVisits = Cache::increment($ipBucketKey);
         if ($ipVisits === false) {
-            Cache::put($ipBucketKey, 1, $expiresAt);
+            Cache::put($ipBucketKey, 1, $slotExpiresAt);
             $ipVisits = 1;
         }
 
-        return $ipVisits <= 10;
+        if ($ipVisits > 10) {
+            return $counts;
+        }
+
+        foreach ($keys as $bucket => [$key, $expiresAt]) {
+            if ($prefetched[$key] === null) {
+                Cache::add($key, 0, $expiresAt);
+            }
+
+            $nextValue = Cache::increment($key);
+            if ($nextValue === false) {
+                Cache::put($key, 1, $expiresAt);
+                $counts[$bucket] = 1;
+            } else {
+                $counts[$bucket] = (int) $nextValue;
+            }
+        }
+
+        return $counts;
     }
 }

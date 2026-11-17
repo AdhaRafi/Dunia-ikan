@@ -13,10 +13,15 @@ mkdir -p /tmp/storage/app/public \
     /tmp/storage/framework/views \
     /tmp/storage/logs
 
+if [ -d /app/storage/framework/views ]; then
+    cp -rn /app/storage/framework/views/. /tmp/storage/framework/views/ 2>/dev/null || true
+fi
+
 if [ -n "${APP_KEY:-}" ]; then
     php artisan config:cache --no-interaction || true
-    php artisan view:cache --no-interaction || true
-    php artisan migrate --force --no-interaction || true
+    if [ "${RUN_BOOT_MIGRATIONS:-false}" = "true" ]; then
+        php artisan migrate --force --no-interaction || true
+    fi
 else
     rm -f "${APP_CONFIG_CACHE}" /app/bootstrap/cache/config.php || true
 fi

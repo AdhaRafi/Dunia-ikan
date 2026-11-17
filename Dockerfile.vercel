@@ -53,6 +53,8 @@ RUN rm -f /app/.env /app/.env.local /app/database/*.sqlite* /app/public/hot /app
     && mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
     && php artisan package:discover --ansi --no-interaction \
     && php artisan filament:assets --ansi --no-interaction \
+    && php artisan route:cache --ansi --no-interaction \
+    && php artisan view:cache --ansi --no-interaction \
     && ln -sfn /tmp/storage/app/public /app/public/storage \
     && chmod -R 775 storage bootstrap/cache
 

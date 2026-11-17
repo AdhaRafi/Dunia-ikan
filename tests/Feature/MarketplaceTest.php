@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Filament\Pages\Auth\AdminLogin as FilamentLogin;
 use App\Models\Address;
+use App\Models\Category;
 use App\Models\FishGuide;
 use App\Models\Order;
 use App\Models\Product;
@@ -570,5 +571,31 @@ class MarketplaceTest extends TestCase
         $this->post('/admin/logout')->assertRedirect('/admin/login');
         $this->assertGuest('admin');
         $this->assertAuthenticatedAs($buyer, 'web');
+    }
+
+    public function test_homepage_cache_invalidates_when_seller_creates_product(): void
+    {
+        $this->get('/')->assertStatus(200);
+
+        $seller = User::where('role', 'seller')->whereHas('store')->firstOrFail();
+        $category = Category::where('slug', 'ikan-hias')->firstOrFail();
+
+        $this->actingAs($seller)
+            ->post('/seller/products', [
+                'category_id' => $category->id,
+                'name' => 'Betta Cache Flush Specimen',
+                'description' => 'Freshly added betta specimen for homepage cache invalidation.',
+                'price' => 150000,
+                'stock' => 4,
+                'is_active' => true,
+                'is_fish' => true,
+                'species_name' => 'Betta splendens',
+                'morph_trait' => 'Galaxy',
+            ])
+            ->assertRedirect(route('seller.products.index'));
+
+        $this->get('/')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page->where('featuredFish.0.name', 'Betta Cache Flush Specimen'));
     }
 }

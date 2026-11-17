@@ -15,16 +15,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Seller\StoreProfileController as SellerStoreProfileController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreReviewController;
-use App\Models\FishGuide;
-use App\Models\Product;
-use App\Models\Store;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response as HttpResponse;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,72 +34,7 @@ Route::get('/guides/{id}', [GuideController::class, 'show'])->name('guides.show'
 Route::get('/storage/{path}', [MediaController::class, 'show'])
     ->where('path', '^[a-zA-Z0-9_.\-/]+$')
     ->name('media.show');
-Route::get('/sitemap.xml', function (): HttpResponse {
-    $xml = Cache::remember('sitemap.xml', now()->addHour(), function (): string {
-        $urls = [
-            ['loc' => url('/'), 'priority' => '1.0', 'changefreq' => 'daily'],
-            ['loc' => url('/products'), 'priority' => '0.9', 'changefreq' => 'daily'],
-            ['loc' => url('/guides'), 'priority' => '0.8', 'changefreq' => 'weekly'],
-        ];
-
-        Product::where('is_active', true)
-            ->whereHas('store', fn ($q) => $q->where('is_active', true))
-            ->select(['slug', 'updated_at'])
-            ->orderByDesc('updated_at')
-            ->limit(500)
-            ->each(function (Product $product) use (&$urls): void {
-                $urls[] = [
-                    'loc' => url('/products/'.$product->slug),
-                    'lastmod' => $product->updated_at?->toAtomString(),
-                    'priority' => '0.8',
-                    'changefreq' => 'weekly',
-                ];
-            });
-
-        Store::where('is_active', true)
-            ->select(['slug', 'updated_at'])
-            ->orderByDesc('updated_at')
-            ->limit(200)
-            ->each(function (Store $store) use (&$urls): void {
-                $urls[] = [
-                    'loc' => url('/stores/'.$store->slug),
-                    'lastmod' => $store->updated_at?->toAtomString(),
-                    'priority' => '0.7',
-                    'changefreq' => 'weekly',
-                ];
-            });
-
-        FishGuide::where('is_active', true)
-            ->select(['id', 'updated_at'])
-            ->orderByDesc('updated_at')
-            ->limit(200)
-            ->each(function (FishGuide $guide) use (&$urls): void {
-                $urls[] = [
-                    'loc' => url('/guides/'.$guide->id),
-                    'lastmod' => $guide->updated_at?->toAtomString(),
-                    'priority' => '0.7',
-                    'changefreq' => 'monthly',
-                ];
-            });
-
-        $lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'];
-        foreach ($urls as $item) {
-            $lines[] = '  <url>';
-            $lines[] = '    <loc>'.e($item['loc']).'</loc>';
-            if (! empty($item['lastmod'])) {
-                $lines[] = '    <lastmod>'.e($item['lastmod']).'</lastmod>';
-            }
-            $lines[] = '    <changefreq>'.$item['changefreq'].'</changefreq>';
-            $lines[] = '    <priority>'.$item['priority'].'</priority>';
-            $lines[] = '  </url>';
-        }
-        $lines[] = '</urlset>';
-
-        return implode("\n", $lines);
-    });
-
-    return response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
-})->name('sitemap');
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
 // Chatbot Asisten Dunia Ikan
 Route::get('/chatbot/history', [ChatbotController::class, 'getHistory'])
@@ -127,22 +56,7 @@ Route::post('/midtrans/notification', [MidtransController::class, 'notification'
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function (Request $request) {
-        $user = $request->user();
-        if ($user->isAdmin()) {
-            return Inertia::location(url('/admin'));
-        }
-        if ($user->isSeller()) {
-            return $user->store
-                ? redirect()->route('seller.products.index')
-                : redirect()->route('seller.store.create');
-        }
-        if ($user->isPendingSeller()) {
-            return redirect()->route('seller.store.create');
-        }
-
-        return redirect()->route('orders.index');
-    })->name('dashboard');
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -212,14 +126,12 @@ Route::middleware(['auth:admin,web', 'role:admin'])->group(function () {
 
     // Redirect legacy /admin-portal paths cleanly into the single Filament panel.
     Route::prefix('admin-portal')->name('admin.')->group(function () {
-        Route::get('/', fn () => redirect('/admin'))->name('dashboard');
-        Route::get('/categories', fn () => redirect('/admin/categories'))->name('categories.index');
-        Route::get('/guides', fn () => redirect('/admin/fish-guides'))->name('guides.index');
-        Route::get('/users', fn () => redirect('/admin/users'))->name('users.index');
-        Route::get('/transactions', fn () => redirect('/admin/orders'))->name('transactions.index');
-        Route::get('/reports', fn (Request $request) => redirect(
-            '/admin/transaction-reports'.($request->getQueryString() ? '?'.$request->getQueryString() : '')
-        ))->name('reports.index');
+        Route::redirect('/', '/admin')->name('dashboard');
+        Route::redirect('/categories', '/admin/categories')->name('categories.index');
+        Route::redirect('/guides', '/admin/fish-guides')->name('guides.index');
+        Route::redirect('/users', '/admin/users')->name('users.index');
+        Route::redirect('/transactions', '/admin/orders')->name('transactions.index');
+        Route::get('/reports', [AdminReportController::class, 'redirectToFilament'])->name('reports.index');
         Route::get('/reports/export', [AdminReportController::class, 'exportCsv'])->name('reports.export');
     });
 });
