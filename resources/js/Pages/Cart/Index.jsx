@@ -181,7 +181,7 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
 
                             {/* Right Column: Summary */}
                             <div className="lg:col-span-4 p-4 sm:p-8 flex flex-col justify-between bg-white dark:bg-[#0e1424]">
-                                <div className="lg:sticky lg:top-28 space-y-5">
+                                <div className="lg:sticky lg:top-24 space-y-5">
                                     <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white uppercase">
                                         {pick('Ringkasan', 'Summary')}
                                     </h2>

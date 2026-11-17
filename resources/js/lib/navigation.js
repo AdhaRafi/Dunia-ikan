@@ -4,12 +4,13 @@ import {
     Home,
     LayoutGrid,
     ShoppingBag,
+    Sprout,
     Store,
     Waves,
 } from 'lucide-react';
 
 /**
- * Shared storefront navigation links used by both the desktop header bar and mobile drawer.
+ * Shared storefront navigation links used by mobile drawer and desktop header matching.
  *
  * @param {string} url
  * @param {(idText: string, enText: string) => string} pick
@@ -60,6 +61,55 @@ export function buildPrimaryNavItems(url, pick) {
 }
 
 /**
+ * Rich catalog dropdown items for the Carbon-style desktop header menu.
+ *
+ * @param {string} url
+ * @param {(idText: string, enText: string) => string} pick
+ */
+export function buildCatalogDropdownItems(url, pick) {
+    const [pathname, queryString = ''] = String(url ?? '/').split('?');
+    const searchParams = new URLSearchParams(queryString);
+    const waterType = searchParams.get('water_type');
+    const category = searchParams.get('category');
+
+    return [
+        {
+            title: pick('Semua Katalog', 'All Catalog'),
+            description: pick('Jelajahi ikan hias, pakan & perlengkapan', 'Browse ornamental fish, food & equipment'),
+            href: '/products',
+            icon: LayoutGrid,
+            iconClass: 'bg-sky-50 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300',
+            active: pathname.startsWith('/products') && !waterType && !category,
+        },
+        {
+            title: pick('Ikan Air Tawar', 'Freshwater Fish'),
+            description: pick('Cupang, Channa, Arwana, Koi, Discus & Tetra', 'Betta, Channa, Arowana, Koi, Discus & Tetra'),
+            href: '/products?water_type=freshwater',
+            icon: Fish,
+            iconClass: 'bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300',
+            active: pathname.startsWith('/products') && waterType === 'freshwater',
+        },
+        {
+            title: pick('Ikan Air Laut', 'Saltwater Fish'),
+            description: pick('Clownfish, Tang & spesies terumbu karang', 'Clownfish, Tangs & vibrant reef species'),
+            href: '/products?water_type=saltwater',
+            icon: Waves,
+            iconClass: 'bg-cyan-50 text-cyan-600 dark:bg-cyan-500/15 dark:text-cyan-300',
+            badge: pick('Populer', 'Popular'),
+            active: pathname.startsWith('/products') && waterType === 'saltwater',
+        },
+        {
+            title: pick('Aquascape & Alat', 'Aquascape & Gear'),
+            description: pick('Tanaman hias, filter & perawatan air', 'Aquatic plants, filtration & water care'),
+            href: '/products?category=aquascape',
+            icon: Sprout,
+            iconClass: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300',
+            active: pathname.startsWith('/products') && category === 'aquascape',
+        },
+    ];
+}
+
+/**
  * Seller/buyer storefront quick link shown when signed in as buyer or seller.
  *
  * @param {string} url
@@ -81,9 +131,9 @@ export function buildStoreNavItem(url, user, pick) {
     if (user?.role === 'buyer') {
         const label =
             user?.seller_status === 'pending'
-                ? pick('Menunggu Acc Toko', 'Store Pending')
+                ? pick('Menunggu Acc', 'Pending')
                 : user?.seller_status === 'rejected'
-                  ? pick('Pengajuan Ditolak', 'Application Rejected')
+                  ? pick('Ajukan Ulang', 'Reapply')
                   : pick('Buka Toko', 'Open Store');
 
         return {
