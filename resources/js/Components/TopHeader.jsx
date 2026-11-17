@@ -215,16 +215,16 @@ export default function TopHeader({
             ref={headerRef}
             className="sticky top-0 z-40 px-3 sm:px-6 pt-2.5 sm:pt-3 pb-1 pointer-events-none"
         >
-            <div className="pointer-events-auto glass-nav-bar max-w-6xl mx-auto h-14 px-3.5 sm:px-5 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 text-white">
-                {/* Left: Crisp White Brand Wordmark */}
+            <div className="pointer-events-auto glass-nav-bar max-w-6xl mx-auto h-14 px-3.5 sm:px-5 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 text-[#001454] dark:text-white transition-colors duration-200">
+                {/* Left: Adaptive Brand Wordmark */}
                 <Link
                     href="/"
-                    className="flex items-center shrink-0 hover:opacity-90 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4AB8BD] rounded-lg"
+                    className="flex items-center shrink-0 hover:opacity-90 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-lg"
                 >
-                    <BrandWordmark variant="white" className="h-6 sm:h-7" />
+                    <BrandWordmark variant="auto" className="h-6 sm:h-7" />
                 </Link>
 
-                {/* Center: Floating Glass Links + Glowing Hover Underline */}
+                {/* Center: Floating Glass Links + Glowing Aquatic Hover Underline */}
                 <nav
                     aria-label={pick('Navigasi utama', 'Main navigation')}
                     className="hidden md:flex items-center gap-5 lg:gap-7"
@@ -233,10 +233,10 @@ export default function TopHeader({
                         href="/"
                         data-active={pathname === '/' ? 'true' : 'false'}
                         aria-current={pathname === '/' ? 'page' : undefined}
-                        className={`glass-nav-link px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4AB8BD] rounded-md ${
+                        className={`glass-nav-link px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-md ${
                             pathname === '/'
-                                ? 'text-white font-semibold'
-                                : 'text-white/75 hover:text-white font-medium'
+                                ? 'text-[#001454] dark:text-white font-semibold'
+                                : 'text-slate-600 hover:text-[#001454] dark:text-white/75 dark:hover:text-white font-medium'
                         }`}
                     >
                         {pick('Beranda', 'Home')}
@@ -254,10 +254,10 @@ export default function TopHeader({
                             data-active={isCatalogActive || catalogOpen ? 'true' : 'false'}
                             aria-expanded={catalogOpen}
                             aria-haspopup="true"
-                            className={`glass-nav-link inline-flex items-center gap-1 px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4AB8BD] rounded-md ${
+                            className={`glass-nav-link inline-flex items-center gap-1 px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-md ${
                                 isCatalogActive || catalogOpen
-                                    ? 'text-white font-semibold'
-                                    : 'text-white/75 hover:text-white font-medium'
+                                    ? 'text-[#001454] dark:text-white font-semibold'
+                                    : 'text-slate-600 hover:text-[#001454] dark:text-white/75 dark:hover:text-white font-medium'
                             }`}
                         >
                             <span>{pick('Katalog', 'Catalog')}</span>
@@ -269,8 +269,8 @@ export default function TopHeader({
                         </button>
 
                         {catalogOpen && (
-                            <div className="swap-in absolute left-1/2 -translate-x-1/2 top-full pt-3 z-50 w-[330px]">
-                                <div className="rounded-2xl bg-[#0d1425]/95 backdrop-blur-2xl border border-white/15 shadow-[0_24px_54px_-12px_rgba(2,6,23,0.72),inset_0_1px_0_rgba(255,255,255,0.12)] p-2 space-y-0.5">
+                            <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 z-50 w-[330px]">
+                                <div className="dropdown-in rounded-2xl bg-white dark:bg-[#0b152d] border border-[#1E80A0]/15 dark:border-[#4AB8BD]/20 shadow-[0_22px_50px_-12px_rgba(0,20,84,0.22)] dark:shadow-[0_24px_54px_-12px_rgba(2,6,23,0.82)] p-2 space-y-0.5">
                                     {catalogItems.map((item) => {
                                         const ItemIcon = item.icon;
 
@@ -281,8 +281,8 @@ export default function TopHeader({
                                                 onClick={() => setCatalogOpen(false)}
                                                 className={`group/drop flex items-start gap-3.5 rounded-xl p-2.5 transition-colors ${
                                                     item.active
-                                                        ? 'bg-white/12'
-                                                        : 'hover:bg-white/[0.08]'
+                                                        ? 'bg-[#eef6ff] dark:bg-white/15'
+                                                        : 'hover:bg-slate-50 dark:hover:bg-white/10'
                                                 }`}
                                             >
                                                 <span
@@ -293,16 +293,16 @@ export default function TopHeader({
 
                                                 <div className="min-w-0 flex-1">
                                                     <div className="flex items-center gap-2">
-                                                        <span className="text-[13px] font-semibold text-white leading-tight">
+                                                        <span className="text-[13px] font-semibold text-[#001454] dark:text-white leading-tight">
                                                             {item.title}
                                                         </span>
                                                         {item.badge && (
-                                                            <span className="rounded-full bg-emerald-400/20 border border-emerald-400/30 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-emerald-300">
+                                                            <span className="rounded-full bg-[#4AB8BD]/15 border border-[#1E80A0]/20 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-[#00696D] dark:bg-[#4AB8BD]/20 dark:border-[#4AB8BD]/30 dark:text-[#4AB8BD]">
                                                                 {item.badge}
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <p className="mt-0.5 text-[11.5px] leading-snug text-white/60">
+                                                    <p className="mt-0.5 text-[11.5px] leading-snug text-slate-500 dark:text-white/60">
                                                         {item.description}
                                                     </p>
                                                 </div>
@@ -318,10 +318,10 @@ export default function TopHeader({
                         href="/guides"
                         data-active={pathname.startsWith('/guides') ? 'true' : 'false'}
                         aria-current={pathname.startsWith('/guides') ? 'page' : undefined}
-                        className={`glass-nav-link px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4AB8BD] rounded-md ${
+                        className={`glass-nav-link px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-md ${
                             pathname.startsWith('/guides')
-                                ? 'text-white font-semibold'
-                                : 'text-white/75 hover:text-white font-medium'
+                                ? 'text-[#001454] dark:text-white font-semibold'
+                                : 'text-slate-600 hover:text-[#001454] dark:text-white/75 dark:hover:text-white font-medium'
                         }`}
                     >
                         {pick('Panduan', 'Guides')}
@@ -330,10 +330,10 @@ export default function TopHeader({
                     <button
                         type="button"
                         onClick={() => onOpenChat?.()}
-                        className="glass-nav-link btn-motion inline-flex items-center gap-1.5 px-1 py-1.5 text-[13px] font-medium tracking-[-0.01em] text-white/75 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4AB8BD] rounded-md"
+                        className="glass-nav-link btn-motion inline-flex items-center gap-1.5 px-1 py-1.5 text-[13px] font-medium tracking-[-0.01em] text-slate-600 hover:text-[#001454] dark:text-white/75 dark:hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-md"
                     >
                         <span>{pick('Tanya Kiko', 'Ask Kiko')}</span>
-                        <span className="rounded-full bg-emerald-400/20 border border-emerald-400/30 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-300 leading-none">
+                        <span className="rounded-full bg-[#4AB8BD]/15 border border-[#1E80A0]/25 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#00696D] dark:bg-[#4AB8BD]/20 dark:border-[#4AB8BD]/30 dark:text-[#4AB8BD] leading-none">
                             AI
                         </span>
                     </button>
@@ -342,17 +342,17 @@ export default function TopHeader({
                         href="/orders"
                         data-active={pathname.startsWith('/orders') ? 'true' : 'false'}
                         aria-current={pathname.startsWith('/orders') ? 'page' : undefined}
-                        className={`glass-nav-link px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4AB8BD] rounded-md ${
+                        className={`glass-nav-link px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] dark:focus-visible:ring-[#4AB8BD] rounded-md ${
                             pathname.startsWith('/orders')
-                                ? 'text-white font-semibold'
-                                : 'text-white/75 hover:text-white font-medium'
+                                ? 'text-[#001454] dark:text-white font-semibold'
+                                : 'text-slate-600 hover:text-[#001454] dark:text-white/75 dark:hover:text-white font-medium'
                         }`}
                     >
                         {pick('Pesanan', 'Orders')}
                     </Link>
                 </nav>
 
-                {/* Right: Search Orb, Language/Theme Utilities, Cart, Glass CTA & Mobile Trigger */}
+                {/* Right: Search Orb, Language/Theme Utilities, Cart, Aquatic CTA & Mobile Trigger */}
                 <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
                     {/* Search Orb Trigger */}
                     <button
@@ -363,21 +363,21 @@ export default function TopHeader({
                         title={pick('Cari Produk', 'Search Products')}
                         className={`btn-motion h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full transition-all ${
                             searchOpen
-                                ? 'bg-white text-slate-950 shadow-sm'
-                                : 'text-white/80 hover:text-white hover:bg-white/15 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.16)]'
+                                ? 'bg-[#001454] text-white dark:bg-[#4AB8BD] dark:text-[#001454] shadow-sm'
+                                : 'text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white hover:bg-[#eef6ff] dark:hover:bg-white/15'
                         }`}
                     >
                         {searchOpen ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
                     </button>
 
                     <div className="hidden sm:block">
-                        <LanguageSwitcher variant="overlay" />
+                        <LanguageSwitcher />
                     </div>
 
                     <button
                         type="button"
                         onClick={handleToggleTheme}
-                        className="btn-motion h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full text-white/80 hover:text-white hover:bg-white/15 hover:rotate-12"
+                        className="btn-motion h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white hover:bg-[#eef6ff] dark:hover:bg-white/15 hover:rotate-12"
                         title={darkMode ? pick('Tema Terang', 'Light Theme') : pick('Tema Gelap', 'Dark Theme')}
                         aria-label={pick('Ubah Tema', 'Toggle Theme')}
                     >
@@ -386,17 +386,17 @@ export default function TopHeader({
 
                     <Link
                         href="/products?sort=popular"
-                        className="btn-motion hidden lg:inline-flex relative h-9 w-9 items-center justify-center rounded-full text-white/80 hover:text-white hover:bg-white/15"
+                        className="btn-motion hidden lg:inline-flex relative h-9 w-9 items-center justify-center rounded-full text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#0684E5] dark:hover:text-white hover:bg-[#eef6ff] dark:hover:bg-white/15"
                         title={pick('Daftar Keinginan', 'Wishlist')}
                         aria-label={pick('Daftar Keinginan', 'Wishlist')}
                     >
                         <Heart className="w-4 h-4" />
-                        <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[#4AB8BD]" />
+                        <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[#0684E5] dark:bg-[#4AB8BD]" />
                     </Link>
 
                     <Link
                         href="/cart"
-                        className="btn-motion relative h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full text-white/80 hover:text-white hover:bg-white/15"
+                        className="btn-motion relative h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white hover:bg-[#eef6ff] dark:hover:bg-white/15"
                         title={pick('Keranjang Belanja', 'Shopping Cart')}
                         aria-label={pick('Keranjang Belanja', 'Shopping Cart')}
                     >
@@ -404,7 +404,7 @@ export default function TopHeader({
                         {cartCount > 0 && (
                             <span
                                 key={cartCount}
-                                className="micro-pop absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#0684E5] text-white text-[10px] font-bold px-1 shadow-xs ring-1 ring-white/25"
+                                className="micro-pop absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#0684E5] text-white text-[10px] font-bold px-1 shadow-xs"
                             >
                                 {cartCount}
                             </span>
@@ -416,7 +416,7 @@ export default function TopHeader({
                             {storeNavItem && (
                                 <Link
                                     href={storeNavItem.href}
-                                    className="btn-motion hidden sm:inline-flex items-center px-3 py-1.5 rounded-xl bg-white/12 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold shadow-2xs"
+                                    className="btn-motion btn-sheen hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-xl bg-[#001454] hover:bg-[#0684E5] dark:bg-[#4AB8BD] dark:hover:bg-[#3aa4a9] text-white dark:text-[#001454] text-xs font-semibold shadow-2xs"
                                 >
                                     {storeNavItem.label}
                                 </Link>
@@ -426,59 +426,59 @@ export default function TopHeader({
                                 <button
                                     type="button"
                                     onClick={() => setUserDropdownOpen((prev) => !prev)}
-                                    className="btn-motion flex items-center gap-1.5 p-0.5 pr-2 rounded-full bg-white/10 hover:bg-white/18 border border-white/15 transition"
+                                    className="btn-motion flex items-center gap-1.5 p-0.5 pr-2 rounded-full border border-[#1E80A0]/20 dark:border-white/15 bg-white/70 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 transition"
                                     aria-label={pick('Menu Pengguna', 'User Menu')}
                                 >
                                     <UserAvatar user={user} className="w-7 h-7 text-[11px]" />
-                                    <span className="hidden xl:inline text-xs font-semibold text-white max-w-[92px] truncate">
+                                    <span className="hidden xl:inline text-xs font-semibold text-[#001454] dark:text-white max-w-[92px] truncate">
                                         {user.name}
                                     </span>
-                                    <ChevronDown className="w-3.5 h-3.5 text-white/75" />
+                                    <ChevronDown className="w-3.5 h-3.5 text-[#1E80A0] dark:text-white/75" />
                                 </button>
 
                                 {userDropdownOpen && (
                                     <div
-                                        className="swap-in absolute right-0 z-50 mt-3 w-56 rounded-2xl bg-[#0d1425]/95 backdrop-blur-2xl border border-white/15 shadow-[0_24px_54px_-12px_rgba(2,6,23,0.75)] py-2 text-xs text-white"
+                                        className="dropdown-in absolute right-0 z-50 mt-3 w-56 rounded-2xl bg-white dark:bg-[#0b152d] border border-[#1E80A0]/15 dark:border-[#4AB8BD]/20 shadow-[0_22px_50px_-12px_rgba(0,20,84,0.22)] dark:shadow-[0_24px_54px_-12px_rgba(2,6,23,0.82)] py-2 text-xs text-[#001454] dark:text-white"
                                         onClick={() => setUserDropdownOpen(false)}
                                     >
-                                        <div className="px-4 py-2 border-b border-white/10">
-                                            <p className="font-extrabold text-white truncate">{user.name}</p>
-                                            <p className="text-[11px] text-white/60 truncate">{user.email}</p>
+                                        <div className="px-4 py-2 border-b border-slate-100 dark:border-white/10">
+                                            <p className="font-extrabold text-[#001454] dark:text-white truncate">{user.name}</p>
+                                            <p className="text-[11px] text-slate-500 dark:text-white/60 truncate">{user.email}</p>
                                         </div>
 
-                                        <Link href="/profile" className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 text-white/90 transition">
-                                            <User className="w-3.5 h-3.5 text-[#4AB8BD]" />
+                                        <Link href="/profile" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#001454] dark:text-white/90 transition">
+                                            <User className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
                                             <span>{pick('Profil Saya', 'My Profile')}</span>
                                         </Link>
-                                        <Link href="/orders" className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 text-white/90 transition font-medium">
-                                            <Package className="w-3.5 h-3.5 text-sky-400" />
+                                        <Link href="/orders" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#001454] dark:text-white/90 transition font-medium">
+                                            <Package className="w-3.5 h-3.5 text-[#0684E5] dark:text-sky-400" />
                                             <span>{pick('Pesanan Saya', 'My Orders')}</span>
                                         </Link>
-                                        <Link href="/addresses" className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 text-white/90 transition">
-                                            <MapPin className="w-3.5 h-3.5 text-[#4AB8BD]" />
+                                        <Link href="/addresses" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#001454] dark:text-white/90 transition">
+                                            <MapPin className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
                                             <span>{pick('Buku Alamat', 'Address Book')}</span>
                                         </Link>
 
                                         {user.role === 'seller' && (
-                                            <div className="border-t border-white/10 my-1 pt-1">
-                                                <span className="px-4 text-[10px] font-bold text-[#4AB8BD] uppercase tracking-wider block mb-1">
+                                            <div className="border-t border-slate-100 dark:border-white/10 my-1 pt-1">
+                                                <span className="px-4 text-[10px] font-bold text-[#1E80A0] dark:text-[#4AB8BD] uppercase tracking-wider block mb-1">
                                                     {pick('Toko Saya', 'My Store')}
                                                 </span>
-                                                <Link href="/seller/products" className="block px-4 py-1.5 hover:bg-white/10 text-white/90 transition">
+                                                <Link href="/seller/products" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#001454] dark:text-white/90 transition">
                                                     {pick('Produk Toko', 'Store Products')}
                                                 </Link>
-                                                <Link href="/seller/orders" className="block px-4 py-1.5 hover:bg-white/10 text-white/90 transition">
+                                                <Link href="/seller/orders" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#001454] dark:text-white/90 transition">
                                                     {pick('Pesanan Masuk', 'Incoming Orders')}
                                                 </Link>
-                                                <Link href="/seller/store" className="block px-4 py-1.5 hover:bg-white/10 text-white/90 transition">
+                                                <Link href="/seller/store" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#001454] dark:text-white/90 transition">
                                                     {pick('Profil Toko', 'Store Profile')}
                                                 </Link>
                                             </div>
                                         )}
 
                                         {user.role === 'buyer' && (
-                                            <div className="border-t border-white/10 my-1 pt-1">
-                                                <Link href="/seller/register" className="flex items-center justify-between gap-2 px-4 py-2 hover:bg-white/10 text-cyan-300 font-bold transition">
+                                            <div className="border-t border-slate-100 dark:border-white/10 my-1 pt-1">
+                                                <Link href="/seller/register" className="flex items-center justify-between gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#0684E5] dark:text-cyan-300 font-bold transition">
                                                     <span>
                                                         {user.seller_status === 'pending'
                                                             ? pick('Status Penjual', 'Seller Status')
@@ -487,12 +487,12 @@ export default function TopHeader({
                                                               : pick('Buka Toko Penangkar', 'Open Breeder Store')}
                                                     </span>
                                                     {user.seller_status === 'pending' && (
-                                                        <span className="px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-bold">
+                                                        <span className="px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-400/20 text-amber-800 dark:text-amber-300 text-[10px] font-bold">
                                                             Pending
                                                         </span>
                                                     )}
                                                     {user.seller_status === 'rejected' && (
-                                                        <span className="px-1.5 py-0.5 rounded-full bg-rose-400/20 text-rose-300 text-[10px] font-bold">
+                                                        <span className="px-1.5 py-0.5 rounded-full bg-rose-100 dark:bg-rose-400/20 text-rose-700 dark:text-rose-300 text-[10px] font-bold">
                                                             {pick('Ditolak', 'Rejected')}
                                                         </span>
                                                     )}
@@ -500,12 +500,12 @@ export default function TopHeader({
                                             </div>
                                         )}
 
-                                        <div className="border-t border-white/10 mt-1 pt-1">
+                                        <div className="border-t border-slate-100 dark:border-white/10 mt-1 pt-1">
                                             <Link
                                                 href="/logout"
                                                 method="post"
                                                 as="button"
-                                                className="block w-full text-left px-4 py-2 text-rose-300 hover:bg-rose-500/20 transition font-medium"
+                                                className="block w-full text-left px-4 py-2 text-[#ba1a1a] dark:text-rose-300 hover:bg-[#ffdad6]/40 dark:hover:bg-rose-500/20 transition font-medium"
                                             >
                                                 {pick('Keluar', 'Sign Out')}
                                             </Link>
@@ -518,13 +518,13 @@ export default function TopHeader({
                         <div className="flex items-center gap-1.5 ml-0.5">
                             <Link
                                 href="/login"
-                                className="hidden sm:inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-white/80 hover:text-white transition"
+                                className="hidden sm:inline-flex items-center px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-[#001454] dark:text-white/80 dark:hover:text-white transition"
                             >
                                 {pick('Masuk', 'Log in')}
                             </Link>
                             <Link
                                 href="/register"
-                                className="btn-motion btn-sheen inline-flex items-center px-3.5 py-1.5 rounded-xl bg-white/12 hover:bg-white/22 border border-white/20 text-white font-semibold text-xs shadow-2xs"
+                                className="btn-motion btn-sheen inline-flex items-center px-3.5 py-1.5 rounded-xl bg-[#001454] hover:bg-[#0684E5] dark:bg-white/15 dark:hover:bg-[#4AB8BD] dark:border dark:border-white/20 text-white dark:hover:text-[#001454] font-semibold text-xs shadow-2xs"
                             >
                                 {pick('Daftar', 'Sign up')}
                             </Link>
@@ -535,7 +535,7 @@ export default function TopHeader({
                     <button
                         type="button"
                         onClick={onOpenMobileSidebar}
-                        className="btn-motion md:hidden inline-flex items-center gap-1.5 h-8 px-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white text-xs font-semibold shrink-0"
+                        className="btn-motion md:hidden inline-flex items-center gap-1.5 h-8 px-2.5 rounded-xl bg-[#f3f2ff] hover:bg-[#e5e9fb] border border-[#1E80A0]/15 text-[#001454] dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white text-xs font-semibold shrink-0"
                         aria-label={pick('Buka Menu Navigasi', 'Open Navigation Menu')}
                     >
                         <svg viewBox="0 0 16 10" className="w-3.5 h-2.5 fill-none stroke-current" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
@@ -546,13 +546,13 @@ export default function TopHeader({
                 </div>
             </div>
 
-            {/* Frosted Glass Centered Search Popover */}
+            {/* Frosted Aquatic Centered Search Popover */}
             {searchOpen && (
-                <div className="pointer-events-auto swap-in max-w-2xl mx-auto mt-2.5 rounded-2xl bg-[#0d1425]/95 backdrop-blur-2xl border border-white/15 p-3.5 shadow-[0_24px_54px_-12px_rgba(2,6,23,0.72),inset_0_1px_0_rgba(255,255,255,0.12)] text-white">
+                <div className="pointer-events-auto dropdown-in max-w-2xl mx-auto mt-2.5 rounded-2xl bg-white dark:bg-[#0b152d] border border-[#1E80A0]/15 dark:border-[#4AB8BD]/20 p-3.5 shadow-[0_22px_50px_-12px_rgba(0,20,84,0.22)] dark:shadow-[0_24px_54px_-12px_rgba(2,6,23,0.82)] text-[#001454] dark:text-white">
                     <div className="space-y-3">
                         <form onSubmit={handleSearchSubmit} className="relative flex items-center gap-2">
                             <div className="relative flex-1">
-                                <Search className="w-4 h-4 text-[#4AB8BD] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                <Search className="w-4 h-4 text-[#1E80A0] dark:text-[#4AB8BD] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                                 <input
                                     ref={searchInputRef}
                                     type="search"
@@ -562,12 +562,12 @@ export default function TopHeader({
                                     )}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full h-10 rounded-xl bg-white/10 pl-10 pr-4 text-xs sm:text-sm text-white placeholder:text-white/50 border border-white/15 focus:border-[#4AB8BD] focus:bg-white/15 focus:ring-2 focus:ring-[#4AB8BD]/30 transition"
+                                    className="w-full h-10 rounded-xl bg-[#f3f2ff] dark:bg-white/10 pl-10 pr-4 text-xs sm:text-sm text-[#001454] dark:text-white placeholder:text-slate-400 dark:placeholder:text-white/50 border border-[#1E80A0]/15 dark:border-white/15 focus:border-[#4AB8BD] focus:bg-white dark:focus:bg-white/15 focus:ring-2 focus:ring-[#4AB8BD]/30 transition"
                                 />
                             </div>
                             <button
                                 type="submit"
-                                className="btn-motion btn-sheen h-10 px-4 rounded-xl bg-[#4AB8BD] hover:bg-[#3aa4a9] text-[#001454] text-xs font-bold shrink-0"
+                                className="btn-motion btn-sheen h-10 px-4 rounded-xl bg-[#001454] hover:bg-[#0684E5] dark:bg-[#4AB8BD] dark:hover:bg-[#3aa4a9] text-white dark:text-[#001454] text-xs font-bold shrink-0"
                             >
                                 {pick('Cari', 'Search')}
                             </button>
@@ -578,9 +578,9 @@ export default function TopHeader({
                                 <button
                                     type="button"
                                     onClick={handleSearchSubmit}
-                                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 text-xs font-semibold text-white hover:bg-white/15 transition text-left"
+                                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl bg-[#f3f2ff] dark:bg-white/10 text-xs font-semibold text-[#001454] dark:text-white hover:bg-[#4AB8BD]/15 transition text-left"
                                 >
-                                    <Search className="w-3.5 h-3.5 text-[#4AB8BD]" />
+                                    <Search className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
                                     <span>
                                         {pick(
                                             `Cari “${searchQuery.trim()}” di seluruh toko`,
@@ -592,7 +592,7 @@ export default function TopHeader({
 
                             {filteredGroups.map((group) => (
                                 <div key={group.label} className="space-y-1.5">
-                                    <p className="text-[10px] font-bold uppercase tracking-wider text-white/45 px-1">
+                                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-white/45 px-1">
                                         {group.label}
                                     </p>
                                     <div className="flex flex-wrap gap-1.5">
@@ -601,7 +601,7 @@ export default function TopHeader({
                                                 key={item.title}
                                                 href={item.href}
                                                 onClick={() => setSearchOpen(false)}
-                                                className="btn-motion px-2.5 py-1 rounded-full bg-white/10 hover:bg-[#4AB8BD] hover:text-[#001454] text-[11px] font-semibold text-white/85 transition"
+                                                className="btn-motion px-2.5 py-1 rounded-full bg-slate-100 dark:bg-white/10 hover:bg-[#0684E5] hover:text-white dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] text-[11px] font-semibold text-[#001454] dark:text-white/85 transition"
                                             >
                                                 {item.title}
                                             </Link>

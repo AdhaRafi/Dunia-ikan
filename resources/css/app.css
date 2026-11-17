@@ -215,19 +215,32 @@
         transform: translateY(1px);
     }
 
-    /* Floating Glassy Navbar & Glowing Hover Underline */
+    /* Floating Aquatic Glassy Navbar & Glowing Hover Underline */
     .glass-nav-bar {
         background: linear-gradient(
-            180deg,
-            rgba(22, 31, 52, 0.78) 0%,
-            rgba(10, 15, 28, 0.84) 100%
+            135deg,
+            rgba(255, 255, 255, 0.88) 0%,
+            rgba(241, 248, 255, 0.8) 100%
         );
-        -webkit-backdrop-filter: blur(20px) saturate(165%);
-        backdrop-filter: blur(20px) saturate(165%);
-        border: 1px solid rgba(255, 255, 255, 0.14);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(30, 128, 160, 0.16);
         box-shadow:
-            0 16px 40px -12px rgba(2, 6, 23, 0.48),
-            inset 0 1px 0 rgba(255, 255, 255, 0.18);
+            0 12px 32px -10px rgba(0, 20, 84, 0.14),
+            0 4px 12px -4px rgba(6, 132, 229, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    }
+
+    .dark .glass-nav-bar {
+        background: linear-gradient(
+            135deg,
+            rgba(12, 26, 60, 0.82) 0%,
+            rgba(8, 16, 38, 0.86) 100%
+        );
+        border: 1px solid rgba(74, 184, 189, 0.22);
+        box-shadow:
+            0 16px 40px -12px rgba(2, 6, 23, 0.58),
+            inset 0 1px 0 rgba(74, 184, 189, 0.22);
     }
 
     .glass-nav-link {
@@ -244,18 +257,29 @@
         border-radius: 9999px;
         background: linear-gradient(
             90deg,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.92) 40%,
-            rgba(74, 184, 189, 0.95) 65%,
-            rgba(255, 255, 255, 0) 100%
+            rgba(6, 132, 229, 0) 0%,
+            #0684e5 35%,
+            #4ab8bd 68%,
+            rgba(74, 184, 189, 0) 100%
         );
-        box-shadow: 0 0 10px rgba(74, 184, 189, 0.65);
+        box-shadow: 0 0 10px rgba(6, 132, 229, 0.45);
         transform: scaleX(0);
         opacity: 0;
         transition:
             transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
             opacity 180ms ease;
         pointer-events: none;
+    }
+
+    .dark .glass-nav-link::after {
+        background: linear-gradient(
+            90deg,
+            rgba(74, 184, 189, 0) 0%,
+            #38bdf8 35%,
+            #4ab8bd 68%,
+            rgba(74, 184, 189, 0) 100%
+        );
+        box-shadow: 0 0 10px rgba(74, 184, 189, 0.7);
     }
 
     .glass-nav-link:hover::after,
@@ -407,6 +431,10 @@
         animation: swap-in 480ms ease both;
     }
 
+    .dropdown-in {
+        animation: dropdown-in 150ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
     .drift {
         animation: drift 18s ease-in-out infinite alternate;
     }
@@ -424,6 +452,17 @@
     @keyframes swap-in {
         from { opacity: 0.35; }
         to { opacity: 1; }
+    }
+
+    @keyframes dropdown-in {
+        from {
+            opacity: 0.88;
+            transform: translateY(-4px) scale(0.985);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     }
 
     @keyframes drift {
@@ -510,6 +549,7 @@
         }
 
         .swap-in,
+        .dropdown-in,
         .drift,
         .kiko-float,
         .kiko-bob,

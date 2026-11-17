@@ -210,7 +210,7 @@ export default function AppLayout({ children }) {
             )}
 
             {/* Page Content Canvas */}
-            <main className="flex-1 w-full min-w-0">
+            <main className="relative z-0 flex-1 w-full min-w-0">
                 {children}
             </main>
 
