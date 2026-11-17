@@ -269,7 +269,7 @@ export default function TopHeader({
         : 'text-[#1E80A0] hover:text-[#001454] hover:bg-[#eef6ff]';
 
     const getNavLinkClass = (active) =>
-        `glass-nav-link px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 rounded-md ${
+        `glass-nav-link whitespace-nowrap shrink-0 px-1 py-1.5 text-[13px] tracking-[-0.01em] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 rounded-md ${
             isDarkNav
                 ? `focus-visible:ring-[#4AB8BD] ${active ? 'text-white font-semibold' : 'text-white/80 hover:text-white font-medium'}`
                 : `focus-visible:ring-[#0684E5] ${active ? 'text-[#001454] font-semibold' : 'text-slate-600 hover:text-[#001454] font-medium'}`
@@ -305,7 +305,7 @@ export default function TopHeader({
                 {/* Center: Floating Glass Links + Glowing Aquatic Hover Underline */}
                 <nav
                     aria-label={pick('Navigasi utama', 'Main navigation')}
-                    className="hidden md:flex items-center gap-5 lg:gap-7"
+                    className="hidden md:flex items-center gap-3.5 lg:gap-7"
                 >
                     <Link
                         href="/"

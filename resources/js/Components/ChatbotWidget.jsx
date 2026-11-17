@@ -414,9 +414,9 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                 {historyLoading ? (
                                     <div className="flex flex-col items-center gap-3">
                                         <img
-                                            src="/images/kiko/avatar.png"
+                                            src="/images/kiko/floating.png"
                                             alt="Kiko"
-                                            className="h-20 w-20 object-contain opacity-90"
+                                            className="h-24 w-auto object-contain opacity-95"
                                         />
                                         <p className="text-xs font-medium text-slate-600 dark:text-slate-300">
                                             {pick('Menyiapkan asisten Kiko...', 'Preparing Kiko assistant...')}
@@ -489,11 +489,11 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                                 </div>
                                             </div>
 
-                                            {/* Gently Floating Kiko Fish Head */}
+                                            {/* Gently Floating Full-Body Kiko Mascot */}
                                             <img
-                                                src="/images/kiko/avatar.png"
+                                                src="/images/kiko/floating.png"
                                                 alt="Kiko"
-                                                className="kiko-bob relative z-20 -mt-3 h-24 w-24 sm:h-[104px] sm:w-[104px] object-contain drop-shadow-[0_12px_20px_rgba(15,23,42,0.14)] select-none"
+                                                className="kiko-bob relative z-20 -mt-2 h-32 w-auto sm:h-36 object-contain drop-shadow-[0_14px_24px_rgba(15,23,42,0.16)] select-none"
                                             />
                                         </div>
 
