@@ -11,11 +11,13 @@ import {
     ChevronDown,
     Package,
     MapPin,
+    MessageSquare,
     X
 } from 'lucide-react';
 import BrandWordmark from '@/Components/BrandWordmark';
 import UserAvatar from '@/Components/UserAvatar';
 import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
+import { buildPrimaryNavItems, buildStoreNavItem } from '@/lib/navigation';
 
 const SEARCH_GROUPS = [
     {
@@ -67,9 +69,12 @@ export default function TopHeader({
     darkMode: controlledDarkMode,
     onToggleDarkMode,
 }) {
-    const { auth, cartCount } = usePage().props;
+    const { url, props } = usePage();
+    const { auth, cartCount } = props;
     const { pick, isEn } = useLanguage();
     const user = auth?.user;
+    const primaryNavItems = buildPrimaryNavItems(url, pick);
+    const storeNavItem = buildStoreNavItem(url, user, pick);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchFocused, setSearchFocused] = useState(false);
     const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -214,7 +219,7 @@ export default function TopHeader({
 
     return (
         <header className="sticky top-0 z-40 transform-gpu bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-md border-b border-[#1E80A0]/10 dark:border-neutral-800 transition-colors">
-            <div className="h-14 sm:h-16 pl-3 pr-3 sm:pl-4 sm:pr-6 md:pl-3 lg:pr-8 w-full flex items-center justify-between gap-2 sm:gap-6">
+            <div className="max-w-7xl mx-auto h-14 sm:h-[60px] px-3 sm:px-6 lg:px-8 w-full flex items-center justify-between gap-2 sm:gap-6">
                 {/* Left: Mobile Menu Trigger + Brand + Desktop Search Bar */}
                 <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0 max-w-3xl">
                     {/* Mobile Hamburger Trigger */}
@@ -445,7 +450,7 @@ export default function TopHeader({
                             </Link>
                             <Link
                                 href="/register"
-                                className="hidden sm:inline-block px-4 py-2 rounded-full bg-[#0684E5] text-white font-bold text-xs hover:bg-[#0060aa] hover:scale-[1.02] shadow-sm transition-all"
+                                className="btn-motion btn-sheen hidden sm:inline-block px-4 py-2 rounded-full bg-[#0684E5] text-white font-bold text-xs hover:bg-[#0060aa] shadow-sm"
                             >
                                 {pick('Daftar', 'Sign Up')}
                             </Link>
@@ -453,6 +458,73 @@ export default function TopHeader({
                     )}
                 </div>
             </div>
+
+            {/* Desktop Horizontal Navigation Bar */}
+            <nav
+                aria-label={pick('Navigasi utama', 'Main navigation')}
+                className="hidden md:block border-t border-slate-100/90 dark:border-neutral-800/80 bg-white/80 dark:bg-[#070b14]/80"
+            >
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-1 overflow-x-auto py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                        {primaryNavItems.map((item) => {
+                            const Icon = item.icon;
+
+                            return (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    aria-current={item.active ? 'page' : undefined}
+                                    className={`btn-motion inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[13px] whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1] ${
+                                        item.active
+                                            ? 'bg-[#eef6ff] dark:bg-sky-500/15 text-[#0267C1] dark:text-[#4AB8BD] font-semibold'
+                                            : 'text-slate-600 dark:text-slate-300 font-medium hover:text-[#001454] dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/60'
+                                    }`}
+                                >
+                                    <Icon
+                                        strokeWidth={1.9}
+                                        className={`w-3.5 h-3.5 shrink-0 ${
+                                            item.active
+                                                ? 'text-[#0267C1] dark:text-[#4AB8BD]'
+                                                : 'text-slate-400 dark:text-slate-400'
+                                        }`}
+                                    />
+                                    <span>{item.label}</span>
+                                </Link>
+                            );
+                        })}
+                    </div>
+
+                    <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                            type="button"
+                            onClick={() => onOpenChat?.()}
+                            className="btn-motion inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold text-[#0267C1] dark:text-[#4AB8BD] hover:bg-[#eef6ff] dark:hover:bg-sky-500/15 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
+                        >
+                            <MessageSquare className="w-3.5 h-3.5 shrink-0" strokeWidth={1.9} />
+                            <span>{pick('Tanya Kiko', 'Ask Kiko')}</span>
+                        </button>
+
+                        {storeNavItem && (() => {
+                            const StoreIcon = storeNavItem.icon;
+
+                            return (
+                                <Link
+                                    href={storeNavItem.href}
+                                    aria-current={storeNavItem.active ? 'page' : undefined}
+                                    className={`btn-motion inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1] ${
+                                        storeNavItem.active
+                                            ? 'bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454]'
+                                            : 'border border-slate-200 dark:border-neutral-700 text-[#001454] dark:text-slate-200 hover:border-[#4AB8BD] hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                                    }`}
+                                >
+                                    <StoreIcon className="w-3.5 h-3.5 shrink-0" strokeWidth={1.9} />
+                                    <span>{storeNavItem.label}</span>
+                                </Link>
+                            );
+                        })()}
+                    </div>
+                </div>
+            </nav>
 
             {/* Mobile Full-Width Search Row */}
             {mobileSearchOpen && (

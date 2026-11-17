@@ -305,7 +305,7 @@ export default function Show({ guide, relatedGuides = [] }) {
                     </div>
 
                     {/* Right Sticky Table of Contents & Actions */}
-                    <aside className="lg:col-span-4 lg:sticky lg:top-20 space-y-4 min-w-0">
+                    <aside className="lg:col-span-4 lg:sticky lg:top-28 space-y-4 min-w-0">
                         {sections.length > 0 && (
                             <nav
                                 aria-label={pick('Daftar isi panduan', 'Guide table of contents')}

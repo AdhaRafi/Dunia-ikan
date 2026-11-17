@@ -29,11 +29,11 @@ const FAQ_ITEMS = [
     {
         id: {
             question: 'Bagaimana cara memilih ikan air tawar atau air laut di katalog?',
-            answer: 'Anda bisa langsung klik menu Air Tawar atau Air Laut di sidebar, atau gunakan filter Tipe Air di halaman Katalog lengkap beserta informasi pH dan suhu ideal.',
+            answer: 'Anda bisa langsung klik menu Air Tawar atau Air Laut di menu header, atau gunakan filter Tipe Air di halaman Katalog lengkap beserta informasi pH dan suhu ideal.',
         },
         en: {
             question: 'How do I browse freshwater or saltwater fish in the catalog?',
-            answer: 'Select Freshwater or Saltwater directly from the sidebar, or use the Water Type filter on the full Catalog page with ideal pH and temperature notes.',
+            answer: 'Select Freshwater or Saltwater directly from the header menu, or use the Water Type filter on the full Catalog page with ideal pH and temperature notes.',
         },
     },
     {

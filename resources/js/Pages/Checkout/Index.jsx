@@ -390,7 +390,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
 
                     {/* Right Column: Breakdown Per Store & Order Finalization */}
                     <div className="lg:col-span-4 space-y-6">
-                        <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-5 sticky top-24">
+                        <div className="bg-white p-6 rounded-2xl border border-sky-100 shadow-xs space-y-5 sticky top-28">
                             <h3 className="font-extrabold text-base text-dunia-navy pb-3 border-b border-slate-100">
                                 {pick('Rincian Pesanan Toko', 'Order Breakdown by Store')}
                             </h3>

@@ -154,7 +154,7 @@ export default function AppLayout({ children }) {
 
     return (
         <div className="min-h-screen w-full flex flex-col overflow-x-clip bg-[#fbf8ff] dark:bg-[#070b14] text-[#001454] dark:text-[#e4e7ff] antialiased selection:bg-[#001454] selection:text-white transition-colors duration-200">
-            {/* Full-Width TopHeader with Single Logo */}
+            {/* Full-Width Header with Brand, Search & Horizontal Navigation */}
             <TopHeader
                 onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
                 onOpenChat={() => setChatOpen(true)}
@@ -162,73 +162,66 @@ export default function AppLayout({ children }) {
                 onToggleDarkMode={() => setDarkMode((prev) => !prev)}
             />
 
-            {/* Content Row Below TopHeader: Left Sidebar + Page Canvas */}
-            <div className="flex-1 flex min-w-0">
-                {/* Left Sidebar (Collapsible rail under TopHeader on desktop, sliding drawer on mobile) */}
-                <Sidebar
-                    isOpen={mobileSidebarOpen}
-                    onClose={() => setMobileSidebarOpen(false)}
-                    onOpenChat={() => setChatOpen(true)}
-                    darkMode={darkMode}
-                    onToggleDarkMode={() => setDarkMode((prev) => !prev)}
-                />
+            {/* Mobile Sliding Drawer Navigation */}
+            <Sidebar
+                isOpen={mobileSidebarOpen}
+                onClose={() => setMobileSidebarOpen(false)}
+                onOpenChat={() => setChatOpen(true)}
+                darkMode={darkMode}
+                onToggleDarkMode={() => setDarkMode((prev) => !prev)}
+            />
 
-                {/* Main Area: Flash + Page Canvas + Footer (Native Window Scroll) */}
-                <div className="flex-1 min-w-0 flex flex-col">
-
-                {/* Flash Messages */}
-                {showFlash && (flash?.success || flash?.error) && (
-                    <div className="px-4 sm:px-6 lg:px-8 pt-4 w-full max-w-6xl mx-auto">
-                        {flash.success && (
-                            <div className="flex items-center justify-between gap-4 rounded-xl bg-[#00696D] px-4 py-3 text-xs font-bold text-white shadow-md">
-                                <span className="flex items-center gap-2">
-                                    <Check className="h-4 w-4 shrink-0 text-[#C0ECB8]" />
-                                    {flash.success}
-                                </span>
-                                <button
-                                    type="button"
-                                    onClick={() => setShowFlash(false)}
-                                    className="p-1 text-white/80 hover:text-white"
-                                    aria-label="Tutup pesan"
-                                >
-                                    <X className="h-4 w-4" />
-                                </button>
-                            </div>
-                        )}
-                        {flash.error && (
-                            <div className="flex items-center justify-between gap-4 rounded-xl bg-[#ba1a1a] px-4 py-3 text-xs font-bold text-white shadow-md">
-                                <span className="flex items-center gap-2">
-                                    <AlertTriangle className="h-4 w-4 shrink-0 text-[#ffdad6]" />
-                                    {flash.error}
-                                </span>
-                                <button
-                                    type="button"
-                                    onClick={() => setShowFlash(false)}
-                                    className="p-1 text-white/80 hover:text-white"
-                                    aria-label="Tutup pesan"
-                                >
-                                    <X className="h-4 w-4" />
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* Page Content Canvas */}
-                <main className="flex-1 w-full min-w-0">
-                    {children}
-                </main>
-
-                {/* Kiko Mascot AI Assistant Widget (Floating Pill, Speech Bubble & Chat Modal) */}
-                <ChatbotWidget
-                    isOpen={chatOpen}
-                    onOpen={() => setChatOpen(true)}
-                    onClose={() => setChatOpen(false)}
-                />
-
-                <Footer />
+            {/* Flash Messages */}
+            {showFlash && (flash?.success || flash?.error) && (
+                <div className="px-4 sm:px-6 lg:px-8 pt-4 w-full max-w-6xl mx-auto">
+                    {flash.success && (
+                        <div className="flex items-center justify-between gap-4 rounded-xl bg-[#00696D] px-4 py-3 text-xs font-bold text-white shadow-md">
+                            <span className="flex items-center gap-2">
+                                <Check className="h-4 w-4 shrink-0 text-[#C0ECB8]" />
+                                {flash.success}
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => setShowFlash(false)}
+                                className="p-1 text-white/80 hover:text-white"
+                                aria-label="Tutup pesan"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
+                        </div>
+                    )}
+                    {flash.error && (
+                        <div className="flex items-center justify-between gap-4 rounded-xl bg-[#ba1a1a] px-4 py-3 text-xs font-bold text-white shadow-md">
+                            <span className="flex items-center gap-2">
+                                <AlertTriangle className="h-4 w-4 shrink-0 text-[#ffdad6]" />
+                                {flash.error}
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => setShowFlash(false)}
+                                className="p-1 text-white/80 hover:text-white"
+                                aria-label="Tutup pesan"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
+                        </div>
+                    )}
                 </div>
-            </div>
+            )}
+
+            {/* Page Content Canvas */}
+            <main className="flex-1 w-full min-w-0">
+                {children}
+            </main>
+
+            {/* Kiko Mascot AI Assistant Widget (Floating Pill, Speech Bubble & Chat Modal) */}
+            <ChatbotWidget
+                isOpen={chatOpen}
+                onOpen={() => setChatOpen(true)}
+                onClose={() => setChatOpen(false)}
+            />
+
+            <Footer />
         </div>
     );
 }
