@@ -18,6 +18,7 @@ use App\Services\TurnstileVerifier;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
+use Livewire\Mechanisms\HandleRequests\EndpointResolver;
 use Tests\TestCase;
 
 class SecurityHardeningTest extends TestCase
@@ -269,6 +270,11 @@ class SecurityHardeningTest extends TestCase
 
         $adminLogin = $this->get('/admin/login');
         $adminLogin->assertStatus(200);
+        $this->get(EndpointResolver::scriptPath())->assertStatus(200);
+        $this->assertStringStartsWith(
+            url(EndpointResolver::prefix()),
+            route('default-livewire.update')
+        );
         $adminLogin->assertHeader('X-Content-Type-Options', 'nosniff');
         $adminLogin->assertHeader('X-Frame-Options', 'SAMEORIGIN');
         $adminLogin->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');

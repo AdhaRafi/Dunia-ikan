@@ -3,6 +3,7 @@ set -e
 
 export PORT="${PORT:-80}"
 export APP_CONFIG_CACHE="${APP_CONFIG_CACHE:-/tmp/config.php}"
+export APP_ROUTES_CACHE="${APP_ROUTES_CACHE:-/tmp/routes.php}"
 export VIEW_COMPILED_PATH="${VIEW_COMPILED_PATH:-/tmp/storage/framework/views}"
 
 mkdir -p /tmp/storage/app/public \
@@ -19,11 +20,13 @@ fi
 
 if [ -n "${APP_KEY:-}" ]; then
     php artisan config:cache --no-interaction || true
+    # Cache routes at runtime after config:cache so Livewire's APP_KEY-derived endpoint hash matches.
+    php artisan route:cache --no-interaction || true
     if [ "${RUN_BOOT_MIGRATIONS:-false}" = "true" ]; then
         php artisan migrate --force --no-interaction || true
     fi
 else
-    rm -f "${APP_CONFIG_CACHE}" /app/bootstrap/cache/config.php || true
+    rm -f "${APP_CONFIG_CACHE}" "${APP_ROUTES_CACHE}" /app/bootstrap/cache/config.php /app/bootstrap/cache/routes-v7.php || true
 fi
 
 exec frankenphp run --config /etc/frankenphp/Caddyfile
