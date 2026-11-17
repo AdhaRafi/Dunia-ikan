@@ -450,22 +450,13 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                                     className="kiko-float"
                                                     style={{ animationDuration: '3.2s', animationDelay: '0s' }}
                                                 >
-                                                    <div className="flex h-12 w-12 -rotate-12 translate-y-2 items-center justify-center rounded-2xl bg-white dark:bg-[#131d33] border border-slate-100 dark:border-slate-700/80 shadow-[0_8px_18px_rgba(15,23,42,0.08)]">
-                                                        <svg
-                                                            viewBox="0 0 36 36"
-                                                            className="h-7 w-7"
+                                                    <div className="flex h-12 w-12 -rotate-12 translate-y-2 items-center justify-center rounded-2xl bg-white dark:bg-[#131d33] border border-slate-100 dark:border-slate-700/80 shadow-[0_8px_18px_rgba(15,23,42,0.08)] p-1.5">
+                                                        <img
+                                                            src="/images/kiko/tile-fish.png"
+                                                            alt=""
                                                             aria-hidden="true"
-                                                        >
-                                                            <path
-                                                                d="M8 18c4-6 11-8 18-4l5-4v16l-5-4c-7 4-14 2-18-4Z"
-                                                                fill="#6366F1"
-                                                            />
-                                                            <path
-                                                                d="M15 11l3-4 4 4"
-                                                                fill="#38BDF8"
-                                                            />
-                                                            <circle cx="13" cy="17" r="1.6" fill="#FFFFFF" />
-                                                        </svg>
+                                                            className="h-8 w-8 object-contain select-none pointer-events-none"
+                                                        />
                                                     </div>
                                                 </div>
 
@@ -473,49 +464,13 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                                     className="kiko-float"
                                                     style={{ animationDuration: '3.8s', animationDelay: '-1.2s' }}
                                                 >
-                                                    <div className="flex h-14 w-14 -translate-y-1.5 items-center justify-center rounded-2xl bg-white dark:bg-[#131d33] border border-slate-100 dark:border-slate-700/80 shadow-[0_10px_22px_rgba(15,23,42,0.10)]">
-                                                        <svg
-                                                            viewBox="0 0 40 40"
-                                                            className="h-8 w-8"
+                                                    <div className="flex h-14 w-14 -translate-y-1.5 items-center justify-center rounded-2xl bg-white dark:bg-[#131d33] border border-slate-100 dark:border-slate-700/80 shadow-[0_10px_22px_rgba(15,23,42,0.10)] p-1.5">
+                                                        <img
+                                                            src="/images/kiko/tile-book.png"
+                                                            alt=""
                                                             aria-hidden="true"
-                                                        >
-                                                            <rect
-                                                                x="5"
-                                                                y="10"
-                                                                width="14"
-                                                                height="21"
-                                                                rx="2"
-                                                                fill="#10B981"
-                                                            />
-                                                            <rect
-                                                                x="21"
-                                                                y="10"
-                                                                width="14"
-                                                                height="21"
-                                                                rx="2"
-                                                                fill="#059669"
-                                                            />
-                                                            <rect
-                                                                x="7.5"
-                                                                y="12.5"
-                                                                width="11"
-                                                                height="16"
-                                                                rx="1"
-                                                                fill="#F8FAFC"
-                                                            />
-                                                            <rect
-                                                                x="21.5"
-                                                                y="12.5"
-                                                                width="11"
-                                                                height="16"
-                                                                rx="1"
-                                                                fill="#F1F5F9"
-                                                            />
-                                                            <path
-                                                                d="M11 10h4v9l-2-1.8L11 19v-9Z"
-                                                                fill="#F43F5E"
-                                                            />
-                                                        </svg>
+                                                            className="h-10 w-10 object-contain select-none pointer-events-none"
+                                                        />
                                                     </div>
                                                 </div>
 
@@ -523,24 +478,13 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                                     className="kiko-float"
                                                     style={{ animationDuration: '3.5s', animationDelay: '-2.1s' }}
                                                 >
-                                                    <div className="flex h-12 w-12 rotate-12 translate-y-2 items-center justify-center rounded-2xl bg-white dark:bg-[#131d33] border border-slate-100 dark:border-slate-700/80 shadow-[0_8px_18px_rgba(15,23,42,0.08)]">
-                                                        <svg
-                                                            viewBox="0 0 36 36"
-                                                            className="h-7 w-7"
+                                                    <div className="flex h-12 w-12 rotate-12 translate-y-2 items-center justify-center rounded-2xl bg-white dark:bg-[#131d33] border border-slate-100 dark:border-slate-700/80 shadow-[0_8px_18px_rgba(15,23,42,0.08)] p-1.5">
+                                                        <img
+                                                            src="/images/kiko/tile-health.png"
+                                                            alt=""
                                                             aria-hidden="true"
-                                                        >
-                                                            <path
-                                                                d="M18 7c4.5 5.4 8 9.6 8 13.5a8 8 0 1 1-16 0C10 16.6 13.5 12.4 18 7Z"
-                                                                fill="#F43F5E"
-                                                            />
-                                                            <path
-                                                                d="M14 19a4 4 0 0 0 4 4"
-                                                                stroke="#FFE4E6"
-                                                                strokeWidth="2.2"
-                                                                strokeLinecap="round"
-                                                                fill="none"
-                                                            />
-                                                        </svg>
+                                                            className="h-8 w-8 object-contain select-none pointer-events-none"
+                                                        />
                                                     </div>
                                                 </div>
                                             </div>
