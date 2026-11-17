@@ -15,12 +15,12 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class HomeController extends Controller
 {
-    private const HOME_CACHE_KEY = 'home_page_payload_v1';
+    private const HOME_CACHE_KEY = 'home_page_payload_v2';
 
-    private const FILTERS_CACHE_KEY = 'product_filters_v1';
+    private const FILTERS_CACHE_KEY = 'product_filters_v2';
 
     /**
-     * Render the public homepage using a short-lived shared catalog snapshot.
+     * Render the public homepage using a short-lived plain-array catalog snapshot.
      */
     public function index(): Response
     {
@@ -70,16 +70,17 @@ class HomeController extends Controller
                 ->take(6)
                 ->get();
 
+            // Convert collections/models to plain arrays because cache.serializable_classes is disabled.
             return [
-                'categories' => $categories,
-                'featuredFish' => $featuredFish,
-                'featuredSupplies' => $featuredSupplies,
-                'careGuides' => $careGuides,
-                'featuredStores' => $featuredStores,
+                'categories' => $categories->values()->toArray(),
+                'featuredFish' => $featuredFish->values()->toArray(),
+                'featuredSupplies' => $featuredSupplies->values()->toArray(),
+                'careGuides' => $careGuides->values()->toArray(),
+                'featuredStores' => $featuredStores->values()->toArray(),
                 'stats' => [
-                    'totalFish' => Product::where('is_active', true)->sum('stock'),
-                    'totalStores' => Store::where('is_active', true)->count(),
-                    'totalGuides' => FishGuide::where('is_active', true)->count(),
+                    'totalFish' => (int) Product::where('is_active', true)->sum('stock'),
+                    'totalStores' => (int) Store::where('is_active', true)->count(),
+                    'totalGuides' => (int) FishGuide::where('is_active', true)->count(),
                 ],
             ];
         });

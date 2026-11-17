@@ -93,12 +93,15 @@ class ProductController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
 
-        [$categories, $cities] = Cache::remember('product_filters_v1', now()->addSeconds(120), function (): array {
+        $filterData = Cache::remember('product_filters_v2', now()->addSeconds(120), function (): array {
+            // Store pure arrays because cache.serializable_classes is disabled in production.
             return [
-                Category::select('id', 'name', 'slug')->get(),
-                Store::where('is_active', true)->distinct()->pluck('city'),
+                'categories' => Category::select('id', 'name', 'slug')->get()->toArray(),
+                'cities' => Store::where('is_active', true)->distinct()->pluck('city')->values()->all(),
             ];
         });
+        $categories = $filterData['categories'];
+        $cities = $filterData['cities'];
 
         return Inertia::render('Products/Index', [
             'products' => $products,

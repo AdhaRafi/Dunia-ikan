@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Http\Controllers\Auth\AdminLogoutController;
 use Filament\Auth\Http\Controllers\LogoutController as FilamentLogoutController;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,7 +25,5 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->isProduction()) {
             URL::forceScheme('https');
         }
-
-        Vite::prefetch(concurrency: 3);
     }
 }

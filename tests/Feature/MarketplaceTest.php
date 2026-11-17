@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -597,5 +598,29 @@ class MarketplaceTest extends TestCase
         $this->get('/')
             ->assertStatus(200)
             ->assertInertia(fn ($page) => $page->where('featuredFish.0.name', 'Betta Cache Flush Specimen'));
+    }
+
+    public function test_cached_home_and_product_filters_survive_database_serialization_without_php_classes(): void
+    {
+        config(['cache.default' => 'database']);
+        Cache::purge('database');
+
+        // Prime cache (miss), then verify second hit unserializes pure arrays even with serializable_classes=false.
+        $this->get('/')->assertStatus(200);
+        $this->get('/')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->has('categories.0.slug')
+                ->has('featuredFish.0.name')
+                ->has('featuredStores.0.slug')
+            );
+
+        $this->get('/products?water_type=freshwater')->assertStatus(200);
+        $this->get('/products?water_type=freshwater')
+            ->assertStatus(200)
+            ->assertInertia(fn ($page) => $page
+                ->has('categories.0.slug')
+                ->has('cities.0')
+            );
     }
 }

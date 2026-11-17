@@ -6,10 +6,10 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { LanguageProvider } from '@/lib/i18n';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Dunia Ikan';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => (!title ? appName : title.includes(appName) ? title : `${title} — ${appName}`),
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.jsx`,
