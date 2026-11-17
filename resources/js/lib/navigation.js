@@ -78,7 +78,7 @@ export function buildCatalogDropdownItems(url, pick) {
             description: pick('Jelajahi ikan hias, pakan & perlengkapan', 'Browse ornamental fish, food & equipment'),
             href: '/products',
             icon: LayoutGrid,
-            iconClass: 'bg-sky-50 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300',
+            iconClass: 'bg-sky-400/15 text-sky-300 ring-1 ring-sky-400/25',
             active: pathname.startsWith('/products') && !waterType && !category,
         },
         {
@@ -86,7 +86,7 @@ export function buildCatalogDropdownItems(url, pick) {
             description: pick('Cupang, Channa, Arwana, Koi, Discus & Tetra', 'Betta, Channa, Arowana, Koi, Discus & Tetra'),
             href: '/products?water_type=freshwater',
             icon: Fish,
-            iconClass: 'bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300',
+            iconClass: 'bg-amber-400/15 text-amber-300 ring-1 ring-amber-400/25',
             active: pathname.startsWith('/products') && waterType === 'freshwater',
         },
         {
@@ -94,7 +94,7 @@ export function buildCatalogDropdownItems(url, pick) {
             description: pick('Clownfish, Tang & spesies terumbu karang', 'Clownfish, Tangs & vibrant reef species'),
             href: '/products?water_type=saltwater',
             icon: Waves,
-            iconClass: 'bg-cyan-50 text-cyan-600 dark:bg-cyan-500/15 dark:text-cyan-300',
+            iconClass: 'bg-cyan-400/15 text-cyan-300 ring-1 ring-cyan-400/25',
             badge: pick('Populer', 'Popular'),
             active: pathname.startsWith('/products') && waterType === 'saltwater',
         },
@@ -103,7 +103,7 @@ export function buildCatalogDropdownItems(url, pick) {
             description: pick('Tanaman hias, filter & perawatan air', 'Aquatic plants, filtration & water care'),
             href: '/products?category=aquascape',
             icon: Sprout,
-            iconClass: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300',
+            iconClass: 'bg-emerald-400/15 text-emerald-300 ring-1 ring-emerald-400/25',
             active: pathname.startsWith('/products') && category === 'aquascape',
         },
     ];

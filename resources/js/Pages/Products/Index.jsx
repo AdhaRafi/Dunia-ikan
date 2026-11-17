@@ -164,14 +164,14 @@ export default function Index({ products, categories, cities, filters }) {
             </Head>
 
             {/* Editorial Top Banner */}
-            <section className="relative h-60 sm:h-72 lg:h-80 w-full overflow-hidden bg-[#0b1320]">
+            <section className="-mt-[70px] sm:-mt-[72px] relative h-[300px] sm:h-[348px] lg:h-[380px] w-full overflow-hidden bg-[#0b1320]">
                 <img
                     src={bannerImage}
                     alt={`${bannerTitle} Dunia Ikan`}
                     className="w-full h-full object-cover object-center opacity-80 transition-opacity duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-black/30" />
-                <div className="absolute inset-0 pb-6 flex items-center justify-center pointer-events-none px-6">
+                <div className="absolute inset-0 pt-[70px] sm:pt-[72px] pb-6 flex items-center justify-center pointer-events-none px-6">
                     <span className={`${bannerSizeClass} font-black tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.45)] leading-none select-none text-center`}>
                         {bannerTitle}
                     </span>
