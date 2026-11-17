@@ -129,8 +129,10 @@ export default function Show({ guide, relatedGuides = [] }) {
                                 )}
                             </div>
 
-                            <h1 className="text-2xl sm:text-3xl lg:text-[34px] font-extrabold tracking-[-0.025em] leading-[1.18] text-[#001454] dark:text-white">
-                                {guide.title}
+                            <h1 className="text-mask text-2xl sm:text-3xl lg:text-[34px] font-extrabold tracking-[-0.025em] leading-[1.18] text-[#001454] dark:text-white">
+                                <span className="text-mask-inner">
+                                    {guide.title}
+                                </span>
                             </h1>
 
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-600 dark:text-slate-400">

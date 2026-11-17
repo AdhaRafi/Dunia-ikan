@@ -220,14 +220,18 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24">
                     <div className="max-w-2xl text-white space-y-6">
                         <div className="space-y-3">
-                            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
-                                Join Dunia Ikan
+                            <h1 className="text-mask text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
+                                <span className="text-mask-inner">
+                                    Join Dunia Ikan
+                                </span>
                             </h1>
-                            <p className="text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
-                                {pick(
-                                    'Akses langsung ke peternak bersertifikasi di seluruh Indonesia. Temukan mutasi morph langka, lelang galur murni, dan garansi ikan hidup 100% sampai tujuan!',
-                                    'Direct access to verified breeders across Indonesia. Discover rare genetic morphs, purebred strains, and a 100% live arrival guarantee to your door!',
-                                )}
+                            <p className="text-mask text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
+                                <span className="text-mask-inner text-mask-delay-1">
+                                    {pick(
+                                        'Akses langsung ke peternak bersertifikasi di seluruh Indonesia. Temukan mutasi morph langka, lelang galur murni, dan garansi ikan hidup 100% sampai tujuan!',
+                                        'Direct access to verified breeders across Indonesia. Discover rare genetic morphs, purebred strains, and a 100% live arrival guarantee to your door!',
+                                    )}
+                                </span>
                             </p>
                         </div>
 
@@ -235,14 +239,14 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         <div className="flex items-center gap-3 pt-2">
                             <Link 
                                 href="/products" 
-                                className="px-7 py-3 rounded-full bg-white text-black dark:bg-[#4AB8BD] dark:text-[#001454] font-bold text-xs sm:text-sm hover:bg-neutral-200 dark:hover:bg-[#38a2a7] transition shadow-sm"
+                                className="btn-motion btn-sheen px-7 py-3 rounded-full bg-white text-black dark:bg-[#4AB8BD] dark:text-[#001454] font-bold text-xs sm:text-sm hover:bg-neutral-100 dark:hover:bg-[#38a2a7] shadow-sm hover:shadow-lg"
                             >
                                 {pick('Jelajahi Katalog', 'Explore Catalog')}
                             </Link>
                             {!auth?.user && (
                                 <Link 
                                     href="/register" 
-                                    className="px-7 py-3 rounded-full border border-neutral-600 dark:border-neutral-700 text-white font-semibold text-xs sm:text-sm hover:bg-white/10 hover:border-neutral-400 transition"
+                                    className="btn-motion px-7 py-3 rounded-full border border-neutral-600 dark:border-neutral-700 text-white font-semibold text-xs sm:text-sm hover:bg-white/10 hover:border-neutral-400"
                                 >
                                     {pick('Buat Akun', 'Create Account')}
                                 </Link>
@@ -269,11 +273,12 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
 
                     {/* 12 Clean White-Backdrop Category Tiles (2x6 MorphMarket Grid) */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
-                        {shopCategories.map((group) => (
+                        {shopCategories.map((group, idx) => (
                             <Link
                                 key={group.title}
                                 href={group.link}
-                                className="group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 flex flex-col items-center overflow-hidden p-3"
+                                style={{ '--overlap-i': idx }}
+                                className="overlap-enter card-hover group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] shadow-[0_2px_8px_rgba(15,23,42,0.03)] flex flex-col items-center overflow-hidden p-3"
                             >
                                 <div className="w-full aspect-square bg-white rounded-xl overflow-hidden flex items-center justify-center p-1">
                                     <img
@@ -312,9 +317,9 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                     key={tab.id}
                                     type="button"
                                     onClick={() => setSelectedTab(tab.id)}
-                                    className={`px-3 py-1.5 rounded-lg transition whitespace-nowrap ${
+                                    className={`btn-motion px-3 py-1.5 rounded-lg whitespace-nowrap ${
                                         selectedTab === tab.id
-                                            ? 'bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] font-bold'
+                                            ? 'bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] font-bold shadow-xs'
                                             : 'bg-white dark:bg-[#111a30] text-slate-600 dark:text-neutral-300 border border-slate-200 dark:border-neutral-700 hover:border-[#4AB8BD]'
                                     }`}
                                 >
@@ -325,8 +330,13 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-                        {displayedProducts.map((product) => (
-                            <ProductCard key={product.id} product={product} />
+                        {displayedProducts.map((product, idx) => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                className="overlap-enter"
+                                style={{ '--overlap-i': idx }}
+                            />
                         ))}
                     </div>
                 </section>
@@ -347,11 +357,12 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         </div>
 
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
-                            {featuredStores.slice(0, 6).map((store) => (
+                            {featuredStores.slice(0, 6).map((store, idx) => (
                                 <Link
                                     key={store.id}
                                     href={`/stores/${store.slug}`}
-                                    className="group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 flex flex-col overflow-hidden"
+                                    style={{ '--overlap-i': idx }}
+                                    className="overlap-enter card-hover group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] shadow-[0_2px_8px_rgba(15,23,42,0.03)] flex flex-col overflow-hidden"
                                 >
                                     <div className="w-full aspect-square bg-white dark:bg-slate-900 overflow-hidden flex items-center justify-center border-b border-slate-100 dark:border-neutral-800/80">
                                         {store.logo_url ? (
@@ -391,7 +402,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             </div>
                             <Link
                                 href="/seller/register"
-                                className="px-6 py-2.5 rounded-full bg-white text-[#0f172a] font-bold text-xs hover:bg-slate-100 transition whitespace-nowrap self-start sm:self-auto"
+                                className="btn-motion btn-sheen px-6 py-2.5 rounded-full bg-white text-[#0f172a] font-bold text-xs hover:bg-slate-100 whitespace-nowrap self-start sm:self-auto shadow-sm"
                             >
                                 {pick('Buka Toko', 'Open Store')}
                             </Link>
@@ -420,7 +431,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                 <button
                                     type="button"
                                     onClick={() => window.dispatchEvent(new CustomEvent('dunia-ikan:open-chat'))}
-                                    className="mt-4 inline-flex items-center justify-center rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-950 px-5 py-2.5 text-xs sm:text-[13px] font-semibold shadow-[0_6px_18px_rgba(15,23,42,0.18)] active:scale-[0.99] transition"
+                                    className="btn-motion btn-sheen mt-4 inline-flex items-center justify-center rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-950 px-5 py-2.5 text-xs sm:text-[13px] font-semibold shadow-[0_6px_18px_rgba(15,23,42,0.18)]"
                                 >
                                     {pick('Tanya Kiko', 'Ask Kiko')}
                                 </button>
@@ -438,13 +449,13 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                         type="button"
                                         onClick={() => setOpenFaq(isExpanded ? null : index)}
                                         aria-expanded={isExpanded}
-                                        className="w-full text-left rounded-2xl bg-white dark:bg-[#131d33] border border-slate-200/80 dark:border-slate-700/80 px-5 sm:px-6 py-4 sm:py-5 shadow-[0_2px_10px_rgba(15,23,42,0.03)] hover:border-slate-300 dark:hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
+                                        className="card-hover-subtle group w-full text-left rounded-2xl bg-white dark:bg-[#131d33] border border-slate-200/80 dark:border-slate-700/80 px-5 sm:px-6 py-4 sm:py-5 shadow-[0_2px_10px_rgba(15,23,42,0.03)] hover:border-slate-300 dark:hover:border-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
                                     >
                                         <div className="flex items-center justify-between gap-4">
                                             <span className="text-sm sm:text-[15px] font-semibold leading-snug text-slate-900 dark:text-white">
                                                 {copy.question}
                                             </span>
-                                            <span className="shrink-0 w-6 h-6 rounded-full border border-slate-400/75 dark:border-slate-500 inline-flex items-center justify-center text-slate-600 dark:text-slate-300">
+                                            <span className={`shrink-0 w-6 h-6 rounded-full border border-slate-400/75 dark:border-slate-500 inline-flex items-center justify-center text-slate-600 dark:text-slate-300 transition-transform duration-200 ${isExpanded ? 'rotate-180 bg-slate-100 dark:bg-slate-800' : 'group-hover:scale-110'}`}>
                                                 {isExpanded ? (
                                                     <Minus className="w-3.5 h-3.5" strokeWidth={1.8} />
                                                 ) : (
@@ -454,7 +465,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                         </div>
 
                                         {isExpanded && (
-                                            <p className="mt-2.5 pr-8 text-xs sm:text-[13.5px] leading-relaxed text-slate-500 dark:text-slate-400">
+                                            <p className="swap-in mt-2.5 pr-8 text-xs sm:text-[13.5px] leading-relaxed text-slate-500 dark:text-slate-400">
                                                 {copy.answer}
                                             </p>
                                         )}

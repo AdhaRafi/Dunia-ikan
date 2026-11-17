@@ -167,13 +167,37 @@
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.02) !important;
     }
 
-    html:not(.dark) .fi-wi-stats-overview-stat {
-        transition: transform 0.16s ease, box-shadow 0.16s ease;
+    html:not(.dark) .fi-wi-stats-overview-stat,
+    html:not(.dark) .equify-report-kpi {
+        transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.18s ease;
     }
 
-    html:not(.dark) .fi-wi-stats-overview-stat:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06) !important;
+    html:not(.dark) .fi-wi-stats-overview-stat:hover,
+    html:not(.dark) .equify-report-kpi:hover {
+        transform: translateY(-3px);
+        border-color: rgba(14, 165, 233, 0.28) !important;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07) !important;
+    }
+
+    .fi-btn {
+        transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.16s ease, filter 0.16s ease !important;
+    }
+
+    .fi-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+    }
+
+    .fi-btn:active:not(:disabled) {
+        transform: scale(0.97);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html:not(.dark) .fi-wi-stats-overview-stat,
+        html:not(.dark) .equify-report-kpi,
+        .fi-btn {
+            transition: none !important;
+            transform: none !important;
+        }
     }
 
     /* Dark Mode Cohesive Tuning */

@@ -286,7 +286,7 @@ export default function TopHeader({
                     <button
                         type="button"
                         onClick={handleToggleTheme}
-                        className="p-2 text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
+                        className="btn-motion p-2 text-[#1E80A0] dark:text-[#4AB8BD] hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 hover:rotate-12"
                         title={darkMode ? pick('Tema Terang', 'Light Theme') : pick('Tema Gelap', 'Dark Theme')}
                         aria-label={pick('Ubah Tema', 'Toggle Theme')}
                     >
@@ -296,7 +296,7 @@ export default function TopHeader({
                     {/* Wishlist Icon (Heart) - Hidden on extra small mobile */}
                     <Link
                         href="/products?sort=popular"
-                        className="hidden sm:flex relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#0684E5] dark:hover:text-[#4AB8BD] rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
+                        className="btn-motion hidden sm:flex relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#0684E5] dark:hover:text-[#4AB8BD] rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800"
                         title={pick('Daftar Keinginan', 'Wishlist')}
                         aria-label={pick('Daftar Keinginan', 'Wishlist')}
                     >
@@ -307,13 +307,16 @@ export default function TopHeader({
                     {/* Shopping Cart Icon */}
                     <Link
                         href="/cart"
-                        className="relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
+                        className="btn-motion relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800"
                         title={pick('Keranjang Belanja', 'Shopping Cart')}
                         aria-label={pick('Keranjang Belanja', 'Shopping Cart')}
                     >
                         <ShoppingCart className="w-4 h-4" />
                         {cartCount > 0 && (
-                            <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#0684E5] text-white text-[10px] font-bold px-1 shadow-xs">
+                            <span
+                                key={cartCount}
+                                className="micro-pop absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#0684E5] text-white text-[10px] font-bold px-1 shadow-xs"
+                            >
                                 {cartCount}
                             </span>
                         )}
@@ -323,7 +326,7 @@ export default function TopHeader({
                     {user && (
                         <Link
                             href="/orders"
-                            className="hidden sm:flex relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800 transition"
+                            className="btn-motion hidden sm:flex relative p-2 text-[#1E80A0] dark:text-neutral-300 hover:text-[#001454] dark:hover:text-white rounded-full hover:bg-[#f3f2ff] dark:hover:bg-neutral-800"
                             title={pick('Pesanan Saya', 'My Orders')}
                             aria-label={pick('Pesanan Saya', 'My Orders')}
                         >

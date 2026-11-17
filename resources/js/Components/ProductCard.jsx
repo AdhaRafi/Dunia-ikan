@@ -14,7 +14,7 @@ function formatPrice(price) {
 const fallbackFish =
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='450' viewBox='0 0 600 450' fill='none'%3E%3Crect width='600' height='450' fill='%23f4f4f5'/%3E%3Cpath d='M300 155 C380 155 435 205 435 235 C435 265 380 315 300 315 C245 315 190 265 145 280 L145 190 C190 205 245 155 300 155 Z' fill='%23001454' opacity='0.22'/%3E%3C/svg%3E";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, className = '', style }) {
     const { pick, trCategory } = useLanguage();
     const [adding, setAdding] = useState(false);
     const [added, setAdded] = useState(false);
@@ -60,7 +60,10 @@ export default function ProductCard({ product }) {
     const subLabel = product.store?.city || product.store?.name || '';
 
     return (
-        <article className="group flex flex-col justify-between bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 p-3 gap-3 hover:border-[#4AB8BD] hover:shadow-md transition-all duration-200 select-none">
+        <article
+            style={style}
+            className={`card-hover group flex flex-col justify-between bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 p-3 gap-3 hover:border-[#4AB8BD] select-none ${className}`}
+        >
             <div className="space-y-3">
                 <div className="relative aspect-[4/3] rounded-xl bg-slate-100 dark:bg-[#162240] overflow-hidden">
                     <Link href={`/products/${product.slug}`} className="block w-full h-full">
@@ -78,7 +81,7 @@ export default function ProductCard({ product }) {
                     </Link>
 
                     {product.category?.name && (
-                        <span className="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-white/95 dark:bg-neutral-900/90 text-[10px] font-semibold text-slate-600 dark:text-neutral-300 shadow-xs">
+                        <span className="overlap-badge absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-white/95 dark:bg-neutral-900/90 text-[10px] font-semibold text-slate-600 dark:text-neutral-300 shadow-xs">
                             {trCategory(product.category.name)}
                         </span>
                     )}
@@ -120,15 +123,15 @@ export default function ProductCard({ product }) {
                         type="button"
                         onClick={(e) => addToCart(e, false)}
                         disabled={adding || buying}
-                        className={`flex-1 py-2 sm:py-1.5 px-2 sm:px-3 rounded-full text-[11px] font-semibold border transition flex items-center justify-center gap-1 whitespace-nowrap ${
+                        className={`btn-motion flex-1 py-2 sm:py-1.5 px-2 sm:px-3 rounded-full text-[11px] font-semibold border flex items-center justify-center gap-1 whitespace-nowrap ${
                             added
-                                ? 'border-[#00696D] bg-[#00696D]/10 text-[#00696D] dark:text-[#4AB8BD]'
-                                : 'border-slate-300 dark:border-neutral-700 text-[#001454] dark:text-neutral-200 hover:border-[#001454] dark:hover:border-[#4AB8BD]'
+                                ? 'micro-pop border-[#00696D] bg-[#00696D]/10 text-[#00696D] dark:text-[#4AB8BD]'
+                                : 'border-slate-300 dark:border-neutral-700 text-[#001454] dark:text-neutral-200 hover:border-[#001454] dark:hover:border-[#4AB8BD] hover:bg-slate-50 dark:hover:bg-white/5'
                         }`}
                     >
                         {added ? (
                             <>
-                                <Check className="w-3.5 h-3.5" />
+                                <Check className="w-3.5 h-3.5 micro-pop" />
                                 <span>{pick('Ditambah', 'Added')}</span>
                             </>
                         ) : (
@@ -140,7 +143,7 @@ export default function ProductCard({ product }) {
                         type="button"
                         onClick={(e) => addToCart(e, true)}
                         disabled={adding || buying}
-                        className="flex-1 py-2 sm:py-1.5 px-2 sm:px-3 rounded-full text-[11px] font-bold bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] hover:opacity-90 transition whitespace-nowrap"
+                        className="btn-motion btn-sheen flex-1 py-2 sm:py-1.5 px-2 sm:px-3 rounded-full text-[11px] font-bold bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] hover:shadow-sm whitespace-nowrap"
                     >
                         {buying ? pick('Memproses...', 'Processing...') : pick('Beli', 'Buy Now')}
                     </button>

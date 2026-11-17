@@ -48,11 +48,13 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                             {/* Left Column: Cart List */}
                             <div className="lg:col-span-8 p-4 sm:p-8 lg:border-r border-slate-200/80 dark:border-neutral-800">
                                 <div className="flex items-center justify-between pb-6 border-b border-dashed border-slate-200 dark:border-neutral-800">
-                                    <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white uppercase">
-                                        {pick('Keranjang', 'Cart')}
-                                        <sup className="ml-1.5 text-xs font-bold text-slate-400 tabular-nums">
-                                            {String(cartItems.length).padStart(2, '0')}
-                                        </sup>
+                                    <h1 className="text-mask text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white uppercase">
+                                        <span className="text-mask-inner">
+                                            {pick('Keranjang', 'Cart')}
+                                            <sup className="ml-1.5 text-xs font-bold text-slate-400 tabular-nums">
+                                                {String(cartItems.length).padStart(2, '0')}
+                                            </sup>
+                                        </span>
                                     </h1>
                                     <span className="text-xs font-medium text-slate-400 dark:text-neutral-500">
                                         {groupedCart.length} {pick('toko', groupedCart.length === 1 ? 'store' : 'stores')}
@@ -60,7 +62,7 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                                 </div>
 
                                 <div className="divide-y divide-dashed divide-slate-200 dark:divide-neutral-800">
-                                    {cartItems.map((item) => {
+                                    {cartItems.map((item, idx) => {
                                         const categoryLabel = item.product?.category?.name
                                             ? trCategory(item.product.category.name)
                                             : pick('Spesimen', 'Specimen');
@@ -72,7 +74,8 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                                         return (
                                             <div
                                                 key={item.id}
-                                                className="py-4 sm:py-6 flex items-stretch gap-3.5 sm:gap-5"
+                                                style={{ '--overlap-i': idx }}
+                                                className="overlap-enter py-4 sm:py-6 flex items-stretch gap-3.5 sm:gap-5"
                                             >
                                                 <Link
                                                     href={`/products/${item.product?.slug}`}
@@ -137,11 +140,14 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                                                                 }
                                                                 disabled={item.quantity <= 1}
                                                                 aria-label={pick('Kurangi jumlah', 'Decrease quantity')}
-                                                                className="w-7 h-7 rounded-full flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 transition"
+                                                                className="btn-motion w-7 h-7 rounded-full flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30"
                                                             >
                                                                 <Minus className="w-3.5 h-3.5" />
                                                             </button>
-                                                            <span className="w-8 text-center text-xs font-bold text-slate-900 dark:text-white tabular-nums">
+                                                            <span
+                                                                key={item.quantity}
+                                                                className="micro-pop w-8 text-center text-xs font-bold text-slate-900 dark:text-white tabular-nums"
+                                                            >
                                                                 {String(item.quantity).padStart(
                                                                     2,
                                                                     '0'
@@ -160,7 +166,7 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                                                                     (item.product?.stock ?? 0)
                                                                 }
                                                                 aria-label={pick('Tambah jumlah', 'Increase quantity')}
-                                                                className="w-7 h-7 rounded-full flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 transition"
+                                                                className="btn-motion w-7 h-7 rounded-full flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30"
                                                             >
                                                                 <Plus className="w-3.5 h-3.5" />
                                                             </button>
@@ -213,14 +219,14 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                                     <div className="space-y-2.5 pt-1">
                                         <Link
                                             href="/checkout"
-                                            className="w-full h-12 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center transition"
+                                            className="btn-motion btn-sheen w-full h-12 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center shadow-sm"
                                         >
                                             Checkout
                                         </Link>
 
                                         <Link
                                             href="/products"
-                                            className="w-full h-11 rounded-full bg-white dark:bg-transparent border border-slate-200 dark:border-neutral-700 hover:border-slate-400 text-slate-800 dark:text-slate-200 text-xs font-bold uppercase tracking-wider flex items-center justify-center transition"
+                                            className="btn-motion w-full h-11 rounded-full bg-white dark:bg-transparent border border-slate-200 dark:border-neutral-700 hover:border-slate-400 text-slate-800 dark:text-slate-200 text-xs font-bold uppercase tracking-wider flex items-center justify-center"
                                         >
                                             {pick('Lanjut Belanja', 'Continue Shopping')}
                                         </Link>
@@ -231,12 +237,14 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                     </div>
                 ) : (
                     /* Empty Cart State */
-                    <div className="max-w-md mx-auto py-16 px-6 text-center bg-white dark:bg-[#0e1424] rounded-3xl border border-slate-200/80 dark:border-neutral-800 space-y-4">
+                    <div className="swap-in max-w-md mx-auto py-16 px-6 text-center bg-white dark:bg-[#0e1424] rounded-3xl border border-slate-200/80 dark:border-neutral-800 space-y-4">
                         <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 mx-auto flex items-center justify-center">
                             <ShoppingBag className="w-5 h-5" />
                         </div>
-                        <h1 className="text-lg font-extrabold tracking-tight text-slate-900 dark:text-white uppercase">
-                            {pick('Keranjang Kosong', 'Your Cart is Empty')}
+                        <h1 className="text-mask text-lg font-extrabold tracking-tight text-slate-900 dark:text-white uppercase">
+                            <span className="text-mask-inner">
+                                {pick('Keranjang Kosong', 'Your Cart is Empty')}
+                            </span>
                         </h1>
                         <p className="text-xs text-slate-500 dark:text-neutral-400 leading-relaxed">
                             {pick(
@@ -247,7 +255,7 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
                         <div className="pt-2">
                             <Link
                                 href="/products"
-                                className="inline-flex h-11 px-7 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:text-slate-950 text-white text-xs font-bold uppercase tracking-wider items-center justify-center transition"
+                                className="btn-motion btn-sheen inline-flex h-11 px-7 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:text-slate-950 text-white text-xs font-bold uppercase tracking-wider items-center justify-center shadow-sm"
                             >
                                 {pick('Jelajahi Katalog', 'Browse Catalog')}
                             </Link>

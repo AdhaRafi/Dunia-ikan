@@ -7,7 +7,6 @@ import {
     Check,
     ChevronDown,
     ChevronLeft,
-    ChevronUp,
     Clock,
     Droplets,
     Fish,
@@ -73,22 +72,18 @@ function AccordionCard({ title, defaultOpen = true, children }) {
     const [open, setOpen] = useState(defaultOpen);
 
     return (
-        <div className="rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-neutral-800 px-4 sm:px-5 py-4 shadow-[0_1px_4px_rgba(15,23,42,0.02)]">
+        <div className="card-hover-subtle rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-neutral-800 px-4 sm:px-5 py-4 shadow-[0_1px_4px_rgba(15,23,42,0.02)]">
             <button
                 type="button"
                 onClick={() => setOpen((prev) => !prev)}
                 aria-expanded={open}
-                className="w-full flex items-center justify-between gap-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1] rounded-lg"
+                className="group w-full flex items-center justify-between gap-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1] rounded-lg"
             >
                 <span className="text-sm font-bold text-slate-900 dark:text-white">{title}</span>
-                {open ? (
-                    <ChevronUp className="w-4 h-4 text-slate-500 shrink-0" />
-                ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
-                )}
+                <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : 'group-hover:translate-y-0.5'}`} />
             </button>
 
-            {open && <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/80">{children}</div>}
+            {open && <div className="swap-in mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/80">{children}</div>}
         </div>
     );
 }
@@ -360,8 +355,10 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                 </span>
                             </div>
 
-                            <h1 className="mt-1.5 text-2xl sm:text-[32px] font-bold tracking-[-0.025em] leading-[1.15] text-slate-900 dark:text-white break-words">
-                                {product.name}
+                            <h1 className="text-mask mt-1.5 text-2xl sm:text-[32px] font-bold tracking-[-0.025em] leading-[1.15] text-slate-900 dark:text-white break-words">
+                                <span className="text-mask-inner">
+                                    {product.name}
+                                </span>
                             </h1>
 
                             <div className="mt-3 flex flex-wrap items-baseline justify-between gap-3">
@@ -427,11 +424,11 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                             type="button"
                                             onClick={() => setQuantity(Math.max(1, quantity - 1))}
                                             aria-label={pick('Kurangi jumlah', 'Decrease quantity')}
-                                            className="w-8 h-8 rounded-full bg-slate-900 hover:bg-slate-700 dark:bg-slate-800 text-white flex items-center justify-center transition"
+                                            className="btn-motion w-8 h-8 rounded-full bg-slate-900 hover:bg-slate-700 dark:bg-slate-800 text-white flex items-center justify-center"
                                         >
                                             <Minus className="w-3.5 h-3.5" />
                                         </button>
-                                        <span className="w-7 text-center text-sm font-bold tabular-nums text-slate-900 dark:text-white">
+                                        <span key={quantity} className="micro-pop w-7 text-center text-sm font-bold tabular-nums text-slate-900 dark:text-white">
                                             {quantity}
                                         </span>
                                         <button
@@ -440,7 +437,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                                 setQuantity(Math.min(product.stock, quantity + 1))
                                             }
                                             aria-label={pick('Tambah jumlah', 'Increase quantity')}
-                                            className="w-8 h-8 rounded-full bg-slate-900 hover:bg-slate-700 dark:bg-slate-800 text-white flex items-center justify-center transition"
+                                            className="btn-motion w-8 h-8 rounded-full bg-slate-900 hover:bg-slate-700 dark:bg-slate-800 text-white flex items-center justify-center"
                                         >
                                             <Plus className="w-3.5 h-3.5" />
                                         </button>
@@ -450,11 +447,13 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                         type="button"
                                         onClick={() => handleCartAction(false)}
                                         disabled={adding || buying}
-                                        className="flex-1 min-w-[140px] h-11 px-4 rounded-full border border-slate-300 dark:border-neutral-700 bg-white dark:bg-[#0e1424] hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-900 dark:text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 transition disabled:opacity-50"
+                                        className={`btn-motion flex-1 min-w-[140px] h-11 px-4 rounded-full border border-slate-300 dark:border-neutral-700 bg-white dark:bg-[#0e1424] hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-900 dark:text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 disabled:opacity-50 ${
+                                            added ? 'micro-pop border-emerald-500/60 bg-emerald-50/70 dark:bg-emerald-950/30' : ''
+                                        }`}
                                     >
                                         {added ? (
                                             <>
-                                                <Check className="w-4 h-4 text-emerald-600" />
+                                                <Check className="w-4 h-4 text-emerald-600 micro-pop" />
                                                 {pick('Masuk Keranjang', 'In Cart')}
                                             </>
                                         ) : (
@@ -469,7 +468,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                         type="button"
                                         onClick={() => handleCartAction(true)}
                                         disabled={adding || buying}
-                                        className="flex-1 min-w-[140px] h-11 px-5 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-[#0684E5] dark:hover:bg-[#0267C1] text-white text-xs sm:text-sm font-semibold shadow-[0_6px_18px_rgba(15,23,42,0.18)] flex items-center justify-center transition disabled:opacity-50"
+                                        className="btn-motion btn-sheen flex-1 min-w-[140px] h-11 px-5 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-[#0684E5] dark:hover:bg-[#0267C1] text-white text-xs sm:text-sm font-semibold shadow-[0_6px_18px_rgba(15,23,42,0.18)] flex items-center justify-center disabled:opacity-50"
                                     >
                                         {buying ? pick('Memproses...', 'Processing...') : pick('Beli Sekarang', 'Buy Now')}
                                     </button>
@@ -595,8 +594,13 @@ export default function Show({ product, relatedProducts, storeRating }) {
                         </div>
 
                         <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
-                            {relatedProducts.map((related) => (
-                                <ProductCard key={related.id} product={related} />
+                            {relatedProducts.map((related, idx) => (
+                                <ProductCard
+                                    key={related.id}
+                                    product={related}
+                                    className="overlap-enter"
+                                    style={{ '--overlap-i': idx }}
+                                />
                             ))}
                         </div>
                     </section>

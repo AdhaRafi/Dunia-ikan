@@ -215,6 +215,130 @@
         transform: translateY(1px);
     }
 
+    /* Unified Microinteraction, Button Animation & Card Hover System */
+    .card-hover {
+        transition:
+            translate 240ms cubic-bezier(0.22, 1, 0.36, 1),
+            scale 200ms cubic-bezier(0.22, 1, 0.36, 1),
+            transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 240ms cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 200ms ease,
+            background-color 200ms ease;
+    }
+
+    .card-hover:hover {
+        translate: 0 -4px;
+        box-shadow: 0 14px 28px -10px rgba(0, 20, 84, 0.14), 0 6px 12px -6px rgba(6, 132, 229, 0.1);
+    }
+
+    .dark .card-hover:hover {
+        box-shadow: 0 16px 34px -10px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(74, 184, 189, 0.25);
+    }
+
+    .card-hover:active {
+        translate: 0 -1px;
+        scale: 0.992;
+    }
+
+    .card-hover-subtle {
+        transition:
+            translate 200ms cubic-bezier(0.22, 1, 0.36, 1),
+            transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 180ms ease;
+    }
+
+    .card-hover-subtle:hover {
+        translate: 0 -2px;
+        box-shadow: 0 8px 20px -8px rgba(0, 20, 84, 0.12);
+    }
+
+    .btn-motion {
+        position: relative;
+        overflow: hidden;
+        transition:
+            transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+            background-color 180ms ease,
+            border-color 180ms ease,
+            color 180ms ease,
+            filter 180ms ease;
+    }
+
+    .btn-motion:hover:not(:disabled) {
+        transform: translateY(-1.5px);
+    }
+
+    .btn-motion:active:not(:disabled) {
+        transform: translateY(0.5px) scale(0.97);
+    }
+
+    .btn-sheen::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(110deg, transparent 25%, rgba(255, 255, 255, 0.26) 50%, transparent 75%);
+        transform: translateX(-120%);
+        transition: transform 550ms cubic-bezier(0.22, 1, 0.36, 1);
+        pointer-events: none;
+    }
+
+    .btn-sheen:hover:not(:disabled)::after {
+        transform: translateX(120%);
+    }
+
+    .micro-pop {
+        animation: micro-pop 280ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .micro-arrow {
+        transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .group:hover .micro-arrow,
+    .btn-motion:hover .micro-arrow {
+        transform: translateX(3px);
+    }
+
+    /* Editorial Masking Text Animation */
+    .text-mask {
+        display: block;
+        overflow: hidden;
+        padding-bottom: 0.12em;
+        margin-bottom: -0.12em;
+    }
+
+    .text-mask-inner {
+        display: inline-block;
+        animation: text-mask-reveal 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        will-change: transform, opacity;
+    }
+
+    .text-mask-delay-1 {
+        animation-delay: 110ms;
+    }
+
+    .text-mask-delay-2 {
+        animation-delay: 200ms;
+    }
+
+    /* Overlapping Staggered Entrance & Layered Card Depth */
+    .overlap-enter {
+        animation: overlap-rise 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: calc(min(var(--overlap-i, 0), 11) * 48ms);
+    }
+
+    .overlap-badge {
+        transition:
+            transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 220ms ease;
+    }
+
+    .group:hover .overlap-badge {
+        transform: translate3d(-2px, -3px, 0) scale(1.04);
+        box-shadow: 0 8px 18px rgba(0, 20, 84, 0.14);
+    }
+
     .reveal {
         opacity: 0;
         transform: translateY(18px);
@@ -268,6 +392,34 @@
         50% { transform: translateY(-5px) rotate(1.2deg); }
     }
 
+    @keyframes micro-pop {
+        0% { transform: scale(0.75); opacity: 0.4; }
+        65% { transform: scale(1.12); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes text-mask-reveal {
+        0% {
+            transform: translateY(108%);
+            opacity: 0.12;
+        }
+        100% {
+            transform: translateY(0%);
+            opacity: 1;
+        }
+    }
+
+    @keyframes overlap-rise {
+        0% {
+            transform: translateY(20px) scale(0.975);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+    }
+
     @media (prefers-reduced-motion: reduce) {
         html {
             scroll-behavior: auto;
@@ -276,17 +428,46 @@
         .reveal,
         .reveal-delay-1,
         .reveal-delay-2,
-        .reveal-delay-3 {
+        .reveal-delay-3,
+        .card-hover,
+        .card-hover-subtle,
+        .btn-motion,
+        .micro-arrow,
+        .overlap-badge {
             opacity: 1;
             transform: none;
             transition: none;
         }
 
+        .card-hover:hover,
+        .card-hover:active,
+        .card-hover-subtle:hover,
+        .btn-motion:hover:not(:disabled),
+        .btn-motion:active:not(:disabled),
+        .group:hover .micro-arrow,
+        .btn-motion:hover .micro-arrow,
+        .group:hover .overlap-badge {
+            transform: none;
+            translate: none;
+            scale: none;
+        }
+
+        .btn-sheen::after {
+            display: none;
+        }
+
         .swap-in,
         .drift,
         .kiko-float,
-        .kiko-bob {
+        .kiko-bob,
+        .micro-pop,
+        .text-mask-inner,
+        .text-mask-delay-1,
+        .text-mask-delay-2,
+        .overlap-enter {
             animation: none;
+            opacity: 1;
+            transform: none;
         }
     }
 }

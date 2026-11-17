@@ -130,14 +130,18 @@ export default function Index({
                             </div>
 
                             <div className="space-y-2">
-                                <h1 className="text-2xl sm:text-4xl font-extrabold tracking-[-0.03em] leading-[1.12] text-[#001454] dark:text-white">
-                                    {pick('Panduan Perawatan & Diagnosa Ikan', 'Fish Care & Health Guides')}
+                                <h1 className="text-mask text-2xl sm:text-4xl font-extrabold tracking-[-0.03em] leading-[1.12] text-[#001454] dark:text-white">
+                                    <span className="text-mask-inner">
+                                        {pick('Panduan Perawatan & Diagnosa Ikan', 'Fish Care & Health Guides')}
+                                    </span>
                                 </h1>
-                                <p className="text-xs sm:text-[15px] leading-relaxed text-slate-600 dark:text-slate-400 max-w-[58ch]">
-                                    {pick(
-                                        'Gejala klinis, pemicu kualitas air, dan langkah pertolongan pertama untuk menjaga ikan hias tetap sehat sejak hari pertama karantina.',
-                                        'Clinical symptoms, water quality triggers, and step-by-step first aid to keep ornamental fish thriving from day one of quarantine.',
-                                    )}
+                                <p className="text-mask text-xs sm:text-[15px] leading-relaxed text-slate-600 dark:text-slate-400 max-w-[58ch]">
+                                    <span className="text-mask-inner text-mask-delay-1">
+                                        {pick(
+                                            'Gejala klinis, pemicu kualitas air, dan langkah pertolongan pertama untuk menjaga ikan hias tetap sehat sejak hari pertama karantina.',
+                                            'Clinical symptoms, water quality triggers, and step-by-step first aid to keep ornamental fish thriving from day one of quarantine.',
+                                        )}
+                                    </span>
                                 </p>
                             </div>
 
@@ -294,7 +298,7 @@ export default function Index({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                        {SPECIES_TOPICS.map((topic) => {
+                        {SPECIES_TOPICS.map((topic, idx) => {
                             const isSelected =
                                 filters?.q?.toLowerCase() ===
                                 topic.query.toLowerCase();
@@ -304,7 +308,8 @@ export default function Index({
                                 <Link
                                     key={topic.labelId}
                                     href={`/guides?q=${encodeURIComponent(topic.query)}`}
-                                    className={`group flex items-center gap-3.5 p-3.5 rounded-2xl bg-white dark:bg-[#0e1424] border transition-all duration-200 shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md ${
+                                    style={{ '--overlap-i': idx }}
+                                    className={`overlap-enter card-hover-subtle group flex items-center gap-3.5 p-3.5 rounded-2xl bg-white dark:bg-[#0e1424] border shadow-[0_2px_8px_rgba(15,23,42,0.03)] ${
                                         isSelected
                                             ? 'border-[#0684E5] ring-1 ring-[#0684E5]/40'
                                             : 'border-slate-200/80 dark:border-slate-800 hover:border-[#0684E5]/60'
@@ -353,7 +358,7 @@ export default function Index({
 
                     {guides?.data?.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                            {guides.data.map((guide) => {
+                            {guides.data.map((guide, idx) => {
                                 const badgeMeta = getCategoryBadgeMeta(
                                     guide.category,
                                 );
@@ -368,7 +373,8 @@ export default function Index({
                                     <Link
                                         key={guide.id}
                                         href={`/guides/${guide.id}`}
-                                        className="group flex flex-col rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-slate-800 hover:border-[#0684E5]/60 dark:hover:border-sky-500/50 shadow-[0_2px_12px_rgba(15,23,42,0.03)] hover:shadow-lg transition-all duration-200 overflow-hidden"
+                                        style={{ '--overlap-i': idx }}
+                                        className="overlap-enter card-hover group flex flex-col rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-slate-800 hover:border-[#0684E5]/60 dark:hover:border-sky-500/50 shadow-[0_2px_12px_rgba(15,23,42,0.03)] overflow-hidden"
                                     >
                                         <div className="relative aspect-[16/10] bg-slate-100 dark:bg-slate-900 overflow-hidden border-b border-slate-100 dark:border-slate-800/80">
                                             <img

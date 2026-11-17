@@ -184,14 +184,18 @@ export default function Index({ products, categories, cities, filters }) {
                     {/* Sheet Header Row: Headline + Pill Search Bar */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200/80 dark:border-neutral-800">
                         <div>
-                            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#001454] dark:text-white">
-                                {sectionTitle}
+                            <h1 className="text-mask text-xl sm:text-2xl font-extrabold tracking-tight text-[#001454] dark:text-white">
+                                <span className="text-mask-inner">
+                                    {sectionTitle}
+                                </span>
                             </h1>
-                            <p className="text-xs text-slate-500 dark:text-neutral-400 mt-0.5">
-                                {pick(
-                                    `Menampilkan ${products?.data?.length ?? 0} dari ${products?.total ?? 0} produk tersedia`,
-                                    `Showing ${products?.data?.length ?? 0} of ${products?.total ?? 0} available items`,
-                                )}
+                            <p className="text-mask text-xs text-slate-500 dark:text-neutral-400 mt-0.5">
+                                <span className="text-mask-inner text-mask-delay-1">
+                                    {pick(
+                                        `Menampilkan ${products?.data?.length ?? 0} dari ${products?.total ?? 0} produk tersedia`,
+                                        `Showing ${products?.data?.length ?? 0} of ${products?.total ?? 0} available items`,
+                                    )}
+                                </span>
                             </p>
                         </div>
 
@@ -212,7 +216,7 @@ export default function Index({ products, categories, cities, filters }) {
                             />
                             <button
                                 type="submit"
-                                className="px-4 py-1.5 rounded-full bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] text-xs font-bold hover:opacity-90 transition shrink-0"
+                                className="btn-motion btn-sheen px-4 py-1.5 rounded-full bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] text-xs font-bold hover:opacity-95 shrink-0"
                             >
                                 {pick('Cari', 'Search')}
                             </button>
@@ -483,8 +487,13 @@ export default function Index({ products, categories, cities, filters }) {
                         <div className="lg:col-span-9 min-w-0 space-y-8">
                             {products?.data?.length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-                                    {products.data.map((product) => (
-                                        <ProductCard key={product.id} product={product} />
+                                    {products.data.map((product, idx) => (
+                                        <ProductCard
+                                            key={product.id}
+                                            product={product}
+                                            className="overlap-enter"
+                                            style={{ '--overlap-i': idx }}
+                                        />
                                     ))}
                                 </div>
                             ) : (

@@ -48,15 +48,19 @@ export default function Show({ store, products, storeRating }) {
                                 {store.city}, {store.province}
                             </span>
                         </div>
-                        <h1 className="display-type max-w-[16ch]">
-                            {store.name}
+                        <h1 className="text-mask display-type max-w-[16ch]">
+                            <span className="text-mask-inner">
+                                {store.name}
+                            </span>
                         </h1>
 
-                        <p className="mt-5 max-w-[48ch] text-[20px] leading-snug">
-                            {pick(
-                                `Penangkar ikan hias di ${store.city}, ${store.province}. Setiap produk membawa kebijakan garansi hidup toko ini.`,
-                                `Ornamental fish breeder in ${store.city}, ${store.province}. Every item carries this store's live arrival guarantee policy.`,
-                            )}
+                        <p className="text-mask mt-5 max-w-[48ch] text-[20px] leading-snug">
+                            <span className="text-mask-inner text-mask-delay-1">
+                                {pick(
+                                    `Penangkar ikan hias di ${store.city}, ${store.province}. Setiap produk membawa kebijakan garansi hidup toko ini.`,
+                                    `Ornamental fish breeder in ${store.city}, ${store.province}. Every item carries this store's live arrival guarantee policy.`,
+                                )}
+                            </span>
                         </p>
 
                         <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[16px] text-white/80">

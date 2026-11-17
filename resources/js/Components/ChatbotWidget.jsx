@@ -322,7 +322,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                     className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 flex flex-col h-[100dvh] sm:w-[420px] sm:h-[640px] sm:max-h-[92vh]"
                 >
                     {/* Chat Modal Container */}
-                    <div className="relative w-full h-full flex flex-col bg-white dark:bg-[#070b14] sm:rounded-[28px] sm:border border-slate-200/90 dark:border-neutral-800 shadow-2xl overflow-hidden transition-all duration-200">
+                    <div className="swap-in relative w-full h-full flex flex-col bg-white dark:bg-[#070b14] sm:rounded-[28px] sm:border border-slate-200/90 dark:border-neutral-800 shadow-2xl overflow-hidden transition-all duration-200">
                         {/* Soft Cyan/Sky Atmospheric Top Gradient + Sunny Glow Backdrop */}
                         <div
                             aria-hidden="true"
