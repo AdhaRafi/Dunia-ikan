@@ -206,39 +206,58 @@ Pedoman Penting:
                     ];
                 }
 
-                $payload = [
-                    'contents' => [
-                        ['role' => 'user', 'parts' => $parts],
-                    ],
-                ];
+                $candidateModels = array_values(array_unique(array_filter([
+                    $model,
+                    'gemini-2.5-flash',
+                    'gemini-2.5-flash-lite',
+                ])));
 
-                // Limit reasoning latency on Gemini 3.x / 4.x models and keep answers crisp.
-                if (str_starts_with($model, 'gemini-3') || str_starts_with($model, 'gemini-4')) {
-                    $payload['generationConfig'] = [
-                        'thinkingConfig' => [
-                            'thinkingLevel' => 'low',
+                foreach ($candidateModels as $attemptModel) {
+                    $payload = [
+                        'contents' => [
+                            ['role' => 'user', 'parts' => $parts],
                         ],
-                        'maxOutputTokens' => 1024,
                     ];
-                }
 
-                // Force IPv4 in containerized runtimes to avoid IPv6 egress stalls.
-                $response = Http::withHeaders([
-                    'x-goog-api-key' => $apiKey,
-                ])
-                    ->withOptions(['force_ip_resolve' => 'v4'])
-                    ->connectTimeout(5)
-                    ->timeout(25)
-                    ->post(
-                        "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent",
-                        $payload
-                    );
+                    // Limit reasoning latency on Gemini 3.x / 4.x models and keep answers crisp.
+                    if (str_starts_with($attemptModel, 'gemini-3') || str_starts_with($attemptModel, 'gemini-4')) {
+                        $payload['generationConfig'] = [
+                            'thinkingConfig' => [
+                                'thinkingLevel' => 'low',
+                            ],
+                            'maxOutputTokens' => 1024,
+                        ];
+                    }
 
-                if ($response->successful()) {
-                    $json = $response->json();
-                    $assistantReply = $json['candidates'][0]['content']['parts'][0]['text'] ?? null;
-                } else {
-                    Log::warning('Gemini API request failed', ['status' => $response->status(), 'body' => $response->body()]);
+                    // Force IPv4 in containerized runtimes to avoid IPv6 egress stalls.
+                    $response = Http::withHeaders([
+                        'x-goog-api-key' => $apiKey,
+                    ])
+                        ->withOptions(['force_ip_resolve' => 'v4'])
+                        ->connectTimeout(5)
+                        ->timeout(25)
+                        ->post(
+                            "https://generativelanguage.googleapis.com/v1beta/models/{$attemptModel}:generateContent",
+                            $payload
+                        );
+
+                    if ($response->successful()) {
+                        $json = $response->json();
+                        $assistantReply = $json['candidates'][0]['content']['parts'][0]['text'] ?? null;
+                        if (is_string($assistantReply) && trim($assistantReply) !== '') {
+                            break;
+                        }
+                    }
+
+                    Log::warning('Gemini API request failed', [
+                        'model' => $attemptModel,
+                        'status' => $response->status(),
+                        'body' => $response->body(),
+                    ]);
+
+                    if (! in_array($response->status(), [404, 429, 500, 502, 503, 504], true)) {
+                        break;
+                    }
                 }
             } catch (\Throwable $e) {
                 Log::error('Gemini API Exception', ['error' => $e->getMessage()]);

@@ -502,6 +502,42 @@ class SecurityHardeningTest extends TestCase
         $this->assertStringContainsString('10 * 5 liter', $reply);
     }
 
+    public function test_chatbot_falls_back_to_secondary_gemini_model_when_primary_returns_503(): void
+    {
+        config([
+            'services.gemini.api_key' => 'AIzaTestGeminiKey',
+            'services.gemini.model' => 'gemini-3.5-flash-lite',
+        ]);
+
+        Http::preventStrayRequests();
+        Http::fake([
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent' => Http::response([
+                'error' => [
+                    'code' => 503,
+                    'status' => 'UNAVAILABLE',
+                    'message' => 'This model is currently experiencing high demand.',
+                ],
+            ], 503),
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent' => Http::response([
+                'candidates' => [[
+                    'content' => [
+                        'parts' => [[
+                            'text' => 'Cupang pemula cocok pakai tank minimal 10 liter dengan air endapan.',
+                        ]],
+                    ],
+                ]],
+            ], 200),
+        ]);
+
+        $response = $this->postJson('/chatbot/message', [
+            'message' => 'Rekomendasi cupang pemula',
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJsonPath('is_fallback', false)
+            ->assertJsonPath('assistant_message.message', 'Cupang pemula cocok pakai tank minimal 10 liter dengan air endapan.');
+    }
+
     public function test_filament_admin_login_enforces_turnstile_and_preserves_isolated_guard(): void
     {
         $admin = User::where('role', 'admin')->firstOrFail();

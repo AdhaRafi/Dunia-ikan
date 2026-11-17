@@ -32,7 +32,7 @@ export default function HttpError({ status = 404 }) {
                     href="/"
                     className="shrink-0 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#056BC4] rounded-lg"
                 >
-                    <BrandWordmark variant="adaptive" className="h-8 sm:h-9" />
+                    <BrandWordmark variant="auto" className="h-8 sm:h-9" />
                 </Link>
 
                 <nav className="hidden sm:flex items-center gap-8 text-[13px] font-medium text-slate-600 dark:text-slate-300">
