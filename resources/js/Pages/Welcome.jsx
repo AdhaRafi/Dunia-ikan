@@ -3,6 +3,11 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { Minus, Plus } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
+import {
+    AquaticBannerOrnaments,
+    HeroWaveTransition,
+    SectionWaveDivider,
+} from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
 
 const FAQ_ITEMS = [
@@ -198,7 +203,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
             {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner (Living Aquarium Habitat) */}
             <section
                 data-nav-theme="dark"
-                className="-mt-16 pt-16 relative w-full overflow-hidden bg-black min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex items-center border-b border-neutral-800"
+                className="-mt-16 pt-16 relative w-full overflow-hidden bg-black min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex items-center"
             >
                 {/* Full-Bleed Background Video (Edge-to-Edge Aquarium Footage) */}
                 <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden transform-gpu">
@@ -226,7 +231,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent sm:hidden pointer-events-none" />
 
                 {/* Hero Content Overlay: Center-aligned within standard content width */}
-                <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24">
+                <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28">
                     <div className="max-w-2xl text-white space-y-6">
                         <div className="space-y-3">
                             <h1 className="text-mask text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
@@ -263,6 +268,9 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         </div>
                     </div>
                 </div>
+
+                {/* Shoreline tide curve transitioning smoothly from aquarium hero into content canvas */}
+                <HeroWaveTransition variant="canvas" />
             </section>
 
             <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
@@ -329,8 +337,10 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                     )}
                 </section>
 
+                <SectionWaveDivider />
+
                 {/* 4. PRODUCT GRID */}
-                <section className="space-y-5 pt-2">
+                <section className="space-y-5">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
                             {pick('Produk Terbaru', 'Latest Arrivals')}
@@ -373,9 +383,11 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                     </div>
                 </section>
 
+                <SectionWaveDivider />
+
                 {/* 5. TOKO & PENANGKAR (Clean 2-Col Editorial Directory + Matte CTA) */}
                 {featuredStores && featuredStores.length > 0 && (
-                    <section className="space-y-6 border-t border-slate-200/80 dark:border-neutral-800 pt-10">
+                    <section className="space-y-6 pt-1">
                         <div className="flex items-center justify-between gap-2">
                             <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
                                 {pick('Toko Pilihan', 'Featured Stores')}
@@ -420,8 +432,9 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             ))}
                         </div>
 
-                        <div className="rounded-3xl bg-[#0f172a] dark:bg-[#111a30] border border-slate-800 p-6 sm:p-8 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-                            <div className="space-y-1">
+                        <div className="relative overflow-hidden rounded-3xl aquatic-cta-surface border border-[#1E80A0]/35 p-6 sm:p-8 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-[0_14px_38px_-14px_rgba(0,20,84,0.35)]">
+                            <AquaticBannerOrnaments variant="dark" />
+                            <div className="relative z-10 space-y-1">
                                 <h3 className="text-lg sm:text-xl font-bold tracking-tight">
                                     {pick('Punya Farm atau Toko Aquascape?', 'Own a Farm or Aquascape Store?')}
                                 </h3>
@@ -434,7 +447,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             </div>
                             <Link
                                 href="/seller/register"
-                                className="btn-motion btn-sheen px-6 py-2.5 rounded-full bg-white text-[#0f172a] font-bold text-xs hover:bg-slate-100 whitespace-nowrap self-start sm:self-auto shadow-sm"
+                                className="relative z-10 btn-motion btn-sheen px-6 py-2.5 rounded-full bg-white text-[#0f172a] font-bold text-xs hover:bg-slate-100 whitespace-nowrap self-start sm:self-auto shadow-sm"
                             >
                                 {pick('Buka Toko', 'Open Store')}
                             </Link>
@@ -442,9 +455,12 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                     </section>
                 )}
 
+                <SectionWaveDivider />
+
                 {/* 6. FREQUENTLY ASKED QUESTIONS */}
-                <section className="rounded-[24px] sm:rounded-[28px] bg-[#f4f5f7] dark:bg-[#0e1424] border border-slate-200/70 dark:border-slate-800/90 px-5 sm:px-10 lg:px-14 py-10 sm:py-14 lg:py-16">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-stretch">
+                <section className="relative overflow-hidden rounded-[24px] sm:rounded-[28px] aquatic-soft-panel border border-[#0684E5]/15 dark:border-[#4AB8BD]/20 px-5 sm:px-10 lg:px-14 py-10 sm:py-14 lg:py-16">
+                    <AquaticBannerOrnaments variant="light" />
+                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-stretch">
                         {/* Left Column: Heading at top, Helper Subtext + Pill CTA at bottom */}
                         <div className="lg:col-span-5 flex flex-col justify-between gap-7">
                             <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-semibold tracking-[-0.03em] leading-[1.12] text-slate-900 dark:text-white">

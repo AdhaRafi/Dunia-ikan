@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
+import { AquaticBannerOrnaments, SectionWaveDivider } from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
 import {
     estimateReadingMinutes,
@@ -116,8 +117,9 @@ export default function Index({
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-9 space-y-8 sm:space-y-10">
                 {/* 1. Editorial Knowledge Hub Hero */}
-                <section className="rounded-[24px] sm:rounded-[28px] bg-[#f4f5f7] dark:bg-[#0e1424] border border-slate-200/75 dark:border-slate-800/90 px-5 sm:px-9 lg:px-11 py-7 sm:py-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-9 items-center">
+                <section className="relative overflow-hidden rounded-[24px] sm:rounded-[28px] aquatic-soft-panel border border-[#0684E5]/15 dark:border-[#4AB8BD]/20 px-5 sm:px-9 lg:px-11 py-7 sm:py-10">
+                    <AquaticBannerOrnaments variant="light" />
+                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-9 items-center">
                         <div className="lg:col-span-8 space-y-5">
                             <div className="flex flex-wrap items-center gap-2">
                                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white dark:bg-[#131d33] border border-slate-200/80 dark:border-slate-700 px-3 py-1 text-[11px] font-bold text-[#001454] dark:text-sky-300 shadow-2xs">
@@ -483,9 +485,12 @@ export default function Index({
                     )}
                 </section>
 
+                <SectionWaveDivider />
+
                 {/* 4. Kiko Consultation CTA Banner */}
-                <section className="rounded-3xl bg-[#0f172a] dark:bg-[#111a30] border border-slate-800 p-6 sm:p-8 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-                    <div className="space-y-1.5">
+                <section className="relative overflow-hidden rounded-3xl aquatic-cta-surface border border-[#1E80A0]/35 p-6 sm:p-8 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-[0_14px_38px_-14px_rgba(0,20,84,0.35)]">
+                    <AquaticBannerOrnaments variant="dark" />
+                    <div className="relative z-10 space-y-1.5">
                         <h2 className="text-lg sm:text-xl font-bold tracking-tight">
                             {pick('Gejala Ikan Belum Ketemu di Daftar?', "Can't Find Your Fish's Symptoms Here?")}
                         </h2>
@@ -503,7 +508,7 @@ export default function Index({
                                 new CustomEvent('dunia-ikan:open-chat'),
                             )
                         }
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-[#0f172a] font-bold text-xs hover:bg-slate-100 transition whitespace-nowrap self-start sm:self-auto"
+                        className="relative z-10 btn-motion btn-sheen inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-[#0f172a] font-bold text-xs hover:bg-slate-100 whitespace-nowrap self-start sm:self-auto"
                     >
                         <MessageSquare className="w-3.5 h-3.5 text-[#0684E5]" />
                         {pick('Tanya Kiko Sekarang', 'Ask Kiko Now')}

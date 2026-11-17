@@ -4,6 +4,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
 import Reveal from '@/Components/Reveal';
 import StoreRatingSection from '@/Components/StoreRatingSection';
+import { AquaticBannerOrnaments, HeroWaveTransition } from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
 
 function formatPrice(price) {
@@ -31,9 +32,10 @@ export default function Show({ store, products, storeRating }) {
 
             <section
                 data-nav-theme="dark"
-                className="-mt-16 pt-16 bg-field4 text-white"
+                className="relative overflow-hidden -mt-16 pt-16 pb-10 sm:pb-12 aquatic-cta-surface text-white"
             >
-                <div className="container-page grid gap-8 py-12 md:py-16 lg:grid-cols-12 lg:items-end">
+                <AquaticBannerOrnaments variant="dark" />
+                <div className="relative z-10 container-page grid gap-8 py-12 md:py-16 lg:grid-cols-12 lg:items-end">
                     <div className="lg:col-span-7">
                         <div className="flex items-center gap-4 mb-4">
                             {store.logo_url ? (
@@ -96,7 +98,7 @@ export default function Show({ store, products, storeRating }) {
                                 alt={featured.name}
                                 width="800"
                                 height="600"
-                                className="aspect-[4/3] w-full object-cover"
+                                className="aspect-[4/3] w-full object-cover rounded-2xl border border-white/15 shadow-2xl"
                             />
                             <div className="mt-2 flex min-w-0 items-baseline justify-between gap-3 text-[16px] text-white/90">
                                 <span className="min-w-0 truncate">
@@ -109,26 +111,27 @@ export default function Show({ store, products, storeRating }) {
                         </Link>
                     )}
                 </div>
+                <HeroWaveTransition variant="canvas" />
             </section>
 
             <section className="container-page py-14 md:py-20">
                 <div className="grid gap-8 lg:grid-cols-12">
                     <Reveal className="lg:col-span-7">
-                        <h2 className="text-[20px] font-medium tracking-[-0.02em]">
+                        <h2 className="text-[20px] font-bold tracking-[-0.02em] text-[#001454] dark:text-white">
                             {pick('Tentang toko', 'About the store')}
                         </h2>
-                        <p className="mt-3 max-w-[62ch] whitespace-pre-line text-[16px] leading-relaxed">
+                        <p className="mt-3 max-w-[62ch] whitespace-pre-line text-[16px] leading-relaxed text-slate-600 dark:text-slate-300">
                             {store.description ||
                                 pick('Belum ada deskripsi untuk toko ini.', 'No description provided for this store yet.')}
                         </p>
                     </Reveal>
 
                     <Reveal className="lg:col-span-5" delay={80}>
-                        <div className="bg-surface p-6">
-                            <h2 className="text-[20px] font-medium tracking-[-0.02em]">
+                        <div className="rounded-2xl aquatic-soft-panel border border-[#0684E5]/15 dark:border-[#4AB8BD]/20 p-6">
+                            <h2 className="text-[20px] font-bold tracking-[-0.02em] text-[#001454] dark:text-white">
                                 {pick('Garansi hidup', 'Live arrival guarantee')}
                             </h2>
-                            <p className="mt-3 text-[16px] leading-relaxed">
+                            <p className="mt-3 text-[16px] leading-relaxed text-slate-600 dark:text-slate-300">
                                 {store.doa_policy ||
                                     pick(
                                         'Garansi hidup standar berlaku dengan video unboxing tanpa jeda.',
@@ -142,8 +145,8 @@ export default function Show({ store, products, storeRating }) {
 
             <section className="container-page pb-24">
                 <Reveal className="flex flex-wrap items-end justify-between gap-3">
-                    <h2 className="head-type">{pick('Produk toko', 'Store catalog')}</h2>
-                    <p className="text-[16px] tabular-nums text-muted">
+                    <h2 className="head-type text-[#001454] dark:text-white">{pick('Produk toko', 'Store catalog')}</h2>
+                    <p className="text-[16px] tabular-nums text-slate-500 dark:text-slate-400">
                         {products?.total ?? 0} {pick('produk', 'items')}
                     </p>
                 </Reveal>
@@ -157,7 +160,7 @@ export default function Show({ store, products, storeRating }) {
                         ))}
                     </div>
                 ) : (
-                    <p className="mt-6 bg-surface p-6 text-[16px]">
+                    <p className="mt-6 rounded-2xl aquatic-soft-panel border border-[#0684E5]/15 dark:border-[#4AB8BD]/20 p-6 text-[16px] text-slate-600 dark:text-slate-300">
                         {pick('Toko ini belum memiliki produk aktif.', 'This store does not have any active products yet.')}
                     </p>
                 )}
@@ -173,12 +176,12 @@ export default function Show({ store, products, storeRating }) {
                                 href={link.url || '#'}
                                 preserveScroll
                                 dangerouslySetInnerHTML={{ __html: link.label }}
-                                className={`flex h-10 min-w-10 items-center justify-center px-2 text-[13px] ${
+                                className={`flex h-10 min-w-10 items-center justify-center rounded-xl border px-3 text-[13px] font-semibold transition ${
                                     link.active
-                                        ? 'bg-ink text-bone'
+                                        ? 'bg-[#0684E5] text-white border-[#0684E5]'
                                         : link.url
-                                          ? 'bg-surface text-ink hover:bg-field3'
-                                          : 'cursor-not-allowed bg-surface text-muted/40'
+                                          ? 'bg-white dark:bg-[#0e1424] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-[#0684E5]'
+                                          : 'cursor-not-allowed bg-slate-50 dark:bg-[#0b101d] text-slate-300 dark:text-slate-600 border-slate-200/60 dark:border-slate-800/60'
                                 }`}
                             />
                         ))}

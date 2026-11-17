@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
+import { AquaticCanvasBackdrop, HeroWaveTransition } from '@/Components/AquaticMotifs';
 import { Search, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
 
@@ -179,11 +180,13 @@ export default function Index({ products, categories, cities, filters }) {
                         {bannerTitle}
                     </span>
                 </div>
+                <HeroWaveTransition variant="sheet" />
             </section>
 
             {/* Floating Rounded Content Sheet */}
-            <div className="-mt-6 relative z-10 rounded-t-[28px] bg-[#fbf8ff] dark:bg-[#070b14] min-h-screen">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 pb-14">
+            <div className="-mt-6 relative isolate z-10 overflow-x-clip rounded-t-[28px] aquatic-canvas-ambient min-h-screen">
+                <AquaticCanvasBackdrop variant="auth" />
+                <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 pb-14">
                     {/* Sheet Header Row: Headline + Pill Search Bar */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200/80 dark:border-neutral-800">
                         <div>
