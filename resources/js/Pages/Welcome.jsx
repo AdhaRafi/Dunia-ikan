@@ -224,18 +224,19 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
             >
                 {/* Full-Bleed Background Poster (Instant LCP) + Idle-Deferred Aquarium Video */}
                 <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden transform-gpu">
-                    <img
-                        src="/images/hero/aquarium-poster.webp"
-                        srcSet="/images/hero/aquarium-poster-mobile.webp 640w, /images/hero/aquarium-poster.webp 1280w"
-                        sizes="100vw"
-                        width={1280}
-                        height={720}
-                        fetchPriority="high"
-                        decoding="sync"
-                        loading="eager"
-                        alt={pick('Akuarium Ikan Hias Dunia Ikan', 'Dunia Ikan Ornamental Aquarium')}
-                        className="w-full h-full object-cover object-center select-none"
-                    />
+                    <picture className="block w-full h-full">
+                        <source media="(max-width: 767px)" srcSet="/images/hero/aquarium-poster-mobile.webp" />
+                        <img
+                            src="/images/hero/aquarium-poster.webp"
+                            width={1280}
+                            height={720}
+                            fetchPriority="high"
+                            decoding="sync"
+                            loading="eager"
+                            alt={pick('Akuarium Ikan Hias Dunia Ikan', 'Dunia Ikan Ornamental Aquarium')}
+                            className="w-full h-full object-cover object-center select-none"
+                        />
+                    </picture>
                     {showHeroVideo && (
                         <video
                             autoPlay

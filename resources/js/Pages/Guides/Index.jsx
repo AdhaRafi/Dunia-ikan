@@ -147,20 +147,21 @@ export default function Index({
                 data-nav-theme="dark"
                 className="-mt-16 pt-20 sm:pt-24 pb-8 sm:pb-12 relative w-full overflow-hidden bg-[#060f1d] border-b border-slate-200/70 dark:border-slate-800/80"
             >
-                <img
-                    src="/images/hero/aquarium-poster.webp"
-                    srcSet="/images/hero/aquarium-poster-mobile.webp 640w, /images/hero/aquarium-poster.webp 1280w"
-                    sizes="100vw"
-                    width={1280}
-                    height={720}
-                    fetchPriority="high"
-                    decoding="sync"
-                    alt={pick(
-                        'Akuarium aquascape dengan ikan hias',
-                        'Planted aquascape aquarium with ornamental fish',
-                    )}
-                    className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
-                />
+                <picture className="pointer-events-none select-none">
+                    <source media="(max-width: 767px)" srcSet="/images/hero/aquarium-poster-mobile.webp" />
+                    <img
+                        src="/images/hero/aquarium-poster.webp"
+                        width={1280}
+                        height={720}
+                        fetchPriority="high"
+                        decoding="sync"
+                        alt={pick(
+                            'Akuarium aquascape dengan ikan hias',
+                            'Planted aquascape aquarium with ornamental fish',
+                        )}
+                        className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
+                    />
+                </picture>
                 <div
                     aria-hidden="true"
                     className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/15 to-black/40 pointer-events-none"
