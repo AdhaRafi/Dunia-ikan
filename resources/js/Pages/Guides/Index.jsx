@@ -142,23 +142,26 @@ export default function Index({
                 />
             </Head>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-9 space-y-8 sm:space-y-10">
-                {/* 1. Aquascape Photo Backdrop + Frosted Glass Hero Panel */}
-                <section className="relative overflow-hidden rounded-[24px] sm:rounded-[28px] bg-[#060f1d] border border-slate-200/80 dark:border-slate-800 shadow-[0_14px_40px_-16px_rgba(0,20,84,0.28)] p-3.5 sm:p-6 lg:p-9">
-                    <img
-                        src="/images/hero/aquarium-poster.webp"
-                        alt={pick(
-                            'Akuarium aquascape dengan ikan hias',
-                            'Planted aquascape aquarium with ornamental fish',
-                        )}
-                        className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
-                    />
-                    <div
-                        aria-hidden="true"
-                        className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/15 to-black/40 pointer-events-none"
-                    />
+            {/* 1. Full-Bleed Aquascape Photo Backdrop + Frosted Glass Hero Panel */}
+            <section
+                data-nav-theme="dark"
+                className="-mt-16 pt-20 sm:pt-24 pb-8 sm:pb-12 relative w-full overflow-hidden bg-[#060f1d] border-b border-slate-200/70 dark:border-slate-800/80"
+            >
+                <img
+                    src="/images/hero/aquarium-poster.webp"
+                    alt={pick(
+                        'Akuarium aquascape dengan ikan hias',
+                        'Planted aquascape aquarium with ornamental fish',
+                    )}
+                    className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
+                />
+                <div
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/15 to-black/40 pointer-events-none"
+                />
 
-                    <div className="relative z-10 rounded-2xl sm:rounded-[22px] bg-[#071124]/65 backdrop-blur-md border border-white/18 p-5 sm:p-7 lg:p-8 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.55)]">
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="rounded-2xl sm:rounded-[24px] bg-[#071124]/65 backdrop-blur-md border border-white/18 p-5 sm:p-7 lg:p-8 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.55)]">
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
                             {/* Left Column: Search & Category Filters */}
                             <div className="lg:col-span-8 space-y-4 sm:space-y-5">
@@ -201,8 +204,8 @@ export default function Index({
                                         <input
                                             type="search"
                                             placeholder={pick(
-                                                'Cari penyakit, gejala (bintik putih, sirip robek), atau ikan...',
-                                                'Search diseases, symptoms (white spot, fin rot), or fish...',
+                                                'Cari penyakit, gejala, atau jenis ikan...',
+                                                'Search diseases, symptoms, or fish...',
                                             )}
                                             value={search}
                                             onChange={(e) =>
@@ -366,8 +369,10 @@ export default function Index({
                             </aside>
                         </div>
                     </div>
-                </section>
+                </div>
+            </section>
 
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8 sm:space-y-10">
                 {/* 2. Browse by Fish Species & Topic */}
                 <section className="space-y-3.5">
                     <div className="flex items-center justify-between gap-2">
