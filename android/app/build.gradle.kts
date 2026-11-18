@@ -10,10 +10,10 @@ android {
         applicationId = "id.duniaikan.app"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "1.0.1"
 
-        buildConfigField("String", "PROD_URL", "\"https://dunia-ikan.vercel.app\"")
+        buildConfigField("String", "PROD_URL", "\"https://dunia-ikan-one.vercel.app\"")
         buildConfigField("String", "LOCAL_EMULATOR_URL", "\"http://10.0.2.2:8000\"")
         buildConfigField("String", "LOCAL_USB_URL", "\"http://127.0.0.1:8000\"")
     }

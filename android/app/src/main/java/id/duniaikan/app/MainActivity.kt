@@ -317,8 +317,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun isInAppHost(host: String): Boolean {
         val activeHost = Uri.parse(getActiveServerUrl()).host?.lowercase().orEmpty()
+        val prodHost = Uri.parse(BuildConfig.PROD_URL).host?.lowercase().orEmpty()
         return host == activeHost ||
-            host == "dunia-ikan.vercel.app" ||
+            host == prodHost ||
             host == "localhost" ||
             host == "127.0.0.1" ||
             host == "10.0.2.2" ||
@@ -364,7 +365,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun getActiveServerUrl(): String {
         val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
-        return prefs.getString(KEY_SERVER_URL, BuildConfig.PROD_URL) ?: BuildConfig.PROD_URL
+        val saved = prefs.getString(KEY_SERVER_URL, null)
+        // Migrate users upgrading from v1.0.0 away from the paused legacy Vercel deployment.
+        if (saved == null || saved == LEGACY_PROD_URL) {
+            if (saved == LEGACY_PROD_URL) {
+                prefs.edit().putString(KEY_SERVER_URL, BuildConfig.PROD_URL).apply()
+            }
+            return BuildConfig.PROD_URL
+        }
+        return saved
     }
 
     private fun saveActiveServerUrl(url: String) {
@@ -485,6 +494,7 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_OPEN_SERVER_PICKER = "open_server_picker"
         private const val PREFS_NAME = "dunia_ikan_prefs"
         private const val KEY_SERVER_URL = "server_url"
+        private const val LEGACY_PROD_URL = "https://dunia-ikan.vercel.app"
         private const val MIN_SPLASH_DURATION_MS = 1200L
         private const val MAX_SPLASH_TIMEOUT_MS = 8000L
     }
