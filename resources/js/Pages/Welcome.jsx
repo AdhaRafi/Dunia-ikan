@@ -330,8 +330,8 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                         alt={group.title}
                                         width={300}
                                         height={300}
-                                        loading="lazy"
-                                        fetchPriority="low"
+                                        loading={idx < 2 ? 'eager' : 'lazy'}
+                                        fetchPriority={idx < 2 ? 'auto' : 'low'}
                                         decoding="async"
                                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                                     />

@@ -23,6 +23,8 @@ export default function StoreLogo({
             <img
                 src={src}
                 alt={store?.name || 'Toko'}
+                width={96}
+                height={96}
                 loading={loading}
                 decoding="async"
                 onError={() => setFailed(true)}

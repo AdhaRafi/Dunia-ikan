@@ -264,10 +264,11 @@ export default function AppLayout({ children }) {
                         <span className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#133b9e] to-[#081c59] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_28px_rgba(0,20,84,0.3)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
                             <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#1642ad] to-[#081c59] p-1">
                                 <img
-                                    src="/images/kiko/avatar.png"
+                                    src="/images/kiko/avatar.webp"
                                     alt="Kiko"
-                                    width={48}
+                                    width={56}
                                     height={48}
+                                    decoding="async"
                                     className="h-full w-full object-contain -translate-y-0.5"
                                 />
                             </span>

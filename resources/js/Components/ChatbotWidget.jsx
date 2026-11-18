@@ -302,8 +302,11 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                         <span className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#133b9e] to-[#081c59] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_28px_rgba(0,20,84,0.3)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
                             <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#1642ad] to-[#081c59] p-1">
                                 <img
-                                    src="/images/kiko/avatar.png"
+                                    src="/images/kiko/avatar.webp"
                                     alt="Kiko"
+                                    width={56}
+                                    height={48}
+                                    decoding="async"
                                     className="h-full w-full object-contain -translate-y-0.5"
                                 />
                             </span>
@@ -414,8 +417,11 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                 {historyLoading ? (
                                     <div className="flex flex-col items-center gap-3">
                                         <img
-                                            src="/images/kiko/floating.png"
+                                            src="/images/kiko/floating.webp"
                                             alt="Kiko"
+                                            width={80}
+                                            height={96}
+                                            decoding="async"
                                             className="h-24 w-auto object-contain opacity-95"
                                         />
                                         <p className="text-xs font-medium text-slate-600 dark:text-slate-300">
@@ -455,6 +461,8 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                                             src="/images/kiko/tile-fish.png"
                                                             alt=""
                                                             aria-hidden="true"
+                                                            width={32}
+                                                            height={32}
                                                             className="h-8 w-8 object-contain select-none pointer-events-none"
                                                         />
                                                     </div>
@@ -469,6 +477,8 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                                             src="/images/kiko/tile-book.png"
                                                             alt=""
                                                             aria-hidden="true"
+                                                            width={40}
+                                                            height={40}
                                                             className="h-10 w-10 object-contain select-none pointer-events-none"
                                                         />
                                                     </div>
@@ -483,6 +493,8 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                                             src="/images/kiko/tile-health.png"
                                                             alt=""
                                                             aria-hidden="true"
+                                                            width={32}
+                                                            height={32}
                                                             className="h-8 w-8 object-contain select-none pointer-events-none"
                                                         />
                                                     </div>
@@ -491,8 +503,11 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
 
                                             {/* Gently Floating Full-Body Kiko Mascot */}
                                             <img
-                                                src="/images/kiko/floating.png"
+                                                src="/images/kiko/floating.webp"
                                                 alt="Kiko"
+                                                width={120}
+                                                height={144}
+                                                decoding="async"
                                                 className="kiko-bob relative z-20 -mt-2 h-32 w-auto sm:h-36 object-contain drop-shadow-[0_14px_24px_rgba(15,23,42,0.16)] select-none"
                                             />
                                         </div>
@@ -563,8 +578,11 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                         >
                                             {!isUser && (
                                                 <img
-                                                    src="/images/kiko/avatar.png"
+                                                    src="/images/kiko/avatar.webp"
                                                     alt="Kiko"
+                                                    width={28}
+                                                    height={28}
+                                                    decoding="async"
                                                     className="w-7 h-7 rounded-full border border-cyan-500/40 bg-slate-900 object-contain shrink-0 shadow-xs mt-1"
                                                 />
                                             )}
@@ -709,8 +727,11 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                 {loading && (
                                     <div className="flex items-center gap-2.5 rounded-2xl bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-4 py-3 text-xs text-slate-700 dark:text-neutral-200 w-fit">
                                         <img
-                                            src="/images/kiko/avatar.png"
+                                            src="/images/kiko/avatar.webp"
                                             alt="Kiko"
+                                            width={20}
+                                            height={20}
+                                            decoding="async"
                                             className="w-5 h-5 rounded-full object-contain shrink-0 animate-spin"
                                         />
                                         <span>

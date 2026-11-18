@@ -78,7 +78,11 @@ export default function TopHeader({
     const [catalogOpen, setCatalogOpen] = useState(false);
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
     const [overDarkSection, setOverDarkSection] = useState(
-        () => pathname === '/' || pathname === '/products' || pathname.startsWith('/stores/'),
+        () =>
+            pathname === '/' ||
+            pathname === '/guides' ||
+            pathname === '/products' ||
+            pathname.startsWith('/stores/'),
     );
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -112,41 +116,49 @@ export default function TopHeader({
         }
 
         let rafId = null;
-        const probeY = 32;
+        let observer = null;
+        const intersectingDark = new Set();
 
-        const syncNavSurface = () => {
-            rafId = null;
+        if (typeof window.IntersectionObserver === 'function') {
             const darkSections = document.querySelectorAll('[data-nav-theme="dark"]');
-            let touchingDark = false;
+            if (darkSections.length === 0) {
+                setOverDarkSection(false);
+            } else {
+                // Probe only the top header band (~32px down) asynchronously so mount never triggers forced layout reflow.
+                observer = new window.IntersectionObserver(
+                    (entries) => {
+                        for (const entry of entries) {
+                            if (entry.isIntersecting) {
+                                intersectingDark.add(entry.target);
+                            } else {
+                                intersectingDark.delete(entry.target);
+                            }
+                        }
+                        setOverDarkSection(intersectingDark.size > 0);
+                    },
+                    { rootMargin: '-32px 0px -92% 0px', threshold: 0 },
+                );
 
-            for (const el of darkSections) {
-                const rect = el.getBoundingClientRect();
-                if (rect.top <= probeY && rect.bottom >= probeY) {
-                    touchingDark = true;
-                    break;
+                for (const el of darkSections) {
+                    observer.observe(el);
                 }
             }
+        }
 
-            setOverDarkSection(touchingDark);
-            setIsScrolled(window.scrollY > 24);
-        };
-
-        const scheduleSync = () => {
+        const handleScroll = () => {
             if (rafId === null) {
-                rafId = window.requestAnimationFrame(syncNavSurface);
+                rafId = window.requestAnimationFrame(() => {
+                    rafId = null;
+                    setIsScrolled(window.scrollY > 24);
+                });
             }
         };
 
-        syncNavSurface();
-        const postNavRaf = window.requestAnimationFrame(syncNavSurface);
-
-        window.addEventListener('scroll', scheduleSync, { passive: true });
-        window.addEventListener('resize', scheduleSync, { passive: true });
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
-            window.removeEventListener('scroll', scheduleSync);
-            window.removeEventListener('resize', scheduleSync);
-            window.cancelAnimationFrame(postNavRaf);
+            observer?.disconnect();
+            window.removeEventListener('scroll', handleScroll);
             if (rafId !== null) {
                 window.cancelAnimationFrame(rafId);
             }
