@@ -298,6 +298,7 @@ class MarketplaceTest extends TestCase
                 ->where('totalGuides', fn ($total) => $total >= 4)
                 ->has('categories')
                 ->has('categoryCounts')
+                ->where('popularGuides', fn ($items) => count($items) >= 3)
                 ->where('guides.data', fn ($items) => count($items) >= 1)
             );
 

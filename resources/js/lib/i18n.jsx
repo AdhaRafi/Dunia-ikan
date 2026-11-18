@@ -18,6 +18,9 @@ const GUIDE_CATEGORY_MAP_EN = {
     'Infeksi Bakteri / Jamur': 'Bacterial / Fungal',
     'Gangguan Pencernaan & Organ': 'Digestive & Organ',
     'Kualitas Air & Filter': 'Water Quality & Filter',
+    'Air Laut & Salinitas': 'Saltwater & Salinity',
+    'Air Payau & Estuari': 'Brackish & Estuary',
+    'Ikan Predator & Tank Besar': 'Predator & Large Tanks',
     'Panduan Pemula': 'Beginner Guides',
     'Perawatan Harian': 'Daily Care',
 };

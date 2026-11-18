@@ -35,8 +35,15 @@ class GuideController extends Controller
             ->pluck('total', 'category');
         $categories = $categoryCounts->keys()->values();
 
+        $popularGuides = FishGuide::where('is_active', true)
+            ->orderBy('id')
+            ->take(3)
+            ->get(['id', 'title', 'fish_type', 'category', 'symptoms'])
+            ->toArray();
+
         return Inertia::render('Guides/Index', [
             'guides' => $guides,
+            'popularGuides' => $popularGuides,
             'categories' => $categories,
             'categoryCounts' => $categoryCounts,
             'totalGuides' => $categoryCounts->sum(),

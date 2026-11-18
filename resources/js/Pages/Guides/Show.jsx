@@ -195,11 +195,11 @@ export default function Show({ guide, relatedGuides = [] }) {
                                 className="scroll-mt-24 rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 shadow-xs space-y-3"
                             >
                                 <div className="flex items-center gap-2.5">
-                                    <span className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                                    <span className="w-8 h-8 rounded-xl bg-cyan-50 dark:bg-cyan-500/15 text-[#1E80A0] dark:text-[#4AB8BD] flex items-center justify-center shrink-0">
                                         <AlertCircle className="w-4 h-4" />
                                     </span>
                                     <div>
-                                        <span className="block text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                                        <span className="block text-[10px] font-bold uppercase tracking-wider text-[#1E80A0] dark:text-[#4AB8BD]">
                                             {pick('Analisis Pemicu', 'Trigger Analysis')}
                                         </span>
                                         <h2 className="text-base sm:text-lg font-extrabold text-[#001454] dark:text-white leading-tight">
@@ -353,8 +353,8 @@ export default function Show({ guide, relatedGuides = [] }) {
                             </p>
                             <p className="text-xs text-slate-300 leading-relaxed">
                                 {pick(
-                                    'Tanyakan dosis karantina ke Kiko AI atau lengkapi perlengkapan perawatan air di katalog.',
-                                    'Ask Kiko AI about quarantine dosing or browse aquarium treatment gear in the catalog.',
+                                    'Tanyakan takaran karantina ke Kiko atau lengkapi perlengkapan perawatan air di katalog.',
+                                    'Ask Kiko about quarantine dosing or browse aquarium treatment gear in the catalog.',
                                 )}
                             </p>
                             <div className="space-y-2 pt-1">
