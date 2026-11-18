@@ -30,10 +30,14 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14 pb-12 sm:pb-16">
                     {/* Brand Column */}
                     <div className="md:col-span-4 space-y-4">
-                        <Link href="/" className="inline-block group">
+                        <Link
+                            href="/"
+                            aria-label={pick('Beranda Dunia Ikan', 'Dunia Ikan Home')}
+                            className="inline-block group"
+                        >
                             <BrandWordmark className="h-9 sm:h-10" />
                         </Link>
-                        <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-sm leading-relaxed">
+                        <p className="text-xs text-neutral-600 dark:text-neutral-400 max-w-sm leading-relaxed">
                             {pick(
                                 'Marketplace ikan hias & mutasi genetik (morph) captive-bred pertama di Indonesia dengan garansi ikan hidup 100% sampai tujuan.',
                                 "Indonesia's first marketplace for captive-bred ornamental fish and genetic morphs with a 100% live arrival guarantee.",
@@ -42,10 +46,10 @@ export default function Footer() {
 
                         {/* Website Visitor Counter */}
                         <div className="pt-2 max-w-[230px] space-y-2">
-                            <h4 className="font-bold text-neutral-900 dark:text-white text-xs">
+                            <h2 className="font-bold text-neutral-900 dark:text-white text-xs">
                                 {pick('Pengunjung Website', 'Website Visitors')}
-                            </h4>
-                            <dl className="space-y-1 text-xs text-neutral-500 dark:text-neutral-400">
+                            </h2>
+                            <dl className="space-y-1 text-xs text-neutral-600 dark:text-neutral-400">
                                 <div className="flex items-center justify-between gap-4">
                                     <dt>{pick('Pengunjung Hari ini :', 'Visitors Today :')}</dt>
                                     <dd className="tabular-nums text-neutral-700 dark:text-neutral-200">
@@ -72,10 +76,10 @@ export default function Footer() {
                     <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8 text-xs">
                         {/* Col 1: Koleksi Ikan */}
                         <div className="space-y-3">
-                            <h4 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
+                            <h2 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
                                 {pick('Koleksi', 'Collections')}
-                            </h4>
-                            <ul className="space-y-2 text-neutral-500 dark:text-neutral-400 text-xs">
+                            </h2>
+                            <ul className="space-y-2 text-neutral-600 dark:text-neutral-400 text-xs">
                                 <li>
                                     <Link href="/products?water_type=freshwater" className="hover:text-black dark:hover:text-white transition">
                                         {pick('Air Tawar', 'Freshwater')}
@@ -111,9 +115,9 @@ export default function Footer() {
 
                         {/* Col 2: Newsletter (Enter Email Address + Sign Up) */}
                         <div className="space-y-3">
-                            <h4 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
+                            <h2 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
                                 Newsletter
-                            </h4>
+                            </h2>
                             {subscribed ? (
                                 <div className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium py-2">
                                     <Check className="w-4 h-4" />
@@ -126,8 +130,9 @@ export default function Footer() {
                                         required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
+                                        aria-label={pick('Alamat email newsletter', 'Newsletter email address')}
                                         placeholder={pick('Masukkan Alamat Email', 'Enter Email Address')}
-                                        className="w-full bg-transparent border-b border-neutral-300 dark:border-neutral-700 py-1.5 text-xs text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition"
+                                        className="w-full bg-transparent border-b border-neutral-300 dark:border-neutral-700 py-1.5 text-xs text-neutral-900 dark:text-white placeholder:text-neutral-500 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition"
                                     />
                                     <button
                                         type="submit"
@@ -141,10 +146,10 @@ export default function Footer() {
 
                         {/* Col 3: Connect */}
                         <div className="space-y-3">
-                            <h4 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
+                            <h2 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
                                 {pick('Terhubung', 'Connect')}
-                            </h4>
-                            <ul className="space-y-2 text-neutral-500 dark:text-neutral-400 text-xs">
+                            </h2>
+                            <ul className="space-y-2 text-neutral-600 dark:text-neutral-400 text-xs">
                                 <li>
                                     <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
                                         Instagram
@@ -170,10 +175,10 @@ export default function Footer() {
 
                         {/* Col 4: Support */}
                         <div className="space-y-3">
-                            <h4 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
+                            <h2 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
                                 {pick('Bantuan', 'Support')}
-                            </h4>
-                            <ul className="space-y-2 text-neutral-500 dark:text-neutral-400 text-xs">
+                            </h2>
+                            <ul className="space-y-2 text-neutral-600 dark:text-neutral-400 text-xs">
                                 <li>
                                     <Link href="/guides" className="hover:text-black dark:hover:text-white transition">
                                         {pick('Layanan 24/7', '24/7 Support')}

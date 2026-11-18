@@ -149,6 +149,12 @@ export default function Index({
             >
                 <img
                     src="/images/hero/aquarium-poster.webp"
+                    srcSet="/images/hero/aquarium-poster-mobile.webp 640w, /images/hero/aquarium-poster.webp 1280w"
+                    sizes="100vw"
+                    width={1280}
+                    height={720}
+                    fetchPriority="high"
+                    decoding="sync"
                     alt={pick(
                         'Akuarium aquascape dengan ikan hias',
                         'Planted aquascape aquarium with ornamental fish',

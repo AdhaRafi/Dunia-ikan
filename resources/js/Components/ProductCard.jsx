@@ -70,6 +70,8 @@ export default function ProductCard({ product, className = '', style }) {
                         <img
                             src={product.image || fallbackFish}
                             alt={product.name}
+                            width={400}
+                            height={300}
                             loading="lazy"
                             decoding="async"
                             onError={(e) => {

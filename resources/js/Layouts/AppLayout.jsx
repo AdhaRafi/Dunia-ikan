@@ -1,16 +1,21 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { usePage } from '@inertiajs/react';
-import Sidebar from '@/Components/Sidebar';
 import TopHeader from '@/Components/TopHeader';
 import Footer from '@/Components/Footer';
-import ChatbotWidget from '@/Components/ChatbotWidget';
 import { AquaticCanvasBackdrop } from '@/Components/AquaticMotifs';
-import { AlertTriangle, Check, MessageSquare, X } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
+import { AlertTriangle, Check, X } from 'lucide-react';
+
+const Sidebar = lazy(() => import('@/Components/Sidebar'));
+const ChatbotWidget = lazy(() => import('@/Components/ChatbotWidget'));
 
 export default function AppLayout({ children }) {
     const { flash } = usePage().props;
+    const { pick } = useLanguage();
     const [chatOpen, setChatOpen] = useState(false);
+    const [chatMounted, setChatMounted] = useState(false);
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+    const [sidebarMounted, setSidebarMounted] = useState(false);
     const [showFlash, setShowFlash] = useState(true);
     const [darkMode, setDarkMode] = useState(() => {
         if (typeof window !== 'undefined') {
@@ -42,10 +47,19 @@ export default function AppLayout({ children }) {
         }
     }, [flash?.success, flash?.error]);
 
+    const openChat = () => {
+        setChatMounted(true);
+        setChatOpen(true);
+    };
+
+    const openMobileSidebar = () => {
+        setSidebarMounted(true);
+        setMobileSidebarOpen(true);
+    };
+
     useEffect(() => {
-        const handleOpenChat = () => setChatOpen(true);
-        window.addEventListener('dunia-ikan:open-chat', handleOpenChat);
-        return () => window.removeEventListener('dunia-ikan:open-chat', handleOpenChat);
+        window.addEventListener('dunia-ikan:open-chat', openChat);
+        return () => window.removeEventListener('dunia-ikan:open-chat', openChat);
     }, []);
 
     useEffect(() => {
@@ -159,20 +173,24 @@ export default function AppLayout({ children }) {
 
             {/* Full-Width Header with Brand, Search & Horizontal Navigation */}
             <TopHeader
-                onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
-                onOpenChat={() => setChatOpen(true)}
+                onOpenMobileSidebar={openMobileSidebar}
+                onOpenChat={openChat}
                 darkMode={darkMode}
                 onToggleDarkMode={() => setDarkMode((prev) => !prev)}
             />
 
-            {/* Mobile Sliding Drawer Navigation */}
-            <Sidebar
-                isOpen={mobileSidebarOpen}
-                onClose={() => setMobileSidebarOpen(false)}
-                onOpenChat={() => setChatOpen(true)}
-                darkMode={darkMode}
-                onToggleDarkMode={() => setDarkMode((prev) => !prev)}
-            />
+            {/* Mobile Sliding Drawer Navigation (lazy-loaded on first drawer open) */}
+            {sidebarMounted && (
+                <Suspense fallback={null}>
+                    <Sidebar
+                        isOpen={mobileSidebarOpen}
+                        onClose={() => setMobileSidebarOpen(false)}
+                        onOpenChat={openChat}
+                        darkMode={darkMode}
+                        onToggleDarkMode={() => setDarkMode((prev) => !prev)}
+                    />
+                </Suspense>
+            )}
 
             {/* Flash Messages */}
             {showFlash && (flash?.success || flash?.error) && (
@@ -217,12 +235,47 @@ export default function AppLayout({ children }) {
                 {children}
             </main>
 
-            {/* Kiko Mascot AI Assistant Widget (Floating Pill, Speech Bubble & Chat Modal) */}
-            <ChatbotWidget
-                isOpen={chatOpen}
-                onOpen={() => setChatOpen(true)}
-                onClose={() => setChatOpen(false)}
-            />
+            {/* Lightweight floating trigger renders immediately; heavy chat UI loads only when opened */}
+            {chatMounted ? (
+                <Suspense fallback={null}>
+                    <ChatbotWidget
+                        isOpen={chatOpen}
+                        onOpen={() => setChatOpen(true)}
+                        onClose={() => setChatOpen(false)}
+                    />
+                </Suspense>
+            ) : (
+                <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 select-none">
+                    <button
+                        type="button"
+                        onClick={openChat}
+                        className="group flex items-center gap-3 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0d2e92]/60 focus-visible:ring-offset-2"
+                        title={pick('Buka Chatbot Kiko', 'Open Kiko Assistant')}
+                        aria-label={pick('Tanya Kiko', 'Ask Kiko')}
+                    >
+                        <span className="relative hidden sm:inline-flex items-center rounded-full bg-white dark:bg-[#131d33] px-4 py-2 text-[13px] font-bold tracking-tight text-[#001454] dark:text-white border border-slate-200/90 dark:border-slate-700/80 shadow-[0_8px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 group-hover:-translate-x-0.5">
+                            <span>{pick('Tanya Kiko', 'Ask Kiko')}</span>
+                            <span
+                                aria-hidden="true"
+                                className="absolute -right-1.5 top-1/2 -translate-y-1/2 h-3 w-3 rotate-45 rounded-[2px] bg-white dark:bg-[#131d33] border-t border-r border-slate-200/90 dark:border-slate-700/80"
+                            />
+                        </span>
+
+                        <span className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#133b9e] to-[#081c59] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_28px_rgba(0,20,84,0.3)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
+                            <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#1642ad] to-[#081c59] p-1">
+                                <img
+                                    src="/images/kiko/avatar.png"
+                                    alt="Kiko"
+                                    width={48}
+                                    height={48}
+                                    className="h-full w-full object-contain -translate-y-0.5"
+                                />
+                            </span>
+                            <span className="absolute top-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-[#070b14]" />
+                        </span>
+                    </button>
+                </div>
+            )}
 
             <Footer />
         </div>

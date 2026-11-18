@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Minus, Plus } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
@@ -70,6 +70,22 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
     const [selectedTab, setSelectedTab] = useState('all');
     const [openFaq, setOpenFaq] = useState(0);
     const [showAllCategories, setShowAllCategories] = useState(false);
+    const [showHeroVideo, setShowHeroVideo] = useState(false);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isNarrowScreen = window.matchMedia('(max-width: 767px)').matches;
+        const saveData = Boolean(navigator.connection?.saveData);
+        if (prefersReducedMotion || isNarrowScreen || saveData) {
+            return;
+        }
+
+        const timer = window.setTimeout(() => setShowHeroVideo(true), 2200);
+        return () => window.clearTimeout(timer);
+    }, []);
 
     // Filter items based on quick chips
     const displayedProducts = (
@@ -206,24 +222,32 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 data-nav-theme="dark"
                 className="-mt-16 pt-16 relative w-full overflow-hidden bg-black min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex items-center"
             >
-                {/* Full-Bleed Background Video (Edge-to-Edge Aquarium Footage) */}
+                {/* Full-Bleed Background Poster (Instant LCP) + Idle-Deferred Aquarium Video */}
                 <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden transform-gpu">
-                    <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        preload="metadata"
-                        poster="/images/hero/aquarium-poster.webp"
+                    <img
+                        src="/images/hero/aquarium-poster.webp"
+                        srcSet="/images/hero/aquarium-poster-mobile.webp 640w, /images/hero/aquarium-poster.webp 1280w"
+                        sizes="100vw"
+                        width={1280}
+                        height={720}
+                        fetchPriority="high"
+                        decoding="sync"
+                        loading="eager"
+                        alt={pick('Akuarium Ikan Hias Dunia Ikan', 'Dunia Ikan Ornamental Aquarium')}
                         className="w-full h-full object-cover object-center select-none"
-                    >
-                        <source src="/videos/aquarium-hero.mp4" type="video/mp4" />
-                        <img
-                            src="/images/hero/aquarium-poster.webp"
-                            alt={pick('Akuarium Ikan Hias Dunia Ikan', 'Dunia Ikan Ornamental Aquarium')}
-                            className="w-full h-full object-cover object-center select-none"
-                        />
-                    </video>
+                    />
+                    {showHeroVideo && (
+                        <video
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            preload="auto"
+                            className="absolute inset-0 w-full h-full object-cover object-center select-none"
+                        >
+                            <source src="/videos/aquarium-hero.mp4" type="video/mp4" />
+                        </video>
+                    )}
                 </div>
 
                 {/* Cinematic Ambient Dark Scrim & Text Readability Gradients */}
@@ -283,7 +307,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         </h2>
                         <Link
                             href="/products"
-                            className="text-xs font-semibold text-neutral-500 hover:text-[#001454] dark:text-neutral-400 dark:hover:text-white transition"
+                            className="text-xs font-semibold text-neutral-600 hover:text-[#001454] dark:text-neutral-300 dark:hover:text-white transition"
                         >
                             {pick('Jelajahi Katalog', 'Browse Catalog')}
                         </Link>
@@ -307,7 +331,9 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                     <img
                                         src={group.image}
                                         alt={group.title}
-                                        loading="lazy"
+                                        width={300}
+                                        height={300}
+                                        loading={idx < 2 ? 'eager' : 'lazy'}
                                         decoding="async"
                                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                                     />
@@ -395,7 +421,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             </h2>
                             <Link
                                 href="/products"
-                                className="text-xs font-semibold text-neutral-500 hover:text-[#001454] dark:text-neutral-400 dark:hover:text-white transition"
+                                className="text-xs font-semibold text-neutral-600 hover:text-[#001454] dark:text-neutral-300 dark:hover:text-white transition"
                             >
                                 {pick('Lihat Semua', 'View All')}
                             </Link>
@@ -463,7 +489,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             </h2>
 
                             <div>
-                                <p className="max-w-[34ch] text-xs sm:text-[13.5px] leading-relaxed text-slate-500 dark:text-slate-400">
+                                <p className="max-w-[34ch] text-xs sm:text-[13.5px] leading-relaxed text-slate-600 dark:text-slate-300">
                                     {pick(
                                         'Tim dan asisten Kiko kami selalu siap membantu dengan jawaban cepat, jelas, dan tepercaya kapan pun Anda butuh.',
                                         'Our team and Kiko assistant are always ready with fast, clear, and trusted answers whenever you need help.',

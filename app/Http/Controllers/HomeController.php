@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class HomeController extends Controller
 {
-    private const HOME_CACHE_KEY = 'home_page_payload_v2';
+    private const HOME_CACHE_KEY = 'home_page_payload_v3';
 
     private const FILTERS_CACHE_KEY = 'product_filters_v2';
 
@@ -25,14 +25,30 @@ class HomeController extends Controller
     public function index(): Response
     {
         $payload = Cache::remember(self::HOME_CACHE_KEY, now()->addSeconds(60), function (): array {
-            $categories = Category::withCount('products')->get();
+            $categories = Category::select(['id', 'name', 'slug'])
+                ->withCount('products')
+                ->get();
 
-            $allFeaturedFish = Product::with(['store:id,name,slug,city,logo', 'category', 'fishDetail'])
+            $allFeaturedFish = Product::select([
+                'id',
+                'store_id',
+                'category_id',
+                'name',
+                'slug',
+                'price',
+                'stock',
+                'image',
+            ])
+                ->with([
+                    'store:id,name,slug,city,logo',
+                    'category:id,name,slug',
+                    'fishDetail:product_id,water_type,sex,morph_trait,species_name',
+                ])
                 ->where('is_active', true)
                 ->where('stock', '>', 0)
                 ->whereHas('category', fn ($query) => $query->where('slug', 'ikan-hias'))
                 ->orderByDesc('id')
-                ->take(48)
+                ->take(24)
                 ->get();
 
             // Interleave freshwater, saltwater, and brackish so "All" showcases every habitat
@@ -42,7 +58,7 @@ class HomeController extends Controller
                 $allFeaturedFish->filter(fn ($p) => $p->fishDetail?->water_type === 'brackish')->values(),
             ];
             $featuredFish = collect();
-            while (collect($buckets)->contains(fn ($b) => $b->isNotEmpty())) {
+            while (collect($buckets)->contains(fn ($b) => $b->isNotEmpty()) && $featuredFish->count() < 24) {
                 foreach ($buckets as $bucket) {
                     if ($bucket->isNotEmpty()) {
                         $featuredFish->push($bucket->shift());
@@ -50,22 +66,8 @@ class HomeController extends Controller
                 }
             }
 
-            $featuredSupplies = Product::with(['store:id,name,slug,city,logo', 'category'])
-                ->where('is_active', true)
-                ->where('stock', '>', 0)
-                ->whereHas('category', fn ($query) => $query->where('slug', '!=', 'ikan-hias'))
-                ->latest()
-                ->take(2)
-                ->get();
-
-            $careGuides = FishGuide::where('is_active', true)
-                ->latest()
-                ->take(3)
-                ->get();
-
             $featuredStores = Store::where('is_active', true)
-                ->select(['id', 'name', 'slug', 'city', 'province', 'description', 'logo', 'doa_policy'])
-                ->withCount('products')
+                ->select(['id', 'name', 'slug', 'city', 'logo'])
                 ->orderBy('id')
                 ->take(6)
                 ->get();
@@ -74,8 +76,6 @@ class HomeController extends Controller
             return [
                 'categories' => $categories->values()->toArray(),
                 'featuredFish' => $featuredFish->values()->toArray(),
-                'featuredSupplies' => $featuredSupplies->values()->toArray(),
-                'careGuides' => $careGuides->values()->toArray(),
                 'featuredStores' => $featuredStores->values()->toArray(),
                 'stats' => [
                     'totalFish' => (int) Product::where('is_active', true)->sum('stock'),

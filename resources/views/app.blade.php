@@ -40,10 +40,24 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2">
         <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v=2">
 
-        <!-- Fonts -->
+        @if (in_array($page['component'] ?? '', ['Welcome', 'Guides/Index'], true))
+            <link
+                rel="preload"
+                as="image"
+                href="{{ asset('images/hero/aquarium-poster.webp') }}"
+                imagesrcset="{{ asset('images/hero/aquarium-poster-mobile.webp') }} 640w, {{ asset('images/hero/aquarium-poster.webp') }} 1280w"
+                imagesizes="100vw"
+                fetchpriority="high"
+            >
+        @endif
+
+        <!-- Fonts (non-render-blocking) -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+        </noscript>
 
         <!-- Theme Detection Script -->
         <script>
