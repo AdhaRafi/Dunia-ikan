@@ -67,142 +67,6 @@ const SPECIES_TOPICS = [
     },
 ];
 
-function HeroFishScene({ className = '' }) {
-    return (
-        <svg
-            aria-hidden="true"
-            viewBox="0 0 320 260"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-        >
-            {/* Coastal seabed wave contours */}
-            <path
-                d="M44 260C106 208 174 216 238 182C276 162 302 164 320 176V260H44Z"
-                className="fill-[#d7ebfb] dark:fill-[#132544]"
-            />
-            <path
-                d="M118 260C166 226 232 232 320 198V260H118Z"
-                className="fill-[#c4e0f9] dark:fill-[#193055]"
-            />
-
-            {/* Reef flora & rounded corals */}
-            <path
-                d="M174 246C174 224 166 206 171 190C176 205 182 222 183 246H174Z"
-                className="fill-[#74c6d0]/70 dark:fill-[#4AB8BD]/35"
-            />
-            <path
-                d="M189 246C191 218 202 200 198 182C191 196 184 216 182 246H189Z"
-                className="fill-[#4AB8BD]/65 dark:fill-[#4AB8BD]/45"
-            />
-            <path
-                d="M276 244V168C276 156 266 154 266 166V200C260 194 252 192 252 202C252 214 265 218 269 224V244H276Z"
-                className="fill-[#3698d4]/55 dark:fill-[#0684E5]/45"
-            />
-            <path
-                d="M284 244V184C284 174 294 172 294 184V210C300 205 307 204 307 213C307 222 296 226 291 232V244H284Z"
-                className="fill-[#1E80A0]/55 dark:fill-[#4AB8BD]/35"
-            />
-
-            {/* Swimming banded angelfish in Dunia Ikan palette */}
-            <g transform="translate(10, 4)">
-                {/* Dorsal & sweeping ventral fins */}
-                <path
-                    d="M186 78C196 48 228 40 245 50C234 66 232 82 232 94L186 78Z"
-                    className="fill-[#0D2E92] dark:fill-[#0684E5]"
-                />
-                <path
-                    d="M184 128C194 156 224 166 242 158C232 142 228 128 228 116L184 128Z"
-                    className="fill-[#0D2E92] dark:fill-[#0684E5]"
-                />
-                {/* Forked tail fin */}
-                <path
-                    d="M242 104L282 76C276 94 275 112 282 132L242 104Z"
-                    className="fill-[#1E80A0] dark:fill-[#4AB8BD]"
-                />
-                {/* Fish body base */}
-                <path
-                    d="M142 104C158 72 196 64 232 80C244 86 250 96 250 104C250 112 244 122 232 128C196 144 158 136 142 104Z"
-                    className="fill-[#0684E5] dark:fill-[#2294ee]"
-                />
-                {/* Subtle belly highlight */}
-                <path
-                    d="M148 106C166 125 202 131 236 118C225 130 192 138 158 122C152 118 148 112 148 106Z"
-                    className="fill-[#4AB8BD] dark:fill-[#5ed1d6]"
-                />
-                {/* Vertical reef bands clipped smoothly within body contour */}
-                <path
-                    d="M174 75C180 73 186 72 191 72C186 94 186 114 191 136C185 136 179 135 174 133C170 114 170 94 174 75Z"
-                    className="fill-[#001454]/65 dark:fill-[#091b42]/75"
-                />
-                <path
-                    d="M202 72C208 73 213 74 218 76C213 94 213 114 218 132C212 134 207 135 202 136C198 114 198 94 202 72Z"
-                    className="fill-[#001454]/65 dark:fill-[#091b42]/75"
-                />
-                {/* Pectoral fin */}
-                <path
-                    d="M178 106C192 102 204 109 200 119C192 122 181 116 178 106Z"
-                    className="fill-[#99e2e6]/80 dark:fill-[#7be2e6]/80"
-                />
-                {/* Gill curve */}
-                <path
-                    d="M167 90C173 98 173 111 167 119"
-                    stroke="#001454"
-                    strokeOpacity="0.45"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                />
-                {/* Eye */}
-                <circle
-                    cx="159"
-                    cy="98"
-                    r="4.5"
-                    className="fill-white"
-                />
-                <circle
-                    cx="158.2"
-                    cy="98"
-                    r="2.4"
-                    className="fill-[#001454]"
-                />
-                <circle cx="157.3" cy="96.8" r="0.9" className="fill-white" />
-            </g>
-
-            {/* Water bubbles */}
-            <circle
-                cx="134"
-                cy="92"
-                r="4.5"
-                stroke="#0684E5"
-                strokeWidth="1.5"
-                className="opacity-45 dark:stroke-[#4AB8BD]"
-            />
-            <circle
-                cx="144"
-                cy="70"
-                r="2.8"
-                stroke="#1E80A0"
-                strokeWidth="1.4"
-                className="opacity-40 dark:stroke-[#4AB8BD]"
-            />
-            <circle
-                cx="124"
-                cy="62"
-                r="2"
-                className="fill-[#4AB8BD]/45"
-            />
-            <circle
-                cx="196"
-                cy="34"
-                r="3.2"
-                stroke="#0684E5"
-                strokeWidth="1.4"
-                className="opacity-35 dark:stroke-[#4AB8BD]"
-            />
-        </svg>
-    );
-}
-
 export default function Index({
     guides,
     popularGuides = [],
@@ -279,210 +143,229 @@ export default function Index({
             </Head>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-9 space-y-8 sm:space-y-10">
-                {/* 1. Editorial Hero Row + Popular Guides Panel */}
-                <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-stretch">
-                    {/* Left Hero Card */}
-                    <div className="lg:col-span-8 relative overflow-hidden rounded-[24px] sm:rounded-[28px] bg-[#edf5fc] dark:bg-[#0d182b] border border-[#0684E5]/15 dark:border-[#4AB8BD]/20 px-5 sm:px-8 lg:px-10 py-7 sm:py-9 flex flex-col justify-between shadow-[0_6px_24px_-12px_rgba(0,20,84,0.08)]">
-                        <HeroFishScene className="hidden md:block pointer-events-none select-none absolute right-0 bottom-0 w-[210px] lg:w-[220px] xl:w-[275px] h-auto" />
-                        <HeroFishScene className="md:hidden pointer-events-none select-none absolute -right-4 bottom-0 w-36 h-auto opacity-30" />
+                {/* 1. Aquascape Photo Backdrop + Frosted Glass Hero Panel */}
+                <section className="relative overflow-hidden rounded-[24px] sm:rounded-[28px] bg-[#060f1d] border border-slate-200/80 dark:border-slate-800 shadow-[0_14px_40px_-16px_rgba(0,20,84,0.28)] p-3.5 sm:p-6 lg:p-9">
+                    <img
+                        src="/images/hero/aquarium-poster.webp"
+                        alt={pick(
+                            'Akuarium aquascape dengan ikan hias',
+                            'Planted aquascape aquarium with ornamental fish',
+                        )}
+                        className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
+                    />
+                    <div
+                        aria-hidden="true"
+                        className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/15 to-black/40 pointer-events-none"
+                    />
 
-                        <div className="relative z-10 w-full md:max-w-[68%] lg:max-w-[69%] space-y-5">
-                            <div className="flex flex-wrap items-center gap-2">
-                                <span className="inline-flex items-center gap-1.5 rounded-full bg-white dark:bg-[#131d33] border border-slate-200/80 dark:border-slate-700 px-3 py-1 text-[11px] font-bold text-[#001454] dark:text-sky-200 shadow-2xs">
-                                    <BookOpen className="w-3.5 h-3.5 text-[#0684E5] dark:text-[#4AB8BD]" />
-                                    {pick('Pusat Edukasi Akuatik', 'Aquatic Care Library')}
-                                </span>
-                                <span className="inline-flex items-center rounded-full bg-[#0684E5]/12 dark:bg-[#4AB8BD]/15 text-[#001454] dark:text-[#4AB8BD] px-3 py-1 text-[11px] font-bold tabular-nums">
-                                    {effectiveTotal} {pick('panduan aktif', 'active guides')}
-                                </span>
-                            </div>
-
-                            <div className="space-y-2">
-                                <h1 className="text-mask text-2xl sm:text-3xl xl:text-[36px] font-extrabold tracking-[-0.03em] leading-[1.13] text-[#001454] dark:text-white">
-                                    <span className="text-mask-inner">
-                                        {pick(
-                                            'Panduan Perawatan & Diagnosa Ikan',
-                                            'Fish Care & Health Guides',
-                                        )}
+                    <div className="relative z-10 rounded-2xl sm:rounded-[22px] bg-[#071124]/65 backdrop-blur-md border border-white/18 p-5 sm:p-7 lg:p-8 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.55)]">
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+                            {/* Left Column: Search & Category Filters */}
+                            <div className="lg:col-span-8 space-y-4 sm:space-y-5">
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white text-[#001454] px-3 py-1 text-[11px] font-bold shadow-2xs">
+                                        <BookOpen className="w-3.5 h-3.5 text-[#0684E5]" />
+                                        {pick('Pusat Edukasi Akuatik', 'Aquatic Care Library')}
                                     </span>
-                                </h1>
-                                <p className="text-mask text-xs sm:text-[14px] leading-relaxed text-slate-600 dark:text-slate-300 max-w-[46ch]">
-                                    <span className="text-mask-inner text-mask-delay-1">
-                                        {pick(
-                                            'Kenali gejala penyakit, cek parameter air, dan ikuti langkah karantina harian untuk menjaga ikan hias tetap sehat.',
-                                            'Spot early clinical signs, balance water quality, and follow practical quarantine steps for healthier fish.',
-                                        )}
+                                    <span className="inline-flex items-center rounded-full bg-white/15 text-white border border-white/20 px-3 py-1 text-[11px] font-bold tabular-nums">
+                                        {effectiveTotal} {pick('panduan aktif', 'active guides')}
                                     </span>
-                                </p>
-                            </div>
+                                </div>
 
-                            {/* Unified Search Bar */}
-                            <form
-                                onSubmit={handleSearch}
-                                className="flex items-center gap-1.5 rounded-full bg-white dark:bg-[#131d33] border border-slate-200/90 dark:border-slate-700/80 p-1.5 pl-4 shadow-[0_6px_20px_-8px_rgba(0,20,84,0.12)] focus-within:border-[#0684E5] dark:focus-within:border-[#4AB8BD] focus-within:ring-2 focus-within:ring-[#0684E5]/15 transition max-w-xl"
-                            >
-                                <Search className="w-4 h-4 text-slate-400 shrink-0" />
-                                <input
-                                    type="search"
-                                    placeholder={pick(
-                                        'Cari penyakit, gejala, atau ikan...',
-                                        'Search diseases, symptoms, or fish...',
-                                    )}
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    className="flex-1 min-w-0 bg-transparent border-0 px-2 py-2 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-0"
-                                />
-                                {search && (
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setSearch('');
-                                            router.get('/guides', {
-                                                category: selectedCategory,
-                                            });
-                                        }}
-                                        aria-label={pick('Hapus kata kunci', 'Clear search')}
-                                        className="p-1.5 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white"
-                                    >
-                                        <X className="w-3.5 h-3.5" />
-                                    </button>
-                                )}
-                                <button
-                                    type="submit"
-                                    className="h-9 sm:h-10 px-4 sm:px-5 rounded-full bg-[#001454] hover:bg-[#0684E5] dark:bg-[#0684E5] dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] text-white font-bold text-xs whitespace-nowrap transition shrink-0"
-                                >
-                                    {pick('Cari Panduan', 'Search Guides')}
-                                </button>
-                            </form>
-
-                            {/* Category Pills */}
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-0.5">
-                                <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 mr-0.5">
-                                    {pick('Topik:', 'Topics:')}
-                                </span>
-                                <button
-                                    type="button"
-                                    onClick={() => handleCategoryClick('')}
-                                    className={`px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition border ${
-                                        selectedCategory === ''
-                                            ? 'bg-[#001454] text-white border-[#001454] dark:bg-white dark:text-[#001454] dark:border-white'
-                                            : 'bg-white/95 dark:bg-[#131d33] text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-700 hover:border-[#0684E5]'
-                                    }`}
-                                >
-                                    {pick('Semua', 'All')} ({effectiveTotal})
-                                </button>
-                                {categories.map((category) => {
-                                    const active =
-                                        selectedCategory === category;
-                                    const count = categoryCounts?.[category];
-                                    return (
-                                        <button
-                                            key={category}
-                                            type="button"
-                                            onClick={() =>
-                                                handleCategoryClick(category)
-                                            }
-                                            className={`px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition border ${
-                                                active
-                                                    ? 'bg-[#0684E5] text-white border-[#0684E5]'
-                                                    : 'bg-white/95 dark:bg-[#131d33] text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-700 hover:border-[#0684E5]'
-                                            }`}
-                                        >
-                                            {trGuideCategory(category)}
-                                            {typeof count === 'number' && (
-                                                <span
-                                                    className={`ml-1 tabular-nums ${
-                                                        active
-                                                            ? 'text-white/85'
-                                                            : 'text-slate-400 dark:text-slate-500'
-                                                    }`}
-                                                >
-                                                    {count}
-                                                </span>
+                                <div className="space-y-2">
+                                    <h1 className="text-mask text-2xl sm:text-3xl lg:text-[36px] font-extrabold tracking-[-0.03em] leading-[1.12] text-white">
+                                        <span className="text-mask-inner">
+                                            {pick(
+                                                'Panduan Perawatan & Diagnosa Ikan',
+                                                'Fish Care & Health Guides',
                                             )}
-                                        </button>
-                                    );
-                                })}
-                                {hasActiveFilter && (
+                                        </span>
+                                    </h1>
+                                    <p className="text-mask text-xs sm:text-[14px] leading-relaxed text-slate-200 max-w-[54ch]">
+                                        <span className="text-mask-inner text-mask-delay-1">
+                                            {pick(
+                                                'Kenali gejala penyakit, cek parameter air, dan ikuti langkah karantina harian untuk menjaga ikan hias tetap sehat.',
+                                                'Spot early clinical signs, balance water quality, and follow practical quarantine steps for healthier fish.',
+                                            )}
+                                        </span>
+                                    </p>
+                                </div>
+
+                                {/* Search Bar */}
+                                <form
+                                    onSubmit={handleSearch}
+                                    className="flex flex-col sm:flex-row gap-2.5 max-w-2xl"
+                                >
+                                    <div className="relative flex-1 flex items-center rounded-xl sm:rounded-2xl bg-white border border-white/80 shadow-xs focus-within:ring-2 focus-within:ring-[#4AB8BD] transition">
+                                        <Search className="ml-4 w-4 h-4 text-slate-400 shrink-0" />
+                                        <input
+                                            type="search"
+                                            placeholder={pick(
+                                                'Cari penyakit, gejala (bintik putih, sirip robek), atau ikan...',
+                                                'Search diseases, symptoms (white spot, fin rot), or fish...',
+                                            )}
+                                            value={search}
+                                            onChange={(e) =>
+                                                setSearch(e.target.value)
+                                            }
+                                            className="w-full h-11 sm:h-12 bg-transparent border-0 px-3 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:ring-0"
+                                        />
+                                        {search && (
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setSearch('');
+                                                    router.get('/guides', {
+                                                        category:
+                                                            selectedCategory,
+                                                    });
+                                                }}
+                                                aria-label={pick(
+                                                    'Hapus kata kunci',
+                                                    'Clear search',
+                                                )}
+                                                className="mr-2 p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
+                                            >
+                                                <X className="w-3.5 h-3.5" />
+                                            </button>
+                                        )}
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        className="h-11 sm:h-12 px-6 rounded-xl sm:rounded-2xl bg-[#001454] hover:bg-[#0684E5] border border-white/15 text-white font-bold text-xs sm:text-[13px] transition shrink-0 shadow-sm"
+                                    >
+                                        {pick('Cari Panduan', 'Search Guides')}
+                                    </button>
+                                </form>
+
+                                {/* Category Pills */}
+                                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-0.5">
                                     <button
                                         type="button"
-                                        onClick={handleReset}
-                                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition"
+                                        onClick={() => handleCategoryClick('')}
+                                        className={`px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition border ${
+                                            selectedCategory === ''
+                                                ? 'bg-[#001454] text-white border-white/30'
+                                                : 'bg-white/95 hover:bg-white text-[#001454] border-white/25'
+                                        }`}
                                     >
-                                        <RotateCcw className="w-3 h-3" />
-                                        Reset
+                                        {pick('Semua', 'All')} ({effectiveTotal})
                                     </button>
-                                )}
+                                    {categories.map((category) => {
+                                        const active =
+                                            selectedCategory === category;
+                                        const count =
+                                            categoryCounts?.[category];
+                                        return (
+                                            <button
+                                                key={category}
+                                                type="button"
+                                                onClick={() =>
+                                                    handleCategoryClick(
+                                                        category,
+                                                    )
+                                                }
+                                                className={`px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition border ${
+                                                    active
+                                                        ? 'bg-[#0684E5] text-white border-[#0684E5]'
+                                                        : 'bg-white/95 hover:bg-white text-[#001454] border-white/25'
+                                                }`}
+                                            >
+                                                {trGuideCategory(category)}
+                                                {typeof count === 'number' && (
+                                                    <span
+                                                        className={`ml-1.5 tabular-nums ${
+                                                            active
+                                                                ? 'text-white/85'
+                                                                : 'text-slate-400'
+                                                        }`}
+                                                    >
+                                                        {count}
+                                                    </span>
+                                                )}
+                                            </button>
+                                        );
+                                    })}
+                                    {hasActiveFilter && (
+                                        <button
+                                            type="button"
+                                            onClick={handleReset}
+                                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold bg-rose-600/90 hover:bg-rose-600 text-white transition"
+                                        >
+                                            <RotateCcw className="w-3 h-3" />
+                                            Reset
+                                        </button>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    {/* Right Companion Panel: Popular Guides */}
-                    <aside className="lg:col-span-4 rounded-[24px] sm:rounded-[28px] bg-white dark:bg-[#0e1424] border border-slate-200/85 dark:border-slate-800 p-5 sm:p-6 shadow-[0_6px_22px_-12px_rgba(0,20,84,0.06)] flex flex-col justify-between gap-4">
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2">
-                                    <span className="w-7 h-7 rounded-lg bg-[#edf5fd] dark:bg-[#131d33] text-[#0684E5] dark:text-[#4AB8BD] flex items-center justify-center shrink-0">
-                                        <Fish className="w-3.5 h-3.5" />
-                                    </span>
-                                    <h2 className="text-sm sm:text-[15px] font-extrabold tracking-tight text-[#001454] dark:text-white">
+                            {/* Right Column: Nested Popular Guides Card */}
+                            <aside className="lg:col-span-4 rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/90 dark:border-slate-700/80 p-4 sm:p-5 shadow-md space-y-3">
+                                <div className="flex items-center justify-between gap-2">
+                                    <h2 className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                                         {pick('Artikel Terpopuler', 'Popular Guides')}
                                     </h2>
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={handleShowAllCatalog}
-                                    className="inline-flex items-center gap-1 text-xs font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:underline shrink-0"
-                                >
-                                    {pick('Lihat Semua', 'View All')}
-                                    <ArrowRight className="w-3.5 h-3.5" />
-                                </button>
-                            </div>
-
-                            <div className="divide-y divide-slate-100 dark:divide-slate-800/80">
-                                {featuredList.map((item, idx) => (
-                                    <Link
-                                        key={item.id}
-                                        href={`/guides/${item.id}`}
-                                        className="group flex items-start gap-3 py-3 first:pt-1.5 last:pb-1 transition"
+                                    <button
+                                        type="button"
+                                        onClick={handleShowAllCatalog}
+                                        className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:underline shrink-0"
                                     >
-                                        <span className="w-7 h-7 rounded-full bg-[#edf5fd] dark:bg-[#131d33] text-[#0684E5] dark:text-[#4AB8BD] text-[11px] font-extrabold flex items-center justify-center shrink-0 mt-0.5 tabular-nums group-hover:bg-[#0684E5] group-hover:text-white dark:group-hover:bg-[#4AB8BD] dark:group-hover:text-[#001454] transition">
-                                            {String(idx + 1).padStart(2, '0')}
-                                        </span>
-                                        <div className="min-w-0 flex-1">
-                                            <p className="text-xs sm:text-[13px] font-bold text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] leading-snug line-clamp-2 transition-colors">
-                                                {item.title}
-                                            </p>
-                                            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug line-clamp-1 mt-0.5">
-                                                {item.symptoms || item.fish_type}
-                                            </p>
-                                        </div>
-                                    </Link>
-                                ))}
-                            </div>
-                        </div>
+                                        {pick('Lihat Semua', 'View All')}
+                                        <ArrowRight className="w-3 h-3" />
+                                    </button>
+                                </div>
 
-                        <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2 text-xs">
-                            <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                                {pick(
-                                    'Butuh cek gejala cepat?',
-                                    'Need quick triage?',
-                                )}
-                            </span>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    window.dispatchEvent(
-                                        new CustomEvent('dunia-ikan:open-chat'),
-                                    )
-                                }
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#edf5fd] hover:bg-[#0684E5] text-[#001454] hover:text-white dark:bg-[#131d33] dark:text-[#4AB8BD] dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] font-bold text-[11px] transition shrink-0"
-                            >
-                                <MessageSquare className="w-3 h-3" />
-                                {pick('Tanya Kiko', 'Ask Kiko')}
-                            </button>
+                                <div className="space-y-2">
+                                    {featuredList.map((item, idx) => (
+                                        <Link
+                                            key={item.id}
+                                            href={`/guides/${item.id}`}
+                                            className="group flex items-start gap-3 rounded-xl bg-[#f8fafc] hover:bg-[#edf5fd] dark:bg-[#131d33] dark:hover:bg-[#182644] px-3 py-2.5 border border-slate-100 dark:border-slate-800/80 transition"
+                                        >
+                                            <span className="text-[11px] font-extrabold text-[#0684E5] dark:text-[#4AB8BD] tabular-nums mt-0.5 shrink-0">
+                                                {String(idx + 1).padStart(
+                                                    2,
+                                                    '0',
+                                                )}
+                                            </span>
+                                            <div className="min-w-0 flex-1">
+                                                <p className="text-xs font-bold text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] leading-snug line-clamp-1 transition-colors">
+                                                    {item.title}
+                                                </p>
+                                                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug line-clamp-1 mt-0.5">
+                                                    {item.symptoms ||
+                                                        item.fish_type}
+                                                </p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+
+                                <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2">
+                                    <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                                        {pick(
+                                            'Butuh cek gejala cepat?',
+                                            'Need quick triage?',
+                                        )}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            window.dispatchEvent(
+                                                new CustomEvent(
+                                                    'dunia-ikan:open-chat',
+                                                ),
+                                            )
+                                        }
+                                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#edf5fd] hover:bg-[#0684E5] text-[#001454] hover:text-white dark:bg-[#131d33] dark:text-[#4AB8BD] dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] font-bold text-[11px] transition shrink-0"
+                                    >
+                                        <MessageSquare className="w-3 h-3" />
+                                        {pick('Tanya Kiko', 'Ask Kiko')}
+                                    </button>
+                                </div>
+                            </aside>
                         </div>
-                    </aside>
+                    </div>
                 </section>
 
                 {/* 2. Browse by Fish Species & Topic */}
