@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\FishGuide;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Store;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -623,5 +624,47 @@ class MarketplaceTest extends TestCase
                 ->has('categories.0.slug')
                 ->has('cities.0')
             );
+    }
+
+    public function test_seo_metadata_structured_data_robots_and_sitemap_render_cleanly(): void
+    {
+        config(['services.google.site_verification' => 'verify-dunia-ikan-123']);
+
+        $home = $this->get('/')->assertStatus(200);
+        $home->assertSee('<meta name="google-site-verification" content="verify-dunia-ikan-123">', false);
+        $home->assertSee('application/ld+json', false);
+        $home->assertSee('SearchAction', false);
+        $home->assertSee('?q={search_term_string}', false);
+        $home->assertSee('<noscript>', false);
+
+        $catalog = $this->get('/products?category=ikan-hias&utm_source=test')->assertStatus(200);
+        $catalog->assertSee('rel="canonical" href="'.url('/products?category=ikan-hias').'"', false);
+
+        $productSlug = Product::where('is_active', true)->value('slug');
+        $productPage = $this->get("/products/{$productSlug}")->assertStatus(200);
+        $productPage->assertSee('property="og:type" content="product"', false);
+        $productPage->assertSee('"priceCurrency":"IDR"', false);
+        $productPage->assertSee('"BreadcrumbList"', false);
+
+        $guideId = FishGuide::where('is_active', true)->value('id');
+        $guidePage = $this->get("/guides/{$guideId}")->assertStatus(200);
+        $guidePage->assertSee('property="og:type" content="article"', false);
+        $guidePage->assertSee('"@type":"Article"', false);
+
+        $storeSlug = Store::where('is_active', true)->value('slug');
+        $storePage = $this->get("/stores/{$storeSlug}")->assertStatus(200);
+        $storePage->assertSee('"@type":["LocalBusiness","Store"]', false);
+
+        $loginPage = $this->get('/login')->assertStatus(200);
+        $loginPage->assertSee('<meta name="robots" content="noindex, nofollow">', false);
+
+        $robots = $this->get('/robots.txt')->assertStatus(200);
+        $robots->assertHeader('Content-Type', 'text/plain; charset=UTF-8');
+        $robots->assertSee('Disallow: /admin', false);
+        $robots->assertSee('Sitemap: '.url('/sitemap.xml'), false);
+
+        $sitemap = $this->get('/sitemap.xml')->assertStatus(200);
+        $sitemap->assertSee('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"', false);
+        $sitemap->assertSee('/products?water_type=saltwater', false);
     }
 }

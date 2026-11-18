@@ -35,6 +35,7 @@ Route::get('/storage/{path}', [MediaController::class, 'show'])
     ->where('path', '^[a-zA-Z0-9_.\-/]+$')
     ->name('media.show');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
 // Chatbot Asisten Dunia Ikan
 Route::get('/chatbot/history', [ChatbotController::class, 'getHistory'])

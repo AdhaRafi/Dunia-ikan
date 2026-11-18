@@ -7,48 +7,33 @@
         <meta name="theme-color" content="#0d2e92">
 
         @php
-            $seoTitle = config('app.name', 'Dunia Ikan');
-            $seoDescription = 'Marketplace ikan hias captive-bred, mutasi morph, perlengkapan akuarium terkurasi, dan asisten perawatan ikan Kiko di seluruh Indonesia.';
-            $seoImage = asset('images/hero/aquarium-poster.webp');
-
-            $props = $page['props'] ?? [];
-            if (! empty($props['product']['name'])) {
-                $seoTitle = $props['product']['name'].' — Dunia Ikan';
-                $seoDescription = \Illuminate\Support\Str::limit(strip_tags((string) ($props['product']['description'] ?? $seoDescription)), 155);
-                if (! empty($props['product']['image'])) {
-                    $seoImage = str_starts_with($props['product']['image'], 'http')
-                        ? $props['product']['image']
-                        : url($props['product']['image']);
-                }
-            } elseif (! empty($props['store']['name'])) {
-                $seoTitle = $props['store']['name'].' — Toko Penangkar Dunia Ikan';
-                $seoDescription = \Illuminate\Support\Str::limit(strip_tags((string) ($props['store']['description'] ?? $seoDescription)), 155);
-                if (! empty($props['store']['logo_url'])) {
-                    $seoImage = str_starts_with($props['store']['logo_url'], 'http')
-                        ? $props['store']['logo_url']
-                        : url($props['store']['logo_url']);
-                }
-            } elseif (! empty($props['guide']['title'])) {
-                $seoTitle = $props['guide']['title'].' — Panduan Dunia Ikan';
-                $seoDescription = \Illuminate\Support\Str::limit(strip_tags((string) ($props['guide']['symptoms'] ?? $props['guide']['care_instructions'] ?? $seoDescription)), 155);
-            }
+            $seo = \App\Support\SeoMetadata::fromInertiaPage($page ?? [], request());
         @endphp
 
-        <title inertia>{{ $seoTitle }}</title>
-        <meta inertia name="description" head-key="description" content="{{ $seoDescription }}">
-        <meta name="robots" content="{{ request()->is('admin*', 'seller*', 'cart*', 'checkout*', 'orders*', 'profile*', 'addresses*', 'dashboard*') ? 'noindex, nofollow' : 'index, follow' }}">
-        <link rel="canonical" href="{{ url()->current() }}">
+        <title inertia>{{ $seo['title'] }}</title>
+        <meta inertia name="description" head-key="description" content="{{ $seo['description'] }}">
+        <meta name="robots" content="{{ $seo['robots'] }}">
+        @if ($seo['googleSiteVerification'] !== null)
+            <meta name="google-site-verification" content="{{ $seo['googleSiteVerification'] }}">
+        @endif
+        <link rel="canonical" href="{{ $seo['canonical'] }}">
 
         <meta property="og:site_name" content="{{ config('app.name', 'Dunia Ikan') }}">
-        <meta property="og:type" content="website">
-        <meta property="og:title" content="{{ $seoTitle }}">
-        <meta property="og:description" content="{{ $seoDescription }}">
-        <meta property="og:url" content="{{ url()->current() }}">
-        <meta property="og:image" content="{{ $seoImage }}">
+        <meta property="og:locale" content="id_ID">
+        <meta property="og:type" content="{{ $seo['ogType'] }}">
+        <meta property="og:title" content="{{ $seo['title'] }}">
+        <meta property="og:description" content="{{ $seo['description'] }}">
+        <meta property="og:url" content="{{ $seo['canonical'] }}">
+        <meta property="og:image" content="{{ $seo['image'] }}">
+        <meta property="og:image:alt" content="{{ $seo['title'] }}">
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{{ $seoTitle }}">
-        <meta name="twitter:description" content="{{ $seoDescription }}">
-        <meta name="twitter:image" content="{{ $seoImage }}">
+        <meta name="twitter:title" content="{{ $seo['title'] }}">
+        <meta name="twitter:description" content="{{ $seo['description'] }}">
+        <meta name="twitter:image" content="{{ $seo['image'] }}">
+
+        @foreach ($seo['schemas'] as $schema)
+            <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
+        @endforeach
 
         <!-- Favicon -->
         <link rel="icon" type="image/png" sizes="64x64" href="{{ asset('favicon.png') }}?v=2">
@@ -88,5 +73,16 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+        <noscript>
+            <main style="max-width: 720px; margin: 2rem auto; padding: 1rem; font-family: sans-serif;">
+                <h1>{{ $seo['title'] }}</h1>
+                <p>{{ $seo['description'] }}</p>
+                <nav aria-label="Navigasi utama">
+                    <a href="{{ url('/') }}">Beranda</a> ·
+                    <a href="{{ url('/products') }}">Katalog Ikan</a> ·
+                    <a href="{{ url('/guides') }}">Panduan Ikan</a>
+                </nav>
+            </main>
+        </noscript>
     </body>
 </html>
