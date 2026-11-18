@@ -260,18 +260,14 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28">
                     <div className="max-w-2xl text-white space-y-6">
                         <div className="space-y-3">
-                            <h1 className="text-mask text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
-                                <span className="text-mask-inner">
-                                    Join Dunia Ikan
-                                </span>
+                            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
+                                Join Dunia Ikan
                             </h1>
-                            <p className="text-mask text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
-                                <span className="text-mask-inner text-mask-delay-1">
-                                    {pick(
-                                        'Akses langsung ke peternak bersertifikasi di seluruh Indonesia. Temukan mutasi morph langka, lelang galur murni, dan garansi ikan hidup 100% sampai tujuan!',
-                                        'Direct access to verified breeders across Indonesia. Discover rare genetic morphs, purebred strains, and a 100% live arrival guarantee to your door!',
-                                    )}
-                                </span>
+                            <p className="text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
+                                {pick(
+                                    'Akses langsung ke peternak bersertifikasi di seluruh Indonesia. Temukan mutasi morph langka, lelang galur murni, dan garansi ikan hidup 100% sampai tujuan!',
+                                    'Direct access to verified breeders across Indonesia. Discover rare genetic morphs, purebred strains, and a 100% live arrival guarantee to your door!',
+                                )}
                             </p>
                         </div>
 
@@ -334,7 +330,8 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                         alt={group.title}
                                         width={300}
                                         height={300}
-                                        loading={idx < 2 ? 'eager' : 'lazy'}
+                                        loading="lazy"
+                                        fetchPriority="low"
                                         decoding="async"
                                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                                     />

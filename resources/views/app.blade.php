@@ -70,17 +70,17 @@
         </script>
 
         <!-- Scripts -->
-        @if(auth('admin')->user()?->isAdmin() || auth('web')->user()?->isAdmin())
-            @routes(['public', 'admin'])
-        @else
-            @routes('public')
-        @endif
         @viteReactRefresh
         @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
         @inertia
+        @if(auth('admin')->user()?->isAdmin() || auth('web')->user()?->isAdmin())
+            @routes(['public', 'admin'])
+        @else
+            @routes('public')
+        @endif
         <noscript>
             <main style="max-width: 720px; margin: 2rem auto; padding: 1rem; font-family: sans-serif;">
                 <h1>{{ $seo['title'] }}</h1>
