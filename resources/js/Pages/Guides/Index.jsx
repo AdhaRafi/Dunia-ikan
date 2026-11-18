@@ -325,8 +325,8 @@ export default function Index({
                                 <input
                                     type="search"
                                     placeholder={pick(
-                                        'Cari penyakit, gejala, atau jenis ikan...',
-                                        'Search diseases, symptoms, or species...',
+                                        'Cari penyakit, gejala, atau ikan...',
+                                        'Search diseases, symptoms, or fish...',
                                     )}
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
@@ -418,46 +418,69 @@ export default function Index({
                     </div>
 
                     {/* Right Companion Panel: Popular Guides */}
-                    <aside className="lg:col-span-4 rounded-[24px] sm:rounded-[28px] bg-white dark:bg-[#0e1424] border border-slate-200/85 dark:border-slate-800 p-5 sm:p-6 shadow-[0_6px_22px_-12px_rgba(0,20,84,0.06)] flex flex-col justify-between gap-3">
-                        <div className="flex items-center justify-between gap-2 pb-1">
-                            <div className="flex items-center gap-2">
-                                <span className="w-7 h-7 rounded-lg bg-[#edf5fd] dark:bg-[#131d33] text-[#0684E5] dark:text-[#4AB8BD] flex items-center justify-center shrink-0">
-                                    <Fish className="w-3.5 h-3.5" />
-                                </span>
-                                <h2 className="text-sm sm:text-[15px] font-extrabold tracking-tight text-[#001454] dark:text-white">
-                                    {pick('Artikel Terpopuler', 'Popular Guides')}
-                                </h2>
+                    <aside className="lg:col-span-4 rounded-[24px] sm:rounded-[28px] bg-white dark:bg-[#0e1424] border border-slate-200/85 dark:border-slate-800 p-5 sm:p-6 shadow-[0_6px_22px_-12px_rgba(0,20,84,0.06)] flex flex-col justify-between gap-4">
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="w-7 h-7 rounded-lg bg-[#edf5fd] dark:bg-[#131d33] text-[#0684E5] dark:text-[#4AB8BD] flex items-center justify-center shrink-0">
+                                        <Fish className="w-3.5 h-3.5" />
+                                    </span>
+                                    <h2 className="text-sm sm:text-[15px] font-extrabold tracking-tight text-[#001454] dark:text-white">
+                                        {pick('Artikel Terpopuler', 'Popular Guides')}
+                                    </h2>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={handleShowAllCatalog}
+                                    className="inline-flex items-center gap-1 text-xs font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:underline shrink-0"
+                                >
+                                    {pick('Lihat Semua', 'View All')}
+                                    <ArrowRight className="w-3.5 h-3.5" />
+                                </button>
                             </div>
-                            <button
-                                type="button"
-                                onClick={handleShowAllCatalog}
-                                className="inline-flex items-center gap-1 text-xs font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:underline shrink-0"
-                            >
-                                {pick('Lihat Semua', 'View All')}
-                                <ArrowRight className="w-3.5 h-3.5" />
-                            </button>
+
+                            <div className="divide-y divide-slate-100 dark:divide-slate-800/80">
+                                {featuredList.map((item, idx) => (
+                                    <Link
+                                        key={item.id}
+                                        href={`/guides/${item.id}`}
+                                        className="group flex items-start gap-3 py-3 first:pt-1.5 last:pb-1 transition"
+                                    >
+                                        <span className="w-7 h-7 rounded-full bg-[#edf5fd] dark:bg-[#131d33] text-[#0684E5] dark:text-[#4AB8BD] text-[11px] font-extrabold flex items-center justify-center shrink-0 mt-0.5 tabular-nums group-hover:bg-[#0684E5] group-hover:text-white dark:group-hover:bg-[#4AB8BD] dark:group-hover:text-[#001454] transition">
+                                            {String(idx + 1).padStart(2, '0')}
+                                        </span>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="text-xs sm:text-[13px] font-bold text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] leading-snug line-clamp-2 transition-colors">
+                                                {item.title}
+                                            </p>
+                                            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug line-clamp-1 mt-0.5">
+                                                {item.symptoms || item.fish_type}
+                                            </p>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
 
-                        <div className="divide-y divide-slate-100 dark:divide-slate-800/80 flex-1 flex flex-col justify-center">
-                            {featuredList.map((item, idx) => (
-                                <Link
-                                    key={item.id}
-                                    href={`/guides/${item.id}`}
-                                    className="group flex items-start gap-3 py-3 first:pt-1 last:pb-1 transition"
-                                >
-                                    <span className="w-7 h-7 rounded-full bg-[#edf5fd] dark:bg-[#131d33] text-[#0684E5] dark:text-[#4AB8BD] text-[11px] font-extrabold flex items-center justify-center shrink-0 mt-0.5 tabular-nums group-hover:bg-[#0684E5] group-hover:text-white dark:group-hover:bg-[#4AB8BD] dark:group-hover:text-[#001454] transition">
-                                        {String(idx + 1).padStart(2, '0')}
-                                    </span>
-                                    <div className="min-w-0 flex-1">
-                                        <p className="text-xs sm:text-[13px] font-bold text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] leading-snug line-clamp-1 transition-colors">
-                                            {item.title}
-                                        </p>
-                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug line-clamp-1 mt-0.5">
-                                            {item.symptoms || item.fish_type}
-                                        </p>
-                                    </div>
-                                </Link>
-                            ))}
+                        <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                            <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                                {pick(
+                                    'Butuh cek gejala cepat?',
+                                    'Need quick triage?',
+                                )}
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    window.dispatchEvent(
+                                        new CustomEvent('dunia-ikan:open-chat'),
+                                    )
+                                }
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#edf5fd] hover:bg-[#0684E5] text-[#001454] hover:text-white dark:bg-[#131d33] dark:text-[#4AB8BD] dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] font-bold text-[11px] transition shrink-0"
+                            >
+                                <MessageSquare className="w-3 h-3" />
+                                {pick('Tanya Kiko', 'Ask Kiko')}
+                            </button>
                         </div>
                     </aside>
                 </section>
