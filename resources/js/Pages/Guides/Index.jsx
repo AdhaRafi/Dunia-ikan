@@ -21,6 +21,7 @@ import {
     MessageSquare,
     RotateCcw,
     Search,
+    TrendingUp,
     X,
 } from 'lucide-react';
 
@@ -145,7 +146,7 @@ export default function Index({
             {/* 1. Full-Bleed Aquascape Photo Backdrop + Frosted Glass Hero Panel */}
             <section
                 data-nav-theme="dark"
-                className="-mt-16 pt-20 sm:pt-24 pb-8 sm:pb-12 relative w-full overflow-hidden bg-[#060f1d] border-b border-slate-200/70 dark:border-slate-800/80"
+                className="-mt-16 pt-24 sm:pt-28 pb-10 sm:pb-14 relative w-full overflow-hidden bg-[#060f1d] border-b border-slate-200/70 dark:border-slate-800/80"
             >
                 <picture className="pointer-events-none select-none">
                     <source media="(max-width: 767px)" srcSet="/images/hero/aquarium-poster-mobile.webp" />
@@ -164,26 +165,26 @@ export default function Index({
                 </picture>
                 <div
                     aria-hidden="true"
-                    className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/15 to-black/40 pointer-events-none"
+                    className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/35 pointer-events-none"
                 />
 
                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="rounded-2xl sm:rounded-[24px] bg-[#071124]/65 backdrop-blur-md border border-white/18 p-5 sm:p-7 lg:p-8 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.55)]">
+                    <div className="rounded-2xl sm:rounded-[24px] bg-[#0a1322]/55 backdrop-blur-md border border-white/25 p-5 sm:p-7 lg:p-8 shadow-[0_24px_60px_-14px_rgba(0,0,0,0.55)]">
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
                             {/* Left Column: Search & Category Filters */}
-                            <div className="lg:col-span-8 space-y-4 sm:space-y-5">
+                            <div className="lg:col-span-7 space-y-4 sm:space-y-5">
                                 <div className="flex flex-wrap items-center gap-2">
                                     <span className="inline-flex items-center gap-1.5 rounded-full bg-white text-[#001454] px-3 py-1 text-[11px] font-bold shadow-2xs">
                                         <BookOpen className="w-3.5 h-3.5 text-[#0684E5]" />
-                                        {pick('Pusat Edukasi Akuatik', 'Aquatic Care Library')}
+                                        {pick('Pusat Edukasi Aquarist', 'Aquarist Education Hub')}
                                     </span>
-                                    <span className="inline-flex items-center rounded-full bg-white/15 text-white border border-white/20 px-3 py-1 text-[11px] font-bold tabular-nums">
+                                    <span className="inline-flex items-center rounded-full bg-black/35 text-white border border-white/20 px-3 py-1 text-[11px] font-bold tabular-nums backdrop-blur-xs">
                                         {effectiveTotal} {pick('panduan aktif', 'active guides')}
                                     </span>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <h1 className="text-mask text-2xl sm:text-3xl lg:text-[36px] font-extrabold tracking-[-0.03em] leading-[1.12] text-white">
+                                    <h1 className="text-mask text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-extrabold tracking-[-0.03em] leading-[1.12] text-white">
                                         <span className="text-mask-inner">
                                             {pick(
                                                 'Panduan Perawatan & Diagnosa Ikan',
@@ -191,11 +192,11 @@ export default function Index({
                                             )}
                                         </span>
                                     </h1>
-                                    <p className="text-mask text-xs sm:text-[14px] leading-relaxed text-slate-200 max-w-[54ch]">
+                                    <p className="text-mask text-xs sm:text-[14px] leading-relaxed text-slate-100/90 max-w-[54ch]">
                                         <span className="text-mask-inner text-mask-delay-1">
                                             {pick(
-                                                'Kenali gejala penyakit, cek parameter air, dan ikuti langkah karantina harian untuk menjaga ikan hias tetap sehat.',
-                                                'Spot early clinical signs, balance water quality, and follow practical quarantine steps for healthier fish.',
+                                                'Gejala klinis, pemicu kualitas air, dan langkah pertolongan pertama untuk menjaga ikan hias tetap sehat sejak hari pertama karantina.',
+                                                'Clinical symptoms, water quality triggers, and first-aid steps to keep ornamental fish healthy from day one of quarantine.',
                                             )}
                                         </span>
                                     </p>
@@ -211,8 +212,8 @@ export default function Index({
                                         <input
                                             type="search"
                                             placeholder={pick(
-                                                'Cari penyakit, gejala, atau jenis ikan...',
-                                                'Search diseases, symptoms, or fish...',
+                                                'Cari penyakit, gejala (bintik putih, sirip robek), atau ikan...',
+                                                'Search diseases, symptoms (white spot, torn fins), or fish...',
                                             )}
                                             value={search}
                                             onChange={(e) =>
@@ -255,8 +256,8 @@ export default function Index({
                                         onClick={() => handleCategoryClick('')}
                                         className={`px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition border ${
                                             selectedCategory === ''
-                                                ? 'bg-[#001454] text-white border-white/30'
-                                                : 'bg-white/95 hover:bg-white text-[#001454] border-white/25'
+                                                ? 'bg-[#001454] text-white border-white/30 shadow-xs'
+                                                : 'bg-white hover:bg-slate-50 text-[#001454] border-white/25'
                                         }`}
                                     >
                                         {pick('Semua', 'All')} ({effectiveTotal})
@@ -277,8 +278,8 @@ export default function Index({
                                                 }
                                                 className={`px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition border ${
                                                     active
-                                                        ? 'bg-[#0684E5] text-white border-[#0684E5]'
-                                                        : 'bg-white/95 hover:bg-white text-[#001454] border-white/25'
+                                                        ? 'bg-[#0684E5] text-white border-[#0684E5] shadow-xs'
+                                                        : 'bg-white hover:bg-slate-50 text-[#001454] border-white/25'
                                                 }`}
                                             >
                                                 {trGuideCategory(category)}
@@ -286,8 +287,8 @@ export default function Index({
                                                     <span
                                                         className={`ml-1.5 tabular-nums ${
                                                             active
-                                                                ? 'text-white/85'
-                                                                : 'text-slate-400'
+                                                                ? 'text-white/90'
+                                                                : 'text-slate-500'
                                                         }`}
                                                     >
                                                         {count}
@@ -310,15 +311,20 @@ export default function Index({
                             </div>
 
                             {/* Right Column: Nested Popular Guides Card */}
-                            <aside className="lg:col-span-4 rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/90 dark:border-slate-700/80 p-4 sm:p-5 shadow-md space-y-3">
+                            <aside className="lg:col-span-5 rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/90 dark:border-slate-700/80 p-4 sm:p-5 shadow-lg space-y-3.5">
                                 <div className="flex items-center justify-between gap-2">
-                                    <h2 className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                                        {pick('Artikel Terpopuler', 'Popular Guides')}
-                                    </h2>
+                                    <div className="flex items-center gap-2">
+                                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-[#e8f3fe] dark:bg-[#131d33] text-[#0684E5] dark:text-[#4AB8BD] shrink-0">
+                                            <TrendingUp className="w-3.5 h-3.5" />
+                                        </span>
+                                        <h2 className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#001454] dark:text-slate-200">
+                                            {pick('Artikel Terpopuler', 'Popular Guides')}
+                                        </h2>
+                                    </div>
                                     <button
                                         type="button"
                                         onClick={handleShowAllCatalog}
-                                        className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:underline shrink-0"
+                                        className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:underline shrink-0"
                                     >
                                         {pick('Lihat Semua', 'View All')}
                                         <ArrowRight className="w-3 h-3" />
@@ -330,9 +336,9 @@ export default function Index({
                                         <Link
                                             key={item.id}
                                             href={`/guides/${item.id}`}
-                                            className="group flex items-start gap-3 rounded-xl bg-[#f8fafc] hover:bg-[#edf5fd] dark:bg-[#131d33] dark:hover:bg-[#182644] px-3 py-2.5 border border-slate-100 dark:border-slate-800/80 transition"
+                                            className="group flex items-center gap-3 rounded-xl bg-[#f8fafc] hover:bg-[#edf5fd] dark:bg-[#131d33] dark:hover:bg-[#182644] px-3 py-2.5 border border-slate-100 dark:border-slate-800/80 transition"
                                         >
-                                            <span className="text-[11px] font-extrabold text-[#0684E5] dark:text-[#4AB8BD] tabular-nums mt-0.5 shrink-0">
+                                            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#e8f3fe] dark:bg-[#0f2544] text-[11px] font-extrabold text-[#0684E5] dark:text-[#4AB8BD] tabular-nums shrink-0">
                                                 {String(idx + 1).padStart(
                                                     2,
                                                     '0',
@@ -351,8 +357,8 @@ export default function Index({
                                     ))}
                                 </div>
 
-                                <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2">
-                                    <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                                <div className="pt-2.5 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2">
+                                    <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
                                         {pick(
                                             'Butuh cek gejala cepat?',
                                             'Need quick triage?',
@@ -367,9 +373,9 @@ export default function Index({
                                                 ),
                                             )
                                         }
-                                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#edf5fd] hover:bg-[#0684E5] text-[#001454] hover:text-white dark:bg-[#131d33] dark:text-[#4AB8BD] dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] font-bold text-[11px] transition shrink-0"
+                                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white hover:bg-[#edf5fd] text-[#001454] border border-slate-200 hover:border-[#0684E5] dark:bg-[#131d33] dark:text-[#4AB8BD] dark:border-slate-700 dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] font-bold text-[11px] transition shrink-0 shadow-2xs"
                                     >
-                                        <MessageSquare className="w-3 h-3" />
+                                        <MessageSquare className="w-3 h-3 text-[#0684E5] dark:text-current" />
                                         {pick('Tanya Kiko', 'Ask Kiko')}
                                     </button>
                                 </div>
@@ -429,7 +435,10 @@ export default function Index({
                                         <img
                                             src={topic.image}
                                             alt={topic.alt}
+                                            width={56}
+                                            height={56}
                                             loading="lazy"
+                                            decoding="async"
                                             className={`w-full h-full group-hover:scale-105 transition-transform duration-300 ${
                                                 topic.isCutout
                                                     ? 'object-contain'
@@ -502,7 +511,10 @@ export default function Index({
                                             <img
                                                 src={coverImage}
                                                 alt={guide.title}
+                                                width={400}
+                                                height={250}
                                                 loading="lazy"
+                                                decoding="async"
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent" />
