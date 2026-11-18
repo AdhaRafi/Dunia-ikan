@@ -15,7 +15,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Seller\StoreProfileController as SellerStoreProfileController;
-use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreReviewController;
 use Illuminate\Support\Facades\Route;
@@ -34,8 +33,6 @@ Route::get('/guides/{id}', [GuideController::class, 'show'])->name('guides.show'
 Route::get('/storage/{path}', [MediaController::class, 'show'])
     ->where('path', '^[a-zA-Z0-9_.\-/]+$')
     ->name('media.show');
-Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
-Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
 // Chatbot Asisten Dunia Ikan
 Route::get('/chatbot/history', [ChatbotController::class, 'getHistory'])

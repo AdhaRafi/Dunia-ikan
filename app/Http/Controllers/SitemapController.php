@@ -115,7 +115,10 @@ class SitemapController extends Controller
             return implode("\n", $lines);
         });
 
-        return response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
+        return response($xml, 200, [
+            'Content-Type' => 'application/xml; charset=UTF-8',
+            'Cache-Control' => 'public, max-age=1800, s-maxage=3600, stale-while-revalidate=86400',
+        ]);
     }
 
     /**
@@ -145,6 +148,7 @@ class SitemapController extends Controller
 
         return response(implode("\n", $lines)."\n", 200, [
             'Content-Type' => 'text/plain; charset=UTF-8',
+            'Cache-Control' => 'public, max-age=3600, s-maxage=86400',
         ]);
     }
 }

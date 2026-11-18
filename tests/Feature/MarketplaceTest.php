@@ -662,9 +662,13 @@ class MarketplaceTest extends TestCase
         $robots->assertHeader('Content-Type', 'text/plain; charset=UTF-8');
         $robots->assertSee('Disallow: /admin', false);
         $robots->assertSee('Sitemap: '.url('/sitemap.xml'), false);
+        $this->assertEmpty($robots->headers->getCookies());
+        $this->assertStringContainsString('public', (string) $robots->headers->get('Cache-Control'));
 
         $sitemap = $this->get('/sitemap.xml')->assertStatus(200);
         $sitemap->assertSee('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"', false);
         $sitemap->assertSee('/products?water_type=saltwater', false);
+        $this->assertEmpty($sitemap->headers->getCookies());
+        $this->assertStringContainsString('public', (string) $sitemap->headers->get('Cache-Control'));
     }
 }
