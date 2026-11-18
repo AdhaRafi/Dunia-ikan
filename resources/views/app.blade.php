@@ -45,14 +45,6 @@
             <link rel="preload" as="image" media="(min-width: 768px)" href="{{ asset('images/hero/aquarium-poster.webp') }}" fetchpriority="high">
         @endif
 
-        <!-- Fonts (non-render-blocking) -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript>
-            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-        </noscript>
-
         <!-- Theme Detection Script -->
         <script>
             (function() {
@@ -69,10 +61,18 @@
             })();
         </script>
 
-        <!-- Scripts -->
+        <!-- Scripts & Core Styles (prioritize first-party Vite assets before external fonts) -->
         @viteReactRefresh
         @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
         @inertiaHead
+
+        <!-- Fonts (non-render-blocking) -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+        </noscript>
     </head>
     <body class="font-sans antialiased">
         @inertia
