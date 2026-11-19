@@ -7,6 +7,8 @@ use App\Models\Store;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -160,5 +162,31 @@ class GlobalChatTest extends TestCase
             ->deleteJson("/community/messages/{$adminMsg->id}")
             ->assertStatus(200);
         $this->assertDatabaseMissing('global_messages', ['id' => $adminMsg->id]);
+    }
+
+    public function test_posting_message_lazily_migrates_global_messages_when_table_is_missing(): void
+    {
+        Schema::dropIfExists('global_messages');
+        DB::table('migrations')
+            ->where('migration', '2026_11_19_054200_create_global_messages_table')
+            ->delete();
+
+        $this->assertFalse(Schema::hasTable('global_messages'));
+
+        $buyer = User::factory()->create(['role' => 'buyer', 'name' => 'Widya']);
+
+        $this->actingAs($buyer)
+            ->postJson('/community/messages', [
+                'message' => 'halooo',
+            ])
+            ->assertStatus(201)
+            ->assertJsonPath('message.message', 'halooo')
+            ->assertJsonPath('message.user.name', 'Widya');
+
+        $this->assertTrue(Schema::hasTable('global_messages'));
+        $this->assertDatabaseHas('global_messages', [
+            'user_id' => $buyer->id,
+            'message' => 'halooo',
+        ]);
     }
 }

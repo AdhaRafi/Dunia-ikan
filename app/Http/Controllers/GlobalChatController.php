@@ -6,7 +6,6 @@ use App\Models\GlobalMessage;
 use App\Support\MediaStorage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -20,12 +19,14 @@ class GlobalChatController extends Controller
 
     private const OLDER_LIMIT = 40;
 
+    private const MIGRATION_PATH = 'database/migrations/2026_11_19_054200_create_global_messages_table.php';
+
     /**
      * Render the public Community Global Chat page with recent messages.
      */
     public function index(): Response
     {
-        if (! Schema::hasTable('global_messages')) {
+        if (! $this->ensureGlobalMessagesTable()) {
             return Inertia::render('Community/Index', [
                 'initialMessages' => [],
                 'hasMoreOlder' => false,
@@ -69,7 +70,7 @@ class GlobalChatController extends Controller
      */
     public function messages(Request $request): JsonResponse
     {
-        if (! Schema::hasTable('global_messages')) {
+        if (! $this->ensureGlobalMessagesTable()) {
             return response()->json([
                 'messages' => [],
                 'has_more' => false,
@@ -131,6 +132,8 @@ class GlobalChatController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $this->ensureGlobalMessagesTable();
+
         $validated = $request->validate([
             'message' => ['nullable', 'string', 'max:600'],
             'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,webp', 'max:3072'],
@@ -257,5 +260,13 @@ class GlobalChatController extends Controller
             ],
             'reply_to' => $replyData,
         ];
+    }
+
+    /**
+     * Ensure the global_messages table is created when deployed without boot migrations.
+     */
+    private function ensureGlobalMessagesTable(): bool
+    {
+        return $this->ensureTableMigrated('global_messages', self::MIGRATION_PATH);
     }
 }

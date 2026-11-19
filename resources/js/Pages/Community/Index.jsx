@@ -587,7 +587,7 @@ export default function Index({
 
             <div className="min-h-screen bg-[#f4f6ff] dark:bg-[#070b14]">
                 {/* Soft Pastel Ocean Wave Hero */}
-                <section className="-mt-16 pt-20 sm:pt-24 pb-6 sm:pb-8 relative w-full overflow-hidden bg-gradient-to-b from-[#eef1ff] via-[#e4e9fe] to-[#d9e1fd] dark:from-[#0b1332] dark:via-[#111c45] dark:to-[#0d1638] border-b border-indigo-200/70 dark:border-slate-800">
+                <section className="pt-6 sm:pt-8 pb-5 sm:pb-7 relative w-full overflow-hidden bg-gradient-to-b from-[#eef1ff] via-[#e4e9fe] to-[#d9e1fd] dark:from-[#0b1332] dark:via-[#111c45] dark:to-[#0d1638] border-b border-indigo-200/70 dark:border-slate-800">
                     <CommunityHeroWaves />
 
                     <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-end justify-between gap-4">

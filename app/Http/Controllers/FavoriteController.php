@@ -7,12 +7,13 @@ use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class FavoriteController extends Controller
 {
+    private const MIGRATION_PATH = 'database/migrations/2026_11_19_064948_create_favorites_table.php';
+
     /**
      * Render the user's favorited fish & product showcase page.
      */
@@ -20,7 +21,7 @@ class FavoriteController extends Controller
     {
         $user = $request->user();
 
-        if (! $user || ! Schema::hasTable('favorites')) {
+        if (! $user || ! $this->ensureTableMigrated('favorites', self::MIGRATION_PATH)) {
             return Inertia::render('Favorites/Index', [
                 'favorites' => [],
             ]);
@@ -81,6 +82,8 @@ class FavoriteController extends Controller
      */
     public function toggle(Request $request): RedirectResponse|JsonResponse
     {
+        $this->ensureTableMigrated('favorites', self::MIGRATION_PATH);
+
         $validated = $request->validate([
             'product_id' => ['required', 'integer', 'exists:products,id'],
         ]);

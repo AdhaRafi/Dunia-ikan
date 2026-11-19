@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\Store;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
@@ -139,6 +141,33 @@ class FavoriteTest extends TestCase
         $this->assertDatabaseMissing('favorites', [
             'user_id' => $bob->id,
             'product_id' => $inactiveProduct->id,
+        ]);
+    }
+
+    public function test_toggling_favorite_lazily_migrates_favorites_table_when_missing(): void
+    {
+        $buyer = User::factory()->create(['role' => 'buyer']);
+        $product = $this->createActiveProduct(['name' => 'Ikan Mas Oranda']);
+
+        Schema::dropIfExists('favorites');
+        DB::table('migrations')
+            ->where('migration', '2026_11_19_064948_create_favorites_table')
+            ->delete();
+
+        $this->assertFalse(Schema::hasTable('favorites'));
+
+        $this->actingAs($buyer)
+            ->postJson('/favorites/toggle', ['product_id' => $product->id])
+            ->assertStatus(200)
+            ->assertJson([
+                'favorited' => true,
+                'product_id' => $product->id,
+            ]);
+
+        $this->assertTrue(Schema::hasTable('favorites'));
+        $this->assertDatabaseHas('favorites', [
+            'user_id' => $buyer->id,
+            'product_id' => $product->id,
         ]);
     }
 }
