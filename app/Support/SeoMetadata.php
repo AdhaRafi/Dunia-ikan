@@ -76,6 +76,7 @@ class SeoMetadata
             '@type' => 'Organization',
             '@id' => $siteUrl.'/#organization',
             'name' => $siteName,
+            'alternateName' => ['DuniaIkan', 'Dunia Ikan Aquatic'],
             'url' => $siteUrl,
             'logo' => $logoUrl,
             'description' => self::DEFAULT_DESCRIPTION,
@@ -92,6 +93,7 @@ class SeoMetadata
                 '@id' => $siteUrl.'/#website',
                 'url' => $siteUrl,
                 'name' => $siteName,
+                'alternateName' => ['DuniaIkan', 'Dunia Ikan Aquatic'],
                 'inLanguage' => 'id-ID',
                 'publisher' => ['@id' => $siteUrl.'/#organization'],
                 'potentialAction' => [

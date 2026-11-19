@@ -18,6 +18,7 @@
         @endif
         <link rel="canonical" href="{{ $seo['canonical'] }}">
 
+        <meta name="application-name" content="{{ config('app.name', 'Dunia Ikan') }}">
         <meta property="og:site_name" content="{{ config('app.name', 'Dunia Ikan') }}">
         <meta property="og:locale" content="id_ID">
         <meta property="og:type" content="{{ $seo['ogType'] }}">

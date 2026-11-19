@@ -631,8 +631,10 @@ class MarketplaceTest extends TestCase
         config(['services.google.site_verification' => 'verify-dunia-ikan-123']);
 
         $home = $this->get('/')->assertStatus(200);
+        $home->assertSee('<meta name="application-name" content="Dunia Ikan">', false);
         $home->assertSee('<meta name="google-site-verification" content="verify-dunia-ikan-123">', false);
         $home->assertSee('application/ld+json', false);
+        $home->assertSee('"alternateName":["DuniaIkan","Dunia Ikan Aquatic"]', false);
         $home->assertSee('SearchAction', false);
         $home->assertSee('?q={search_term_string}', false);
         $home->assertSee('<noscript>', false);
