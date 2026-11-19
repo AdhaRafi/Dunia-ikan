@@ -214,31 +214,16 @@ export default function Footer() {
                         Powered By <span className="font-semibold text-neutral-900 dark:text-white">duniaikan.com</span>
                     </p>
                 </div>
+            </div>
 
-                {/* 4. MONUMENTAL TYPOGRAPHIC HERO: Giant "Duniaikan" Bleeding Off Bottom Edge */}
-                <div className="w-full overflow-hidden select-none pointer-events-none -mb-2 sm:-mb-4 md:-mb-6 text-center text-neutral-900 dark:text-white">
-                    <svg
-                        viewBox="0 0 1400 200"
-                        className="w-full h-auto block"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                    >
-                        <text
-                            x="50%"
-                            y="185"
-                            textAnchor="middle"
-                            fill="currentColor"
-                            className="font-black font-['Montserrat',sans-serif]"
-                            style={{
-                                fontSize: '225px',
-                                fontWeight: 900,
-                                letterSpacing: '-0.04em',
-                            }}
-                        >
-                            Duniaikan
-                        </text>
-                    </svg>
-                </div>
+            {/* 4. MONUMENTAL EDITORIAL WORDMARK: Giant Faded "Duniaikan" Bleeding Off Bottom Edge */}
+            <div
+                aria-hidden="true"
+                className="relative z-10 w-full overflow-hidden select-none pointer-events-none pt-2 sm:pt-3 flex justify-center"
+            >
+                <span className="block w-full text-center font-sans font-medium tracking-[-0.035em] leading-[0.82] translate-y-[10%] text-[21.5vw] bg-gradient-to-b from-slate-900/[0.22] via-slate-900/[0.11] to-slate-900/[0.02] dark:from-white/[0.22] dark:via-white/[0.10] dark:to-white/[0.02] bg-clip-text text-transparent whitespace-nowrap">
+                    Duniaikan
+                </span>
             </div>
         </footer>
     );
