@@ -67,6 +67,7 @@ const FAQ_ITEMS = [
 export default function Welcome({ categories, featuredFish, featuredStores, stats }) {
     const { auth } = usePage().props;
     const { pick, isEn } = useLanguage();
+    const firstName = auth?.user?.name?.trim().split(/\s+/)[0] || '';
     const [selectedTab, setSelectedTab] = useState('all');
     const [openFaq, setOpenFaq] = useState(0);
     const [showAllCategories, setShowAllCategories] = useState(false);
@@ -261,7 +262,11 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                     <div className="max-w-2xl text-white space-y-6">
                         <div className="space-y-3">
                             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
-                                Join Dunia Ikan
+                                {auth?.user
+                                    ? firstName
+                                        ? pick(`Halo, ${firstName}!`, `Welcome back, ${firstName}!`)
+                                        : 'Dunia Ikan Aquatic'
+                                    : 'Join Dunia Ikan'}
                             </h1>
                             <p className="text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
                                 {pick(

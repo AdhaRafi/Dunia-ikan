@@ -1,4 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
+import BrandWordmark from '@/Components/BrandWordmark';
 import UserAvatar from '@/Components/UserAvatar';
 import { AquaticCanvasBackdrop } from '@/Components/AquaticMotifs';
 import {
@@ -97,9 +98,7 @@ export default function SellerLayout({ children, title }) {
                         </Link>
                         <span className="hidden sm:inline text-slate-300 dark:text-slate-700">|</span>
                         <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                            <span className="font-extrabold text-dunia-navy dark:text-white text-base sm:text-lg whitespace-nowrap">
-                                DUNIA<span className="text-dunia-blue dark:text-[#4AB8BD]">IKAN</span>
-                            </span>
+                            <BrandWordmark className="h-7 sm:h-8 shrink-0" />
                             <span className="px-1.5 sm:px-2 py-0.5 rounded-md bg-blue-100 dark:bg-[#0684E5]/20 text-dunia-blue dark:text-sky-300 text-[10px] sm:text-[11px] font-bold uppercase whitespace-nowrap">
                                 {pick('Portal Penjual', 'Seller Portal')}
                             </span>
