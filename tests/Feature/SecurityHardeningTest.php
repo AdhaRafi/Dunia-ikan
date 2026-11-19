@@ -557,21 +557,27 @@ class SecurityHardeningTest extends TestCase
                 'candidates' => [[
                     'content' => [
                         'parts' => [[
-                            'text' => 'Umur rata-rata ikan hias berkisar 2 hingga 5 tahun tergantung spesies dan kualitas air.',
+                            'text' => 'Halo! Saya Kiko, asisten pintar resmi marketplace Dunia Ikan. Umur rata-rata ikan hias berkisar 2 hingga 5 tahun tergantung spesies dan kualitas air.',
                         ]],
                     ],
                 ]],
             ], 200),
         ]);
 
-        $this->postJson('/chatbot/message', [
+        $aiResponse = $this->postJson('/chatbot/message', [
             'message' => 'umur ikan biasanya sampe berapa tahun',
-        ])->assertStatus(200);
+        ]);
+
+        $aiResponse->assertStatus(200)
+            ->assertJsonPath(
+                'assistant_message.message',
+                'Umur rata-rata ikan hias berkisar 2 hingga 5 tahun tergantung spesies dan kualitas air.',
+            );
 
         Http::assertSent(function ($request) {
             $promptText = (string) data_get($request->data(), 'contents.0.parts.0.text');
 
-            return str_contains($promptText, 'JANGAN mengulang perkenalan diri');
+            return str_contains($promptText, 'tanpa memperkenalkan nama atau peran di awal kalimat');
         });
 
         config(['services.gemini.api_key' => null]);

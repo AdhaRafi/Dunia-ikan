@@ -173,6 +173,11 @@ class ChatbotController extends Controller
                 ->get();
         }
 
+        $isPureGreeting = (bool) preg_match(
+            '/^(halo|hai|hi|hello|selamat\s+(pagi|siang|sore|malam))(\s+kiko)?[!.?]*$/i',
+            $userMessage,
+        );
+
         // Siapkan respons AI atau Fallback
         $apiKey = config('services.gemini.api_key');
         $model = config('services.gemini.model', 'gemini-3.5-flash-lite');
@@ -186,12 +191,12 @@ class ChatbotController extends Controller
                     return "Judul: {$g->title}\nJenis Ikan: {$g->fish_type}\nGejala: {$g->symptoms}\nPenyebab: {$g->possible_causes}\nPenanganan: {$g->care_instructions}\nPencegahan: {$g->prevention}\nSumber: {$g->source}";
                 })->implode("\n---\n");
 
-                $systemPrompt = "Anda adalah 'Kiko', asisten pintar resmi marketplace Dunia Ikan.
+                $systemPrompt = "Konteks peran: Anda membantu pembeli Dunia Ikan menjawab pertanyaan seputar ikan hias, akuarium, dan produk.
 Pedoman Penting:
 1. Konsultasi kesehatan ikan: Jawaban hanya berisi kemungkinan awal dan hal yang perlu diperiksa (kualitas air, suhu, pH, aerasi). BUKAN diagnosis pasti dokter hewan. Jangan meresepkan obat kimia keras atau dosis berbahaya. Untuk gejala berat atau ikan lemas parah, sarankan bantuan ahli kesehatan hewan.
 2. Gunakan informasi panduan resmi database berikut jika relevan:
 {$guidesContext}
-3. Gaya bahasa & format: Langsung jawab inti pertanyaan secara ramah, ringkas, dan solutif dalam Bahasa Indonesia yang baik. JANGAN mengulang perkenalan diri (seperti 'Halo! Saya Kiko, maskot dan asisten pintar Dunia Ikan...') atau basa-basi pembuka ('Pertanyaan yang bagus sekali') pada jawaban pertanyaan — perkenalan diri hanya boleh jika pengguna sekadar menyapa tanpa bertanya. Tulis teks polos bersih tanpa markup Markdown seperti tanda bintang (** atau *), pagar (#), garis ---, atau backtick (`); gunakan daftar angka (1., 2.) atau simbol peluru (•) saja.";
+3. Gaya jawaban: Mulailah langsung pada inti jawaban dengan ramah, ringkas, dan jelas dalam Bahasa Indonesia tanpa memperkenalkan nama atau peran di awal kalimat (sapaan singkat hanya boleh jika pesan pengguna sekadar menyapa tanpa pertanyaan). Tulis teks polos bersih tanpa markup Markdown seperti tanda bintang (** atau *), pagar (#), garis ---, atau backtick (`); gunakan daftar angka (1., 2.) atau simbol peluru (•) saja.";
 
                 $recentTurns = ChatMessage::where('chat_session_id', $session->id)
                     ->where('id', '<', $userChat->id)
@@ -290,7 +295,7 @@ Pedoman Penting:
                 $assistantReply .= '(Catatan: Ini adalah pertolongan pertama, pastikan segera cek parameter air seperti suhu dan amonia).';
             } elseif ($matchingProducts->isNotEmpty()) {
                 $assistantReply = 'Berikut beberapa rekomendasi produk ikan hias dan perlengkapan aktif di katalog Dunia Ikan sesuai kata kunci Anda:';
-            } elseif (preg_match('/^(halo|hai|hi|hello|selamat\s+(pagi|siang|sore|malam))(\s+kiko)?[!.?]*$/i', $userMessage)) {
+            } elseif ($isPureGreeting) {
                 $assistantReply = 'Halo! Ada yang bisa Kiko bantu terkait ikan hias, perawatan akuarium, atau pilihan produk di Dunia Ikan?';
             } else {
                 $assistantReply = "Layanan Gemini AI sedang offline. Silakan jelaskan jenis ikan Anda dan gejala yang terlihat (misal: 'cupang bintik putih' atau 'ikan lemas mengambang') agar panduan perawatan dari database bisa langsung dicocokkan.";
@@ -298,6 +303,9 @@ Pedoman Penting:
         }
 
         $assistantReply = $this->stripMarkdown((string) $assistantReply);
+        if (! $isPureGreeting) {
+            $assistantReply = $this->stripLeadingSelfIntro($assistantReply);
+        }
 
         $recommendedProductsData = $matchingProducts->map(function ($p) {
             return [
@@ -418,5 +426,23 @@ Pedoman Penting:
         $result = preg_replace("/\n{3,}/", "\n\n", $result) ?? $result;
 
         return trim($result);
+    }
+
+    /**
+     * Remove redundant Kiko self-introductions from direct answers when the user asked an actual question.
+     */
+    private function stripLeadingSelfIntro(string $text): string
+    {
+        $stripped = preg_replace(
+            '/^(?:(?:halo|hai|hi|hello|selamat\s+(?:pagi|siang|sore|malam))[^\n.!?]{0,25}[.!?\s]+)?(?:saya|aku)\s+kiko\b[^\n.!?]*[.!?\s]+(?:senang\s+(?:sekali\s+)?bisa\s+membantu[^\n.!?]*[.!?\s]+)?/iu',
+            '',
+            $text,
+        );
+
+        if (is_string($stripped) && trim($stripped) !== '') {
+            return ltrim($stripped);
+        }
+
+        return $text;
     }
 }
