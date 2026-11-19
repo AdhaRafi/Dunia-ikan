@@ -7,6 +7,7 @@ use App\Services\TurnstileVerifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Middleware;
+use Throwable;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -45,8 +46,17 @@ class HandleInertiaRequests extends Middleware
         }
 
         $cartCount = 0;
+        $favoriteIds = [];
         if ($user) {
             $cartCount = $user->cartItems()->sum('quantity');
+            try {
+                $favoriteIds = $user->favorites()
+                    ->pluck('product_id')
+                    ->map(fn ($id): int => (int) $id)
+                    ->all();
+            } catch (Throwable) {
+                $favoriteIds = [];
+            }
         }
 
         return [
@@ -61,6 +71,7 @@ class HandleInertiaRequests extends Middleware
                 ? User::where('seller_status', 'pending')->count()
                 : 0,
             'cartCount' => $cartCount,
+            'favoriteIds' => $favoriteIds,
             'visitorStats' => fn () => $this->recordAndGetVisitorStats($request),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),

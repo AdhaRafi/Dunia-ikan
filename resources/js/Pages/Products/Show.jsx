@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
+import FavoriteButton from '@/Components/FavoriteButton';
 import ProductCard from '@/Components/ProductCard';
 import StoreRatingSection from '@/Components/StoreRatingSection';
 import {
@@ -253,6 +254,12 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                     {getWaterLabel(fish.water_type, isEn)}
                                 </span>
                             )}
+
+                            <FavoriteButton
+                                productId={product.id}
+                                className="absolute top-3.5 right-3.5 z-10 h-10 w-10 rounded-full bg-white/95 dark:bg-[#0e1424]/90 shadow-md hover:scale-110 transition flex items-center justify-center"
+                                iconClassName="w-5 h-5"
+                            />
 
                             {product.stock <= 0 && (
                                 <div className="absolute inset-0 bg-black/55 flex items-center justify-center">

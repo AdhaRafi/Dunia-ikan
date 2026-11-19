@@ -157,6 +157,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(CartItem::class);
     }
 
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
     public function chatSessions(): HasMany
     {
         return $this->hasMany(ChatSession::class);

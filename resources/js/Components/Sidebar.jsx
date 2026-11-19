@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import {
+    Heart,
     LogIn,
     LogOut,
     MessageSquare,
@@ -106,6 +107,12 @@ export default function Sidebar({
 
     const utilityItems = [
         {
+            label: pick('Produk Favorit', 'Favorites'),
+            href: '/favorites',
+            icon: Heart,
+            active: pathname.startsWith('/favorites'),
+        },
+        {
             label: pick('Tanya Kiko', 'Ask Kiko'),
             icon: MessageSquare,
             onClick: () => onOpenChat?.(),
@@ -147,7 +154,7 @@ export default function Sidebar({
 
     return (
         <div
-            className={`fixed inset-0 z-[60] md:hidden transition-opacity duration-200 ${
+            className={`fixed inset-0 z-[60] lg:hidden transition-opacity duration-200 ${
                 isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             }`}
             aria-hidden={!isOpen}

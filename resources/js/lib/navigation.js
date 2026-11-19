@@ -3,6 +3,7 @@ import {
     Fish,
     Home,
     LayoutGrid,
+    MessagesSquare,
     ShoppingBag,
     Sprout,
     Store,
@@ -50,6 +51,12 @@ export function buildPrimaryNavItems(url, pick) {
             href: '/guides',
             icon: BookOpen,
             active: pathname.startsWith('/guides'),
+        },
+        {
+            label: pick('Komunitas', 'Community'),
+            href: '/community',
+            icon: MessagesSquare,
+            active: pathname.startsWith('/community'),
         },
         {
             label: pick('Pesanan', 'Orders'),

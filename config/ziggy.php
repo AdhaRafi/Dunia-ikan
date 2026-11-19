@@ -19,6 +19,8 @@ return [
             'products.*',
             'stores.*',
             'guides.*',
+            'community.*',
+            'favorites.*',
             'chatbot.*',
             'cart.*',
             'checkout.*',

@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\GlobalChatController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
@@ -30,6 +32,11 @@ Route::get('/products/{slug}', [ProductController::class, 'show'])->name('produc
 Route::get('/stores/{slug}', [StoreController::class, 'show'])->name('stores.show');
 Route::get('/guides', [GuideController::class, 'index'])->name('guides.index');
 Route::get('/guides/{id}', [GuideController::class, 'show'])->name('guides.show');
+Route::get('/community', [GlobalChatController::class, 'index'])->name('community.index');
+Route::get('/community/messages', [GlobalChatController::class, 'messages'])
+    ->middleware('throttle:120,1')
+    ->name('community.messages');
+Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 Route::get('/storage/{path}', [MediaController::class, 'show'])
     ->where('path', '^[a-zA-Z0-9_.\-/]+$')
     ->name('media.show');
@@ -90,6 +97,18 @@ Route::middleware('auth')->group(function () {
 
     // Store Rating & Reviews
     Route::post('/stores/{slug}/reviews', [StoreReviewController::class, 'store'])->name('stores.reviews.store');
+
+    // Global Community Chat
+    Route::post('/community/messages', [GlobalChatController::class, 'store'])
+        ->middleware('throttle:20,1')
+        ->name('community.store');
+    Route::delete('/community/messages/{message}', [GlobalChatController::class, 'destroy'])
+        ->name('community.destroy');
+
+    // Favorites / Wishlist
+    Route::post('/favorites/toggle', [FavoriteController::class, 'toggle'])
+        ->middleware('throttle:60,1')
+        ->name('favorites.toggle');
 
     // Seller Registration (Buka Toko)
     Route::get('/seller/register', [SellerStoreProfileController::class, 'create'])->name('seller.store.create');

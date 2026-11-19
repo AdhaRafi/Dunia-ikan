@@ -180,6 +180,11 @@ export default function Footer() {
                             </h2>
                             <ul className="space-y-2 text-neutral-600 dark:text-neutral-400 text-xs">
                                 <li>
+                                    <Link href="/community" className="hover:text-black dark:hover:text-white transition">
+                                        {pick('Chat Global Komunitas', 'Community Global Chat')}
+                                    </Link>
+                                </li>
+                                <li>
                                     <Link href="/guides" className="hover:text-black dark:hover:text-white transition">
                                         {pick('Layanan 24/7', '24/7 Support')}
                                     </Link>

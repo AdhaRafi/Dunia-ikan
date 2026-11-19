@@ -1,6 +1,7 @@
 import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { Check } from 'lucide-react';
+import FavoriteButton from '@/Components/FavoriteButton';
 import { useLanguage } from '@/lib/i18n';
 
 function formatPrice(price) {
@@ -83,10 +84,15 @@ export default function ProductCard({ product, className = '', style }) {
                     </Link>
 
                     {product.category?.name && (
-                        <span className="overlap-badge absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-white/95 dark:bg-neutral-900/90 text-[10px] font-semibold text-slate-600 dark:text-neutral-300 shadow-xs">
+                        <span className="overlap-badge absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-white/95 dark:bg-neutral-900/90 text-[10px] font-semibold text-slate-600 dark:text-neutral-300 shadow-xs">
                             {trCategory(product.category.name)}
                         </span>
                     )}
+
+                    <FavoriteButton
+                        productId={product.id}
+                        className="absolute top-2.5 right-2.5 z-10 h-8 w-8 rounded-full bg-white/95 dark:bg-[#0e1424]/90 shadow-xs hover:scale-110 transition flex items-center justify-center"
+                    />
 
                     {product.stock <= 0 && (
                         <div className="absolute inset-0 bg-black/55 flex items-center justify-center">

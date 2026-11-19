@@ -55,6 +55,7 @@ class SeoMetadata
             'admin-portal*',
             'seller*',
             'cart*',
+            'favorites*',
             'checkout*',
             'orders*',
             'profile*',
@@ -301,6 +302,26 @@ class SeoMetadata
                 ['name' => 'Beranda', 'url' => $siteUrl],
                 ['name' => 'Panduan Ikan', 'url' => url('/guides')],
             ]);
+        } elseif ($component === 'Community/Index') {
+            $title = 'Komunitas & Chat Global Aquarist — '.$siteName;
+            $description = 'Ruang diskusi terbuka sesama penghobi, pembeli, dan penangkar ikan hias Dunia Ikan untuk berbagi tips perawatan, kualitas air, dan koleksi morph.';
+            $image = url('/images/banners/aquascape.jpg');
+
+            $schemas[] = [
+                '@context' => 'https://schema.org',
+                '@type' => 'CollectionPage',
+                'name' => $title,
+                'description' => $description,
+                'url' => $canonical,
+                'isPartOf' => ['@id' => $siteUrl.'/#website'],
+            ];
+            $schemas[] = self::breadcrumbSchema([
+                ['name' => 'Beranda', 'url' => $siteUrl],
+                ['name' => 'Komunitas', 'url' => url('/community')],
+            ]);
+        } elseif ($component === 'Favorites/Index') {
+            $title = 'Produk Favorit — '.$siteName;
+            $description = 'Daftar ikan hias, aquascape, dan perlengkapan akuarium favorit yang kamu simpan di Dunia Ikan.';
         }
 
         $verification = config('services.google.site_verification');

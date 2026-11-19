@@ -24,6 +24,7 @@ class SitemapController extends Controller
                 ['loc' => url('/products?water_type=saltwater'), 'priority' => '0.8', 'changefreq' => 'daily'],
                 ['loc' => url('/products?water_type=brackish'), 'priority' => '0.8', 'changefreq' => 'weekly'],
                 ['loc' => url('/guides'), 'priority' => '0.8', 'changefreq' => 'weekly'],
+                ['loc' => url('/community'), 'priority' => '0.7', 'changefreq' => 'daily'],
             ];
 
             Category::select(['slug', 'updated_at'])

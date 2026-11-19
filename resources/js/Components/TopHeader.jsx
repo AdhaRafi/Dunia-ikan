@@ -67,7 +67,11 @@ export default function TopHeader({
     onToggleDarkMode,
 }) {
     const { url, props } = usePage();
-    const { auth, cartCount } = props;
+    const { auth, cartCount, favoriteIds } = props;
+    const [liveFavoriteIds, setLiveFavoriteIds] = useState(() =>
+        Array.isArray(favoriteIds) ? favoriteIds : [],
+    );
+    const favoriteCount = liveFavoriteIds.length;
     const { pick, isEn } = useLanguage();
     const user = auth?.user;
     const [pathname = '/'] = String(url ?? '/').split('?');
@@ -185,6 +189,28 @@ export default function TopHeader({
             document.removeEventListener('mousedown', handleOutside);
             window.removeEventListener('keydown', handleEscape);
         };
+    }, []);
+
+    useEffect(() => {
+        setLiveFavoriteIds(Array.isArray(favoriteIds) ? favoriteIds : []);
+    }, [favoriteIds]);
+
+    useEffect(() => {
+        const onFavoriteToggled = (event) => {
+            const productId = event?.detail?.productId;
+            if (!productId) {
+                return;
+            }
+            const favorited = Boolean(event.detail.favorited);
+            setLiveFavoriteIds((prev) => {
+                if (favorited) {
+                    return prev.includes(productId) ? prev : [...prev, productId];
+                }
+                return prev.filter((id) => id !== productId);
+            });
+        };
+        window.addEventListener('dunia-ikan:favorite-toggled', onFavoriteToggled);
+        return () => window.removeEventListener('dunia-ikan:favorite-toggled', onFavoriteToggled);
     }, []);
 
     useEffect(() => {
@@ -316,7 +342,7 @@ export default function TopHeader({
                 {/* Center: Floating Glass Links + Glowing Aquatic Hover Underline */}
                 <nav
                     aria-label={pick('Navigasi utama', 'Main navigation')}
-                    className="hidden md:flex items-center gap-3.5 lg:gap-7"
+                    className="hidden lg:flex items-center gap-4 xl:gap-7"
                 >
                     <Link
                         href="/"
@@ -404,6 +430,15 @@ export default function TopHeader({
                         {pick('Panduan', 'Guides')}
                     </Link>
 
+                    <Link
+                        href="/community"
+                        data-active={pathname.startsWith('/community') ? 'true' : 'false'}
+                        aria-current={pathname.startsWith('/community') ? 'page' : undefined}
+                        className={getNavLinkClass(pathname.startsWith('/community'))}
+                    >
+                        {pick('Komunitas', 'Community')}
+                    </Link>
+
                     <button
                         type="button"
                         onClick={() => onOpenChat?.()}
@@ -464,17 +499,20 @@ export default function TopHeader({
                     />
 
                     <Link
-                        href="/products?sort=popular"
-                        className={`btn-motion hidden lg:inline-flex relative h-9 w-9 items-center justify-center rounded-full transition-colors duration-300 ${iconButtonClass}`}
-                        title={pick('Daftar Keinginan', 'Wishlist')}
-                        aria-label={pick('Daftar Keinginan', 'Wishlist')}
+                        href="/favorites"
+                        className={`btn-motion hidden sm:inline-flex relative h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full transition-colors duration-300 ${iconButtonClass}`}
+                        title={pick('Produk Favorit', 'Favorites')}
+                        aria-label={pick('Produk Favorit', 'Favorites')}
                     >
-                        <Heart className="w-4 h-4" />
-                        <span
-                            className={`absolute top-2 right-2 w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
-                                isDarkNav ? 'bg-[#4AB8BD]' : 'bg-[#0684E5]'
-                            }`}
-                        />
+                        <Heart className={`w-4 h-4 ${favoriteCount > 0 ? 'fill-rose-500 text-rose-500' : ''}`} />
+                        {favoriteCount > 0 && (
+                            <span
+                                key={favoriteCount}
+                                className="micro-pop absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 text-white text-[10px] font-bold leading-none px-1 shadow-xs"
+                            >
+                                {favoriteCount}
+                            </span>
+                        )}
                     </Link>
 
                     <Link
@@ -548,6 +586,10 @@ export default function TopHeader({
                                         <Link href="/orders" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#001454] dark:text-white/90 transition font-medium">
                                             <Package className="w-3.5 h-3.5 text-[#0684E5] dark:text-sky-400" />
                                             <span>{pick('Pesanan Saya', 'My Orders')}</span>
+                                        </Link>
+                                        <Link href="/favorites" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#001454] dark:text-white/90 transition">
+                                            <Heart className="w-3.5 h-3.5 text-rose-500" />
+                                            <span>{pick('Produk Favorit', 'Favorites')}</span>
                                         </Link>
                                         <Link href="/addresses" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#001454] dark:text-white/90 transition">
                                             <MapPin className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#4AB8BD]" />
@@ -638,7 +680,7 @@ export default function TopHeader({
                     <button
                         type="button"
                         onClick={onOpenMobileSidebar}
-                        className={`btn-motion md:hidden inline-flex items-center gap-1.5 h-8 px-2.5 rounded-xl border text-xs font-semibold shrink-0 transition-colors duration-300 ${
+                        className={`btn-motion lg:hidden inline-flex items-center gap-1.5 h-8 px-2.5 rounded-xl border text-xs font-semibold shrink-0 transition-colors duration-300 ${
                             isDarkNav
                                 ? 'bg-white/10 hover:bg-white/20 border-white/15 text-white'
                                 : 'bg-[#f3f2ff] hover:bg-[#e5e9fb] border-[#1E80A0]/15 text-[#001454]'
