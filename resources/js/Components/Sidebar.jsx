@@ -241,7 +241,7 @@ export default function Sidebar({
                             type="button"
                             role="switch"
                             aria-checked={darkMode}
-                            onClick={() => onToggleDarkMode?.()}
+                            onClick={(event) => onToggleDarkMode?.(event)}
                             aria-label={
                                 darkMode
                                     ? pick('Aktifkan mode terang', 'Enable light mode')

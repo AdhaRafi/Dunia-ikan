@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
     Search,
-    Sun,
-    Moon,
     Heart,
     ShoppingCart,
     User,
@@ -12,6 +10,7 @@ import {
     MapPin,
     X,
 } from 'lucide-react';
+import AnimatedThemeToggler, { toggleThemeWithTransition } from '@/Components/AnimatedThemeToggler';
 import BrandWordmark from '@/Components/BrandWordmark';
 import UserAvatar from '@/Components/UserAvatar';
 import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
@@ -209,11 +208,11 @@ export default function TopHeader({
         }
     }, [internalDarkMode, isControlledTheme]);
 
-    const handleToggleTheme = () => {
+    const handleToggleTheme = (event) => {
         if (isControlledTheme) {
-            onToggleDarkMode();
+            onToggleDarkMode(event);
         } else {
-            setInternalDarkMode((prev) => !prev);
+            toggleThemeWithTransition(event, !internalDarkMode, setInternalDarkMode);
         }
     };
 
@@ -456,15 +455,13 @@ export default function TopHeader({
                         <LanguageSwitcher variant={isDarkNav ? 'overlay' : 'default'} />
                     </div>
 
-                    <button
-                        type="button"
-                        onClick={handleToggleTheme}
-                        className={`btn-motion h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full hover:rotate-12 transition-colors duration-300 ${iconButtonClass}`}
+                    <AnimatedThemeToggler
+                        darkMode={darkMode}
+                        onToggle={handleToggleTheme}
+                        className={`h-8 w-8 sm:h-9 sm:w-9 transition-colors duration-300 ${iconButtonClass}`}
                         title={darkMode ? pick('Tema Terang', 'Light Theme') : pick('Tema Gelap', 'Dark Theme')}
-                        aria-label={pick('Ubah Tema', 'Toggle Theme')}
-                    >
-                        {darkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-                    </button>
+                        label={pick('Ubah Tema', 'Toggle Theme')}
+                    />
 
                     <Link
                         href="/products?sort=popular"

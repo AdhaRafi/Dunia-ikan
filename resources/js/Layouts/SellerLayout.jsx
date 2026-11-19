@@ -1,4 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
+import AnimatedThemeToggler, { toggleThemeWithTransition } from '@/Components/AnimatedThemeToggler';
 import BrandWordmark from '@/Components/BrandWordmark';
 import UserAvatar from '@/Components/UserAvatar';
 import { AquaticCanvasBackdrop } from '@/Components/AquaticMotifs';
@@ -11,8 +12,6 @@ import {
     ShieldCheck,
     CheckCircle2,
     AlertCircle,
-    Moon,
-    Sun,
     X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -107,14 +106,13 @@ export default function SellerLayout({ children, title }) {
 
                     <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                         <LanguageSwitcher />
-                        <button
-                            type="button"
-                            onClick={() => setDarkMode((prev) => !prev)}
-                            aria-label={pick('Ubah Tema', 'Toggle Theme')}
-                            className="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                        >
-                            {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
-                        </button>
+                        <AnimatedThemeToggler
+                            darkMode={darkMode}
+                            onToggle={(event) => toggleThemeWithTransition(event, !darkMode, setDarkMode)}
+                            label={pick('Ubah Tema', 'Toggle Theme')}
+                            title={darkMode ? pick('Tema Terang', 'Light Theme') : pick('Tema Gelap', 'Dark Theme')}
+                            className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        />
                         <Link
                             href="/profile"
                             className="flex items-center gap-2 rounded-full p-0.5 sm:pr-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition"

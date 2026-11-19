@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { usePage } from '@inertiajs/react';
 import TopHeader from '@/Components/TopHeader';
 import Footer from '@/Components/Footer';
+import { toggleThemeWithTransition } from '@/Components/AnimatedThemeToggler';
 import { AquaticCanvasBackdrop } from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
 import { AlertTriangle, Check, X } from 'lucide-react';
@@ -176,7 +177,7 @@ export default function AppLayout({ children }) {
                 onOpenMobileSidebar={openMobileSidebar}
                 onOpenChat={openChat}
                 darkMode={darkMode}
-                onToggleDarkMode={() => setDarkMode((prev) => !prev)}
+                onToggleDarkMode={(event) => toggleThemeWithTransition(event, !darkMode, setDarkMode)}
             />
 
             {/* Mobile Sliding Drawer Navigation (lazy-loaded on first drawer open) */}
@@ -187,7 +188,7 @@ export default function AppLayout({ children }) {
                         onClose={() => setMobileSidebarOpen(false)}
                         onOpenChat={openChat}
                         darkMode={darkMode}
-                        onToggleDarkMode={() => setDarkMode((prev) => !prev)}
+                        onToggleDarkMode={(event) => toggleThemeWithTransition(event, !darkMode, setDarkMode)}
                     />
                 </Suspense>
             )}

@@ -37,6 +37,7 @@ export default defineConfig({
                         normalized.includes('/resources/js/Components/TopHeader.jsx') ||
                         normalized.includes('/resources/js/Components/Footer.jsx') ||
                         normalized.includes('/resources/js/Components/BrandWordmark.jsx') ||
+                        normalized.includes('/resources/js/Components/AnimatedThemeToggler.jsx') ||
                         normalized.includes('/resources/js/Components/UserAvatar.jsx') ||
                         normalized.includes('/resources/js/Components/StoreLogo.jsx') ||
                         normalized.includes('/resources/js/Components/ProductCard.jsx') ||
