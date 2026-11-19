@@ -1,6 +1,5 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import BrandWordmark from '@/Components/BrandWordmark';
-import { AquaticCanvasBackdrop } from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
 
 export default function HttpError({ status = 404 }) {
@@ -23,7 +22,6 @@ export default function HttpError({ status = 404 }) {
 
     return (
         <div className="relative isolate min-h-screen w-full aquatic-canvas-ambient flex flex-col overflow-x-clip selection:bg-sky-200 selection:text-[#001454]">
-            <AquaticCanvasBackdrop variant="auth" />
             <Head title={title} />
 
             {/* Top Navigation */}

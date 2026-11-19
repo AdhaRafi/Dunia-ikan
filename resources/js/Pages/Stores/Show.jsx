@@ -5,7 +5,7 @@ import ProductCard from '@/Components/ProductCard';
 import Reveal from '@/Components/Reveal';
 import StoreLogo from '@/Components/StoreLogo';
 import StoreRatingSection from '@/Components/StoreRatingSection';
-import { AquaticBannerOrnaments, HeroWaveTransition } from '@/Components/AquaticMotifs';
+import { HeroWaveTransition } from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
 
 function formatPrice(price) {
@@ -35,7 +35,6 @@ export default function Show({ store, products, storeRating }) {
                 data-nav-theme="dark"
                 className="relative overflow-hidden -mt-16 pt-16 pb-10 sm:pb-12 aquatic-cta-surface text-white"
             >
-                <AquaticBannerOrnaments variant="dark" />
                 <div className="relative z-10 container-page grid gap-8 py-12 md:py-16 lg:grid-cols-12 lg:items-end">
                     <div className="lg:col-span-7">
                         <div className="flex items-center gap-4 mb-4">

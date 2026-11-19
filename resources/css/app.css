@@ -525,15 +525,6 @@
         }
     }
 
-    @keyframes aquatic-caustic-drift {
-        0%, 100% {
-            transform: translate3d(0, 0, 0) scale(1);
-        }
-        50% {
-            transform: translate3d(-14px, 10px, 0) scale(1.04);
-        }
-    }
-
     /* Brand-aligned underwater ambient light canvas & editorial surfaces */
     .aquatic-canvas-ambient {
         background-color: #fbf8ff;
@@ -549,40 +540,6 @@
             radial-gradient(64rem 40rem at 104% -4%, rgba(6, 132, 229, 0.14), transparent 62%),
             radial-gradient(52rem 34rem at -6% 42%, rgba(74, 184, 189, 0.11), transparent 60%),
             radial-gradient(48rem 32rem at 96% 96%, rgba(6, 132, 229, 0.09), transparent 58%);
-    }
-
-    .aquatic-caustic-pool {
-        position: absolute;
-        border-radius: 9999px;
-        pointer-events: none;
-        filter: blur(56px);
-        animation: aquatic-caustic-drift 26s ease-in-out infinite;
-        will-change: transform;
-    }
-
-    .aquatic-caustic-pool--top {
-        top: -8rem;
-        right: -6rem;
-        width: 24rem;
-        height: 24rem;
-        background: radial-gradient(circle, rgba(74, 184, 189, 0.16) 0%, rgba(6, 132, 229, 0.06) 55%, transparent 75%);
-    }
-
-    .dark .aquatic-caustic-pool--top {
-        background: radial-gradient(circle, rgba(74, 184, 189, 0.15) 0%, rgba(6, 132, 229, 0.09) 55%, transparent 75%);
-    }
-
-    .aquatic-caustic-pool--bottom {
-        bottom: -9rem;
-        left: -6rem;
-        width: 26rem;
-        height: 22rem;
-        background: radial-gradient(circle, rgba(6, 132, 229, 0.11) 0%, rgba(74, 184, 189, 0.05) 55%, transparent 75%);
-        animation-delay: -11s;
-    }
-
-    .dark .aquatic-caustic-pool--bottom {
-        background: radial-gradient(circle, rgba(6, 132, 229, 0.14) 0%, rgba(74, 184, 189, 0.07) 55%, transparent 75%);
     }
 
     .aquatic-cta-surface {
@@ -656,8 +613,7 @@
         .text-mask-inner,
         .text-mask-delay-1,
         .text-mask-delay-2,
-        .overlap-enter,
-        .aquatic-caustic-pool {
+        .overlap-enter {
             animation: none;
             opacity: 1;
             transform: none;

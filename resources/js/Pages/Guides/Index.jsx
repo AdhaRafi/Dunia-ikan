@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import {
-    AquaticBannerOrnaments,
-    SectionWaveDivider,
-} from '@/Components/AquaticMotifs';
+import { SectionWaveDivider } from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
 import {
     estimateReadingMinutes,
@@ -631,7 +628,6 @@ export default function Index({
 
                 {/* 4. Kiko Consultation CTA Banner */}
                 <section className="relative overflow-hidden rounded-3xl aquatic-cta-surface border border-[#1E80A0]/35 p-6 sm:p-8 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-[0_14px_38px_-14px_rgba(0,20,84,0.35)]">
-                    <AquaticBannerOrnaments variant="dark" />
                     <div className="relative z-10 space-y-1.5">
                         <h2 className="text-lg sm:text-xl font-bold tracking-tight">
                             {pick(

@@ -2,7 +2,6 @@ import { Link, usePage } from '@inertiajs/react';
 import AnimatedThemeToggler, { toggleThemeWithTransition } from '@/Components/AnimatedThemeToggler';
 import BrandWordmark from '@/Components/BrandWordmark';
 import UserAvatar from '@/Components/UserAvatar';
-import { AquaticCanvasBackdrop } from '@/Components/AquaticMotifs';
 import {
     Store,
     Fish,
@@ -81,8 +80,6 @@ export default function SellerLayout({ children, title }) {
 
     return (
         <div className="relative isolate min-h-screen aquatic-canvas-ambient text-[#001454] dark:text-[#e4e7ff] flex flex-col font-sans overflow-x-clip transition-colors duration-200">
-            <AquaticCanvasBackdrop />
-
             {/* Top Seller Bar */}
             <header className="bg-white/90 dark:bg-[#0e1424]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30">
                 <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">

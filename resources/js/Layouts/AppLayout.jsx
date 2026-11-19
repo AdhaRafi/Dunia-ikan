@@ -3,7 +3,6 @@ import { usePage } from '@inertiajs/react';
 import TopHeader from '@/Components/TopHeader';
 import Footer from '@/Components/Footer';
 import { toggleThemeWithTransition } from '@/Components/AnimatedThemeToggler';
-import { AquaticCanvasBackdrop } from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
 import { AlertTriangle, Check, X } from 'lucide-react';
 
@@ -170,8 +169,6 @@ export default function AppLayout({ children }) {
 
     return (
         <div className="relative isolate min-h-screen w-full flex flex-col overflow-x-clip aquatic-canvas-ambient text-[#001454] dark:text-[#e4e7ff] antialiased selection:bg-[#001454] selection:text-white transition-colors duration-200">
-            <AquaticCanvasBackdrop />
-
             {/* Full-Width Header with Brand, Search & Horizontal Navigation */}
             <TopHeader
                 onOpenMobileSidebar={openMobileSidebar}

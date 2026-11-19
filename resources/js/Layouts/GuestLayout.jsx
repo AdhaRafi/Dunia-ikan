@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import BrandWordmark from '@/Components/BrandWordmark';
-import { AquaticCanvasBackdrop } from '@/Components/AquaticMotifs';
 import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
 
 export const authPrimaryButtonClass =
@@ -34,7 +33,6 @@ export default function GuestLayout({
 
     return (
         <div className="relative isolate min-h-screen w-full overflow-x-hidden aquatic-canvas-ambient text-slate-900 dark:text-slate-100 flex items-center justify-center p-3.5 sm:p-6 lg:p-10">
-            <AquaticCanvasBackdrop variant="auth" />
             <div className="relative z-10 w-full max-w-[960px] rounded-[24px] sm:rounded-[28px] bg-white dark:bg-[#0e1424] shadow-[0_24px_70px_rgba(24,52,166,0.12)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.5)] border border-[#e6e9ff] dark:border-neutral-800 p-2.5 sm:p-3.5 grid grid-cols-1 lg:grid-cols-12 items-stretch">
                 <div className="lg:col-span-6 relative rounded-[18px] sm:rounded-[20px] overflow-hidden min-h-[210px] sm:min-h-[240px] lg:min-h-[600px] flex flex-col justify-between p-5 sm:p-7 lg:p-8 bg-[#06184a]">
                     <img

@@ -5,7 +5,6 @@ import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
 import StoreLogo from '@/Components/StoreLogo';
 import {
-    AquaticBannerOrnaments,
     HeroWaveTransition,
     SectionWaveDivider,
 } from '@/Components/AquaticMotifs';
@@ -455,7 +454,6 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         </div>
 
                         <div className="relative overflow-hidden rounded-3xl aquatic-cta-surface border border-[#1E80A0]/35 p-6 sm:p-8 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-[0_14px_38px_-14px_rgba(0,20,84,0.35)]">
-                            <AquaticBannerOrnaments variant="dark" />
                             <div className="relative z-10 space-y-1">
                                 <h3 className="text-lg sm:text-xl font-bold tracking-tight">
                                     {pick('Punya Farm atau Toko Aquascape?', 'Own a Farm or Aquascape Store?')}
@@ -481,7 +479,6 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
 
                 {/* 6. FREQUENTLY ASKED QUESTIONS */}
                 <section className="relative overflow-hidden rounded-[24px] sm:rounded-[28px] aquatic-soft-panel border border-[#0684E5]/15 dark:border-[#4AB8BD]/20 px-5 sm:px-10 lg:px-14 py-10 sm:py-14 lg:py-16">
-                    <AquaticBannerOrnaments variant="light" />
                     <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-stretch">
                         {/* Left Column: Heading at top, Helper Subtext + Pill CTA at bottom */}
                         <div className="lg:col-span-5 flex flex-col justify-between gap-7">
