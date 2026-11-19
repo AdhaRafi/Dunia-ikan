@@ -544,6 +544,48 @@ class SecurityHardeningTest extends TestCase
             ->assertJsonPath('assistant_message.message', 'Cupang pemula cocok pakai tank minimal 10 liter dengan air endapan.');
     }
 
+    public function test_chatbot_prompt_and_fallback_avoid_repetitive_self_introduction_on_questions(): void
+    {
+        config([
+            'services.gemini.api_key' => 'AIzaTestGeminiKey',
+            'services.gemini.model' => 'gemini-3.5-flash-lite',
+        ]);
+
+        Http::preventStrayRequests();
+        Http::fake([
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent' => Http::response([
+                'candidates' => [[
+                    'content' => [
+                        'parts' => [[
+                            'text' => 'Umur rata-rata ikan hias berkisar 2 hingga 5 tahun tergantung spesies dan kualitas air.',
+                        ]],
+                    ],
+                ]],
+            ], 200),
+        ]);
+
+        $this->postJson('/chatbot/message', [
+            'message' => 'umur ikan biasanya sampe berapa tahun',
+        ])->assertStatus(200);
+
+        Http::assertSent(function ($request) {
+            $promptText = (string) data_get($request->data(), 'contents.0.parts.0.text');
+
+            return str_contains($promptText, 'JANGAN mengulang perkenalan diri');
+        });
+
+        config(['services.gemini.api_key' => null]);
+
+        $fallbackResponse = $this->postJson('/chatbot/message', [
+            'message' => 'umur ikan hias biasanya berapa tahun',
+        ]);
+
+        $fallbackReply = (string) $fallbackResponse->json('assistant_message.message');
+        $fallbackResponse->assertStatus(200)->assertJsonPath('is_fallback', true);
+        $this->assertStringNotContainsString('maskot', $fallbackReply);
+        $this->assertStringNotContainsString('Halo! Aku Kiko', $fallbackReply);
+    }
+
     public function test_filament_admin_login_enforces_turnstile_and_preserves_isolated_guard(): void
     {
         $admin = User::where('role', 'admin')->firstOrFail();

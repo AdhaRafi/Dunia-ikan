@@ -517,29 +517,24 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                             {greetingName
                                                 ? pick(
                                                       <>
-                                                          Halo, {greetingName}!
-                                                          <br />
-                                                          Ada yang perlu Kiko bantu?
+                                                          Ada yang perlu Kiko bantu, {greetingName}?
                                                       </>,
                                                       <>
-                                                          Hello, {greetingName}!
-                                                          <br />
-                                                          How can Kiko help you?
+                                                          How can Kiko help you, {greetingName}?
                                                       </>,
                                                   )
                                                 : pick(
-                                                      <>
-                                                          Halo!
-                                                          <br />
-                                                          Ada yang perlu Kiko bantu?
-                                                      </>,
-                                                      <>
-                                                          Hello!
-                                                          <br />
-                                                          How can Kiko help you?
-                                                      </>,
+                                                      'Ada yang perlu Kiko bantu?',
+                                                      'How can Kiko help you?',
                                                   )}
                                         </h3>
+
+                                        <p className="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-300 max-w-[34ch]">
+                                            {pick(
+                                                'Halo! Saya Kiko, maskot dan asisten pintar Dunia Ikan. Senang sekali bisa membantu kamu hari ini!',
+                                                "Hi! I'm Kiko, Dunia Ikan's mascot and smart assistant. Happy to help you today!",
+                                            )}
+                                        </p>
 
                                         {historyError && (
                                             <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/70 px-3 py-1.5 text-[11px] font-semibold text-rose-700 dark:text-rose-300">

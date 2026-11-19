@@ -490,7 +490,7 @@ export default function TopHeader({
                         {cartCount > 0 && (
                             <span
                                 key={cartCount}
-                                className="micro-pop absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#0684E5] text-white text-[10px] font-bold px-1 shadow-xs"
+                                className="micro-pop absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#0684E5] text-white text-[10px] font-bold leading-none px-1 shadow-xs"
                             >
                                 {cartCount}
                             </span>

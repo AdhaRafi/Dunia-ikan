@@ -341,8 +341,6 @@
     }
 
     .btn-motion {
-        position: relative;
-        overflow: hidden;
         transition:
             transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
             box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -358,6 +356,11 @@
 
     .btn-motion:active:not(:disabled) {
         transform: translateY(0.5px) scale(0.97);
+    }
+
+    .btn-sheen {
+        position: relative;
+        overflow: hidden;
     }
 
     .btn-sheen::after {

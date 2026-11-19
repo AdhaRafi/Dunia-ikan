@@ -186,15 +186,28 @@ class ChatbotController extends Controller
                     return "Judul: {$g->title}\nJenis Ikan: {$g->fish_type}\nGejala: {$g->symptoms}\nPenyebab: {$g->possible_causes}\nPenanganan: {$g->care_instructions}\nPencegahan: {$g->prevention}\nSumber: {$g->source}";
                 })->implode("\n---\n");
 
-                $systemPrompt = "Anda adalah 'Kiko', maskot dan asisten pintar resmi untuk marketplace Dunia Ikan (berwujud ikan mas astronaut ramah dengan headphone dan mic).
+                $systemPrompt = "Anda adalah 'Kiko', asisten pintar resmi marketplace Dunia Ikan.
 Pedoman Penting:
 1. Konsultasi kesehatan ikan: Jawaban hanya berisi kemungkinan awal dan hal yang perlu diperiksa (kualitas air, suhu, pH, aerasi). BUKAN diagnosis pasti dokter hewan. Jangan meresepkan obat kimia keras atau dosis berbahaya. Untuk gejala berat atau ikan lemas parah, sarankan bantuan ahli kesehatan hewan.
 2. Gunakan informasi panduan resmi database berikut jika relevan:
 {$guidesContext}
-3. Gaya bahasa & format: Ramah, bersahabat, profesional, solutif, mudah dipahami pemula dalam Bahasa Indonesia yang baik. Tulis teks polos yang bersih tanpa markup Markdown seperti tanda bintang (** atau *), pagar (#), garis ---, atau backtick (`); gunakan daftar angka (1., 2.) atau simbol peluru (•) saja.";
+3. Gaya bahasa & format: Langsung jawab inti pertanyaan secara ramah, ringkas, dan solutif dalam Bahasa Indonesia yang baik. JANGAN mengulang perkenalan diri (seperti 'Halo! Saya Kiko, maskot dan asisten pintar Dunia Ikan...') atau basa-basi pembuka ('Pertanyaan yang bagus sekali') pada jawaban pertanyaan — perkenalan diri hanya boleh jika pengguna sekadar menyapa tanpa bertanya. Tulis teks polos bersih tanpa markup Markdown seperti tanda bintang (** atau *), pagar (#), garis ---, atau backtick (`); gunakan daftar angka (1., 2.) atau simbol peluru (•) saja.";
+
+                $recentTurns = ChatMessage::where('chat_session_id', $session->id)
+                    ->where('id', '<', $userChat->id)
+                    ->orderByDesc('id')
+                    ->take(6)
+                    ->get()
+                    ->reverse()
+                    ->map(fn (ChatMessage $m) => ($m->sender === 'user' ? 'Pembeli: ' : 'Kiko: ').$m->message)
+                    ->implode("\n");
+
+                $conversationBlock = $recentTurns !== ''
+                    ? "\n\nRiwayat Percakapan Sebelumnya:\n{$recentTurns}"
+                    : '';
 
                 $parts = [
-                    ['text' => $systemPrompt."\n\nPertanyaan Pembeli:\n".$userMessage],
+                    ['text' => $systemPrompt.$conversationBlock."\n\nPertanyaan Pembeli:\n".$userMessage],
                 ];
 
                 if ($imageBase64 && $imageMime) {
@@ -268,8 +281,7 @@ Pedoman Penting:
         if (! $assistantReply) {
             $isFallback = true;
             if ($matchingGuides->isNotEmpty()) {
-                $guideTitles = $matchingGuides->pluck('title')->implode(', ');
-                $assistantReply = "Halo! Aku Kiko dari Dunia Ikan 🐟. Layanan AI eksternal saat ini sedang offline atau belum dikonfigurasi API key-nya. Namun jangan khawatir, kami menemukan panduan resmi dari basis data Dunia Ikan yang relevan dengan pertanyaan Anda:\n\n";
+                $assistantReply = "Layanan AI eksternal saat ini sedang tidak tersedia. Berikut panduan resmi dari basis data Dunia Ikan yang relevan dengan pertanyaan Anda:\n\n";
                 foreach ($matchingGuides as $idx => $g) {
                     $assistantReply .= ($idx + 1).". {$g->title} ({$g->fish_type})\n";
                     $assistantReply .= "• Gejala: {$g->symptoms}\n";
@@ -277,9 +289,11 @@ Pedoman Penting:
                 }
                 $assistantReply .= '(Catatan: Ini adalah pertolongan pertama, pastikan segera cek parameter air seperti suhu dan amonia).';
             } elseif ($matchingProducts->isNotEmpty()) {
-                $assistantReply = 'Halo! Aku Kiko 🐟. Berikut beberapa rekomendasi produk ikan hias dan perlengkapan aktif yang tersedia di katalog Dunia Ikan sesuai kata kunci Anda:';
+                $assistantReply = 'Berikut beberapa rekomendasi produk ikan hias dan perlengkapan aktif di katalog Dunia Ikan sesuai kata kunci Anda:';
+            } elseif (preg_match('/^(halo|hai|hi|hello|selamat\s+(pagi|siang|sore|malam))(\s+kiko)?[!.?]*$/i', $userMessage)) {
+                $assistantReply = 'Halo! Ada yang bisa Kiko bantu terkait ikan hias, perawatan akuarium, atau pilihan produk di Dunia Ikan?';
             } else {
-                $assistantReply = "Halo! Aku Kiko 🐟, maskot & asisten virtual resmi Dunia Ikan. Layanan Gemini AI sedang offline, silakan jelaskan jenis ikan Anda dan gejala yang terlihat (misal: 'cupang bintik putih' atau 'ikan lemas mengambang') agar aku bisa mencocokkan panduan perawatan yang tersedia di database.";
+                $assistantReply = "Layanan Gemini AI sedang offline. Silakan jelaskan jenis ikan Anda dan gejala yang terlihat (misal: 'cupang bintik putih' atau 'ikan lemas mengambang') agar panduan perawatan dari database bisa langsung dicocokkan.";
             }
         }
 
