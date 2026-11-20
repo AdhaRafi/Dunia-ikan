@@ -32,9 +32,9 @@ export default function GuestLayout({
     }, []);
 
     return (
-        <div className="relative isolate min-h-screen w-full overflow-x-hidden aquatic-canvas-ambient text-slate-900 dark:text-slate-100 flex items-center justify-center p-3.5 sm:p-6 lg:p-10">
-            <div className="relative z-10 w-full max-w-[960px] rounded-[24px] sm:rounded-[28px] bg-white dark:bg-[#0e1424] shadow-[0_24px_70px_rgba(24,52,166,0.12)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.5)] border border-[#e6e9ff] dark:border-neutral-800 p-2.5 sm:p-3.5 grid grid-cols-1 lg:grid-cols-12 items-stretch">
-                <div className="lg:col-span-6 relative rounded-[18px] sm:rounded-[20px] overflow-hidden min-h-[210px] sm:min-h-[240px] lg:min-h-[600px] flex flex-col justify-between p-5 sm:p-7 lg:p-8 bg-[#06184a]">
+        <div className="relative isolate min-h-screen w-full overflow-x-hidden aquatic-canvas-ambient text-slate-900 dark:text-slate-100 flex items-center justify-center p-3.5 sm:p-6 lg:p-8">
+            <div className="relative z-10 w-full max-w-6xl rounded-[24px] sm:rounded-[28px] bg-white dark:bg-[#0e1424] shadow-[0_24px_70px_rgba(24,52,166,0.12)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.5)] border border-[#e6e9ff] dark:border-neutral-800 p-2.5 sm:p-4 grid grid-cols-1 lg:grid-cols-12 items-stretch">
+                <div className="lg:col-span-6 relative rounded-[18px] sm:rounded-[20px] overflow-hidden min-h-[220px] sm:min-h-[260px] lg:min-h-[640px] flex flex-col justify-between p-5 sm:p-7 lg:p-9 bg-[#06184a]">
                     <img
                         src="/images/hero/auth-showcase.jpg"
                         alt="Ikan cupang halfmoon biru safir koleksi Dunia Ikan"
@@ -79,8 +79,8 @@ export default function GuestLayout({
                     </div>
                 </div>
 
-                <main className="lg:col-span-6 flex flex-col justify-center px-3 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-9">
-                    <div className="mx-auto w-full max-w-[356px]">
+                <main className="lg:col-span-6 flex flex-col justify-center px-4 py-7 sm:px-8 sm:py-9 lg:px-12 lg:py-10">
+                    <div className="mx-auto w-full max-w-[420px]">
                         {children}
                     </div>
                 </main>
