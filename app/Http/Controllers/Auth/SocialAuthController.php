@@ -62,7 +62,11 @@ class SocialAuthController extends Controller
                 ->withErrors(['social' => "Login {$config['label']} belum dikonfigurasi pada server."]);
         }
 
-        $state = Str::random(40);
+        $random = Str::random(32);
+        $timestamp = time();
+        $signature = hash_hmac('sha256', "{$provider}|{$timestamp}|{$random}", (string) config('app.key'));
+        $state = "{$provider}.{$timestamp}.{$random}.{$signature}";
+
         $request->session()->put('oauth_state', [
             'provider' => $provider,
             'state' => $state,
@@ -99,12 +103,31 @@ class SocialAuthController extends Controller
         $expected = $request->session()->pull('oauth_state');
         $incomingState = (string) $request->query('state', '');
 
+        $isStateValid = false;
         if (
-            ! is_array($expected)
-            || ($expected['provider'] ?? null) !== $provider
-            || $incomingState === ''
-            || ! hash_equals((string) ($expected['state'] ?? ''), $incomingState)
+            is_array($expected)
+            && ($expected['provider'] ?? null) === $provider
+            && $incomingState !== ''
+            && hash_equals((string) ($expected['state'] ?? ''), $incomingState)
         ) {
+            $isStateValid = true;
+        } elseif ($incomingState !== '') {
+            $parts = explode('.', $incomingState);
+            if (count($parts) === 4) {
+                [$tokenProvider, $timestamp, $random, $signature] = $parts;
+                $expectedSig = hash_hmac('sha256', "{$tokenProvider}|{$timestamp}|{$random}", (string) config('app.key'));
+                if (
+                    $tokenProvider === $provider
+                    && hash_equals($expectedSig, $signature)
+                    && is_numeric($timestamp)
+                    && ((int) $timestamp) >= (time() - 900)
+                ) {
+                    $isStateValid = true;
+                }
+            }
+        }
+
+        if (! $isStateValid) {
             return redirect()
                 ->route('login')
                 ->withErrors(['social' => "Sesi verifikasi {$config['label']} tidak valid atau kedaluwarsa. Silakan coba lagi."]);
@@ -117,36 +140,47 @@ class SocialAuthController extends Controller
                 ->withErrors(['social' => "Kode otorisasi {$config['label']} tidak ditemukan."]);
         }
 
-        $profile = $this->fetchUserProfile($config, $credentials, $code);
-        if ($profile === null) {
+        // Ensure database schema has oauth column lazily before querying
+        $this->ensureColumnMigrated('users', $config['id_column'], 'database/migrations/2026_11_17_072500_add_oauth_fields_to_users_table.php');
+
+        try {
+            $profile = $this->fetchUserProfile($config, $credentials, $code);
+            if ($profile === null) {
+                return redirect()
+                    ->route('login')
+                    ->withErrors(['social' => "Gagal memverifikasi akun dengan server {$config['label']}."]);
+            }
+
+            $providerId = trim((string) ($profile['sub'] ?? $profile['id'] ?? ''));
+            $email = Str::lower(trim((string) ($profile['email'] ?? '')));
+            $emailVerified = $provider === 'google'
+                ? (bool) ($profile['email_verified'] ?? false)
+                : true;
+
+            if ($providerId === '' || ! $emailVerified || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return redirect()
+                    ->route('login')
+                    ->withErrors(['social' => "Akun {$config['label']} harus memiliki email terverifikasi untuk masuk."]);
+            }
+
+            $user = $this->resolveUser($provider, $config['id_column'], $providerId, $email, $profile);
+            if ($user === null) {
+                return redirect()
+                    ->route('login')
+                    ->withErrors(['social' => 'Akun administrator harus masuk melalui halaman login admin.']);
+            }
+
+            Auth::guard('web')->login($user, true);
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('dashboard', absolute: false));
+        } catch (\Throwable $e) {
+            report($e);
+
             return redirect()
                 ->route('login')
-                ->withErrors(['social' => "Gagal memverifikasi akun dengan server {$config['label']}."]);
+                ->withErrors(['social' => "Terjadi kendala saat menghubungkan akun {$config['label']}. Silakan coba lagi."]);
         }
-
-        $providerId = trim((string) ($profile['sub'] ?? $profile['id'] ?? ''));
-        $email = Str::lower(trim((string) ($profile['email'] ?? '')));
-        $emailVerified = $provider === 'google'
-            ? (bool) ($profile['email_verified'] ?? false)
-            : true;
-
-        if ($providerId === '' || ! $emailVerified || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return redirect()
-                ->route('login')
-                ->withErrors(['social' => "Akun {$config['label']} harus memiliki email terverifikasi untuk masuk."]);
-        }
-
-        $user = $this->resolveUser($provider, $config['id_column'], $providerId, $email, $profile);
-        if ($user === null) {
-            return redirect()
-                ->route('login')
-                ->withErrors(['social' => 'Akun administrator harus masuk melalui halaman login admin.']);
-        }
-
-        Auth::guard('web')->login($user, true);
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**

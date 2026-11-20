@@ -31,4 +31,28 @@ abstract class Controller
 
         return Schema::hasTable($table);
     }
+
+    /**
+     * Run a column addition migration lazily once when the target column is missing.
+     */
+    protected function ensureColumnMigrated(string $table, string $column, string $migrationPath): bool
+    {
+        if (Schema::hasTable($table) && Schema::hasColumn($table, $column)) {
+            return true;
+        }
+
+        try {
+            Artisan::call('migrate', [
+                '--path' => $migrationPath,
+                '--force' => true,
+                '--no-interaction' => true,
+            ]);
+        } catch (Throwable $exception) {
+            if (! (Schema::hasTable($table) && Schema::hasColumn($table, $column))) {
+                report($exception);
+            }
+        }
+
+        return Schema::hasTable($table) && Schema::hasColumn($table, $column);
+    }
 }

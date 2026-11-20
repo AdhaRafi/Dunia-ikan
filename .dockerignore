@@ -3,6 +3,7 @@
 .codex
 .cursor
 android
+DuniaIkanAndroid
 .env
 .env.*
 !.env.example

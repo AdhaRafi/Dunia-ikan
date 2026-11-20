@@ -163,4 +163,38 @@ class SocialAuthTest extends TestCase
         $this->assertGuest('web');
         $this->assertGuest('admin');
     }
+
+    public function test_google_login_succeeds_even_when_session_cookie_lost_via_signed_hmac(): void
+    {
+        config([
+            'services.google.client_id' => 'google-test-client-id',
+            'services.google.client_secret' => 'google-test-secret',
+            'services.google.redirect' => '/auth/google/callback',
+        ]);
+
+        $redirect = $this->get('/auth/google/redirect');
+        parse_str((string) parse_url((string) $redirect->headers->get('Location'), PHP_URL_QUERY), $query);
+        $state = (string) ($query['state'] ?? '');
+
+        // Simulate session cookie loss across cross-domain redirects by flushing session
+        session()->flush();
+
+        Http::preventStrayRequests();
+        Http::fake([
+            'https://oauth2.googleapis.com/token' => Http::response(['access_token' => 'stateless-google-token'], 200),
+            'https://openidconnect.googleapis.com/v1/userinfo*' => Http::response([
+                'sub' => 'google-sub-stateless-888',
+                'name' => 'Stateless User',
+                'email' => 'stateless.user@example.com',
+                'email_verified' => true,
+            ], 200),
+        ]);
+
+        $this->get('/auth/google/callback?state='.urlencode($state).'&code=stateless-code')
+            ->assertRedirect(route('dashboard', absolute: false));
+
+        $user = User::where('email', 'stateless.user@example.com')->firstOrFail();
+        $this->assertAuthenticatedAs($user, 'web');
+        $this->assertSame('google-sub-stateless-888', $user->google_id);
+    }
 }
