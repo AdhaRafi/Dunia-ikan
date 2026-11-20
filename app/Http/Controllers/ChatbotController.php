@@ -178,6 +178,10 @@ class ChatbotController extends Controller
             $userMessage,
         );
 
+        $hasPreviousTurns = ChatMessage::where('chat_session_id', $session->id)
+            ->where('id', '<', $userChat->id)
+            ->exists();
+
         // Siapkan respons AI atau Fallback
         $apiKey = config('services.gemini.api_key');
         $model = config('services.gemini.model', 'gemini-3.5-flash-lite');
@@ -191,12 +195,16 @@ class ChatbotController extends Controller
                     return "Judul: {$g->title}\nJenis Ikan: {$g->fish_type}\nGejala: {$g->symptoms}\nPenyebab: {$g->possible_causes}\nPenanganan: {$g->care_instructions}\nPencegahan: {$g->prevention}\nSumber: {$g->source}";
                 })->implode("\n---\n");
 
+                $greetingInstruction = $hasPreviousTurns
+                    ? 'Ini percakapan lanjutan: dilarang mengulang sapaan pembuka (seperti Halo, Hai, Halo Kak).'
+                    : 'sapaan singkat hanya boleh jika pesan pengguna sekadar menyapa tanpa pertanyaan';
+
                 $systemPrompt = "Konteks peran: Anda membantu pembeli Dunia Ikan menjawab pertanyaan seputar ikan hias, akuarium, dan produk.
 Pedoman Penting:
 1. Konsultasi kesehatan ikan: Jawaban hanya berisi kemungkinan awal dan hal yang perlu diperiksa (kualitas air, suhu, pH, aerasi). BUKAN diagnosis pasti dokter hewan. Jangan meresepkan obat kimia keras atau dosis berbahaya. Untuk gejala berat atau ikan lemas parah, sarankan bantuan ahli kesehatan hewan.
 2. Gunakan informasi panduan resmi database berikut jika relevan:
 {$guidesContext}
-3. Gaya jawaban: Mulailah langsung pada inti jawaban dengan ramah, ringkas, dan jelas dalam Bahasa Indonesia tanpa memperkenalkan nama atau peran di awal kalimat (sapaan singkat hanya boleh jika pesan pengguna sekadar menyapa tanpa pertanyaan). Tulis teks polos bersih tanpa markup Markdown seperti tanda bintang (** atau *), pagar (#), garis ---, atau backtick (`); gunakan daftar angka (1., 2.) atau simbol peluru (•) saja.";
+3. Gaya jawaban: Mulailah langsung pada inti jawaban dengan ramah, ringkas, dan jelas dalam Bahasa Indonesia tanpa memperkenalkan nama atau peran di awal kalimat ({$greetingInstruction}). Tulis teks polos bersih tanpa markup Markdown seperti tanda bintang (** atau *), pagar (#), garis ---, atau backtick (`); gunakan daftar angka (1., 2.) atau simbol peluru (•) saja.";
 
                 $recentTurns = ChatMessage::where('chat_session_id', $session->id)
                     ->where('id', '<', $userChat->id)
@@ -303,8 +311,8 @@ Pedoman Penting:
         }
 
         $assistantReply = $this->stripMarkdown((string) $assistantReply);
-        if (! $isPureGreeting) {
-            $assistantReply = $this->stripLeadingSelfIntro($assistantReply);
+        if ($hasPreviousTurns || ! $isPureGreeting) {
+            $assistantReply = $this->stripLeadingGreetings($assistantReply);
         }
 
         $recommendedProductsData = $matchingProducts->map(function ($p) {
@@ -429,18 +437,25 @@ Pedoman Penting:
     }
 
     /**
-     * Remove redundant Kiko self-introductions from direct answers when the user asked an actual question.
+     * Remove repetitive greetings and Kiko self-introductions from answers.
      */
-    private function stripLeadingSelfIntro(string $text): string
+    private function stripLeadingGreetings(string $text): string
     {
-        $stripped = preg_replace(
-            '/^(?:(?:halo|hai|hi|hello|selamat\s+(?:pagi|siang|sore|malam))[^\n.!?]{0,25}[.!?\s]+)?(?:saya|aku)\s+kiko\b[^\n.!?]*[.!?\s]+(?:senang\s+(?:sekali\s+)?bisa\s+membantu[^\n.!?]*[.!?\s]+)?/iu',
+        $pattern = '/^(?:(?:halo|hai|hi|hello|selamat\s+(?:pagi|siang|sore|malam)|salam)(?:\s+(?:kak(?:ak)?|sobat(?:ku|\s+ikan)?|teman|gan|kiko))?[!,.:\s]+)+(?:(?:saya|aku)\s+kiko\b[^\n.!?]*[.!?\s]+(?:senang\s+(?:sekali\s+)?bisa\s+membantu[^\n.!?]*[.!?\s]+)?)?/iu';
+
+        $stripped = preg_replace($pattern, '', $text);
+        if (is_string($stripped) && trim($stripped) !== '') {
+            return ucfirst(ltrim($stripped));
+        }
+
+        $fallback = preg_replace(
+            '/^(?:(?:saya|aku)\s+kiko\b[^\n.!?]*[.!?\s]+(?:senang\s+(?:sekali\s+)?bisa\s+membantu[^\n.!?]*[.!?\s]+)?)/iu',
             '',
             $text,
         );
 
-        if (is_string($stripped) && trim($stripped) !== '') {
-            return ltrim($stripped);
+        if (is_string($fallback) && trim($fallback) !== '') {
+            return ucfirst(ltrim($fallback));
         }
 
         return $text;

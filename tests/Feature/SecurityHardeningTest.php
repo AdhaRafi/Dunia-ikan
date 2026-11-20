@@ -461,7 +461,7 @@ class SecurityHardeningTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonPath('is_fallback', false)
-            ->assertJsonPath('assistant_message.message', 'Halo! Ini jawaban AI Kiko.');
+            ->assertJsonPath('assistant_message.message', 'Ini jawaban AI Kiko.');
 
         Http::assertSent(function ($request) {
             return str_starts_with($request->url(), 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent')
@@ -590,6 +590,56 @@ class SecurityHardeningTest extends TestCase
         $fallbackResponse->assertStatus(200)->assertJsonPath('is_fallback', true);
         $this->assertStringNotContainsString('maskot', $fallbackReply);
         $this->assertStringNotContainsString('Halo! Aku Kiko', $fallbackReply);
+    }
+
+    public function test_chatbot_preserves_greeting_only_on_initial_pure_greeting_and_strips_on_follow_up(): void
+    {
+        config([
+            'services.gemini.api_key' => 'AIzaTestGeminiKey',
+            'services.gemini.model' => 'gemini-3.5-flash-lite',
+        ]);
+
+        Http::preventStrayRequests();
+        Http::fake([
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent' => Http::sequence()
+                ->push([
+                    'candidates' => [[
+                        'content' => [
+                            'parts' => [[
+                                'text' => 'Halo! Ada yang bisa Kiko bantu seputar ikan hias hari ini?',
+                            ]],
+                        ],
+                    ]],
+                ], 200)
+                ->push([
+                    'candidates' => [[
+                        'content' => [
+                            'parts' => [[
+                                'text' => 'Halo Kak! Ikan cupang butuh air bersih dengan suhu 26-28C.',
+                            ]],
+                        ],
+                    ]],
+                ], 200),
+        ]);
+
+        // 1. Initial pure greeting -> greeting preserved
+        $first = $this->postJson('/chatbot/message', [
+            'message' => 'Halo Kiko',
+        ]);
+        $first->assertStatus(200);
+        $token = $first->json('session_token');
+        $this->assertStringStartsWith('Halo!', $first->json('assistant_message.message'));
+
+        // 2. Follow-up question in the same session -> greeting stripped, answer directly
+        $second = $this->postJson('/chatbot/message', [
+            'session_token' => $token,
+            'message' => 'suhu air yang bagus berapa',
+        ]);
+        $second->assertStatus(200);
+        $this->assertSame(
+            'Ikan cupang butuh air bersih dengan suhu 26-28C.',
+            $second->json('assistant_message.message'),
+        );
     }
 
     public function test_filament_admin_login_enforces_turnstile_and_preserves_isolated_guard(): void
