@@ -189,7 +189,7 @@ export default function Index({ products, categories, cities, filters }) {
                     {/* Sheet Header Row: Headline + Pill Search Bar */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200/80 dark:border-neutral-800">
                         <div>
-                            <h1 className="text-mask text-xl sm:text-2xl font-extrabold tracking-tight text-[#001454] dark:text-white">
+                            <h1 className="text-mask text-xl sm:text-2xl font-extrabold tracking-tight text-[#14335D] dark:text-white">
                                 <span className="text-mask-inner">
                                     {sectionTitle}
                                 </span>
@@ -217,11 +217,11 @@ export default function Index({ products, categories, cities, filters }) {
                                 placeholder={pick('Cari ikan, filter, tanaman...', 'Search fish, filters, plants...')}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="flex-1 min-w-0 bg-transparent border-0 p-0 text-xs text-[#001454] dark:text-white placeholder:text-slate-400 focus:ring-0 focus:outline-none"
+                                className="flex-1 min-w-0 bg-transparent border-0 p-0 text-xs text-[#14335D] dark:text-white placeholder:text-slate-400 focus:ring-0 focus:outline-none"
                             />
                             <button
                                 type="submit"
-                                className="btn-motion btn-sheen px-4 py-1.5 rounded-full bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] text-xs font-bold hover:opacity-95 shrink-0"
+                                className="btn-motion btn-sheen px-4 py-1.5 rounded-full bg-[#14335D] dark:bg-[#60C2E6] text-white dark:text-[#14335D] text-xs font-bold hover:opacity-95 shrink-0"
                             >
                                 {pick('Cari', 'Search')}
                             </button>
@@ -232,7 +232,7 @@ export default function Index({ products, categories, cities, filters }) {
                     <button
                         type="button"
                         onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
-                        className="mt-5 mb-2 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-[#0f172a] px-4 py-2.5 text-xs font-bold text-[#001454] dark:text-white lg:hidden"
+                        className="mt-5 mb-2 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-[#0f172a] px-4 py-2.5 text-xs font-bold text-[#14335D] dark:text-white lg:hidden"
                     >
                         <SlidersHorizontal className="h-4 w-4" />
                         {mobileFilterOpen ? pick('Tutup Filter', 'Close Filters') : pick('Filter & Kategori', 'Filters & Categories')}
@@ -244,14 +244,14 @@ export default function Index({ products, categories, cities, filters }) {
                         <aside className={`lg:col-span-3 space-y-5 ${mobileFilterOpen ? 'block' : 'hidden lg:block'}`}>
                             <div className="space-y-3">
                                 <div className="flex items-center justify-between">
-                                    <h2 className="text-sm font-extrabold text-[#001454] dark:text-white">
+                                    <h2 className="text-sm font-extrabold text-[#14335D] dark:text-white">
                                         {pick('Kategori', 'Categories')}
                                     </h2>
                                     {hasActiveFilters && (
                                         <button
                                             type="button"
                                             onClick={handleReset}
-                                            className="text-[11px] font-semibold text-slate-400 hover:text-[#0684E5] transition"
+                                            className="text-[11px] font-semibold text-slate-400 hover:text-[#005A9D] transition"
                                         >
                                             Reset
                                         </button>
@@ -264,13 +264,13 @@ export default function Index({ products, categories, cities, filters }) {
                                         onClick={() => toggleSection('categories')}
                                         className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition ${
                                             !category
-                                                ? 'bg-white dark:bg-[#0f172a] text-[#001454] dark:text-white shadow-2xs border border-slate-200/80 dark:border-neutral-800'
+                                                ? 'bg-white dark:bg-[#0f172a] text-[#14335D] dark:text-white shadow-2xs border border-slate-200/80 dark:border-neutral-800'
                                                 : 'text-slate-600 dark:text-neutral-300 hover:bg-white/60 dark:hover:bg-[#0f172a]'
                                         }`}
                                     >
                                         <span>{pick('Semua Produk', 'All Products')}</span>
                                         <span className="flex items-center gap-1.5">
-                                            <span className="px-1.5 py-0.5 rounded-full bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] text-[10px] font-bold">
+                                            <span className="px-1.5 py-0.5 rounded-full bg-[#14335D] dark:bg-[#60C2E6] text-white dark:text-[#14335D] text-[10px] font-bold">
                                                 {products?.total ?? 0}
                                             </span>
                                             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${openSections.categories ? 'rotate-180' : ''}`} />
@@ -287,8 +287,8 @@ export default function Index({ products, categories, cities, filters }) {
                                                 }}
                                                 className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition ${
                                                     category === ''
-                                                        ? 'font-bold text-[#0684E5] dark:text-[#4AB8BD]'
-                                                        : 'text-slate-600 dark:text-neutral-400 hover:text-[#001454] dark:hover:text-white'
+                                                        ? 'font-bold text-[#005A9D] dark:text-[#60C2E6]'
+                                                        : 'text-slate-600 dark:text-neutral-400 hover:text-[#14335D] dark:hover:text-white'
                                                 }`}
                                             >
                                                 {pick('Semua Kategori', 'All Categories')}
@@ -303,8 +303,8 @@ export default function Index({ products, categories, cities, filters }) {
                                                     }}
                                                     className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition ${
                                                         category === item.slug
-                                                            ? 'font-bold text-[#0684E5] dark:text-[#4AB8BD]'
-                                                            : 'text-slate-600 dark:text-neutral-400 hover:text-[#001454] dark:hover:text-white'
+                                                            ? 'font-bold text-[#005A9D] dark:text-[#60C2E6]'
+                                                            : 'text-slate-600 dark:text-neutral-400 hover:text-[#14335D] dark:hover:text-white'
                                                     }`}
                                                 >
                                                     {trCategory(item.name)}
@@ -317,7 +317,7 @@ export default function Index({ products, categories, cities, filters }) {
 
                             {/* Quick Sort List */}
                             <div className="border-t border-slate-200/80 dark:border-neutral-800 pt-4 space-y-1.5">
-                                <p className="text-xs font-bold text-[#001454] dark:text-white px-1 mb-2">
+                                <p className="text-xs font-bold text-[#14335D] dark:text-white px-1 mb-2">
                                     {pick('Urutkan', 'Sort By')}
                                 </p>
                                 {SORT_OPTIONS.map((option) => (
@@ -330,8 +330,8 @@ export default function Index({ products, categories, cities, filters }) {
                                         }}
                                         className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition ${
                                             sortBy === option.id
-                                                ? 'font-bold text-[#001454] dark:text-white bg-white dark:bg-[#0f172a] shadow-2xs'
-                                                : 'text-slate-600 dark:text-neutral-400 hover:text-[#001454] dark:hover:text-white'
+                                                ? 'font-bold text-[#14335D] dark:text-white bg-white dark:bg-[#0f172a] shadow-2xs'
+                                                : 'text-slate-600 dark:text-neutral-400 hover:text-[#14335D] dark:hover:text-white'
                                         }`}
                                     >
                                         {isEn ? option.labelEn : option.labelId}
@@ -344,7 +344,7 @@ export default function Index({ products, categories, cities, filters }) {
                                 <button
                                     type="button"
                                     onClick={() => toggleSection('water')}
-                                    className="w-full flex items-center justify-between px-1 py-1 text-xs font-bold text-[#001454] dark:text-white"
+                                    className="w-full flex items-center justify-between px-1 py-1 text-xs font-bold text-[#14335D] dark:text-white"
                                 >
                                     <span>{pick('Tipe Air', 'Water Type')}</span>
                                     <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${openSections.water ? 'rotate-180' : ''}`} />
@@ -361,8 +361,8 @@ export default function Index({ products, categories, cities, filters }) {
                                                 }}
                                                 className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition ${
                                                     waterType === option.id
-                                                        ? 'font-bold text-[#0684E5] dark:text-[#4AB8BD]'
-                                                        : 'text-slate-600 dark:text-neutral-400 hover:text-[#001454]'
+                                                        ? 'font-bold text-[#005A9D] dark:text-[#60C2E6]'
+                                                        : 'text-slate-600 dark:text-neutral-400 hover:text-[#14335D]'
                                                 }`}
                                             >
                                                 {isEn ? option.labelEn : option.labelId}
@@ -377,7 +377,7 @@ export default function Index({ products, categories, cities, filters }) {
                                 <button
                                     type="button"
                                     onClick={() => toggleSection('sex')}
-                                    className="w-full flex items-center justify-between px-1 py-1 text-xs font-bold text-[#001454] dark:text-white"
+                                    className="w-full flex items-center justify-between px-1 py-1 text-xs font-bold text-[#14335D] dark:text-white"
                                 >
                                     <span>{pick('Jenis Kelamin', 'Sex')}</span>
                                     <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${openSections.sex ? 'rotate-180' : ''}`} />
@@ -394,8 +394,8 @@ export default function Index({ products, categories, cities, filters }) {
                                                 }}
                                                 className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition ${
                                                     sex === option.id
-                                                        ? 'font-bold text-[#0684E5] dark:text-[#4AB8BD]'
-                                                        : 'text-slate-600 dark:text-neutral-400 hover:text-[#001454]'
+                                                        ? 'font-bold text-[#005A9D] dark:text-[#60C2E6]'
+                                                        : 'text-slate-600 dark:text-neutral-400 hover:text-[#14335D]'
                                                 }`}
                                             >
                                                 {isEn ? option.labelEn : option.labelId}
@@ -410,7 +410,7 @@ export default function Index({ products, categories, cities, filters }) {
                                 <button
                                     type="button"
                                     onClick={() => toggleSection('city')}
-                                    className="w-full flex items-center justify-between px-1 py-1 text-xs font-bold text-[#001454] dark:text-white"
+                                    className="w-full flex items-center justify-between px-1 py-1 text-xs font-bold text-[#14335D] dark:text-white"
                                 >
                                     <span>{pick('Kota Penjual', 'Seller City')}</span>
                                     <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${openSections.city ? 'rotate-180' : ''}`} />
@@ -424,7 +424,7 @@ export default function Index({ products, categories, cities, filters }) {
                                                 applyFilters({ city: '' });
                                             }}
                                             className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition ${
-                                                city === '' ? 'font-bold text-[#0684E5] dark:text-[#4AB8BD]' : 'text-slate-600 dark:text-neutral-400 hover:text-[#001454]'
+                                                city === '' ? 'font-bold text-[#005A9D] dark:text-[#60C2E6]' : 'text-slate-600 dark:text-neutral-400 hover:text-[#14335D]'
                                             }`}
                                         >
                                             {pick('Semua Kota', 'All Cities')}
@@ -438,7 +438,7 @@ export default function Index({ products, categories, cities, filters }) {
                                                     applyFilters({ city: item });
                                                 }}
                                                 className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition ${
-                                                    city === item ? 'font-bold text-[#0684E5] dark:text-[#4AB8BD]' : 'text-slate-600 dark:text-neutral-400 hover:text-[#001454]'
+                                                    city === item ? 'font-bold text-[#005A9D] dark:text-[#60C2E6]' : 'text-slate-600 dark:text-neutral-400 hover:text-[#14335D]'
                                                 }`}
                                             >
                                                 {item}
@@ -453,7 +453,7 @@ export default function Index({ products, categories, cities, filters }) {
                                 <button
                                     type="button"
                                     onClick={() => toggleSection('price')}
-                                    className="w-full flex items-center justify-between px-1 py-1 text-xs font-bold text-[#001454] dark:text-white"
+                                    className="w-full flex items-center justify-between px-1 py-1 text-xs font-bold text-[#14335D] dark:text-white"
                                 >
                                     <span>{pick('Rentang Harga', 'Price Range')}</span>
                                     <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${openSections.price ? 'rotate-180' : ''}`} />
@@ -466,20 +466,20 @@ export default function Index({ products, categories, cities, filters }) {
                                                 placeholder="Min Rp"
                                                 value={minPrice}
                                                 onChange={(e) => setMinPrice(e.target.value)}
-                                                className="w-full rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#0f172a] px-2.5 py-1.5 text-xs focus:border-[#4AB8BD] focus:outline-none"
+                                                className="w-full rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#0f172a] px-2.5 py-1.5 text-xs focus:border-[#60C2E6] focus:outline-none"
                                             />
                                             <input
                                                 type="number"
                                                 placeholder="Max Rp"
                                                 value={maxPrice}
                                                 onChange={(e) => setMaxPrice(e.target.value)}
-                                                className="w-full rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#0f172a] px-2.5 py-1.5 text-xs focus:border-[#4AB8BD] focus:outline-none"
+                                                className="w-full rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#0f172a] px-2.5 py-1.5 text-xs focus:border-[#60C2E6] focus:outline-none"
                                             />
                                         </div>
                                         <button
                                             type="button"
                                             onClick={() => applyFilters()}
-                                            className="w-full rounded-full bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] font-bold py-1.5 text-xs hover:opacity-90 transition"
+                                            className="w-full rounded-full bg-[#14335D] dark:bg-[#60C2E6] text-white dark:text-[#14335D] font-bold py-1.5 text-xs hover:opacity-90 transition"
                                         >
                                             {pick('Terapkan', 'Apply')}
                                         </button>
@@ -503,7 +503,7 @@ export default function Index({ products, categories, cities, filters }) {
                                 </div>
                             ) : (
                                 <div className="rounded-2xl border border-slate-200/80 dark:border-neutral-800 bg-white dark:bg-[#0f172a] p-12 text-center space-y-3">
-                                    <h3 className="text-base font-bold text-[#001454] dark:text-white">
+                                    <h3 className="text-base font-bold text-[#14335D] dark:text-white">
                                         {pick('Produk tidak ditemukan', 'No products found')}
                                     </h3>
                                     <p className="mx-auto max-w-sm text-xs text-slate-500 dark:text-neutral-400">
@@ -515,7 +515,7 @@ export default function Index({ products, categories, cities, filters }) {
                                     <button
                                         type="button"
                                         onClick={handleReset}
-                                        className="rounded-full bg-[#001454] dark:bg-[#4AB8BD] px-5 py-2 text-xs font-bold text-white dark:text-[#001454] hover:opacity-90 transition"
+                                        className="rounded-full bg-[#14335D] dark:bg-[#60C2E6] px-5 py-2 text-xs font-bold text-white dark:text-[#14335D] hover:opacity-90 transition"
                                     >
                                         {pick('Reset Filter', 'Reset Filters')}
                                     </button>
@@ -533,7 +533,7 @@ export default function Index({ products, categories, cities, filters }) {
                                             dangerouslySetInnerHTML={{ __html: link.label }}
                                             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
                                                 link.active
-                                                    ? 'bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] font-bold'
+                                                    ? 'bg-[#14335D] dark:bg-[#60C2E6] text-white dark:text-[#14335D] font-bold'
                                                     : link.url
                                                     ? 'text-slate-600 dark:text-neutral-300 hover:bg-white dark:hover:bg-[#0f172a]'
                                                     : 'text-slate-300 dark:text-neutral-600 cursor-not-allowed'

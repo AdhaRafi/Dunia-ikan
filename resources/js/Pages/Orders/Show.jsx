@@ -205,7 +205,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
 
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
                 {/* Back button */}
-                <Link href="/orders" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-dunia-blue dark:hover:text-[#4AB8BD] transition">
+                <Link href="/orders" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-dunia-blue dark:hover:text-[#60C2E6] transition">
                     <ArrowLeft className="w-4 h-4" />
                     {pick('Kembali ke Daftar Pesanan', 'Back to Orders')}
                 </Link>
@@ -228,7 +228,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                             <span className="text-xs text-slate-400 font-semibold">
                                 {pick('Total Tagihan', 'Total Due')}
                             </span>
-                            <p className="text-2xl font-extrabold text-dunia-blue dark:text-[#4AB8BD]">
+                            <p className="text-2xl font-extrabold text-dunia-blue dark:text-[#60C2E6]">
                                 {formatPrice(order.grand_total)}
                             </p>
                         </div>
@@ -382,7 +382,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                     <div className="bg-white dark:bg-[#0e1424] p-6 rounded-2xl border border-sky-100 dark:border-slate-800 shadow-xs space-y-6">
                         <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 gap-2">
                             <div className="flex items-center gap-2 text-sm font-bold text-dunia-navy dark:text-white">
-                                <CreditCard className="w-4 h-4 text-dunia-blue dark:text-[#4AB8BD]" />
+                                <CreditCard className="w-4 h-4 text-dunia-blue dark:text-[#60C2E6]" />
                                 <span>{pick('Penyelesaian Pembayaran Pesanan', 'Complete Order Payment')}</span>
                             </div>
                             <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300">
@@ -465,7 +465,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                                 </p>
                                 <div className="space-y-1 font-mono text-sm text-slate-700 dark:text-slate-300">
                                     <p>Bank: <strong className="font-sans text-dunia-navy dark:text-white">{store?.bank_name || 'BCA'}</strong></p>
-                                    <p>{pick('No. Rekening:', 'Account Number:')} <strong className="text-dunia-blue dark:text-[#4AB8BD] text-base font-bold">{store?.bank_account_number || '7820192837'}</strong></p>
+                                    <p>{pick('No. Rekening:', 'Account Number:')} <strong className="text-dunia-blue dark:text-[#60C2E6] text-base font-bold">{store?.bank_account_number || '7820192837'}</strong></p>
                                     <p>{pick('Atas Nama:', 'Account Name:')} <strong className="font-sans text-slate-800 dark:text-slate-200">{store?.bank_account_name || store?.name}</strong></p>
                                 </div>
                                 <p className="text-[11px] text-slate-500 dark:text-slate-400 pt-1">
@@ -557,7 +557,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                                             href={`/storage/${order.payment_proof}`}
                                             target="_blank"
                                             rel="noreferrer"
-                                            className="text-xs font-bold text-dunia-blue dark:text-[#4AB8BD] underline"
+                                            className="text-xs font-bold text-dunia-blue dark:text-[#60C2E6] underline"
                                         >
                                             {pick('Lihat Bukti Terkirim', 'View Submitted Proof')}
                                         </a>
@@ -571,7 +571,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                 {/* Items & Store Details */}
                 <div className="bg-white dark:bg-[#0e1424] p-6 rounded-2xl border border-sky-100 dark:border-slate-800 shadow-xs space-y-4">
                     <h3 className="font-bold text-sm text-dunia-navy dark:text-white uppercase tracking-wider flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
-                        <Store className="w-4 h-4 text-dunia-marine dark:text-[#4AB8BD]" />
+                        <Store className="w-4 h-4 text-dunia-marine dark:text-[#60C2E6]" />
                         {pick('Detail Ikan & Produk dari', 'Items from')} {store?.name}
                     </h3>
 
@@ -602,7 +602,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                         </div>
                         <div className="flex justify-between font-bold text-dunia-navy dark:text-white text-sm pt-2 border-t border-slate-200 dark:border-slate-800">
                             <span>{pick('Total Tagihan:', 'Grand Total:')}</span>
-                            <span className="text-dunia-blue dark:text-[#4AB8BD] font-extrabold text-base">{formatPrice(order.grand_total)}</span>
+                            <span className="text-dunia-blue dark:text-[#60C2E6] font-extrabold text-base">{formatPrice(order.grand_total)}</span>
                         </div>
                     </div>
                 </div>

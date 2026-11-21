@@ -112,7 +112,7 @@ export default function Show({ store, products, storeRating }) {
             <section className="container-page py-14 md:py-20">
                 <div className="grid gap-8 lg:grid-cols-12">
                     <Reveal className="lg:col-span-7">
-                        <h2 className="text-[20px] font-bold tracking-[-0.02em] text-[#001454] dark:text-white">
+                        <h2 className="text-[20px] font-bold tracking-[-0.02em] text-[#14335D] dark:text-white">
                             {pick('Tentang toko', 'About the store')}
                         </h2>
                         <p className="mt-3 max-w-[62ch] whitespace-pre-line text-[16px] leading-relaxed text-slate-600 dark:text-slate-300">
@@ -122,8 +122,8 @@ export default function Show({ store, products, storeRating }) {
                     </Reveal>
 
                     <Reveal className="lg:col-span-5" delay={80}>
-                        <div className="rounded-2xl aquatic-soft-panel border border-[#0684E5]/15 dark:border-[#4AB8BD]/20 p-6">
-                            <h2 className="text-[20px] font-bold tracking-[-0.02em] text-[#001454] dark:text-white">
+                        <div className="rounded-2xl aquatic-soft-panel border border-[#005A9D]/15 dark:border-[#60C2E6]/20 p-6">
+                            <h2 className="text-[20px] font-bold tracking-[-0.02em] text-[#14335D] dark:text-white">
                                 {pick('Garansi hidup', 'Live arrival guarantee')}
                             </h2>
                             <p className="mt-3 text-[16px] leading-relaxed text-slate-600 dark:text-slate-300">
@@ -140,7 +140,7 @@ export default function Show({ store, products, storeRating }) {
 
             <section className="container-page pb-24">
                 <Reveal className="flex flex-wrap items-end justify-between gap-3">
-                    <h2 className="head-type text-[#001454] dark:text-white">{pick('Produk toko', 'Store catalog')}</h2>
+                    <h2 className="head-type text-[#14335D] dark:text-white">{pick('Produk toko', 'Store catalog')}</h2>
                     <p className="text-[16px] tabular-nums text-slate-500 dark:text-slate-400">
                         {products?.total ?? 0} {pick('produk', 'items')}
                     </p>
@@ -155,7 +155,7 @@ export default function Show({ store, products, storeRating }) {
                         ))}
                     </div>
                 ) : (
-                    <p className="mt-6 rounded-2xl aquatic-soft-panel border border-[#0684E5]/15 dark:border-[#4AB8BD]/20 p-6 text-[16px] text-slate-600 dark:text-slate-300">
+                    <p className="mt-6 rounded-2xl aquatic-soft-panel border border-[#005A9D]/15 dark:border-[#60C2E6]/20 p-6 text-[16px] text-slate-600 dark:text-slate-300">
                         {pick('Toko ini belum memiliki produk aktif.', 'This store does not have any active products yet.')}
                     </p>
                 )}
@@ -173,9 +173,9 @@ export default function Show({ store, products, storeRating }) {
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                                 className={`flex h-10 min-w-10 items-center justify-center rounded-xl border px-3 text-[13px] font-semibold transition ${
                                     link.active
-                                        ? 'bg-[#0684E5] text-white border-[#0684E5]'
+                                        ? 'bg-[#005A9D] text-white border-[#005A9D]'
                                         : link.url
-                                          ? 'bg-white dark:bg-[#0e1424] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-[#0684E5]'
+                                          ? 'bg-white dark:bg-[#0e1424] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-[#005A9D]'
                                           : 'cursor-not-allowed bg-slate-50 dark:bg-[#0b101d] text-slate-300 dark:text-slate-600 border-slate-200/60 dark:border-slate-800/60'
                                 }`}
                             />

@@ -1,6 +1,6 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import PasswordInput from '@/Components/PasswordInput';
+import PasswordInput, { getPasswordConfirmationError } from '@/Components/PasswordInput';
 import TextInput from '@/Components/TextInput';
 import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
 import { useLanguage } from '@/lib/i18n';
@@ -15,8 +15,20 @@ export default function ResetPassword({ token, email }) {
         password_confirmation: '',
     });
 
+    const hasPasswordMismatch = Boolean(data.password_confirmation) && data.password !== data.password_confirmation;
+    const passwordConfirmationError = getPasswordConfirmationError(
+        data.password,
+        data.password_confirmation,
+        errors.password_confirmation,
+        pick,
+    );
+
     const submit = (e) => {
         e.preventDefault();
+
+        if (hasPasswordMismatch) {
+            return;
+        }
 
         post(route('password.store'), {
             onFinish: () => reset('password', 'password_confirmation'),
@@ -86,12 +98,13 @@ export default function ResetPassword({ token, email }) {
                         wrapperClassName="mt-1.5"
                         placeholder={pick('Ulangi kata sandi', 'Repeat password')}
                         autoComplete="new-password"
+                        invalid={Boolean(passwordConfirmationError)}
                         onChange={(e) =>
                             setData('password_confirmation', e.target.value)
                         }
                     />
                     <InputError
-                        message={errors.password_confirmation}
+                        message={passwordConfirmationError}
                         className="mt-1.5"
                     />
                 </div>

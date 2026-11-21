@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 export default function StoreLogo({
     store,
     className = 'w-full h-full object-cover',
-    fallbackClassName = 'w-full h-full bg-slate-50 dark:bg-[#162240] flex items-center justify-center font-extrabold text-3xl text-[#001454] dark:text-white',
+    fallbackClassName = 'w-full h-full bg-slate-50 dark:bg-[#162240] flex items-center justify-center font-extrabold text-3xl text-[#14335D] dark:text-white',
     loading = 'lazy',
 }) {
     const src = store?.logo_url;

@@ -102,7 +102,7 @@ export default function Login({
                         {canResetPassword && (
                             <Link
                                 href={route('password.request')}
-                                className="text-xs font-medium text-[#2448f5] dark:text-sky-400 hover:underline"
+                                className="text-xs font-medium text-[#005A9D] dark:text-sky-400 hover:underline"
                             >
                                 {pick('Lupa kata sandi?', 'Forgot password?')}
                             </Link>
@@ -191,7 +191,7 @@ export default function Login({
                 {pick('Belum punya akun?', "Don't have an account?")}{' '}
                 <Link
                     href="/register"
-                    className="font-semibold text-[#2448f5] dark:text-sky-400 hover:underline"
+                    className="font-semibold text-[#005A9D] dark:text-sky-400 hover:underline"
                 >
                     {pick('Daftar', 'Sign Up')}
                 </Link>

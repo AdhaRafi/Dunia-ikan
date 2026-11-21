@@ -78,7 +78,7 @@ function AccordionCard({ title, defaultOpen = true, children }) {
                 type="button"
                 onClick={() => setOpen((prev) => !prev)}
                 aria-expanded={open}
-                className="group w-full flex items-center justify-between gap-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1] rounded-lg"
+                className="group w-full flex items-center justify-between gap-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00477C] rounded-lg"
             >
                 <span className="text-sm font-bold text-slate-900 dark:text-white">{title}</span>
                 <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : 'group-hover:translate-y-0.5'}`} />
@@ -304,7 +304,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                             className="w-11 h-11 rounded-full object-cover border border-slate-200 dark:border-neutral-700 shrink-0"
                                         />
                                     ) : (
-                                        <div className="w-11 h-11 rounded-full bg-[#001454] dark:bg-[#0D2E92] text-white font-bold text-sm flex items-center justify-center shrink-0">
+                                        <div className="w-11 h-11 rounded-full bg-[#14335D] dark:bg-[#14335D] text-white font-bold text-sm flex items-center justify-center shrink-0">
                                             {store.name?.charAt(0)?.toUpperCase() || 'T'}
                                         </div>
                                     )}
@@ -313,7 +313,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                         <div className="flex flex-wrap items-center gap-2">
                                             <Link
                                                 href={`/stores/${store.slug}`}
-                                                className="text-sm font-bold text-slate-900 dark:text-white hover:text-[#0267C1] dark:hover:text-sky-400 truncate"
+                                                className="text-sm font-bold text-slate-900 dark:text-white hover:text-[#00477C] dark:hover:text-sky-400 truncate"
                                             >
                                                 {store.name}
                                             </Link>
@@ -345,7 +345,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                     <div className="lg:col-span-6 space-y-5 min-w-0">
                         <div>
                             <div className="flex flex-wrap items-center justify-between gap-2">
-                                <p className="text-xs font-semibold text-[#0267C1] dark:text-sky-400">
+                                <p className="text-xs font-semibold text-[#00477C] dark:text-sky-400">
                                     {trCategory(product.category?.name)}
                                     {fish?.species_name ? ` · ${fish.species_name}` : ''}
                                 </p>
@@ -475,7 +475,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                         type="button"
                                         onClick={() => handleCartAction(true)}
                                         disabled={adding || buying}
-                                        className="btn-motion btn-sheen flex-1 min-w-[140px] h-11 px-5 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-[#0684E5] dark:hover:bg-[#0267C1] text-white text-xs sm:text-sm font-semibold shadow-[0_6px_18px_rgba(15,23,42,0.18)] flex items-center justify-center disabled:opacity-50"
+                                        className="btn-motion btn-sheen flex-1 min-w-[140px] h-11 px-5 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-[#005A9D] dark:hover:bg-[#00477C] text-white text-xs sm:text-sm font-semibold shadow-[0_6px_18px_rgba(15,23,42,0.18)] flex items-center justify-center disabled:opacity-50"
                                     >
                                         {buying ? pick('Memproses...', 'Processing...') : pick('Beli Sekarang', 'Buy Now')}
                                     </button>
@@ -594,7 +594,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                             </h2>
                             <Link
                                 href={`/products?category=${product.category?.slug || ''}`}
-                                className="text-xs sm:text-sm font-semibold text-[#0267C1] dark:text-sky-400 hover:underline"
+                                className="text-xs sm:text-sm font-semibold text-[#00477C] dark:text-sky-400 hover:underline"
                             >
                                 {pick('Lihat semua', 'View all')}
                             </Link>

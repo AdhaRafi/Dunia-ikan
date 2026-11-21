@@ -79,7 +79,7 @@ export default function SellerLayout({ children, title }) {
     ];
 
     return (
-        <div className="relative isolate min-h-screen aquatic-canvas-ambient text-[#001454] dark:text-[#e4e7ff] flex flex-col font-sans overflow-x-clip transition-colors duration-200">
+        <div className="relative isolate min-h-screen aquatic-canvas-ambient text-[#14335D] dark:text-[#e4e7ff] flex flex-col font-sans overflow-x-clip transition-colors duration-200">
             {/* Top Seller Bar */}
             <header className="bg-white/90 dark:bg-[#0e1424]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30">
                 <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
@@ -95,7 +95,7 @@ export default function SellerLayout({ children, title }) {
                         <span className="hidden sm:inline text-slate-300 dark:text-slate-700">|</span>
                         <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                             <BrandWordmark className="h-7 sm:h-8 shrink-0" />
-                            <span className="px-1.5 sm:px-2 py-0.5 rounded-md bg-blue-100 dark:bg-[#0684E5]/20 text-dunia-blue dark:text-sky-300 text-[10px] sm:text-[11px] font-bold uppercase whitespace-nowrap">
+                            <span className="px-1.5 sm:px-2 py-0.5 rounded-md bg-blue-100 dark:bg-[#005A9D]/20 text-dunia-blue dark:text-sky-300 text-[10px] sm:text-[11px] font-bold uppercase whitespace-nowrap">
                                 {pick('Portal Penjual', 'Seller Portal')}
                             </span>
                         </div>
@@ -166,7 +166,7 @@ export default function SellerLayout({ children, title }) {
                 <aside className="md:col-span-1 space-y-2.5 md:space-y-3 min-w-0">
                     <div className="bg-white dark:bg-[#0e1424] p-3 sm:p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
                         <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-dunia-blue/10 dark:bg-[#0684E5]/20 text-dunia-blue dark:text-[#4AB8BD] flex items-center justify-center font-bold shrink-0">
+                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-dunia-blue/10 dark:bg-[#005A9D]/20 text-dunia-blue dark:text-[#60C2E6] flex items-center justify-center font-bold shrink-0">
                                 <Store className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div className="min-w-0">
@@ -185,8 +185,8 @@ export default function SellerLayout({ children, title }) {
                                     href={item.href}
                                     className={`shrink-0 whitespace-nowrap flex items-center gap-2 sm:gap-2.5 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl transition ${
                                         item.active
-                                            ? 'bg-sky-50 dark:bg-[#0684E5]/15 text-dunia-blue dark:text-[#4AB8BD] font-bold'
-                                            : 'text-slate-700 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800/80 hover:text-dunia-blue dark:hover:text-[#4AB8BD]'
+                                            ? 'bg-sky-50 dark:bg-[#005A9D]/15 text-dunia-blue dark:text-[#60C2E6] font-bold'
+                                            : 'text-slate-700 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800/80 hover:text-dunia-blue dark:hover:text-[#60C2E6]'
                                     }`}
                                 >
                                     <Icon className={`w-4 h-4 shrink-0 ${item.iconClass}`} />

@@ -95,7 +95,7 @@ export default function ForgotPassword({ status }) {
                 {pick('Ingat kata sandi Anda?', 'Remember your password?')}{' '}
                 <Link
                     href="/login"
-                    className="font-semibold text-[#2448f5] dark:text-sky-400 hover:underline"
+                    className="font-semibold text-[#005A9D] dark:text-sky-400 hover:underline"
                 >
                     {pick('Masuk', 'Sign in')}
                 </Link>

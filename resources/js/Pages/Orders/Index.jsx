@@ -89,7 +89,7 @@ export default function Index({ orders }) {
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                         <div className="space-y-1">
                                             <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 font-medium">
-                                                <Store className="w-3.5 h-3.5 text-dunia-marine dark:text-[#4AB8BD]" />
+                                                <Store className="w-3.5 h-3.5 text-dunia-marine dark:text-[#60C2E6]" />
                                                 {pick('Toko:', 'Store:')}{' '}
                                                 <strong className="text-slate-800 dark:text-slate-200">{order.store?.name}</strong> ({order.store?.city})
                                             </p>
@@ -107,7 +107,7 @@ export default function Index({ orders }) {
                                             <p className="text-[11px] text-slate-400">
                                                 {pick('Total Tagihan', 'Total Due')}
                                             </p>
-                                            <p className="text-base font-extrabold text-dunia-blue dark:text-[#4AB8BD]">
+                                            <p className="text-base font-extrabold text-dunia-blue dark:text-[#60C2E6]">
                                                 {formatPrice(order.grand_total)}
                                             </p>
                                         </div>

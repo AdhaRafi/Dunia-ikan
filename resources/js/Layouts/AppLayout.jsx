@@ -168,7 +168,7 @@ export default function AppLayout({ children }) {
     }, []);
 
     return (
-        <div className="relative isolate min-h-screen w-full flex flex-col overflow-x-clip aquatic-canvas-ambient text-[#001454] dark:text-[#e4e7ff] antialiased selection:bg-[#001454] selection:text-white transition-colors duration-200">
+        <div className="relative isolate min-h-screen w-full flex flex-col overflow-x-clip aquatic-canvas-ambient text-[#14335D] dark:text-[#e4e7ff] antialiased selection:bg-[#14335D] selection:text-white transition-colors duration-200">
             {/* Full-Width Header with Brand, Search & Horizontal Navigation */}
             <TopHeader
                 onOpenMobileSidebar={openMobileSidebar}
@@ -247,11 +247,11 @@ export default function AppLayout({ children }) {
                     <button
                         type="button"
                         onClick={openChat}
-                        className="group flex items-center gap-3 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0d2e92]/60 focus-visible:ring-offset-2"
+                        className="group flex items-center gap-3 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#14335D]/60 focus-visible:ring-offset-2"
                         title={pick('Buka Chatbot Kiko', 'Open Kiko Assistant')}
                         aria-label={pick('Tanya Kiko', 'Ask Kiko')}
                     >
-                        <span className="relative hidden sm:inline-flex items-center rounded-full bg-white dark:bg-[#131d33] px-4 py-2 text-[13px] font-bold tracking-tight text-[#001454] dark:text-white border border-slate-200/90 dark:border-slate-700/80 shadow-[0_8px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 group-hover:-translate-x-0.5">
+                        <span className="relative hidden sm:inline-flex items-center rounded-full bg-white dark:bg-[#131d33] px-4 py-2 text-[13px] font-bold tracking-tight text-[#14335D] dark:text-white border border-slate-200/90 dark:border-slate-700/80 shadow-[0_8px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 group-hover:-translate-x-0.5">
                             <span>{pick('Tanya Kiko', 'Ask Kiko')}</span>
                             <span
                                 aria-hidden="true"

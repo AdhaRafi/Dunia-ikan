@@ -37,7 +37,7 @@ function FavoritesSparkleHeartIcon() {
             {/* Crisp outlined heart */}
             <path
                 d="M28 44.5C28 44.5 14.5 34.8 14.5 24.4C14.5 19.8 18.1 16.2 22.5 16.2C25.2 16.2 27.1 17.6 28 19.3C28.9 17.6 30.8 16.2 33.5 16.2C37.9 16.2 41.5 19.8 41.5 24.4C41.5 34.8 28 44.5 28 44.5Z"
-                className="stroke-[#0b1c48] dark:stroke-[#4AB8BD]"
+                className="stroke-[#0b1c48] dark:stroke-[#60C2E6]"
                 strokeWidth="3.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -99,8 +99,8 @@ export default function Index({ favorites = [] }) {
                     aria-hidden="true"
                     className="pointer-events-none select-none absolute inset-x-0 top-0 h-80 overflow-hidden"
                 >
-                    <div className="absolute -top-24 -left-16 w-[420px] h-[340px] rounded-full bg-white/45 dark:bg-[#0684E5]/10 blur-3xl" />
-                    <div className="absolute -top-20 right-1/4 w-[380px] h-[300px] rounded-full bg-[#b7e2ff]/40 dark:bg-[#4AB8BD]/10 blur-3xl" />
+                    <div className="absolute -top-24 -left-16 w-[420px] h-[340px] rounded-full bg-white/45 dark:bg-[#005A9D]/10 blur-3xl" />
+                    <div className="absolute -top-20 right-1/4 w-[380px] h-[300px] rounded-full bg-[#b7e2ff]/40 dark:bg-[#60C2E6]/10 blur-3xl" />
                 </div>
 
                 <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 sm:pt-10 pb-14 sm:pb-16">
@@ -126,7 +126,7 @@ export default function Index({ favorites = [] }) {
                                 href="/products"
                                 className="inline-flex items-center gap-1.5 rounded-full bg-white/80 hover:bg-white dark:bg-white/10 dark:hover:bg-white/15 border border-sky-200/80 dark:border-white/15 px-4 py-2 text-xs font-semibold text-[#0b1c48] dark:text-slate-100 shadow-2xs transition"
                             >
-                                <Compass className="w-3.5 h-3.5 text-[#0684E5] dark:text-[#4AB8BD]" />
+                                <Compass className="w-3.5 h-3.5 text-[#005A9D] dark:text-[#60C2E6]" />
                                 <span>{pick('Cari Ikan Lainnya', 'Browse More Fish')}</span>
                             </Link>
                         )}
@@ -134,7 +134,7 @@ export default function Index({ favorites = [] }) {
 
                     {items.length === 0 ? (
                         <div className="rounded-3xl bg-white/95 dark:bg-[#0f172a] border border-sky-100 dark:border-slate-800 shadow-[0_20px_50px_-24px_rgba(10,60,120,0.16)] p-8 sm:p-12 text-center max-w-xl mx-auto mt-4">
-                            <span className="mx-auto w-14 h-14 rounded-2xl bg-[#eaf4ff] dark:bg-[#162544] text-[#0684E5] dark:text-[#4AB8BD] flex items-center justify-center mb-4">
+                            <span className="mx-auto w-14 h-14 rounded-2xl bg-[#eaf4ff] dark:bg-[#162544] text-[#005A9D] dark:text-[#60C2E6] flex items-center justify-center mb-4">
                                 <Heart className="w-7 h-7" />
                             </span>
                             <h2 className="text-base sm:text-lg font-extrabold text-[#0b1c48] dark:text-white">
@@ -155,7 +155,7 @@ export default function Index({ favorites = [] }) {
                             <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
                                 <Link
                                     href="/products"
-                                    className="btn-motion inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0b1c48] hover:bg-[#0684E5] dark:bg-[#4AB8BD] dark:text-[#001454] text-white text-xs font-bold shadow-xs transition"
+                                    className="btn-motion inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0b1c48] hover:bg-[#005A9D] dark:bg-[#60C2E6] dark:text-[#14335D] text-white text-xs font-bold shadow-xs transition"
                                 >
                                     <Compass className="w-4 h-4" />
                                     <span>{pick('Jelajahi Katalog', 'Explore Catalog')}</span>
@@ -164,7 +164,7 @@ export default function Index({ favorites = [] }) {
                                 {!currentUser && (
                                     <Link
                                         href="/login"
-                                        className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-[#131d33] hover:border-[#0684E5] text-xs font-semibold text-[#0b1c48] dark:text-slate-200 transition"
+                                        className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-[#131d33] hover:border-[#005A9D] text-xs font-semibold text-[#0b1c48] dark:text-slate-200 transition"
                                     >
                                         <LogIn className="w-3.5 h-3.5" />
                                         <span>{pick('Masuk', 'Sign In')}</span>
@@ -186,7 +186,7 @@ export default function Index({ favorites = [] }) {
                                 return (
                                     <article
                                         key={item.id}
-                                        className="card-hover group flex flex-col justify-between rounded-[24px] bg-white dark:bg-[#0f172a] border border-sky-100/90 dark:border-slate-800 p-3.5 shadow-[0_14px_34px_-16px_rgba(12,68,130,0.16)] hover:border-[#4AB8BD] transition"
+                                        className="card-hover group flex flex-col justify-between rounded-[24px] bg-white dark:bg-[#0f172a] border border-sky-100/90 dark:border-slate-800 p-3.5 shadow-[0_14px_34px_-16px_rgba(12,68,130,0.16)] hover:border-[#60C2E6] transition"
                                     >
                                         <div>
                                             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100 dark:bg-[#162240]">
@@ -222,7 +222,7 @@ export default function Index({ favorites = [] }) {
                                             <div className="mt-3.5 px-0.5 space-y-1.5">
                                                 <Link
                                                     href={`/products/${product.slug}`}
-                                                    className="block text-[15px] font-extrabold text-[#0b1c48] dark:text-white hover:text-[#0684E5] dark:hover:text-[#4AB8BD] transition line-clamp-1"
+                                                    className="block text-[15px] font-extrabold text-[#0b1c48] dark:text-white hover:text-[#005A9D] dark:hover:text-[#60C2E6] transition line-clamp-1"
                                                     title={product.name}
                                                 >
                                                     {product.name}
@@ -247,7 +247,7 @@ export default function Index({ favorites = [] }) {
                                             className={`btn-motion mt-3.5 w-full py-2.5 px-4 rounded-xl text-xs font-bold inline-flex items-center justify-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed ${
                                                 isAdded
                                                     ? 'micro-pop bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800'
-                                                    : 'bg-[#e8f2fe] hover:bg-[#0684E5] text-[#0b2e66] hover:text-white dark:bg-[#162544] dark:hover:bg-[#4AB8BD] dark:text-[#8BE8EC] dark:hover:text-[#001454]'
+                                                    : 'bg-[#e8f2fe] hover:bg-[#005A9D] text-[#0b2e66] hover:text-white dark:bg-[#162544] dark:hover:bg-[#60C2E6] dark:text-[#8BE8EC] dark:hover:text-[#14335D]'
                                             }`}
                                         >
                                             {isAdded ? (

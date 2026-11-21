@@ -63,7 +63,7 @@ export default function ProductCard({ product, className = '', style }) {
     return (
         <article
             style={style}
-            className={`card-hover group flex flex-col justify-between bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 p-3 gap-3 hover:border-[#4AB8BD] select-none ${className}`}
+            className={`card-hover group flex flex-col justify-between bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 p-3 gap-3 hover:border-[#60C2E6] select-none ${className}`}
         >
             <div className="space-y-3">
                 <div className="relative aspect-[4/3] rounded-xl bg-slate-100 dark:bg-[#162240] overflow-hidden">
@@ -107,12 +107,12 @@ export default function ProductCard({ product, className = '', style }) {
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-0.5 sm:gap-2">
                         <Link
                             href={`/products/${product.slug}`}
-                            className="text-xs sm:text-sm font-bold text-[#001454] dark:text-white hover:text-[#0684E5] dark:hover:text-[#4AB8BD] transition leading-snug line-clamp-1"
+                            className="text-xs sm:text-sm font-bold text-[#14335D] dark:text-white hover:text-[#005A9D] dark:hover:text-[#60C2E6] transition leading-snug line-clamp-1"
                             title={product.name}
                         >
                             {product.name}
                         </Link>
-                        <p className="text-xs sm:text-sm font-extrabold text-[#001454] dark:text-cyan-400 tabular-nums shrink-0">
+                        <p className="text-xs sm:text-sm font-extrabold text-[#14335D] dark:text-cyan-400 tabular-nums shrink-0">
                             {formatPrice(product.price)}
                         </p>
                     </div>
@@ -133,8 +133,8 @@ export default function ProductCard({ product, className = '', style }) {
                         disabled={adding || buying}
                         className={`btn-motion flex-1 py-2 sm:py-1.5 px-2 sm:px-3 rounded-full text-[11px] font-semibold border flex items-center justify-center gap-1 whitespace-nowrap ${
                             added
-                                ? 'micro-pop border-[#00696D] bg-[#00696D]/10 text-[#00696D] dark:text-[#4AB8BD]'
-                                : 'border-slate-300 dark:border-neutral-700 text-[#001454] dark:text-neutral-200 hover:border-[#001454] dark:hover:border-[#4AB8BD] hover:bg-slate-50 dark:hover:bg-white/5'
+                                ? 'micro-pop border-[#00696D] bg-[#00696D]/10 text-[#00696D] dark:text-[#60C2E6]'
+                                : 'border-slate-300 dark:border-neutral-700 text-[#14335D] dark:text-neutral-200 hover:border-[#14335D] dark:hover:border-[#60C2E6] hover:bg-slate-50 dark:hover:bg-white/5'
                         }`}
                     >
                         {added ? (
@@ -151,7 +151,7 @@ export default function ProductCard({ product, className = '', style }) {
                         type="button"
                         onClick={(e) => addToCart(e, true)}
                         disabled={adding || buying}
-                        className="btn-motion btn-sheen flex-1 py-2 sm:py-1.5 px-2 sm:px-3 rounded-full text-[11px] font-bold bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] hover:shadow-sm whitespace-nowrap"
+                        className="btn-motion btn-sheen flex-1 py-2 sm:py-1.5 px-2 sm:px-3 rounded-full text-[11px] font-bold bg-[#14335D] dark:bg-[#60C2E6] text-white dark:text-[#14335D] hover:shadow-sm whitespace-nowrap"
                     >
                         {buying ? pick('Memproses...', 'Processing...') : pick('Beli', 'Buy Now')}
                     </button>

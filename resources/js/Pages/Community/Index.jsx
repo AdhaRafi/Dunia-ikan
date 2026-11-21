@@ -66,7 +66,7 @@ function CommunityHeroWaves() {
             className="pointer-events-none select-none absolute inset-0 overflow-hidden"
         >
             {/* Soft radial glow */}
-            <div className="absolute -top-16 right-12 w-80 h-80 rounded-full bg-white/45 dark:bg-[#4AB8BD]/10 blur-3xl" />
+            <div className="absolute -top-16 right-12 w-80 h-80 rounded-full bg-white/45 dark:bg-[#60C2E6]/10 blur-3xl" />
 
             {/* Subtle far-right reef silhouette & waves along bottom */}
             <svg
@@ -117,9 +117,9 @@ function CommunityHeroFishDuo() {
             </defs>
 
             {/* Floating soft bubbles */}
-            <circle cx="152" cy="18" r="4.5" className="fill-white/80 dark:fill-[#4AB8BD]/40" />
-            <circle cx="168" cy="9" r="2.6" className="fill-white/75 dark:fill-[#4AB8BD]/30" />
-            <circle cx="32" cy="24" r="3" className="fill-white/70 dark:fill-[#4AB8BD]/30" />
+            <circle cx="152" cy="18" r="4.5" className="fill-white/80 dark:fill-[#60C2E6]/40" />
+            <circle cx="168" cy="9" r="2.6" className="fill-white/75 dark:fill-[#60C2E6]/30" />
+            <circle cx="32" cy="24" r="3" className="fill-white/70 dark:fill-[#60C2E6]/30" />
 
             {/* Subtle left coral tip peeking neatly beside fish */}
             <path
@@ -225,7 +225,7 @@ function CommunityEmptyArtwork() {
             />
             <circle cx="116" cy="82" r="4" fill="#ffffff" />
             <circle cx="117" cy="82" r="2.1" fill="#182052" />
-            <circle cx="137" cy="70" r="2.5" className="fill-[#9fa8f5] dark:fill-[#4AB8BD]" />
+            <circle cx="137" cy="70" r="2.5" className="fill-[#9fa8f5] dark:fill-[#60C2E6]" />
         </svg>
     );
 }
@@ -612,12 +612,12 @@ export default function Index({
 
                             <div className="flex items-center gap-2.5">
                                 <div className="inline-flex items-center gap-1.5 rounded-full bg-white/90 dark:bg-white/10 backdrop-blur-xs border border-indigo-200/80 dark:border-white/15 px-3.5 py-1.5 text-xs font-semibold text-[#1c2454] dark:text-slate-100 shadow-xs">
-                                    <MessagesSquare className="w-3.5 h-3.5 text-[#4348b8] dark:text-[#4AB8BD]" />
+                                    <MessagesSquare className="w-3.5 h-3.5 text-[#4348b8] dark:text-[#60C2E6]" />
                                     <span className="tabular-nums">{stats?.totalMessages ?? messages.length}</span>
                                     <span className="text-slate-500 dark:text-slate-300">{pick('pesan', 'messages')}</span>
                                 </div>
                                 <div className="inline-flex items-center gap-1.5 rounded-full bg-white/90 dark:bg-white/10 backdrop-blur-xs border border-indigo-200/80 dark:border-white/15 px-3.5 py-1.5 text-xs font-semibold text-[#1c2454] dark:text-slate-100 shadow-xs">
-                                    <Users className="w-3.5 h-3.5 text-[#4348b8] dark:text-[#4AB8BD]" />
+                                    <Users className="w-3.5 h-3.5 text-[#4348b8] dark:text-[#60C2E6]" />
                                     <span className="tabular-nums">{stats?.participantsCount ?? 0}</span>
                                     <span className="text-slate-500 dark:text-slate-300">{pick('anggota', 'members')}</span>
                                 </div>
@@ -710,7 +710,7 @@ export default function Index({
                                                     isMine ? 'flex-row-reverse' : 'flex-row'
                                                 }`}
                                             >
-                                                <span className="font-bold text-[#001454] dark:text-slate-100">
+                                                <span className="font-bold text-[#14335D] dark:text-slate-100">
                                                     {isMine
                                                         ? pick('Kamu', 'You')
                                                         : msg.user?.name || pick('Pengguna', 'User')}
@@ -725,7 +725,7 @@ export default function Index({
                                                 {isSeller && (
                                                     <Link
                                                         href={`/stores/${msg.user.store_slug}`}
-                                                        className="inline-flex items-center gap-1 rounded-full bg-cyan-50 dark:bg-[#4AB8BD]/15 border border-cyan-200/80 dark:border-[#4AB8BD]/30 px-2 py-0.2 text-[9.5px] font-bold text-[#00696D] dark:text-[#4AB8BD] hover:underline"
+                                                        className="inline-flex items-center gap-1 rounded-full bg-cyan-50 dark:bg-[#60C2E6]/15 border border-cyan-200/80 dark:border-[#60C2E6]/30 px-2 py-0.2 text-[9.5px] font-bold text-[#00696D] dark:text-[#60C2E6] hover:underline"
                                                     >
                                                         <Store className="w-2.5 h-2.5" />
                                                         <span>{msg.user.store_name || pick('Penjual', 'Seller')}</span>
@@ -746,7 +746,7 @@ export default function Index({
                                                 <div
                                                     className={`rounded-2xl px-3.5 py-2.5 text-xs sm:text-[13px] leading-relaxed shadow-2xs ${
                                                         isMine
-                                                            ? 'bg-[#38369a] dark:bg-[#0684E5] text-white rounded-br-xs'
+                                                            ? 'bg-[#38369a] dark:bg-[#005A9D] text-white rounded-br-xs'
                                                             : 'bg-[#f4f6fc] dark:bg-[#152038] text-slate-800 dark:text-slate-100 border border-indigo-100/80 dark:border-slate-700/70 rounded-bl-xs'
                                                     }`}
                                                 >
@@ -754,8 +754,8 @@ export default function Index({
                                                         <div
                                                             className={`mb-2 rounded-lg px-2.5 py-1.5 border-l-2 text-[11px] ${
                                                                 isMine
-                                                                    ? 'bg-white/10 border-[#4AB8BD] text-slate-200'
-                                                                    : 'bg-white dark:bg-[#0e1628] border-[#0684E5] text-slate-600 dark:text-slate-300'
+                                                                    ? 'bg-white/10 border-[#60C2E6] text-slate-200'
+                                                                    : 'bg-white dark:bg-[#0e1628] border-[#005A9D] text-slate-600 dark:text-slate-300'
                                                             }`}
                                                         >
                                                             <p className="font-bold truncate">
@@ -771,7 +771,7 @@ export default function Index({
                                                         <button
                                                             type="button"
                                                             onClick={() => setLightboxUrl(msg.image_url)}
-                                                            className="block mb-2 overflow-hidden rounded-xl border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-[#4AB8BD]"
+                                                            className="block mb-2 overflow-hidden rounded-xl border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-[#60C2E6]"
                                                         >
                                                             <img
                                                                 src={msg.image_url}
@@ -801,7 +801,7 @@ export default function Index({
                                                                 }}
                                                                 title={pick('Balas pesan', 'Reply')}
                                                                 aria-label={pick('Balas pesan', 'Reply')}
-                                                                className="p-1.5 rounded-full text-slate-400 hover:text-[#0684E5] hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                                                                className="p-1.5 rounded-full text-slate-400 hover:text-[#005A9D] hover:bg-slate-100 dark:hover:bg-slate-800 transition"
                                                             >
                                                                 <Reply className="w-3.5 h-3.5" />
                                                             </button>
@@ -834,7 +834,7 @@ export default function Index({
                             <button
                                 type="button"
                                 onClick={() => scrollToBottom('smooth')}
-                                className="inline-flex items-center gap-1.5 rounded-full bg-[#38369a] hover:bg-[#2c2a85] dark:bg-[#0684E5] text-white px-4 py-1.5 text-xs font-bold shadow-lg transition"
+                                className="inline-flex items-center gap-1.5 rounded-full bg-[#38369a] hover:bg-[#2c2a85] dark:bg-[#005A9D] text-white px-4 py-1.5 text-xs font-bold shadow-lg transition"
                             >
                                 <ArrowDown className="w-3.5 h-3.5" />
                                 <span>{pick('Pesan baru', 'New messages')}</span>
@@ -847,7 +847,7 @@ export default function Index({
                         {groupedItems.length === 0 && (
                             <div className="space-y-2.5">
                                 <div className="flex items-center gap-2 text-xs sm:text-[13px] font-bold text-[#141c4c] dark:text-slate-200">
-                                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#38369a] dark:bg-[#4AB8BD] text-white dark:text-[#001454]">
+                                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#38369a] dark:bg-[#60C2E6] text-white dark:text-[#14335D]">
                                         <MessageSquare className="w-3 h-3" />
                                     </span>
                                     <span>
@@ -869,7 +869,7 @@ export default function Index({
                                                 onClick={() => handleSelectTopic(topic)}
                                                 className="inline-flex items-center gap-1.5 rounded-full bg-[#eef0fc] hover:bg-[#e1e5fb] dark:bg-[#162040] dark:hover:bg-[#1e2c57] border border-indigo-200/70 dark:border-slate-700 px-3.5 py-1.5 text-xs font-medium text-[#1b2250] dark:text-slate-200 transition"
                                             >
-                                                <TopicIcon className="w-3.5 h-3.5 text-[#38369a] dark:text-[#4AB8BD]" />
+                                                <TopicIcon className="w-3.5 h-3.5 text-[#38369a] dark:text-[#60C2E6]" />
                                                 <span>{pick(topic.labelId, topic.labelEn)}</span>
                                             </button>
                                         );
@@ -896,7 +896,7 @@ export default function Index({
                                 {replyTo && (
                                     <div className="flex items-center justify-between gap-2 rounded-xl bg-[#eef0fc] dark:bg-[#131d33] border border-indigo-200/70 dark:border-slate-700 px-3 py-2 text-xs">
                                         <div className="min-w-0">
-                                            <span className="font-bold text-[#38369a] dark:text-[#4AB8BD]">
+                                            <span className="font-bold text-[#38369a] dark:text-[#60C2E6]">
                                                 {pick('Membalas', 'Replying to')}{' '}
                                                 {replyTo.user?.name || pick('Pengguna', 'User')}:
                                             </span>{' '}
@@ -933,7 +933,7 @@ export default function Index({
                                     </div>
                                 )}
 
-                                <div className="flex items-center gap-2 rounded-full bg-[#f8f9ff] dark:bg-[#131d33] border border-indigo-200/80 dark:border-slate-700 p-1.5 focus-within:border-[#38369a] dark:focus-within:border-[#4AB8BD] focus-within:ring-2 focus-within:ring-[#38369a]/15 transition">
+                                <div className="flex items-center gap-2 rounded-full bg-[#f8f9ff] dark:bg-[#131d33] border border-indigo-200/80 dark:border-slate-700 p-1.5 focus-within:border-[#38369a] dark:focus-within:border-[#60C2E6] focus-within:ring-2 focus-within:ring-[#38369a]/15 transition">
                                     <input
                                         ref={fileInputRef}
                                         type="file"
@@ -946,7 +946,7 @@ export default function Index({
                                         onClick={() => fileInputRef.current?.click()}
                                         title={pick('Lampirkan foto', 'Attach photo')}
                                         aria-label={pick('Lampirkan foto', 'Attach photo')}
-                                        className="h-10 w-10 shrink-0 inline-flex items-center justify-center rounded-full border border-indigo-100 dark:border-slate-700 bg-white hover:bg-indigo-50 dark:bg-[#0e1628] dark:hover:bg-slate-800 text-[#38369a] dark:text-[#4AB8BD] transition"
+                                        className="h-10 w-10 shrink-0 inline-flex items-center justify-center rounded-full border border-indigo-100 dark:border-slate-700 bg-white hover:bg-indigo-50 dark:bg-[#0e1628] dark:hover:bg-slate-800 text-[#38369a] dark:text-[#60C2E6] transition"
                                     >
                                         <ImagePlus className="w-4 h-4" />
                                     </button>
@@ -970,7 +970,7 @@ export default function Index({
                                         disabled={sending || (draft.trim() === '' && !imageFile)}
                                         aria-label={sending ? pick('Mengirim...', 'Sending...') : pick('Kirim pesan', 'Send message')}
                                         title={sending ? pick('Mengirim...', 'Sending...') : pick('Kirim', 'Send')}
-                                        className="btn-motion h-10 w-10 shrink-0 inline-flex items-center justify-center rounded-full bg-[#38369a] hover:bg-[#2c2a85] dark:bg-[#4AB8BD] dark:hover:bg-[#38a2a7] text-white dark:text-[#001454] shadow-xs disabled:opacity-45 disabled:cursor-not-allowed transition"
+                                        className="btn-motion h-10 w-10 shrink-0 inline-flex items-center justify-center rounded-full bg-[#38369a] hover:bg-[#2c2a85] dark:bg-[#60C2E6] dark:hover:bg-[#38a2a7] text-white dark:text-[#14335D] shadow-xs disabled:opacity-45 disabled:cursor-not-allowed transition"
                                     >
                                         <Send className="w-4 h-4" />
                                     </button>
@@ -987,7 +987,7 @@ export default function Index({
                                 <div className="flex items-center gap-2 shrink-0">
                                     <Link
                                         href="/login"
-                                        className="btn-motion inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#38369a] hover:bg-[#2c2a85] dark:bg-[#4AB8BD] dark:text-[#001454] text-white text-xs font-bold transition"
+                                        className="btn-motion inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#38369a] hover:bg-[#2c2a85] dark:bg-[#60C2E6] dark:text-[#14335D] text-white text-xs font-bold transition"
                                     >
                                         <LogIn className="w-3.5 h-3.5" />
                                         <span>{pick('Masuk', 'Sign In')}</span>

@@ -108,7 +108,7 @@ export default function Create({
                         <div className="flex flex-wrap items-center gap-3 pt-1">
                             <Link
                                 href="/products"
-                                className="px-5 py-2.5 rounded-xl bg-[#0684E5] text-white font-bold text-xs hover:bg-[#0060aa] transition"
+                                className="px-5 py-2.5 rounded-xl bg-[#005A9D] text-white font-bold text-xs hover:bg-[#00477C] transition"
                             >
                                 {pick('Jelajahi Katalog Ikan', 'Browse Fish Catalog')}
                             </Link>
@@ -199,7 +199,7 @@ export default function Create({
                                 <button
                                     type="submit"
                                     disabled={applicationForm.processing}
-                                    className="w-full py-3.5 px-6 rounded-2xl bg-[#0684E5] text-white font-bold text-sm hover:bg-[#0060aa] transition flex items-center justify-center gap-2 shadow-lg shadow-[#0684E5]/20"
+                                    className="w-full py-3.5 px-6 rounded-2xl bg-[#005A9D] text-white font-bold text-sm hover:bg-[#00477C] transition flex items-center justify-center gap-2 shadow-lg shadow-[#005A9D]/20"
                                 >
                                     {applicationForm.processing
                                         ? pick('Mengirim Pengajuan...', 'Submitting Application...')
@@ -373,7 +373,7 @@ export default function Create({
                                 <button
                                     type="submit"
                                     disabled={storeForm.processing}
-                                    className="w-full py-3.5 px-6 rounded-2xl bg-[#0684E5] text-white font-bold text-sm hover:bg-[#0060aa] transition flex items-center justify-center gap-2 shadow-lg shadow-[#0684E5]/20"
+                                    className="w-full py-3.5 px-6 rounded-2xl bg-[#005A9D] text-white font-bold text-sm hover:bg-[#00477C] transition flex items-center justify-center gap-2 shadow-lg shadow-[#005A9D]/20"
                                 >
                                     {storeForm.processing
                                         ? pick('Mendaftarkan Toko...', 'Registering Store...')

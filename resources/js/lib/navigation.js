@@ -85,7 +85,7 @@ export function buildCatalogDropdownItems(url, pick) {
             description: pick('Jelajahi ikan hias, pakan & perlengkapan', 'Browse ornamental fish, food & equipment'),
             href: '/products',
             icon: LayoutGrid,
-            iconClass: 'bg-sky-50 text-[#0684E5] ring-1 ring-sky-200/70 dark:bg-sky-400/15 dark:text-sky-300 dark:ring-sky-400/25',
+            iconClass: 'bg-sky-50 text-[#005A9D] ring-1 ring-sky-200/70 dark:bg-sky-400/15 dark:text-sky-300 dark:ring-sky-400/25',
             active: pathname.startsWith('/products') && !waterType && !category,
         },
         {
@@ -101,7 +101,7 @@ export function buildCatalogDropdownItems(url, pick) {
             description: pick('Clownfish, Tang & spesies terumbu karang', 'Clownfish, Tangs & vibrant reef species'),
             href: '/products?water_type=saltwater',
             icon: Waves,
-            iconClass: 'bg-cyan-50 text-[#1E80A0] ring-1 ring-cyan-200/70 dark:bg-cyan-400/15 dark:text-[#4AB8BD] dark:ring-cyan-400/25',
+            iconClass: 'bg-cyan-50 text-[#1E80A0] ring-1 ring-cyan-200/70 dark:bg-cyan-400/15 dark:text-[#60C2E6] dark:ring-cyan-400/25',
             badge: pick('Populer', 'Popular'),
             active: pathname.startsWith('/products') && waterType === 'saltwater',
         },

@@ -302,7 +302,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
                                                 {user?.name}
                                             </h1>
                                             <BadgeCheck
-                                                className="w-5 h-5 text-[#0684E5] shrink-0"
+                                                className="w-5 h-5 text-[#005A9D] shrink-0"
                                                 aria-label={pick('Akun terdaftar', 'Registered account')}
                                             />
                                         </div>

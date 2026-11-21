@@ -279,7 +279,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         <div className="flex items-center gap-3 pt-2">
                             <Link 
                                 href="/products" 
-                                className="btn-motion btn-sheen px-7 py-3 rounded-full bg-white text-black dark:bg-[#4AB8BD] dark:text-[#001454] font-bold text-xs sm:text-sm hover:bg-neutral-100 dark:hover:bg-[#38a2a7] shadow-sm hover:shadow-lg"
+                                className="btn-motion btn-sheen px-7 py-3 rounded-full bg-white text-black dark:bg-[#60C2E6] dark:text-[#14335D] font-bold text-xs sm:text-sm hover:bg-neutral-100 dark:hover:bg-[#38a2a7] shadow-sm hover:shadow-lg"
                             >
                                 {pick('Jelajahi Katalog', 'Explore Catalog')}
                             </Link>
@@ -303,12 +303,12 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 {/* 2. KATEGORI TOKO (Clean MorphMarket Studio Cutout Cards) */}
                 <section className="space-y-5">
                     <div className="flex items-center justify-between gap-2">
-                        <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
+                        <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#14335D] dark:text-white">
                             {pick('Kategori Toko', 'Shop by Category')}
                         </h2>
                         <Link
                             href="/products"
-                            className="text-xs font-semibold text-neutral-600 hover:text-[#001454] dark:text-neutral-300 dark:hover:text-white transition"
+                            className="text-xs font-semibold text-neutral-600 hover:text-[#14335D] dark:text-neutral-300 dark:hover:text-white transition"
                         >
                             {pick('Jelajahi Katalog', 'Browse Catalog')}
                         </Link>
@@ -326,7 +326,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                             ? idx - INITIAL_CATEGORY_COUNT
                                             : idx,
                                 }}
-                                className="overlap-enter card-hover group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] shadow-[0_2px_8px_rgba(15,23,42,0.03)] flex flex-col items-center overflow-hidden p-3"
+                                className="overlap-enter card-hover group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#60C2E6] shadow-[0_2px_8px_rgba(15,23,42,0.03)] flex flex-col items-center overflow-hidden p-3"
                             >
                                 <div className="w-full aspect-square bg-white rounded-xl overflow-hidden flex items-center justify-center p-1">
                                     <img
@@ -340,7 +340,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                                     />
                                 </div>
-                                <h3 className="mt-2.5 text-center font-bold text-xs sm:text-[13px] text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] transition truncate w-full">
+                                <h3 className="mt-2.5 text-center font-bold text-xs sm:text-[13px] text-[#14335D] dark:text-white group-hover:text-[#005A9D] dark:group-hover:text-[#60C2E6] transition truncate w-full">
                                     {group.title}
                                 </h3>
                             </Link>
@@ -353,7 +353,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                 type="button"
                                 onClick={() => setShowAllCategories((prev) => !prev)}
                                 aria-expanded={showAllCategories}
-                                className="btn-motion inline-flex items-center justify-center rounded-full border border-slate-300 dark:border-neutral-700 bg-slate-50/90 dark:bg-[#0f172a] hover:bg-white dark:hover:bg-slate-800/90 hover:border-slate-400 dark:hover:border-[#4AB8BD] px-6 py-2 text-xs sm:text-[13px] font-semibold text-slate-900 dark:text-slate-100 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition"
+                                className="btn-motion inline-flex items-center justify-center rounded-full border border-slate-300 dark:border-neutral-700 bg-slate-50/90 dark:bg-[#0f172a] hover:bg-white dark:hover:bg-slate-800/90 hover:border-slate-400 dark:hover:border-[#60C2E6] px-6 py-2 text-xs sm:text-[13px] font-semibold text-slate-900 dark:text-slate-100 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition"
                             >
                                 {showAllCategories
                                     ? pick('Tampilkan Lebih Sedikit', 'Show Fewer Categories')
@@ -371,7 +371,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 {/* 4. PRODUCT GRID */}
                 <section className="space-y-5">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
+                        <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#14335D] dark:text-white">
                             {pick('Produk Terbaru', 'Latest Arrivals')}
                         </h2>
 
@@ -390,8 +390,8 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                     onClick={() => setSelectedTab(tab.id)}
                                     className={`btn-motion px-3 py-1.5 rounded-lg whitespace-nowrap ${
                                         selectedTab === tab.id
-                                            ? 'bg-[#001454] dark:bg-[#4AB8BD] text-white dark:text-[#001454] font-bold shadow-xs'
-                                            : 'bg-white dark:bg-[#111a30] text-slate-600 dark:text-neutral-300 border border-slate-200 dark:border-neutral-700 hover:border-[#4AB8BD]'
+                                            ? 'bg-[#14335D] dark:bg-[#60C2E6] text-white dark:text-[#14335D] font-bold shadow-xs'
+                                            : 'bg-white dark:bg-[#111a30] text-slate-600 dark:text-neutral-300 border border-slate-200 dark:border-neutral-700 hover:border-[#60C2E6]'
                                     }`}
                                 >
                                     {tab.label}
@@ -418,12 +418,12 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 {featuredStores && featuredStores.length > 0 && (
                     <section className="space-y-6 pt-1">
                         <div className="flex items-center justify-between gap-2">
-                            <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#001454] dark:text-white">
+                            <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#14335D] dark:text-white">
                                 {pick('Toko Pilihan', 'Featured Stores')}
                             </h2>
                             <Link
                                 href="/products"
-                                className="text-xs font-semibold text-neutral-600 hover:text-[#001454] dark:text-neutral-300 dark:hover:text-white transition"
+                                className="text-xs font-semibold text-neutral-600 hover:text-[#14335D] dark:text-neutral-300 dark:hover:text-white transition"
                             >
                                 {pick('Lihat Semua', 'View All')}
                             </Link>
@@ -435,17 +435,17 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                     key={store.id}
                                     href={`/stores/${store.slug}`}
                                     style={{ '--overlap-i': idx }}
-                                    className="overlap-enter card-hover group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#4AB8BD] shadow-[0_2px_8px_rgba(15,23,42,0.03)] flex flex-col overflow-hidden"
+                                    className="overlap-enter card-hover group bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/80 dark:border-neutral-800 hover:border-[#60C2E6] shadow-[0_2px_8px_rgba(15,23,42,0.03)] flex flex-col overflow-hidden"
                                 >
                                     <div className="w-full aspect-square bg-white dark:bg-slate-900 overflow-hidden flex items-center justify-center border-b border-slate-100 dark:border-neutral-800/80">
                                         <StoreLogo
                                             store={store}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                            fallbackClassName="w-full h-full bg-slate-50 dark:bg-[#162240] flex items-center justify-center font-extrabold text-3xl text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] transition"
+                                            fallbackClassName="w-full h-full bg-slate-50 dark:bg-[#162240] flex items-center justify-center font-extrabold text-3xl text-[#14335D] dark:text-white group-hover:text-[#005A9D] dark:group-hover:text-[#60C2E6] transition"
                                         />
                                     </div>
                                     <div className="px-3 py-2.5">
-                                        <h3 className="text-xs font-bold text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] truncate transition">
+                                        <h3 className="text-xs font-bold text-[#14335D] dark:text-white group-hover:text-[#005A9D] dark:group-hover:text-[#60C2E6] truncate transition">
                                             {store.name}
                                         </h3>
                                     </div>
@@ -478,7 +478,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 <SectionWaveDivider />
 
                 {/* 6. FREQUENTLY ASKED QUESTIONS */}
-                <section className="relative overflow-hidden rounded-[24px] sm:rounded-[28px] aquatic-soft-panel border border-[#0684E5]/15 dark:border-[#4AB8BD]/20 px-5 sm:px-10 lg:px-14 py-10 sm:py-14 lg:py-16">
+                <section className="relative overflow-hidden rounded-[24px] sm:rounded-[28px] aquatic-soft-panel border border-[#005A9D]/15 dark:border-[#60C2E6]/20 px-5 sm:px-10 lg:px-14 py-10 sm:py-14 lg:py-16">
                     <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-stretch">
                         {/* Left Column: Heading at top, Helper Subtext + Pill CTA at bottom */}
                         <div className="lg:col-span-5 flex flex-col justify-between gap-7">
@@ -517,7 +517,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                         type="button"
                                         onClick={() => setOpenFaq(isExpanded ? null : index)}
                                         aria-expanded={isExpanded}
-                                        className="card-hover-subtle group w-full text-left rounded-2xl bg-white dark:bg-[#131d33] border border-slate-200/80 dark:border-slate-700/80 px-5 sm:px-6 py-4 sm:py-5 shadow-[0_2px_10px_rgba(15,23,42,0.03)] hover:border-slate-300 dark:hover:border-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
+                                        className="card-hover-subtle group w-full text-left rounded-2xl bg-white dark:bg-[#131d33] border border-slate-200/80 dark:border-slate-700/80 px-5 sm:px-6 py-4 sm:py-5 shadow-[0_2px_10px_rgba(15,23,42,0.03)] hover:border-slate-300 dark:hover:border-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00477C]"
                                     >
                                         <div className="flex items-center justify-between gap-4">
                                             <span className="text-sm sm:text-[15px] font-semibold leading-snug text-slate-900 dark:text-white">

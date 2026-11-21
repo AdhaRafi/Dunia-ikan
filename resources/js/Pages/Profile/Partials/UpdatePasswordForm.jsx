@@ -1,5 +1,5 @@
 import InputError from '@/Components/InputError';
-import PasswordInput from '@/Components/PasswordInput';
+import PasswordInput, { getPasswordConfirmationError } from '@/Components/PasswordInput';
 import { useLanguage } from '@/lib/i18n';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
@@ -24,8 +24,20 @@ export default function UpdatePasswordForm() {
         password_confirmation: '',
     });
 
+    const hasPasswordMismatch = Boolean(data.password_confirmation) && data.password !== data.password_confirmation;
+    const passwordConfirmationError = getPasswordConfirmationError(
+        data.password,
+        data.password_confirmation,
+        errors.password_confirmation,
+        pick,
+    );
+
     const updatePassword = (e) => {
         e.preventDefault();
+
+        if (hasPasswordMismatch) {
+            return;
+        }
 
         put(route('password.update'), {
             preserveScroll: true,
@@ -78,7 +90,7 @@ export default function UpdatePasswordForm() {
                     <button
                         type="submit"
                         disabled={processing}
-                        className="px-4 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 dark:bg-[#0684E5] dark:hover:bg-[#0267C1] text-white text-xs font-semibold disabled:opacity-50 transition"
+                        className="px-4 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 dark:bg-[#005A9D] dark:hover:bg-[#00477C] text-white text-xs font-semibold disabled:opacity-50 transition"
                     >
                         {processing ? pick('Menyimpan...', 'Saving...') : pick('Simpan', 'Save')}
                     </button>
@@ -152,10 +164,11 @@ export default function UpdatePasswordForm() {
                             placeholder={pick('Ulangi kata sandi baru', 'Repeat new password')}
                             autoComplete="new-password"
                             required
+                            invalid={Boolean(passwordConfirmationError)}
                             className="!h-10 !text-[13px] bg-slate-50/70 focus:bg-white dark:bg-[#0b101d]"
                         />
                         <InputError
-                            message={errors.password_confirmation}
+                            message={passwordConfirmationError}
                             className="mt-1.5"
                         />
                     </div>

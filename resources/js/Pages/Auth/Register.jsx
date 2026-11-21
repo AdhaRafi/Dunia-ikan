@@ -1,6 +1,6 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import PasswordInput from '@/Components/PasswordInput';
+import PasswordInput, { getPasswordConfirmationError } from '@/Components/PasswordInput';
 import SocialAuthButtons from '@/Components/SocialAuthButtons';
 import TextInput from '@/Components/TextInput';
 import TurnstileWidget from '@/Components/TurnstileWidget';
@@ -26,9 +26,20 @@ export default function Register() {
     });
 
     const isSellerApplicant = data.account_type === 'seller';
+    const hasPasswordMismatch = Boolean(data.password_confirmation) && data.password !== data.password_confirmation;
+    const passwordConfirmationError = getPasswordConfirmationError(
+        data.password,
+        data.password_confirmation,
+        errors.password_confirmation,
+        pick,
+    );
 
     const submit = (e) => {
         e.preventDefault();
+
+        if (hasPasswordMismatch) {
+            return;
+        }
 
         post(route('register'), {
             onFinish: () => {
@@ -80,14 +91,14 @@ export default function Register() {
                             onClick={() => setData('account_type', 'buyer')}
                             className={`flex items-start gap-2.5 rounded-xl border p-2.5 text-left transition ${
                                 !isSellerApplicant
-                                    ? 'border-[#2448f5] bg-[#2448f5]/[0.06] ring-1 ring-[#2448f5] dark:border-sky-400 dark:bg-sky-500/10 dark:ring-sky-400'
+                                    ? 'border-[#005A9D] bg-[#005A9D]/[0.06] ring-1 ring-[#005A9D] dark:border-sky-400 dark:bg-sky-500/10 dark:ring-sky-400'
                                     : 'border-slate-200 bg-white hover:border-slate-300 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700'
                             }`}
                         >
                             <ShoppingBag
                                 className={`mt-0.5 h-4 w-4 shrink-0 ${
                                     !isSellerApplicant
-                                        ? 'text-[#2448f5] dark:text-sky-400'
+                                        ? 'text-[#005A9D] dark:text-sky-400'
                                         : 'text-slate-400'
                                 }`}
                             />
@@ -108,14 +119,14 @@ export default function Register() {
                             onClick={() => setData('account_type', 'seller')}
                             className={`flex items-start gap-2.5 rounded-xl border p-2.5 text-left transition ${
                                 isSellerApplicant
-                                    ? 'border-[#2448f5] bg-[#2448f5]/[0.06] ring-1 ring-[#2448f5] dark:border-sky-400 dark:bg-sky-500/10 dark:ring-sky-400'
+                                    ? 'border-[#005A9D] bg-[#005A9D]/[0.06] ring-1 ring-[#005A9D] dark:border-sky-400 dark:bg-sky-500/10 dark:ring-sky-400'
                                     : 'border-slate-200 bg-white hover:border-slate-300 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700'
                             }`}
                         >
                             <Store
                                 className={`mt-0.5 h-4 w-4 shrink-0 ${
                                     isSellerApplicant
-                                        ? 'text-[#2448f5] dark:text-sky-400'
+                                        ? 'text-[#005A9D] dark:text-sky-400'
                                         : 'text-slate-400'
                                 }`}
                             />
@@ -238,13 +249,14 @@ export default function Register() {
                         wrapperClassName="mt-1.5"
                         placeholder={pick('Ulangi kata sandi', 'Repeat password')}
                         autoComplete="new-password"
+                        invalid={Boolean(passwordConfirmationError)}
                         onChange={(e) =>
                             setData('password_confirmation', e.target.value)
                         }
                         required
                     />
                     <InputError
-                        message={errors.password_confirmation}
+                        message={passwordConfirmationError}
                         className="mt-1.5"
                     />
                 </div>
@@ -278,7 +290,7 @@ export default function Register() {
                 {pick('Sudah punya akun?', 'Already have an account?')}{' '}
                 <Link
                     href="/login"
-                    className="font-semibold text-[#2448f5] dark:text-sky-400 hover:underline"
+                    className="font-semibold text-[#005A9D] dark:text-sky-400 hover:underline"
                 >
                     {pick('Masuk', 'Sign in')}
                 </Link>

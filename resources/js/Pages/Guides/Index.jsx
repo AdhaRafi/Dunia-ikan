@@ -171,8 +171,8 @@ export default function Index({
                             {/* Left Column: Search & Category Filters */}
                             <div className="lg:col-span-7 space-y-4 sm:space-y-5">
                                 <div className="flex flex-wrap items-center gap-2">
-                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white text-[#001454] px-3 py-1 text-[11px] font-bold shadow-2xs">
-                                        <BookOpen className="w-3.5 h-3.5 text-[#0684E5]" />
+                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white text-[#14335D] px-3 py-1 text-[11px] font-bold shadow-2xs">
+                                        <BookOpen className="w-3.5 h-3.5 text-[#005A9D]" />
                                         {pick('Pusat Edukasi Aquarist', 'Aquarist Education Hub')}
                                     </span>
                                     <span className="inline-flex items-center rounded-full bg-black/35 text-white border border-white/20 px-3 py-1 text-[11px] font-bold tabular-nums backdrop-blur-xs">
@@ -204,7 +204,7 @@ export default function Index({
                                     onSubmit={handleSearch}
                                     className="flex flex-col sm:flex-row gap-2.5 max-w-2xl"
                                 >
-                                    <div className="relative flex-1 flex items-center rounded-xl sm:rounded-2xl bg-white border border-white/80 shadow-xs focus-within:ring-2 focus-within:ring-[#4AB8BD] transition">
+                                    <div className="relative flex-1 flex items-center rounded-xl sm:rounded-2xl bg-white border border-white/80 shadow-xs focus-within:ring-2 focus-within:ring-[#60C2E6] transition">
                                         <Search className="ml-4 w-4 h-4 text-slate-400 shrink-0" />
                                         <input
                                             type="search"
@@ -240,7 +240,7 @@ export default function Index({
                                     </div>
                                     <button
                                         type="submit"
-                                        className="h-11 sm:h-12 px-6 rounded-xl sm:rounded-2xl bg-[#001454] hover:bg-[#0684E5] border border-white/15 text-white font-bold text-xs sm:text-[13px] transition shrink-0 shadow-sm"
+                                        className="h-11 sm:h-12 px-6 rounded-xl sm:rounded-2xl bg-[#14335D] hover:bg-[#005A9D] border border-white/15 text-white font-bold text-xs sm:text-[13px] transition shrink-0 shadow-sm"
                                     >
                                         {pick('Cari Panduan', 'Search Guides')}
                                     </button>
@@ -253,8 +253,8 @@ export default function Index({
                                         onClick={() => handleCategoryClick('')}
                                         className={`px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition border ${
                                             selectedCategory === ''
-                                                ? 'bg-[#001454] text-white border-white/30 shadow-xs'
-                                                : 'bg-white hover:bg-slate-50 text-[#001454] border-white/25'
+                                                ? 'bg-[#14335D] text-white border-white/30 shadow-xs'
+                                                : 'bg-white hover:bg-slate-50 text-[#14335D] border-white/25'
                                         }`}
                                     >
                                         {pick('Semua', 'All')} ({effectiveTotal})
@@ -275,8 +275,8 @@ export default function Index({
                                                 }
                                                 className={`px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition border ${
                                                     active
-                                                        ? 'bg-[#0684E5] text-white border-[#0684E5] shadow-xs'
-                                                        : 'bg-white hover:bg-slate-50 text-[#001454] border-white/25'
+                                                        ? 'bg-[#005A9D] text-white border-[#005A9D] shadow-xs'
+                                                        : 'bg-white hover:bg-slate-50 text-[#14335D] border-white/25'
                                                 }`}
                                             >
                                                 {trGuideCategory(category)}
@@ -311,17 +311,17 @@ export default function Index({
                             <aside className="lg:col-span-5 rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/90 dark:border-slate-700/80 p-4 sm:p-5 shadow-lg space-y-3.5">
                                 <div className="flex items-center justify-between gap-2">
                                     <div className="flex items-center gap-2">
-                                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-[#e8f3fe] dark:bg-[#131d33] text-[#0684E5] dark:text-[#4AB8BD] shrink-0">
+                                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-[#e8f3fe] dark:bg-[#131d33] text-[#005A9D] dark:text-[#60C2E6] shrink-0">
                                             <TrendingUp className="w-3.5 h-3.5" />
                                         </span>
-                                        <h2 className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#001454] dark:text-slate-200">
+                                        <h2 className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#14335D] dark:text-slate-200">
                                             {pick('Artikel Terpopuler', 'Popular Guides')}
                                         </h2>
                                     </div>
                                     <button
                                         type="button"
                                         onClick={handleShowAllCatalog}
-                                        className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:underline shrink-0"
+                                        className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-[#005A9D] dark:text-[#60C2E6] hover:underline shrink-0"
                                     >
                                         {pick('Lihat Semua', 'View All')}
                                         <ArrowRight className="w-3 h-3" />
@@ -335,14 +335,14 @@ export default function Index({
                                             href={`/guides/${item.id}`}
                                             className="group flex items-center gap-3 rounded-xl bg-[#f8fafc] hover:bg-[#edf5fd] dark:bg-[#131d33] dark:hover:bg-[#182644] px-3 py-2.5 border border-slate-100 dark:border-slate-800/80 transition"
                                         >
-                                            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#e8f3fe] dark:bg-[#0f2544] text-[11px] font-extrabold text-[#0684E5] dark:text-[#4AB8BD] tabular-nums shrink-0">
+                                            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#e8f3fe] dark:bg-[#0f2544] text-[11px] font-extrabold text-[#005A9D] dark:text-[#60C2E6] tabular-nums shrink-0">
                                                 {String(idx + 1).padStart(
                                                     2,
                                                     '0',
                                                 )}
                                             </span>
                                             <div className="min-w-0 flex-1">
-                                                <p className="text-xs font-bold text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] leading-snug line-clamp-1 transition-colors">
+                                                <p className="text-xs font-bold text-[#14335D] dark:text-white group-hover:text-[#005A9D] dark:group-hover:text-[#60C2E6] leading-snug line-clamp-1 transition-colors">
                                                     {item.title}
                                                 </p>
                                                 <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug line-clamp-1 mt-0.5">
@@ -370,9 +370,9 @@ export default function Index({
                                                 ),
                                             )
                                         }
-                                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white hover:bg-[#edf5fd] text-[#001454] border border-slate-200 hover:border-[#0684E5] dark:bg-[#131d33] dark:text-[#4AB8BD] dark:border-slate-700 dark:hover:bg-[#4AB8BD] dark:hover:text-[#001454] font-bold text-[11px] transition shrink-0 shadow-2xs"
+                                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white hover:bg-[#edf5fd] text-[#14335D] border border-slate-200 hover:border-[#005A9D] dark:bg-[#131d33] dark:text-[#60C2E6] dark:border-slate-700 dark:hover:bg-[#60C2E6] dark:hover:text-[#14335D] font-bold text-[11px] transition shrink-0 shadow-2xs"
                                     >
-                                        <MessageSquare className="w-3 h-3 text-[#0684E5] dark:text-current" />
+                                        <MessageSquare className="w-3 h-3 text-[#005A9D] dark:text-current" />
                                         {pick('Tanya Kiko', 'Ask Kiko')}
                                     </button>
                                 </div>
@@ -387,15 +387,15 @@ export default function Index({
                 <section className="space-y-3.5">
                     <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2.5">
-                            <span className="w-1 h-5 rounded-full bg-[#0684E5] dark:bg-[#4AB8BD]" />
-                            <h2 className="text-sm sm:text-base font-extrabold tracking-tight text-[#001454] dark:text-white">
+                            <span className="w-1 h-5 rounded-full bg-[#005A9D] dark:bg-[#60C2E6]" />
+                            <h2 className="text-sm sm:text-base font-extrabold tracking-tight text-[#14335D] dark:text-white">
                                 {pick('Jelajahi Berdasarkan Topik', 'Browse by Topic')}
                             </h2>
                         </div>
                         <button
                             type="button"
                             onClick={handleShowAllCatalog}
-                            className="inline-flex items-center gap-1 text-xs font-bold text-[#0684E5] dark:text-[#4AB8BD] hover:underline"
+                            className="inline-flex items-center gap-1 text-xs font-bold text-[#005A9D] dark:text-[#60C2E6] hover:underline"
                         >
                             {pick('Semua Topik', 'All Topics')}
                             <ArrowRight className="w-3.5 h-3.5" />
@@ -418,8 +418,8 @@ export default function Index({
                                     style={{ '--overlap-i': idx }}
                                     className={`overlap-enter card-hover-subtle group flex items-center gap-3.5 p-3.5 rounded-2xl bg-white dark:bg-[#0e1424] border shadow-[0_2px_10px_rgba(0,20,84,0.03)] ${
                                         isSelected
-                                            ? 'border-[#0684E5] ring-1 ring-[#0684E5]/40'
-                                            : 'border-slate-200/80 dark:border-slate-800 hover:border-[#0684E5]/60 dark:hover:border-[#4AB8BD]/60'
+                                            ? 'border-[#005A9D] ring-1 ring-[#005A9D]/40'
+                                            : 'border-slate-200/80 dark:border-slate-800 hover:border-[#005A9D]/60 dark:hover:border-[#60C2E6]/60'
                                     }`}
                                 >
                                     <div
@@ -444,14 +444,14 @@ export default function Index({
                                         />
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                        <p className="text-sm font-bold text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] transition truncate">
+                                        <p className="text-sm font-bold text-[#14335D] dark:text-white group-hover:text-[#005A9D] dark:group-hover:text-[#60C2E6] transition truncate">
                                             {label}
                                         </p>
                                         <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
                                             {subtitle}
                                         </p>
                                     </div>
-                                    <span className="w-8 h-8 rounded-full bg-[#edf5fd] dark:bg-[#131d33] text-[#0684E5] dark:text-[#4AB8BD] flex items-center justify-center shrink-0 group-hover:bg-[#0684E5] group-hover:text-white dark:group-hover:bg-[#4AB8BD] dark:group-hover:text-[#001454] transition">
+                                    <span className="w-8 h-8 rounded-full bg-[#edf5fd] dark:bg-[#131d33] text-[#005A9D] dark:text-[#60C2E6] flex items-center justify-center shrink-0 group-hover:bg-[#005A9D] group-hover:text-white dark:group-hover:bg-[#60C2E6] dark:group-hover:text-[#14335D] transition">
                                         <ArrowRight className="w-3.5 h-3.5" />
                                     </span>
                                 </Link>
@@ -463,7 +463,7 @@ export default function Index({
                 {/* 3. Structured Care Guides Grid */}
                 <section id="daftar-panduan" className="scroll-mt-24 space-y-4">
                     <div className="flex items-center justify-between gap-2">
-                        <h2 className="text-base sm:text-lg font-extrabold tracking-tight text-[#001454] dark:text-white">
+                        <h2 className="text-base sm:text-lg font-extrabold tracking-tight text-[#14335D] dark:text-white">
                             {filters?.q
                                 ? pick(
                                       `Hasil untuk "${filters.q}"`,
@@ -502,7 +502,7 @@ export default function Index({
                                         key={guide.id}
                                         href={`/guides/${guide.id}`}
                                         style={{ '--overlap-i': idx }}
-                                        className="overlap-enter card-hover group flex flex-col rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-slate-800 hover:border-[#0684E5]/60 dark:hover:border-[#4AB8BD]/50 shadow-[0_2px_12px_rgba(0,20,84,0.03)] overflow-hidden"
+                                        className="overlap-enter card-hover group flex flex-col rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-slate-800 hover:border-[#005A9D]/60 dark:hover:border-[#60C2E6]/50 shadow-[0_2px_12px_rgba(0,20,84,0.03)] overflow-hidden"
                                     >
                                         <div className="relative aspect-[16/10] bg-slate-100 dark:bg-slate-900 overflow-hidden border-b border-slate-100 dark:border-slate-800/80">
                                             <img
@@ -528,7 +528,7 @@ export default function Index({
                                         <div className="p-5 flex-1 flex flex-col">
                                             <div className="flex items-center justify-between gap-2 text-[11px] text-slate-500 dark:text-slate-400">
                                                 <span className="inline-flex items-center gap-1 font-medium truncate">
-                                                    <Fish className="w-3.5 h-3.5 text-[#0684E5] dark:text-[#4AB8BD] shrink-0" />
+                                                    <Fish className="w-3.5 h-3.5 text-[#005A9D] dark:text-[#60C2E6] shrink-0" />
                                                     <span className="truncate">
                                                         {guide.fish_type}
                                                     </span>
@@ -540,7 +540,7 @@ export default function Index({
                                                 </span>
                                             </div>
 
-                                            <h3 className="mt-2.5 text-base sm:text-[17px] font-bold tracking-tight text-[#001454] dark:text-white group-hover:text-[#0684E5] dark:group-hover:text-[#4AB8BD] leading-snug line-clamp-2 transition-colors">
+                                            <h3 className="mt-2.5 text-base sm:text-[17px] font-bold tracking-tight text-[#14335D] dark:text-white group-hover:text-[#005A9D] dark:group-hover:text-[#60C2E6] leading-snug line-clamp-2 transition-colors">
                                                 {guide.title}
                                             </h3>
 
@@ -561,7 +561,7 @@ export default function Index({
                                                               'Full guide',
                                                           )}
                                                 </span>
-                                                <span className="inline-flex items-center gap-1 font-bold text-[#0684E5] dark:text-[#4AB8BD]">
+                                                <span className="inline-flex items-center gap-1 font-bold text-[#005A9D] dark:text-[#60C2E6]">
                                                     {pick('Baca', 'Read')}
                                                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                                                 </span>
@@ -573,7 +573,7 @@ export default function Index({
                         </div>
                     ) : (
                         <div className="rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-slate-800 p-8 sm:p-10 text-center space-y-3">
-                            <p className="text-base sm:text-lg font-bold text-[#001454] dark:text-white">
+                            <p className="text-base sm:text-lg font-bold text-[#14335D] dark:text-white">
                                 {pick(
                                     'Tidak ada panduan yang cocok',
                                     'No matching guides found',
@@ -589,7 +589,7 @@ export default function Index({
                                 <button
                                     type="button"
                                     onClick={handleReset}
-                                    className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#001454] hover:bg-[#0684E5] text-white text-xs font-bold transition"
+                                    className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#14335D] hover:bg-[#005A9D] text-white text-xs font-bold transition"
                                 >
                                     <RotateCcw className="w-3.5 h-3.5" />
                                     {pick('Reset Pencarian', 'Reset Search')}
@@ -613,9 +613,9 @@ export default function Index({
                                     }}
                                     className={`flex h-9 min-w-9 items-center justify-center rounded-xl px-3 text-xs font-semibold transition border ${
                                         link.active
-                                            ? 'bg-[#0684E5] text-white border-[#0684E5]'
+                                            ? 'bg-[#005A9D] text-white border-[#005A9D]'
                                             : link.url
-                                              ? 'bg-white dark:bg-[#0e1424] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-[#0684E5]'
+                                              ? 'bg-white dark:bg-[#0e1424] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-[#005A9D]'
                                               : 'cursor-not-allowed bg-slate-50 dark:bg-[#0b101d] text-slate-300 dark:text-slate-600 border-slate-200/60 dark:border-slate-800/60'
                                     }`}
                                 />
@@ -649,9 +649,9 @@ export default function Index({
                                 new CustomEvent('dunia-ikan:open-chat'),
                             )
                         }
-                        className="relative z-10 btn-motion btn-sheen inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-[#001454] font-bold text-xs hover:bg-slate-100 whitespace-nowrap self-start sm:self-auto"
+                        className="relative z-10 btn-motion btn-sheen inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-[#14335D] font-bold text-xs hover:bg-slate-100 whitespace-nowrap self-start sm:self-auto"
                     >
-                        <MessageSquare className="w-3.5 h-3.5 text-[#0684E5]" />
+                        <MessageSquare className="w-3.5 h-3.5 text-[#005A9D]" />
                         {pick('Tanya Kiko Sekarang', 'Ask Kiko Now')}
                     </button>
                 </section>

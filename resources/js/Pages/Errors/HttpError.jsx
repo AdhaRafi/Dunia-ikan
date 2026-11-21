@@ -21,7 +21,7 @@ export default function HttpError({ status = 404 }) {
         : pick('yang terputus.', 'went wrong.');
 
     return (
-        <div className="relative isolate min-h-screen w-full aquatic-canvas-ambient flex flex-col overflow-x-clip selection:bg-sky-200 selection:text-[#001454]">
+        <div className="relative isolate min-h-screen w-full aquatic-canvas-ambient flex flex-col overflow-x-clip selection:bg-sky-200 selection:text-[#14335D]">
             <Head title={title} />
 
             {/* Top Navigation */}
@@ -34,13 +34,13 @@ export default function HttpError({ status = 404 }) {
                 </Link>
 
                 <nav className="hidden sm:flex items-center gap-8 text-[13px] font-medium text-slate-600 dark:text-slate-300">
-                    <Link href="/products" className="hover:text-[#056BC4] dark:hover:text-[#4AB8BD] transition">
+                    <Link href="/products" className="hover:text-[#056BC4] dark:hover:text-[#60C2E6] transition">
                         {pick('Katalog Ikan', 'Products')}
                     </Link>
-                    <Link href="/guides" className="hover:text-[#056BC4] dark:hover:text-[#4AB8BD] transition">
+                    <Link href="/guides" className="hover:text-[#056BC4] dark:hover:text-[#60C2E6] transition">
                         {pick('Panduan Ikan', 'Care Guides')}
                     </Link>
-                    <Link href="/cart" className="hover:text-[#056BC4] dark:hover:text-[#4AB8BD] transition">
+                    <Link href="/cart" className="hover:text-[#056BC4] dark:hover:text-[#60C2E6] transition">
                         {pick('Keranjang', 'Cart')}
                     </Link>
                 </nav>
@@ -48,14 +48,14 @@ export default function HttpError({ status = 404 }) {
                 {authUser ? (
                     <Link
                         href="/orders"
-                        className="text-[13px] font-bold text-[#056BC4] dark:text-[#4AB8BD] hover:underline whitespace-nowrap"
+                        className="text-[13px] font-bold text-[#056BC4] dark:text-[#60C2E6] hover:underline whitespace-nowrap"
                     >
                         {pick('Pesanan Saya', 'My Orders')}
                     </Link>
                 ) : (
                     <Link
                         href="/login"
-                        className="text-[13px] font-bold text-[#056BC4] dark:text-[#4AB8BD] hover:underline whitespace-nowrap"
+                        className="text-[13px] font-bold text-[#056BC4] dark:text-[#60C2E6] hover:underline whitespace-nowrap"
                     >
                         {pick('Masuk', 'Sign in')}
                     </Link>
@@ -70,7 +70,7 @@ export default function HttpError({ status = 404 }) {
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true"
-                        className="w-full h-auto block text-[#056BC4] dark:text-[#4AB8BD]"
+                        className="w-full h-auto block text-[#056BC4] dark:text-[#60C2E6]"
                     >
                         {/* Top disconnection spark ticks */}
                         <line x1="500" y1="10" x2="500" y2="26" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />

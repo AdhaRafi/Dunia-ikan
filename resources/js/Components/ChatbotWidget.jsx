@@ -70,7 +70,7 @@ function renderAssistantMessage(text) {
                         key={idx}
                         className={
                             isHeading
-                                ? 'font-bold text-[#001454] dark:text-cyan-300 pt-0.5'
+                                ? 'font-bold text-[#14335D] dark:text-cyan-300 pt-0.5'
                                 : undefined
                         }
                     >
@@ -285,12 +285,12 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                     <button
                         type="button"
                         onClick={onOpen}
-                        className="group flex items-center gap-3 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0d2e92]/60 focus-visible:ring-offset-2"
+                        className="group flex items-center gap-3 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#14335D]/60 focus-visible:ring-offset-2"
                         title={pick('Buka Chatbot Kiko', 'Open Kiko Assistant')}
                         aria-label={pick('Tanya Kiko', 'Ask Kiko')}
                     >
                         {/* Clean speech-bubble pill pointing to the mascot orb */}
-                        <span className="relative hidden sm:inline-flex items-center rounded-full bg-white dark:bg-[#131d33] px-4 py-2 text-[13px] font-bold tracking-tight text-[#001454] dark:text-white border border-slate-200/90 dark:border-slate-700/80 shadow-[0_8px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 group-hover:-translate-x-0.5">
+                        <span className="relative hidden sm:inline-flex items-center rounded-full bg-white dark:bg-[#131d33] px-4 py-2 text-[13px] font-bold tracking-tight text-[#14335D] dark:text-white border border-slate-200/90 dark:border-slate-700/80 shadow-[0_8px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 group-hover:-translate-x-0.5">
                             <span>{pick('Tanya Kiko', 'Ask Kiko')}</span>
                             <span
                                 aria-hidden="true"
@@ -347,7 +347,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                         {/* Floating White Capsule Header Pill */}
                         <div className="relative z-10 mx-4 mt-3.5 shrink-0 flex items-center justify-between rounded-full bg-white/95 dark:bg-[#111a30]/95 px-3.5 py-2 border border-slate-200/80 dark:border-slate-700/80 shadow-[0_6px_22px_rgba(15,23,42,0.08)]">
                             <div className="flex items-center gap-2.5 min-w-0">
-                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-50 dark:bg-sky-950/60 text-[#0684E5] dark:text-cyan-400">
+                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-50 dark:bg-sky-950/60 text-[#005A9D] dark:text-cyan-400">
                                     <svg
                                         viewBox="0 0 28 28"
                                         fill="none"
@@ -378,7 +378,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                     </svg>
                                 </span>
                                 <div className="min-w-0">
-                                    <h3 className="text-[13px] font-extrabold leading-tight text-[#001454] dark:text-white truncate">
+                                    <h3 className="text-[13px] font-extrabold leading-tight text-[#14335D] dark:text-white truncate">
                                         Kiko
                                     </h3>
                                     <p className="text-[10.5px] font-medium leading-tight text-slate-600 dark:text-slate-300 truncate">
@@ -393,7 +393,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                         type="button"
                                         onClick={handleNewSession}
                                         disabled={loading}
-                                        className="flex h-8 items-center gap-1 rounded-full px-2.5 text-[11px] font-bold text-[#0369A1] dark:text-cyan-300 hover:bg-sky-50 dark:hover:bg-slate-800 transition disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                                        className="flex h-8 items-center gap-1 rounded-full px-2.5 text-[11px] font-bold text-[#0369A1] dark:text-cyan-300 hover:bg-sky-50 dark:hover:bg-slate-800 transition disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D]"
                                         title={pick('Mulai obrolan baru', 'Start new chat')}
                                     >
                                         <RotateCcw className="h-3.5 w-3.5" />
@@ -403,7 +403,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="flex h-8 w-8 items-center justify-center rounded-full text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                                    className="flex h-8 w-8 items-center justify-center rounded-full text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D]"
                                     aria-label={pick('Tutup asisten', 'Close assistant')}
                                 >
                                     <X className="h-4 w-4 stroke-[2.2]" />
@@ -513,7 +513,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                         </div>
 
                                         {/* Personalized Greeting (Logged-in shows name; Guest omits bracket cleanly) */}
-                                        <h3 className="text-[19px] sm:text-[21px] font-extrabold tracking-tight leading-[1.3] text-[#001454] dark:text-white">
+                                        <h3 className="text-[19px] sm:text-[21px] font-extrabold tracking-tight leading-[1.3] text-[#14335D] dark:text-white">
                                             {greetingName
                                                 ? pick(
                                                       <>
@@ -585,7 +585,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                             <div
                                                 className={`max-w-[85%] px-4 py-3 text-xs leading-relaxed ${
                                                     isUser
-                                                        ? 'bg-[#001454] dark:bg-[#1E80A0] text-white rounded-2xl rounded-tr-xs shadow-xs'
+                                                        ? 'bg-[#14335D] dark:bg-[#1E80A0] text-white rounded-2xl rounded-tr-xs shadow-xs'
                                                         : 'bg-white dark:bg-[#111a30] text-slate-800 dark:text-neutral-100 rounded-2xl rounded-tl-xs border border-slate-200 dark:border-neutral-700/80 shadow-xs'
                                                 }`}
                                             >
@@ -628,7 +628,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                                     msg.fish_guides.length >
                                                         0 && (
                                                         <div className="mt-3 space-y-2 border-t border-slate-200 dark:border-neutral-700/60 pt-2.5">
-                                                            <p className="flex items-center gap-1.5 text-[11px] font-bold text-[#001454] dark:text-cyan-300">
+                                                            <p className="flex items-center gap-1.5 text-[11px] font-bold text-[#14335D] dark:text-cyan-300">
                                                                 <BookOpen className="h-3.5 w-3.5 text-[#0369A1] dark:text-sky-400" />
                                                                 {pick(
                                                                     'Rujukan panduan resmi',
@@ -657,7 +657,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                                     msg.recommended_products
                                                         .length > 0 && (
                                                         <div className="mt-3 space-y-2 border-t border-slate-200 dark:border-neutral-700/60 pt-2.5">
-                                                            <p className="text-[11px] font-bold text-[#001454] dark:text-cyan-300">
+                                                            <p className="text-[11px] font-bold text-[#14335D] dark:text-cyan-300">
                                                                 {pick(
                                                                     'Rekomendasi di katalog',
                                                                     'Catalog recommendations',
@@ -754,7 +754,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                         ),
                                     )
                                 }
-                                className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-3 py-1.5 text-[11.5px] font-bold text-slate-900 dark:text-neutral-100 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:border-[#0684E5] hover:bg-sky-50/70 dark:hover:bg-[#162240] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                                className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-3 py-1.5 text-[11.5px] font-bold text-slate-900 dark:text-neutral-100 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:border-[#005A9D] hover:bg-sky-50/70 dark:hover:bg-[#162240] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D]"
                             >
                                 <Package className="h-3.5 w-3.5 text-slate-800 dark:text-slate-200" />
                                 {pick('Pakan', 'Fish food')}
@@ -769,7 +769,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                         ),
                                     )
                                 }
-                                className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-3 py-1.5 text-[11.5px] font-bold text-slate-900 dark:text-neutral-100 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:border-[#0684E5] hover:bg-sky-50/70 dark:hover:bg-[#162240] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                                className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-3 py-1.5 text-[11.5px] font-bold text-slate-900 dark:text-neutral-100 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:border-[#005A9D] hover:bg-sky-50/70 dark:hover:bg-[#162240] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D]"
                             >
                                 <Fish className="h-3.5 w-3.5 text-slate-800 dark:text-slate-200" />
                                 {pick('Jenis ikan', 'Fish species')}
@@ -784,7 +784,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                         ),
                                     )
                                 }
-                                className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-3 py-1.5 text-[11.5px] font-bold text-slate-900 dark:text-neutral-100 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:border-[#0684E5] hover:bg-sky-50/70 dark:hover:bg-[#162240] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                                className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-3 py-1.5 text-[11.5px] font-bold text-slate-900 dark:text-neutral-100 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:border-[#005A9D] hover:bg-sky-50/70 dark:hover:bg-[#162240] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D]"
                             >
                                 <PlusCircle className="h-3.5 w-3.5 text-slate-800 dark:text-slate-200" />
                                 {pick('Kesehatan ikan', 'Fish health')}
@@ -798,7 +798,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                     e.preventDefault();
                                     handleSendMessage();
                                 }}
-                                className="rounded-[20px] border border-slate-300/90 dark:border-slate-700 focus-within:border-[#0684E5] bg-white dark:bg-[#111a30] shadow-[0_6px_22px_rgba(15,23,42,0.08)] px-3.5 pt-3 pb-2.5 transition"
+                                className="rounded-[20px] border border-slate-300/90 dark:border-slate-700 focus-within:border-[#005A9D] bg-white dark:bg-[#111a30] shadow-[0_6px_22px_rgba(15,23,42,0.08)] px-3.5 pt-3 pb-2.5 transition"
                             >
                                 <input
                                     type="file"
@@ -861,7 +861,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                         <button
                                             type="button"
                                             onClick={() => fileInputRef.current?.click()}
-                                            className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-100/90 dark:bg-slate-800 text-[#0369A1] dark:text-cyan-400 hover:bg-sky-200/80 dark:hover:bg-slate-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                                            className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-100/90 dark:bg-slate-800 text-[#0369A1] dark:text-cyan-400 hover:bg-sky-200/80 dark:hover:bg-slate-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D]"
                                             title={pick('Unggah foto ikan', 'Upload fish photo')}
                                             aria-label={pick('Unggah foto ikan', 'Upload fish photo')}
                                         >
@@ -870,7 +870,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                         <button
                                             type="button"
                                             onClick={() => cameraInputRef.current?.click()}
-                                            className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-100/90 dark:bg-slate-800 text-[#0369A1] dark:text-cyan-400 hover:bg-sky-200/80 dark:hover:bg-slate-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5]"
+                                            className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-100/90 dark:bg-slate-800 text-[#0369A1] dark:text-cyan-400 hover:bg-sky-200/80 dark:hover:bg-slate-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D]"
                                             title={pick('Ambil foto ikan', 'Take fish photo')}
                                             aria-label={pick('Ambil foto ikan', 'Take fish photo')}
                                         >
@@ -881,7 +881,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                     <button
                                         type="submit"
                                         disabled={loading || (!inputText.trim() && !selectedImage)}
-                                        className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0B1220] dark:bg-[#0684E5] text-white hover:bg-[#001454] dark:hover:bg-[#0573c9] transition disabled:cursor-not-allowed disabled:opacity-35 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] focus-visible:ring-offset-2"
+                                        className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0B1220] dark:bg-[#005A9D] text-white hover:bg-[#14335D] dark:hover:bg-[#00477C] transition disabled:cursor-not-allowed disabled:opacity-35 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D] focus-visible:ring-offset-2"
                                         aria-label={pick('Kirim pesan', 'Send message')}
                                     >
                                         <Send className="h-4 w-4 -translate-x-[0.5px] translate-y-[0.5px]" />

@@ -17,10 +17,10 @@ import { buildPrimaryNavItems, buildStoreNavItem } from '@/lib/navigation';
 function NavRow({ item, onNavigate }) {
     const Icon = item.icon;
 
-    const baseClasses = `relative group/item w-full h-9 flex items-center gap-3 px-6 transition-colors hover:bg-slate-50/90 dark:hover:bg-slate-800/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0267C1] ${
+    const baseClasses = `relative group/item w-full h-9 flex items-center gap-3 px-6 transition-colors hover:bg-slate-50/90 dark:hover:bg-slate-800/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#00477C] ${
         item.active
-            ? 'text-[#0267C1] dark:text-white font-semibold'
-            : 'text-slate-500 hover:text-[#001454] dark:text-slate-400 dark:hover:text-white font-medium'
+            ? 'text-[#00477C] dark:text-white font-semibold'
+            : 'text-slate-500 hover:text-[#14335D] dark:text-slate-400 dark:hover:text-white font-medium'
     }`;
 
     const content = (
@@ -28,7 +28,7 @@ function NavRow({ item, onNavigate }) {
             {item.active && (
                 <span
                     aria-hidden="true"
-                    className="absolute right-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-l-full bg-[#0267C1] dark:bg-white"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-l-full bg-[#00477C] dark:bg-white"
                 />
             )}
 
@@ -36,8 +36,8 @@ function NavRow({ item, onNavigate }) {
                 strokeWidth={1.8}
                 className={`w-[18px] h-[18px] shrink-0 transition-colors ${
                     item.active
-                        ? 'text-[#0267C1] dark:text-white'
-                        : 'text-slate-400 group-hover/item:text-[#001454] dark:text-slate-400 dark:group-hover/item:text-white'
+                        ? 'text-[#00477C] dark:text-white'
+                        : 'text-slate-400 group-hover/item:text-[#14335D] dark:text-slate-400 dark:group-hover/item:text-white'
                 }`}
             />
 
@@ -161,7 +161,7 @@ export default function Sidebar({
         >
             <div
                 onClick={onClose}
-                className="fixed inset-0 bg-[#001454]/40 backdrop-blur-xs"
+                className="fixed inset-0 bg-[#14335D]/40 backdrop-blur-xs"
             />
 
             <aside
@@ -175,7 +175,7 @@ export default function Sidebar({
                             <Link
                                 href="/"
                                 onClick={onClose}
-                                className="flex items-center min-w-0 hover:opacity-90 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1] rounded-lg"
+                                className="flex items-center min-w-0 hover:opacity-90 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00477C] rounded-lg"
                             >
                                 <BrandWordmark className="h-7" />
                             </Link>
@@ -183,7 +183,7 @@ export default function Sidebar({
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#001454] dark:hover:text-white flex items-center justify-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
+                                className="w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700/80 text-slate-400 hover:text-[#14335D] dark:hover:text-white flex items-center justify-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00477C]"
                                 aria-label={pick('Tutup menu', 'Close menu')}
                             >
                                 <X className="w-3.5 h-3.5" />
@@ -223,11 +223,11 @@ export default function Sidebar({
                             <Link
                                 href="/profile"
                                 onClick={onClose}
-                                className="flex items-center gap-3 px-6 py-1 transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0267C1]"
+                                className="flex items-center gap-3 px-6 py-1 transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#00477C]"
                             >
                                 <UserAvatar user={user} className="w-8 h-8 text-xs" />
                                 <div className="min-w-0">
-                                    <p className="text-[13px] font-semibold text-[#001454] dark:text-white truncate leading-tight">
+                                    <p className="text-[13px] font-semibold text-[#14335D] dark:text-white truncate leading-tight">
                                         {user.name}
                                     </p>
                                     <p className="text-[11px] text-slate-400 dark:text-slate-500 truncate mt-0.5">
@@ -254,11 +254,11 @@ export default function Sidebar({
                                     ? pick('Aktifkan mode terang', 'Enable light mode')
                                     : pick('Aktifkan mode gelap', 'Enable dark mode')
                             }
-                            className="w-full flex items-center gap-3 px-6 py-1.5 text-[13px] font-medium text-slate-500 hover:text-[#001454] dark:text-slate-400 dark:hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0267C1]"
+                            className="w-full flex items-center gap-3 px-6 py-1.5 text-[13px] font-medium text-slate-500 hover:text-[#14335D] dark:text-slate-400 dark:hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#00477C]"
                         >
                             <span
                                 className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full p-0.5 transition-colors duration-200 ${
-                                    darkMode ? 'bg-[#0684E5]' : 'bg-slate-200 dark:bg-slate-700'
+                                    darkMode ? 'bg-[#005A9D]' : 'bg-slate-200 dark:bg-slate-700'
                                 }`}
                             >
                                 <span

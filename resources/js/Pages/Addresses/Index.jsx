@@ -84,7 +84,7 @@ export default function Index({ addresses }) {
                         <button
                             type="button"
                             onClick={openCreate}
-                            className="px-4 py-2.5 rounded-xl bg-[#0684E5] hover:bg-[#006783] text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-md shadow-blue-500/20"
+                            className="px-4 py-2.5 rounded-xl bg-[#005A9D] hover:bg-[#006783] text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-md shadow-blue-500/20"
                         >
                             <Plus className="w-4 h-4" />
                             {pick('Tambah Alamat Baru', 'Add New Address')}
@@ -220,7 +220,7 @@ export default function Index({ addresses }) {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="px-5 py-2 rounded-xl bg-[#0684E5] hover:bg-[#006783] text-white font-bold transition cursor-pointer shadow-md shadow-blue-500/20"
+                                    className="px-5 py-2 rounded-xl bg-[#005A9D] hover:bg-[#006783] text-white font-bold transition cursor-pointer shadow-md shadow-blue-500/20"
                                 >
                                     {processing
                                         ? pick('Menyimpan...', 'Saving...')
@@ -245,7 +245,7 @@ export default function Index({ addresses }) {
                                     <span className="font-bold text-sm text-slate-900 dark:text-white">{addr.recipient_name}</span>
                                     <span className="text-slate-500 dark:text-slate-400 font-medium">({addr.phone})</span>
                                     {addr.is_primary && (
-                                        <span className="px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-[#0684E5]/20 text-dunia-blue dark:text-sky-300 font-bold text-[10px]">
+                                        <span className="px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-[#005A9D]/20 text-dunia-blue dark:text-sky-300 font-bold text-[10px]">
                                             {pick('Alamat Utama', 'Primary Address')}
                                         </span>
                                     )}
@@ -271,7 +271,7 @@ export default function Index({ addresses }) {
                                 <button
                                     type="button"
                                     onClick={() => openEdit(addr)}
-                                    className="p-2 text-slate-500 dark:text-slate-400 hover:text-dunia-blue dark:hover:text-[#4AB8BD] rounded-lg hover:bg-sky-50 dark:hover:bg-slate-800"
+                                    className="p-2 text-slate-500 dark:text-slate-400 hover:text-dunia-blue dark:hover:text-[#60C2E6] rounded-lg hover:bg-sky-50 dark:hover:bg-slate-800"
                                     title={pick('Edit', 'Edit')}
                                 >
                                     <Edit3 className="w-4 h-4" />

@@ -23,26 +23,26 @@ const CATEGORY_META = {
     },
     'Gangguan Pencernaan & Organ': {
         badgeClass:
-            'bg-cyan-50 text-[#1E80A0] border-cyan-200/80 dark:bg-cyan-500/15 dark:text-[#4AB8BD] dark:border-cyan-500/30',
-        dotClass: 'bg-[#1E80A0] dark:bg-[#4AB8BD]',
+            'bg-cyan-50 text-[#1E80A0] border-cyan-200/80 dark:bg-cyan-500/15 dark:text-[#60C2E6] dark:border-cyan-500/30',
+        dotClass: 'bg-[#1E80A0] dark:bg-[#60C2E6]',
         shortLabel: 'Organ & Pencernaan',
     },
     'Kualitas Air & Filter': {
         badgeClass:
-            'bg-sky-50 text-[#0684E5] border-sky-200/80 dark:bg-sky-500/15 dark:text-sky-300 dark:border-sky-500/30',
-        dotClass: 'bg-[#0684E5]',
+            'bg-sky-50 text-[#005A9D] border-sky-200/80 dark:bg-sky-500/15 dark:text-sky-300 dark:border-sky-500/30',
+        dotClass: 'bg-[#005A9D]',
         shortLabel: 'Kualitas Air',
     },
     'Air Laut & Salinitas': {
         badgeClass:
-            'bg-sky-50 text-[#0D2E92] border-sky-200/80 dark:bg-sky-500/15 dark:text-sky-300 dark:border-sky-500/30',
-        dotClass: 'bg-[#0D2E92] dark:bg-sky-400',
+            'bg-sky-50 text-[#14335D] border-sky-200/80 dark:bg-sky-500/15 dark:text-sky-300 dark:border-sky-500/30',
+        dotClass: 'bg-[#14335D] dark:bg-sky-400',
         shortLabel: 'Air Laut',
     },
     'Air Payau & Estuari': {
         badgeClass:
             'bg-teal-50 text-teal-800 border-teal-200/80 dark:bg-teal-500/15 dark:text-teal-300 dark:border-teal-500/30',
-        dotClass: 'bg-[#4AB8BD]',
+        dotClass: 'bg-[#60C2E6]',
         shortLabel: 'Air Payau',
     },
     'Ikan Predator & Tank Besar': {

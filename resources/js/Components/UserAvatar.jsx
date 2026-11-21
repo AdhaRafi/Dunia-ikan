@@ -22,7 +22,7 @@ export default function UserAvatar({ user, previewUrl = null, className = 'w-8 h
 
     return (
         <div
-            className={`rounded-full bg-[#001454] dark:bg-[#0D2E92] text-white font-bold flex items-center justify-center shrink-0 ${className}`}
+            className={`rounded-full bg-[#14335D] dark:bg-[#14335D] text-white font-bold flex items-center justify-center shrink-0 ${className}`}
         >
             {initial}
         </div>

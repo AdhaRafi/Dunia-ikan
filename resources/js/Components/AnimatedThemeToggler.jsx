@@ -114,7 +114,7 @@ export default function AnimatedThemeToggler({
             title={title ?? label}
             aria-label={label}
             aria-pressed={darkMode}
-            className={`btn-motion inline-flex items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0684E5] ${className}`}
+            className={`btn-motion inline-flex items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D] ${className}`}
         >
             <span
                 key={darkMode ? 'sun' : 'moon'}

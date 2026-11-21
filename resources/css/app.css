@@ -5,24 +5,24 @@
 @layer base {
     :root {
         --bg: #ffffff;
-        --surface: #f8faf9;
-        --ink: #0e1719;
+        --surface: #f8fcfe;
+        --ink: #14335D;
         --muted: #64748b;
-        --accent: #00c882;
+        --accent: #005A9D;
         --accent-ink: #ffffff;
-        --wild-dark: #0e1719;
-        --wild-panel: #142224;
-        --wild-green: #00c882;
-        --field-1: #00c882;
+        --wild-dark: #14335D;
+        --wild-panel: #0F2647;
+        --wild-green: #60C2E6;
+        --field-1: #005A9D;
         --field-1-ink: #ffffff;
-        --field-2: #059669;
+        --field-2: #00477C;
         --field-2-ink: #ffffff;
-        --field-3: #10b981;
-        --field-3-ink: #ffffff;
-        --field-4: #142224;
+        --field-3: #60C2E6;
+        --field-3-ink: #14335D;
+        --field-4: #14335D;
         --field-4-ink: #ffffff;
-        --field-5: #f8faf9;
-        --field-5-ink: #0e1719;
+        --field-5: #A1E1EF;
+        --field-5-ink: #14335D;
 
         --step-small: 0.8125rem;
         --step-body: 1rem;
@@ -527,40 +527,40 @@
 
     /* Brand-aligned underwater ambient light canvas & editorial surfaces */
     .aquatic-canvas-ambient {
-        background-color: #fbf8ff;
+        background-color: #f8fcfe;
         background-image:
-            radial-gradient(64rem 40rem at 104% -4%, rgba(6, 132, 229, 0.08), transparent 62%),
-            radial-gradient(52rem 34rem at -6% 42%, rgba(74, 184, 189, 0.085), transparent 60%),
-            radial-gradient(48rem 32rem at 96% 96%, rgba(6, 132, 229, 0.055), transparent 58%);
+            radial-gradient(64rem 40rem at 104% -4%, rgba(0, 90, 157, 0.08), transparent 62%),
+            radial-gradient(52rem 34rem at -6% 42%, rgba(96, 194, 230, 0.09), transparent 60%),
+            radial-gradient(48rem 32rem at 96% 96%, rgba(0, 90, 157, 0.06), transparent 58%);
     }
 
     .dark .aquatic-canvas-ambient {
-        background-color: #070b14;
+        background-color: #070e1b;
         background-image:
-            radial-gradient(64rem 40rem at 104% -4%, rgba(6, 132, 229, 0.14), transparent 62%),
-            radial-gradient(52rem 34rem at -6% 42%, rgba(74, 184, 189, 0.11), transparent 60%),
-            radial-gradient(48rem 32rem at 96% 96%, rgba(6, 132, 229, 0.09), transparent 58%);
+            radial-gradient(64rem 40rem at 104% -4%, rgba(0, 90, 157, 0.16), transparent 62%),
+            radial-gradient(52rem 34rem at -6% 42%, rgba(96, 194, 230, 0.13), transparent 60%),
+            radial-gradient(48rem 32rem at 96% 96%, rgba(0, 90, 157, 0.10), transparent 58%);
     }
 
     .aquatic-cta-surface {
-        background-color: #0b1c40;
+        background-color: #14335D;
         background-image:
-            radial-gradient(38rem 22rem at 100% 0%, rgba(74, 184, 189, 0.2), transparent 64%),
-            linear-gradient(120deg, #091633 0%, #0d224b 58%, #0d2f52 100%);
+            radial-gradient(38rem 22rem at 100% 0%, rgba(96, 194, 230, 0.22), transparent 64%),
+            linear-gradient(120deg, #0e223f 0%, #14335d 58%, #005a9d 100%);
     }
 
     .aquatic-soft-panel {
-        background-color: #f3f6fc;
+        background-color: #f0f7fc;
         background-image:
-            radial-gradient(36rem 24rem at 100% 0%, rgba(6, 132, 229, 0.07), transparent 65%),
-            radial-gradient(28rem 20rem at 0% 100%, rgba(74, 184, 189, 0.065), transparent 65%);
+            radial-gradient(36rem 24rem at 100% 0%, rgba(0, 90, 157, 0.08), transparent 65%),
+            radial-gradient(28rem 20rem at 0% 100%, rgba(96, 194, 230, 0.08), transparent 65%);
     }
 
     .dark .aquatic-soft-panel {
-        background-color: #0d1527;
+        background-color: #0c1c33;
         background-image:
-            radial-gradient(36rem 24rem at 100% 0%, rgba(74, 184, 189, 0.1), transparent 65%),
-            radial-gradient(28rem 20rem at 0% 100%, rgba(6, 132, 229, 0.09), transparent 65%);
+            radial-gradient(36rem 24rem at 100% 0%, rgba(96, 194, 230, 0.12), transparent 65%),
+            radial-gradient(28rem 20rem at 0% 100%, rgba(0, 90, 157, 0.12), transparent 65%);
     }
 
     @media (prefers-reduced-motion: reduce) {

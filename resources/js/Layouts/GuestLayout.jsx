@@ -5,7 +5,7 @@ import BrandWordmark from '@/Components/BrandWordmark';
 import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
 
 export const authPrimaryButtonClass =
-    'btn-motion btn-sheen w-full h-11 rounded-xl bg-gradient-to-r from-[#2448f5] via-[#1c64f2] to-[#0684E5] px-4 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(36,72,245,0.28)] hover:brightness-105 hover:shadow-[0_14px_28px_rgba(36,72,245,0.34)] disabled:opacity-50 disabled:cursor-not-allowed';
+    'btn-motion btn-sheen w-full h-11 rounded-xl bg-gradient-to-r from-[#005A9D] via-[#1c64f2] to-[#005A9D] px-4 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(36,72,245,0.28)] hover:brightness-105 hover:shadow-[0_14px_28px_rgba(36,72,245,0.34)] disabled:opacity-50 disabled:cursor-not-allowed';
 
 /**
  * Centered split-card layout for guest authentication screens.

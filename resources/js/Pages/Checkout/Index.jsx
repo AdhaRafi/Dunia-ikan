@@ -105,7 +105,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
             <Head title={pick('Checkout Pembelian Ikan - Dunia Ikan', 'Checkout — Dunia Ikan')} />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                <Link href="/cart" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-dunia-blue dark:hover:text-[#4AB8BD] mb-6 transition">
+                <Link href="/cart" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-dunia-blue dark:hover:text-[#60C2E6] mb-6 transition">
                     <ArrowLeft className="w-4 h-4" />
                     {pick('Kembali ke Keranjang', 'Back to Cart')}
                 </Link>
@@ -121,7 +121,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                         <div className="bg-white dark:bg-[#0e1424] p-6 rounded-2xl border border-sky-100 dark:border-slate-800 shadow-xs space-y-4">
                             <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
                                 <h2 className="font-bold text-sm text-dunia-navy dark:text-white uppercase tracking-wider flex items-center gap-2">
-                                    <MapPin className="w-4 h-4 text-[#0684E5] dark:text-[#4AB8BD]" />
+                                    <MapPin className="w-4 h-4 text-[#005A9D] dark:text-[#60C2E6]" />
                                     {pick('1. Alamat Tujuan Pengiriman Ikan', '1. Shipping Address')}
                                 </h2>
 
@@ -129,7 +129,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                     <button
                                         type="button"
                                         onClick={() => setShowAddressModal(true)}
-                                        className="text-xs font-bold text-[#0684E5] dark:text-sky-300 hover:text-[#006783] flex items-center gap-1 cursor-pointer bg-blue-50 dark:bg-[#131d33] px-2.5 py-1.5 rounded-xl transition"
+                                        className="text-xs font-bold text-[#005A9D] dark:text-sky-300 hover:text-[#006783] flex items-center gap-1 cursor-pointer bg-blue-50 dark:bg-[#131d33] px-2.5 py-1.5 rounded-xl transition"
                                     >
                                         <PlusCircle className="w-3.5 h-3.5" />
                                         {pick('+ Tambah Alamat Baru', '+ Add New Address')}
@@ -150,7 +150,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             key={addr.id}
                                             className={`block p-4 rounded-xl border cursor-pointer transition ${
                                                 data.address_id === addr.id
-                                                    ? 'bg-sky-50/60 dark:bg-[#131d33] border-[#0684E5] ring-2 ring-[#0684E5]/30'
+                                                    ? 'bg-sky-50/60 dark:bg-[#131d33] border-[#005A9D] ring-2 ring-[#005A9D]/30'
                                                     : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-[#131d33]/60'
                                             }`}
                                         >
@@ -161,14 +161,14 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                                     value={addr.id}
                                                     checked={data.address_id === addr.id}
                                                     onChange={() => setData('address_id', addr.id)}
-                                                    className="mt-1 text-[#0684E5] focus:ring-[#0684E5]"
+                                                    className="mt-1 text-[#005A9D] focus:ring-[#005A9D]"
                                                 />
                                                 <div className="text-xs space-y-1">
                                                     <div className="flex items-center gap-2">
                                                         <span className="font-bold text-slate-900 dark:text-white text-sm">{addr.recipient_name}</span>
                                                         <span className="text-slate-500 dark:text-slate-400">({addr.phone})</span>
                                                         {addr.is_primary && (
-                                                            <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-[#0684E5]/20 text-[#0684E5] dark:text-sky-300 font-bold text-[10px]">
+                                                            <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-[#005A9D]/20 text-[#005A9D] dark:text-sky-300 font-bold text-[10px]">
                                                                 {pick('Utama', 'Primary')}
                                                             </span>
                                                         )}
@@ -198,7 +198,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                         <button
                                             type="button"
                                             onClick={() => setShowAddressModal(true)}
-                                            className="px-4 py-2.5 rounded-xl bg-[#0684E5] hover:bg-[#006783] text-white font-extrabold text-xs shadow-md shadow-blue-500/20 transition flex items-center gap-1.5 shrink-0 cursor-pointer"
+                                            className="px-4 py-2.5 rounded-xl bg-[#005A9D] hover:bg-[#006783] text-white font-extrabold text-xs shadow-md shadow-blue-500/20 transition flex items-center gap-1.5 shrink-0 cursor-pointer"
                                         >
                                             <PlusCircle className="w-4 h-4" />
                                             {pick('Tambah Alamat Sekarang', 'Add Address Now')}
@@ -215,7 +215,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                         {/* 2. Metode Pembayaran Manual */}
                         <div className="bg-white dark:bg-[#0e1424] p-6 rounded-2xl border border-sky-100 dark:border-slate-800 shadow-xs space-y-4">
                             <h2 className="font-bold text-sm text-dunia-navy dark:text-white uppercase tracking-wider flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
-                                <CreditCard className="w-4 h-4 text-dunia-blue dark:text-[#4AB8BD]" />
+                                <CreditCard className="w-4 h-4 text-dunia-blue dark:text-[#60C2E6]" />
                                 {pick('2. Metode Pembayaran', '2. Payment Method')}
                             </h2>
 
@@ -231,8 +231,8 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-1.5">
-                                                <Zap className="w-5 h-5 text-dunia-blue dark:text-[#4AB8BD]" />
-                                                <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-blue-100 dark:bg-[#0684E5]/20 text-dunia-blue dark:text-sky-300">
+                                                <Zap className="w-5 h-5 text-dunia-blue dark:text-[#60C2E6]" />
+                                                <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-blue-100 dark:bg-[#005A9D]/20 text-dunia-blue dark:text-sky-300">
                                                     {pick('Otomatis', 'Instant')}
                                                 </span>
                                             </div>
@@ -267,7 +267,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                 >
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
-                                            <CreditCard className="w-5 h-5 text-dunia-blue dark:text-[#4AB8BD]" />
+                                            <CreditCard className="w-5 h-5 text-dunia-blue dark:text-[#60C2E6]" />
                                             <input
                                                 type="radio"
                                                 name="payment_method"
@@ -302,7 +302,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-1.5">
-                                                <QrCode className="w-5 h-5 text-teal-600 dark:text-[#4AB8BD]" />
+                                                <QrCode className="w-5 h-5 text-teal-600 dark:text-[#60C2E6]" />
                                                 {!supportsManualQris && (
                                                     <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                                                         {pick('Belum tersedia', 'Unavailable')}
@@ -401,7 +401,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                     <div key={i} className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#131d33] border border-slate-100 dark:border-slate-800 text-xs space-y-2">
                                         <div className="flex items-center justify-between font-bold text-slate-800 dark:text-white">
                                             <span className="flex items-center gap-1.5">
-                                                <Store className="w-3.5 h-3.5 text-dunia-marine dark:text-[#4AB8BD]" />
+                                                <Store className="w-3.5 h-3.5 text-dunia-marine dark:text-[#60C2E6]" />
                                                 {grp.store.name}
                                             </span>
                                             <span>{formatPrice(grp.subtotalWithShipping)}</span>
@@ -434,14 +434,14 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                 </div>
                                 <div className="flex justify-between items-center text-sm font-bold text-dunia-navy dark:text-white pt-2 border-t border-slate-200 dark:border-slate-800">
                                     <span>{pick('Total Pembayaran:', 'Grand Total:')}</span>
-                                    <span className="text-xl font-extrabold text-dunia-blue dark:text-[#4AB8BD]">{formatPrice(grandTotal)}</span>
+                                    <span className="text-xl font-extrabold text-dunia-blue dark:text-[#60C2E6]">{formatPrice(grandTotal)}</span>
                                 </div>
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={processing || !data.address_id}
-                                className="w-full py-3.5 px-6 rounded-2xl bg-[#0684E5] hover:bg-[#006783] disabled:bg-slate-200 dark:disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-extrabold text-sm shadow-lg shadow-blue-500/25 transition flex items-center justify-center gap-2 cursor-pointer"
+                                className="w-full py-3.5 px-6 rounded-2xl bg-[#005A9D] hover:bg-[#006783] disabled:bg-slate-200 dark:disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-extrabold text-sm shadow-lg shadow-blue-500/25 transition flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <CheckCircle2 className="w-4 h-4" />
                                 {processing
@@ -454,7 +454,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                             </button>
 
                             <div className="p-3 rounded-xl bg-sky-50 dark:bg-[#131d33] text-[11px] text-sky-900 dark:text-slate-300 flex items-start gap-2">
-                                <ShieldCheck className="w-4 h-4 text-[#4AB8BD] shrink-0 mt-0.5" />
+                                <ShieldCheck className="w-4 h-4 text-[#60C2E6] shrink-0 mt-0.5" />
                                 <p>
                                     {data.payment_method === 'cod'
                                         ? pick(
@@ -482,7 +482,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                         <div className="bg-white dark:bg-[#0e1424] border border-slate-200 dark:border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95">
                             <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
                                 <h3 className="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
-                                    <MapPin className="w-5 h-5 text-[#0684E5] dark:text-[#4AB8BD]" />
+                                    <MapPin className="w-5 h-5 text-[#005A9D] dark:text-[#60C2E6]" />
                                     {pick('Tambah Alamat Pengiriman Baru', 'Add New Shipping Address')}
                                 </h3>
                                 <button
@@ -512,7 +512,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             placeholder={pick('Contoh: Budi Santoso', 'Example: Budi Santoso')}
                                             value={addressForm.recipient_name}
                                             onChange={(e) => setAddressForm({ ...addressForm, recipient_name: e.target.value })}
-                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#005A9D]"
                                         />
                                     </div>
                                     <div>
@@ -525,7 +525,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             placeholder={pick('Contoh: 081234567890', 'Example: 081234567890')}
                                             value={addressForm.phone}
                                             onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })}
-                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#005A9D]"
                                         />
                                     </div>
                                 </div>
@@ -541,7 +541,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             placeholder={pick('Contoh: Kota Bandung', 'Example: Bandung')}
                                             value={addressForm.city}
                                             onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
-                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#005A9D]"
                                         />
                                     </div>
                                     <div>
@@ -554,7 +554,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                             placeholder="40287"
                                             value={addressForm.postal_code}
                                             onChange={(e) => setAddressForm({ ...addressForm, postal_code: e.target.value })}
-                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                            className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#005A9D]"
                                         />
                                     </div>
                                 </div>
@@ -569,7 +569,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                         placeholder={pick('Contoh: Jawa Barat', 'Example: West Java')}
                                         value={addressForm.province}
                                         onChange={(e) => setAddressForm({ ...addressForm, province: e.target.value })}
-                                        className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                        className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#005A9D]"
                                     />
                                 </div>
 
@@ -586,7 +586,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                         )}
                                         value={addressForm.full_address}
                                         onChange={(e) => setAddressForm({ ...addressForm, full_address: e.target.value })}
-                                        className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#0684E5]"
+                                        className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-[#005A9D]"
                                     />
                                 </div>
 
@@ -601,7 +601,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                     <button
                                         type="submit"
                                         disabled={savingAddress}
-                                        className="px-5 py-2.5 rounded-xl bg-[#0684E5] hover:bg-[#006783] text-white font-extrabold shadow-md shadow-blue-500/20 transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                                        className="px-5 py-2.5 rounded-xl bg-[#005A9D] hover:bg-[#006783] text-white font-extrabold shadow-md shadow-blue-500/20 transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                                     >
                                         {savingAddress
                                             ? pick('Menyimpan...', 'Saving...')

@@ -178,7 +178,7 @@ export function LanguageSwitcher({ variant = 'default', className = '' }) {
                         title={code === 'id' ? 'Bahasa Indonesia' : 'English'}
                         className={`px-2 py-0.5 rounded-full text-[11px] font-bold tracking-wide uppercase transition-all ${
                             active
-                                ? 'bg-white dark:bg-neutral-900 text-[#0B3D91] dark:text-[#4AB8BD] shadow-xs'
+                                ? 'bg-white dark:bg-neutral-900 text-[#0B3D91] dark:text-[#60C2E6] shadow-xs'
                                 : 'text-slate-500 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white'
                         }`}
                     >

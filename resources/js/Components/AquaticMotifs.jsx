@@ -17,12 +17,12 @@ export function HeroWaveTransition({ variant = 'canvas', className = '' }) {
                 >
                     <path
                         d="M0 44C220 12 430 10 690 36C960 64 1210 58 1440 22V72H0V44Z"
-                        fill="#4AB8BD"
+                        fill="#60C2E6"
                         fillOpacity="0.16"
                     />
                     <path
                         d="M0 54C280 28 520 56 820 40C1090 26 1280 14 1440 34V72H0V54Z"
-                        fill="#0684E5"
+                        fill="#005A9D"
                         fillOpacity="0.2"
                     />
                 </svg>
@@ -44,14 +44,14 @@ export function HeroWaveTransition({ variant = 'canvas', className = '' }) {
                 {/* Translucent sub-surface reef tide crest */}
                 <path
                     d="M0 42C240 8 460 14 720 42C980 70 1220 60 1440 26V84H0V42Z"
-                    fill="#4AB8BD"
+                    fill="#60C2E6"
                     fillOpacity="0.18"
                 />
                 {/* Crisp shoreline wave contour */}
                 <path
                     d="M0 50C240 16 460 20 720 48C980 76 1220 66 1440 32"
                     fill="none"
-                    stroke="#4AB8BD"
+                    stroke="#60C2E6"
                     strokeOpacity="0.42"
                     strokeWidth="1.5"
                 />

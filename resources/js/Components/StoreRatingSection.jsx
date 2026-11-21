@@ -77,7 +77,7 @@ export default function StoreRatingSection({ store, storeRating }) {
                         {pick('Penilaian pembeli untuk', 'Buyer reviews for')}{' '}
                         <Link
                             href={`/stores/${store.slug}`}
-                            className="font-semibold text-[#0267C1] dark:text-sky-400 hover:underline"
+                            className="font-semibold text-[#00477C] dark:text-sky-400 hover:underline"
                         >
                             {store.name}
                         </Link>
@@ -241,7 +241,7 @@ export default function StoreRatingSection({ store, storeRating }) {
                                             onMouseEnter={() => setHoverRating(star)}
                                             onMouseLeave={() => setHoverRating(0)}
                                             aria-label={pick(`Beri ${star} bintang`, `Give ${star} stars`)}
-                                            className="p-1 rounded-lg hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0267C1]"
+                                            className="p-1 rounded-lg hover:scale-110 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00477C]"
                                         >
                                             <Star
                                                 className={`w-6 h-6 transition-colors ${
@@ -269,7 +269,7 @@ export default function StoreRatingSection({ store, storeRating }) {
                                         'Bagikan pengalaman belanja, kondisi ikan, atau kualitas packing toko...',
                                         'Share your shopping experience, fish health, or store packing quality...',
                                     )}
-                                    className="w-full rounded-xl border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#111a30] px-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0267C1] focus:ring-2 focus:ring-[#0267C1]/20 focus:outline-none"
+                                    className="w-full rounded-xl border border-slate-200 dark:border-neutral-700 bg-white dark:bg-[#111a30] px-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#00477C] focus:ring-2 focus:ring-[#00477C]/20 focus:outline-none"
                                 />
                                 {errors.comment && (
                                     <p className="mt-1 text-xs text-rose-600 dark:text-rose-400">
@@ -282,7 +282,7 @@ export default function StoreRatingSection({ store, storeRating }) {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="h-10 px-5 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-[#0684E5] dark:hover:bg-[#0267C1] text-white text-xs sm:text-sm font-semibold transition disabled:opacity-50"
+                                    className="h-10 px-5 rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-[#005A9D] dark:hover:bg-[#00477C] text-white text-xs sm:text-sm font-semibold transition disabled:opacity-50"
                                 >
                                     {processing
                                         ? pick('Menyimpan...', 'Saving...')
