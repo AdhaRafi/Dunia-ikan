@@ -4,6 +4,47 @@ import { Check } from '@/Components/Icons';
 import BrandWordmark from '@/Components/BrandWordmark';
 import { useLanguage } from '@/lib/i18n';
 
+const SOCIAL_LINKS = [
+    {
+        name: 'Instagram',
+        href: 'https://instagram.com',
+        icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                <rect x="2.5" y="2.5" width="19" height="19" rx="5" />
+                <circle cx="12" cy="12" r="4.2" />
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+            </svg>
+        ),
+    },
+    {
+        name: 'Facebook',
+        href: 'https://facebook.com',
+        icon: (
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4" aria-hidden="true">
+                <path d="M13.5 21v-8.2h2.7l.4-3.2h-3.1V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.4H7.5v3.2h2.7V21h3.3Z" />
+            </svg>
+        ),
+    },
+    {
+        name: 'Twitter',
+        href: 'https://twitter.com',
+        icon: (
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4" aria-hidden="true">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z" />
+            </svg>
+        ),
+    },
+    {
+        name: 'TikTok',
+        href: 'https://tiktok.com',
+        icon: (
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4" aria-hidden="true">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.3 0 .6.04.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1Z" />
+            </svg>
+        ),
+    },
+];
+
 export default function Footer() {
     const { visitorStats } = usePage().props;
     const { pick, isEn } = useLanguage();
@@ -68,10 +109,30 @@ export default function Footer() {
                                 </div>
                             </dl>
                         </div>
+
+                        {/* Social Media Links (Bottom Left with Brand Icons) */}
+                        <div
+                            aria-label={pick('Media sosial Dunia Ikan', 'Dunia Ikan social media')}
+                            className="pt-2 flex items-center gap-2"
+                        >
+                            {SOCIAL_LINKS.map((social) => (
+                                <a
+                                    key={social.name}
+                                    href={social.href}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    aria-label={social.name}
+                                    title={social.name}
+                                    className="flex h-9 w-9 items-center justify-center rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200/90 dark:border-slate-800 text-[#14335D] dark:text-slate-200 hover:border-[#005A9D] hover:bg-[#eef6ff] hover:text-[#005A9D] dark:hover:border-[#60C2E6] dark:hover:bg-[#13223b] dark:hover:text-[#60C2E6] shadow-2xs transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D]"
+                                >
+                                    {social.icon}
+                                </a>
+                            ))}
+                        </div>
                     </div>
 
-                    {/* 4 Navigation Columns (Skincare, Newsletter, Connect, Support) */}
-                    <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8 text-xs">
+                    {/* 3 Navigation Columns (Koleksi, Newsletter, Bantuan) */}
+                    <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8 text-xs">
                         {/* Col 1: Koleksi Ikan */}
                         <div className="space-y-3">
                             <h2 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
@@ -142,36 +203,7 @@ export default function Footer() {
                             )}
                         </div>
 
-                        {/* Col 3: Connect */}
-                        <div className="space-y-3">
-                            <h2 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
-                                {pick('Terhubung', 'Connect')}
-                            </h2>
-                            <ul className="space-y-2 text-neutral-600 dark:text-neutral-400 text-xs">
-                                <li>
-                                    <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
-                                        Instagram
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
-                                        Facebook
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
-                                        Twitter
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="hover:text-black dark:hover:text-white transition">
-                                        TikTok
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Col 4: Support */}
+                        {/* Col 3: Support */}
                         <div className="space-y-3">
                             <h2 className="font-bold text-neutral-900 dark:text-white uppercase tracking-wider text-[11px]">
                                 {pick('Bantuan', 'Support')}
