@@ -45,6 +45,43 @@ class ProfileTest extends TestCase
         $this->assertNull($user->email_verified_at);
     }
 
+    public function test_profile_update_validates_email_and_phone_strictly(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->from('/profile')
+            ->patch('/profile', [
+                'name' => $user->name,
+                'email' => 'budi@gmail',
+                'phone' => '081234567890',
+            ])
+            ->assertSessionHasErrors('email');
+
+        $this->actingAs($user)
+            ->from('/profile')
+            ->patch('/profile', [
+                'name' => $user->name,
+                'email' => 'budi@gmail.com',
+                'phone' => '12345',
+            ])
+            ->assertSessionHasErrors('phone');
+
+        $this->actingAs($user)
+            ->from('/profile')
+            ->patch('/profile', [
+                'name' => 'Budi Aquarist',
+                'email' => 'budi@gmail.com',
+                'phone' => '0812-3456-7890',
+            ])
+            ->assertSessionHasNoErrors()
+            ->assertRedirect('/profile');
+
+        $user->refresh();
+        $this->assertSame('budi@gmail.com', $user->email);
+        $this->assertSame('081234567890', $user->phone);
+    }
+
     public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void
     {
         $user = User::factory()->create();

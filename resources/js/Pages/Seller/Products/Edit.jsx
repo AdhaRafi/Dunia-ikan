@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Head, useForm, Link } from '@inertiajs/react';
 import SellerLayout from '@/Layouts/SellerLayout';
-import { Fish, ArrowLeft, HeartPulse, Save } from 'lucide-react';
+import { Fish, ArrowLeft, Save } from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 
 export default function Edit({ product, categories }) {
@@ -186,7 +186,7 @@ export default function Edit({ product, categories }) {
                         <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-4">
                             <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
                                 <h2 className="font-bold text-dunia-navy dark:text-white uppercase text-xs flex items-center gap-1.5">
-                                    <HeartPulse className="w-4 h-4 text-dunia-marine" />
+                                    <Fish className="w-4 h-4 text-dunia-marine" />
                                     {pick('2. Karakteristik Biologi & Morfologi Ikan', '2. Fish Biology & Morphology')}
                                 </h2>
 

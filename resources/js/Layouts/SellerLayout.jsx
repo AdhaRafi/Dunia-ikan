@@ -1,10 +1,11 @@
 import { Link, usePage } from '@inertiajs/react';
 import AnimatedThemeToggler, { toggleThemeWithTransition } from '@/Components/AnimatedThemeToggler';
 import BrandWordmark from '@/Components/BrandWordmark';
-import UserAvatar from '@/Components/UserAvatar';
+import UserDropdown from '@/Components/UserDropdown';
 import {
     Store,
     Fish,
+    MessageSquare,
     Package,
     PlusCircle,
     ArrowLeft,
@@ -12,14 +13,15 @@ import {
     CheckCircle2,
     AlertCircle,
     X,
-} from 'lucide-react';
+} from '@/Components/Icons';
 import { useEffect, useState } from 'react';
 import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
 
 export default function SellerLayout({ children, title }) {
     const { url, props } = usePage();
     const { pick } = useLanguage();
-    const { auth, flash } = props;
+    const { auth, flash, unreadChatCount = 0, favoriteIds = [] } = props;
+    const favoriteCount = Array.isArray(favoriteIds) ? favoriteIds.length : 0;
     const store = auth?.user?.store;
     const [showFlash, setShowFlash] = useState(true);
     const [darkMode, setDarkMode] = useState(() => {
@@ -70,6 +72,16 @@ export default function SellerLayout({ children, title }) {
             active: url.startsWith('/seller/orders'),
         },
         {
+            href: '/chat?tab=store',
+            label:
+                unreadChatCount > 0
+                    ? `${pick('Chat Pembeli', 'Buyer Chats')} (${unreadChatCount})`
+                    : pick('Chat Pembeli', 'Buyer Chats'),
+            icon: MessageSquare,
+            iconClass: 'text-[#005A9D] dark:text-[#60C2E6]',
+            active: url.startsWith('/chat'),
+        },
+        {
             href: '/seller/store',
             label: pick('Profil & Garansi DOA', 'Store & DOA Policy'),
             icon: ShieldCheck,
@@ -110,25 +122,15 @@ export default function SellerLayout({ children, title }) {
                             title={darkMode ? pick('Tema Terang', 'Light Theme') : pick('Tema Gelap', 'Dark Theme')}
                             className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                         />
-                        <Link
-                            href="/profile"
-                            className="flex items-center gap-2 rounded-full p-0.5 sm:pr-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                            title={pick('Pengaturan Profil Akun', 'Account Profile Settings')}
-                            aria-label={pick('Pengaturan Profil Akun', 'Account Profile Settings')}
-                        >
-                            <UserAvatar user={auth.user} className="w-7 h-7 text-[11px]" />
-                            <span className="hidden sm:inline text-sm font-semibold text-slate-800 dark:text-slate-200 max-w-[160px] truncate">
-                                {store?.name || auth.user.name}
-                            </span>
-                        </Link>
-                        <Link
-                            href="/logout"
-                            method="post"
-                            as="button"
-                            className="px-2 py-1 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition whitespace-nowrap shrink-0"
-                        >
-                            {pick('Keluar', 'Sign Out')}
-                        </Link>
+                        <UserDropdown
+                            user={auth.user}
+                            isDarkNav={false}
+                            darkMode={darkMode}
+                            onToggleTheme={(event) => toggleThemeWithTransition(event, !darkMode, setDarkMode)}
+                            unreadChatCount={unreadChatCount}
+                            favoriteCount={favoriteCount}
+                            inSellerPortal={true}
+                        />
                     </div>
                 </div>
             </header>

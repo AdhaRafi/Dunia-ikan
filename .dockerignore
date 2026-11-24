@@ -4,6 +4,7 @@
 .cursor
 android
 DuniaIkanAndroid
+mobile
 .env
 .env.*
 !.env.example

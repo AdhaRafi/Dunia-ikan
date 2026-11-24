@@ -13,11 +13,24 @@ class GlobalMessage extends Model
     /** @use HasFactory<GlobalMessageFactory> */
     use HasFactory;
 
+    public const DEFAULT_CHANNEL = 'general';
+
+    /**
+     * @var list<string>
+     */
+    public const CHANNELS = [
+        'general',
+        'tips',
+        'aquascape',
+        'marketplace',
+    ];
+
     /**
      * @var list<string>
      */
     protected $fillable = [
         'user_id',
+        'channel',
         'reply_to_id',
         'message',
         'image_path',

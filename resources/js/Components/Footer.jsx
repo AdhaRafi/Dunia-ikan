@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { Check } from 'lucide-react';
+import { Check } from '@/Components/Icons';
 import BrandWordmark from '@/Components/BrandWordmark';
 import { useLanguage } from '@/lib/i18n';
 

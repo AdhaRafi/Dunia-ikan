@@ -1,5 +1,5 @@
-import { Head, Link } from '@inertiajs/react';
-import { Star } from 'lucide-react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
+import { MessageSquare, Star } from '@/Components/Icons';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
 import Reveal from '@/Components/Reveal';
@@ -17,9 +17,11 @@ function formatPrice(price) {
 }
 
 export default function Show({ store, products, storeRating }) {
+    const { auth } = usePage().props;
     const { pick } = useLanguage();
     const featured = products?.data?.[0];
     const avgRating = storeRating?.count > 0 ? Number(storeRating.average).toFixed(1) : null;
+    const isOwnStore = Boolean(auth?.user?.store && auth.user.store.id === store.id);
 
     return (
         <AppLayout>
@@ -63,7 +65,33 @@ export default function Show({ store, products, storeRating }) {
                             </span>
                         </p>
 
-                        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[16px] text-white/80">
+                        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-[16px] text-white/80">
+                            {isOwnStore ? (
+                                <Link
+                                    href="/chat?tab=store"
+                                    className="inline-flex items-center gap-2 rounded-lg bg-white text-[#14335D] hover:bg-[#A1E1EF] px-4 py-2 text-xs sm:text-sm font-bold transition shadow-xs"
+                                >
+                                    <MessageSquare className="w-4 h-4" />
+                                    {pick('Chat Pembeli', 'Buyer Chats')}
+                                </Link>
+                            ) : auth?.user ? (
+                                <button
+                                    type="button"
+                                    onClick={() => router.post(`/stores/${store.slug}/chat`)}
+                                    className="inline-flex items-center gap-2 rounded-lg bg-white text-[#14335D] hover:bg-[#A1E1EF] px-4 py-2 text-xs sm:text-sm font-bold transition shadow-xs cursor-pointer"
+                                >
+                                    <MessageSquare className="w-4 h-4" />
+                                    {pick('Chat Toko', 'Chat Store')}
+                                </button>
+                            ) : (
+                                <Link
+                                    href="/login"
+                                    className="inline-flex items-center gap-2 rounded-lg bg-white text-[#14335D] hover:bg-[#A1E1EF] px-4 py-2 text-xs sm:text-sm font-bold transition shadow-xs"
+                                >
+                                    <MessageSquare className="w-4 h-4" />
+                                    {pick('Chat Toko', 'Chat Store')}
+                                </Link>
+                            )}
                             <span>{store.phone}</span>
                             <a
                                 href="#rating-toko"

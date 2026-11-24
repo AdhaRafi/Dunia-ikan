@@ -12,7 +12,7 @@ import {
     User, 
     MapPin, 
     Clock 
-} from 'lucide-react';
+} from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 
 export default function Show({ store, order }) {

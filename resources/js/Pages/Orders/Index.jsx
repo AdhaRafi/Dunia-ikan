@@ -1,6 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { Package, Store, ArrowRight, Clock, CheckCircle2, Truck, XCircle, CreditCard } from 'lucide-react';
+import { Package, Store, ArrowRight, Clock, CheckCircle2, Truck, XCircle, CreditCard } from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 
 export default function Index({ orders }) {

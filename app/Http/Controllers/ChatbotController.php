@@ -6,6 +6,7 @@ use App\Models\ChatMessage;
 use App\Models\ChatSession;
 use App\Models\FishGuide;
 use App\Models\Product;
+use App\Models\User;
 use App\Support\MediaStorage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class ChatbotController extends Controller
 {
     public function getHistory(Request $request): JsonResponse
     {
-        $user = $request->user();
+        $user = $this->resolveChatUser($request);
         $sessionToken = $this->resolveSessionToken($request, false);
         $session = $sessionToken
             ? ChatSession::where('session_token', $sessionToken)
@@ -51,9 +52,11 @@ class ChatbotController extends Controller
 
     public function newSession(Request $request): JsonResponse
     {
-        $user = $request->user();
+        $user = $this->resolveChatUser($request);
         $token = Str::random(40);
-        $request->session()->put('chat_session_token', $token);
+        if ($request->hasSession()) {
+            $request->session()->put('chat_session_token', $token);
+        }
 
         if ($user) {
             ChatSession::create([
@@ -78,7 +81,7 @@ class ChatbotController extends Controller
         ]);
 
         $userMessage = trim($request->input('message'));
-        $user = $request->user();
+        $user = $this->resolveChatUser($request);
         $sessionToken = $this->resolveSessionToken($request, true);
 
         // Ambil atau buat sesi chat yang terikat ketat ke pemilik sesi ini
@@ -356,16 +359,22 @@ Pedoman Penting:
         ]);
     }
 
+    private function resolveChatUser(Request $request): ?User
+    {
+        return $request->user() ?? $request->user('sanctum');
+    }
+
     private function resolveSessionToken(Request $request, bool $createIfMissing): ?string
     {
-        $user = $request->user();
+        $user = $this->resolveChatUser($request);
         $requested = trim((string) $request->input('session_token', ''));
-        $bound = (string) $request->session()->get('chat_session_token', '');
+        $hasSession = $request->hasSession();
+        $bound = $hasSession ? (string) $request->session()->get('chat_session_token', '') : '';
 
         if ($user) {
             if ($requested !== '') {
                 $owned = ChatSession::where('session_token', $requested)
-                    ->where(function ($q) use ($user, $bound, $requested) {
+                    ->where(function ($q) use ($user, $bound, $requested): void {
                         $q->where('user_id', $user->id);
                         if ($bound !== '' && hash_equals($bound, $requested)) {
                             $q->orWhereNull('user_id');
@@ -374,7 +383,9 @@ Pedoman Penting:
                     ->first();
 
                 if ($owned) {
-                    $request->session()->put('chat_session_token', $owned->session_token);
+                    if ($hasSession) {
+                        $request->session()->put('chat_session_token', $owned->session_token);
+                    }
 
                     return $owned->session_token;
                 }
@@ -382,7 +393,9 @@ Pedoman Penting:
 
             $existingOwned = ChatSession::where('user_id', $user->id)->latest()->first();
             if ($existingOwned) {
-                $request->session()->put('chat_session_token', $existingOwned->session_token);
+                if ($hasSession) {
+                    $request->session()->put('chat_session_token', $existingOwned->session_token);
+                }
 
                 return $existingOwned->session_token;
             }
@@ -394,20 +407,35 @@ Pedoman Penting:
             return $bound;
         }
 
+        // Stateless guest API clients (mobile app) may continue their own unowned guest session token.
+        if (! $hasSession && $requested !== '' && strlen($requested) >= 32) {
+            $guestSession = ChatSession::where('session_token', $requested)
+                ->whereNull('user_id')
+                ->first();
+
+            if ($guestSession) {
+                return $guestSession->session_token;
+            }
+        }
+
         return $createIfMissing ? $this->ensureBoundSessionToken($request) : null;
     }
 
     private function ensureBoundSessionToken(Request $request): string
     {
-        $bound = (string) $request->session()->get('chat_session_token', '');
-        if ($bound !== '') {
-            return $bound;
+        if ($request->hasSession()) {
+            $bound = (string) $request->session()->get('chat_session_token', '');
+            if ($bound !== '') {
+                return $bound;
+            }
+
+            $token = Str::random(40);
+            $request->session()->put('chat_session_token', $token);
+
+            return $token;
         }
 
-        $token = Str::random(40);
-        $request->session()->put('chat_session_token', $token);
-
-        return $token;
+        return Str::random(40);
     }
 
     /**

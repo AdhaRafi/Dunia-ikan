@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import FavoriteButton from '@/Components/FavoriteButton';
 import ProductCard from '@/Components/ProductCard';
@@ -12,6 +12,7 @@ import {
     Droplets,
     Fish,
     MapPin,
+    MessageSquare,
     Minus,
     Package,
     Plus,
@@ -20,7 +21,7 @@ import {
     Star,
     Store,
     Thermometer,
-} from 'lucide-react';
+} from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 
 const fallbackFish =
@@ -106,6 +107,7 @@ function MetaIconItem({ icon: Icon, label, value }) {
 }
 
 export default function Show({ product, relatedProducts, storeRating }) {
+    const { auth } = usePage().props;
     const { pick, isEn, trCategory } = useLanguage();
     const [quantity, setQuantity] = useState(1);
     const [adding, setAdding] = useState(false);
@@ -331,12 +333,44 @@ export default function Show({ product, relatedProducts, storeRating }) {
                                     </div>
                                 </div>
 
-                                <Link
-                                    href={`/stores/${store.slug}`}
-                                    className="px-4 py-1.5 rounded-full border border-slate-300 dark:border-neutral-700 bg-white dark:bg-[#111a30] hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 transition shrink-0"
-                                >
-                                    {pick('Kunjungi Toko', 'Visit Store')}
-                                </Link>
+                                <div className="flex items-center gap-2 shrink-0">
+                                    {auth?.user?.store?.id === store.id ? (
+                                        <Link
+                                            href="/chat?tab=store"
+                                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#14335D] hover:bg-[#005A9D] dark:bg-[#60C2E6] dark:hover:bg-[#49b3db] text-white dark:text-[#14335D] text-xs font-bold transition"
+                                        >
+                                            <MessageSquare className="w-3.5 h-3.5" />
+                                            {pick('Chat Pembeli', 'Buyer Chats')}
+                                        </Link>
+                                    ) : auth?.user ? (
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                router.post(`/stores/${store.slug}/chat`, {
+                                                    product_id: product.id,
+                                                })
+                                            }
+                                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#14335D] hover:bg-[#005A9D] dark:bg-[#60C2E6] dark:hover:bg-[#49b3db] text-white dark:text-[#14335D] text-xs font-bold transition cursor-pointer"
+                                        >
+                                            <MessageSquare className="w-3.5 h-3.5" />
+                                            {pick('Chat Toko', 'Chat Store')}
+                                        </button>
+                                    ) : (
+                                        <Link
+                                            href="/login"
+                                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#14335D] hover:bg-[#005A9D] dark:bg-[#60C2E6] dark:hover:bg-[#49b3db] text-white dark:text-[#14335D] text-xs font-bold transition"
+                                        >
+                                            <MessageSquare className="w-3.5 h-3.5" />
+                                            {pick('Chat Toko', 'Chat Store')}
+                                        </Link>
+                                    )}
+                                    <Link
+                                        href={`/stores/${store.slug}`}
+                                        className="px-3.5 py-1.5 rounded-lg border border-slate-300 dark:border-neutral-700 bg-white dark:bg-[#111a30] hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 transition"
+                                    >
+                                        {pick('Kunjungi Toko', 'Visit Store')}
+                                    </Link>
+                                </div>
                             </div>
                         )}
                     </div>

@@ -1,6 +1,6 @@
 import { Head, Link, router } from '@inertiajs/react';
 import SellerLayout from '@/Layouts/SellerLayout';
-import { PlusCircle, Edit3, Trash2, Eye, ShieldCheck, Fish, AlertCircle } from 'lucide-react';
+import { PlusCircle, Edit3, Trash2, Eye, ShieldCheck, Fish, AlertCircle } from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 
 export default function Index({ store, products }) {

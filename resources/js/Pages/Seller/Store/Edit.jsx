@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import SellerLayout from '@/Layouts/SellerLayout';
-import { Store, ShieldCheck, Upload, Save, Trash2 } from 'lucide-react';
+import { Store, ShieldCheck, Upload, Save, Trash2 } from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
+import { getPhoneValidationError } from '@/lib/validation';
 
 export default function Edit({ store }) {
     const { pick } = useLanguage();
@@ -56,9 +57,16 @@ export default function Edit({ store }) {
     };
 
     const displayedLogo = data.remove_logo ? null : logoPreview || store.logo_url;
+    const phoneError = getPhoneValidationError(data.phone, errors.phone, pick);
+    const hasClientValidationError = Boolean(getPhoneValidationError(data.phone, '', pick));
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (hasClientValidationError) {
+            return;
+        }
+
         post('/seller/store', {
             forceFormData: true,
             preserveScroll: true,
@@ -67,7 +75,7 @@ export default function Edit({ store }) {
 
     return (
         <SellerLayout>
-            <Head title={pick('Profil Toko & Garansi DOA - Portal Penjual', 'Store Profile & DOA Warranty — Seller Portal')} />
+            <Head title={pick('Profil Toko & Garansi DOA - Portal Penjual', 'Store Profile & DOA Warranty - Seller Portal')} />
 
             <div className="bg-white dark:bg-[#0e1424] p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-6">
                 <div>
@@ -173,12 +181,22 @@ export default function Edit({ store }) {
                                 {pick('Kontak WhatsApp / Telepon', 'WhatsApp / Phone')}
                             </label>
                             <input
-                                type="text"
+                                type="tel"
+                                inputMode="tel"
+                                placeholder={pick('Contoh: 081234567890', 'Example: 081234567890')}
                                 value={data.phone}
                                 onChange={(e) => setData('phone', e.target.value)}
-                                className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#131d33] text-slate-900 dark:text-white"
+                                aria-invalid={Boolean(phoneError)}
+                                className={`w-full p-2.5 rounded-xl border bg-white dark:bg-[#131d33] text-slate-900 dark:text-white ${
+                                    phoneError
+                                        ? 'border-rose-500 focus:border-rose-500 dark:border-rose-400'
+                                        : 'border-slate-200 dark:border-slate-700'
+                                }`}
                                 required
                             />
+                            {phoneError && (
+                                <p className="text-rose-600 dark:text-rose-400 mt-1">{phoneError}</p>
+                            )}
                         </div>
                     </div>
 
@@ -283,8 +301,8 @@ export default function Edit({ store }) {
                     <div className="pt-4 flex justify-end">
                         <button
                             type="submit"
-                            disabled={processing}
-                            className="px-6 py-2.5 rounded-xl bg-dunia-blue text-white font-bold text-xs hover:bg-sky-600 transition flex items-center gap-2 shadow-xs cursor-pointer"
+                            disabled={processing || hasClientValidationError}
+                            className="px-6 py-2.5 rounded-xl bg-dunia-blue text-white font-bold text-xs hover:bg-sky-600 transition flex items-center gap-2 shadow-xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <Save className="w-4 h-4" />
                             {processing

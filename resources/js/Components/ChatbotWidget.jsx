@@ -4,15 +4,17 @@ import {
     AlertCircle,
     BookOpen,
     Camera,
+    FirstAid,
     Fish,
+    MessageSquare,
     Package,
     Paperclip,
-    PlusCircle,
     RotateCcw,
     Send,
     X,
-} from 'lucide-react';
+} from '@/Components/Icons';
 import axios from 'axios';
+import KikoAquariumCanvas from '@/Components/KikoAquariumCanvas';
 import { useLanguage } from '@/lib/i18n';
 
 function formatInlineMarkdown(line) {
@@ -82,7 +84,7 @@ function renderAssistantMessage(text) {
     );
 }
 
-export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
+export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = false }) {
     const { pick } = useLanguage();
     const { auth } = usePage().props;
     const rawUserName = auth?.user?.name?.trim() || '';
@@ -101,9 +103,44 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
     const [historyLoaded, setHistoryLoaded] = useState(false);
     const [historyError, setHistoryError] = useState(false);
     const [sessionToken, setSessionToken] = useState(null);
+    const [sendBurstKey, setSendBurstKey] = useState(0);
+    const [tapEvent, setTapEvent] = useState(null);
     const messagesEndRef = useRef(null);
     const fileInputRef = useRef(null);
     const cameraInputRef = useRef(null);
+    const tankRef = useRef(null);
+    const pointerRef = useRef({ active: false, nx: 0.5, ny: 0.5 });
+
+    const handleTankPointerMove = (event) => {
+        const rect = tankRef.current?.getBoundingClientRect();
+        if (!rect || !rect.width || !rect.height) {
+            return;
+        }
+        pointerRef.current = {
+            active: true,
+            nx: Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)),
+            ny: Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height)),
+        };
+    };
+
+    const handleTankPointerLeave = () => {
+        pointerRef.current.active = false;
+    };
+
+    const handleTankPointerDown = (event) => {
+        if (event.target?.closest?.('button, a, input, textarea, form')) {
+            return;
+        }
+        const rect = tankRef.current?.getBoundingClientRect();
+        if (!rect || !rect.width || !rect.height) {
+            return;
+        }
+        setTapEvent({
+            id: Date.now(),
+            nx: Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)),
+            ny: Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height)),
+        });
+    };
 
     useEffect(() => {
         if (isOpen && !historyLoaded) {
@@ -230,6 +267,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
             },
         ]);
         setInputText('');
+        setSendBurstKey((k) => k + 1);
         setLoading(true);
 
         try {
@@ -280,7 +318,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
     return (
         <>
             {/* 1. FLOATING TRIGGER BUTTON (WHEN CHAT CLOSED) */}
-            {!isOpen && (
+            {!isOpen && !hideTrigger && (
                 <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 select-none">
                     <button
                         type="button"
@@ -299,8 +337,8 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                         </span>
 
                         {/* Circular framed Kiko avatar FAB */}
-                        <span className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#133b9e] to-[#081c59] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_28px_rgba(0,20,84,0.3)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
-                            <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#1642ad] to-[#081c59] p-1">
+                        <span className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#A1E1EF] to-[#60C2E6] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_26px_rgba(30,128,160,0.32)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
+                            <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#d8f3fb] via-[#9adcf0] to-[#60C2E6] p-1">
                                 <img
                                     src="/images/kiko/avatar.webp"
                                     alt="Kiko"
@@ -310,7 +348,6 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                     className="h-full w-full object-contain -translate-y-0.5"
                                 />
                             </span>
-                            <span className="absolute top-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-[#070b14]" />
                         </span>
                     </button>
                 </div>
@@ -325,57 +362,27 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                     className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 flex flex-col h-[100dvh] sm:w-[420px] sm:h-[640px] sm:max-h-[92vh]"
                 >
                     {/* Chat Modal Container */}
-                    <div className="swap-in relative w-full h-full flex flex-col bg-white dark:bg-[#070b14] sm:rounded-[28px] sm:border border-slate-200/90 dark:border-neutral-800 shadow-2xl overflow-hidden transition-all duration-200">
-                        {/* Soft Cyan/Sky Atmospheric Top Gradient + Sunny Glow Backdrop */}
-                        <div
-                            aria-hidden="true"
-                            className="pointer-events-none absolute inset-x-0 top-0 h-[66%] dark:hidden"
-                            style={{
-                                background:
-                                    'radial-gradient(circle at 12% 10%, rgba(125, 227, 250, 0.62) 0%, rgba(125, 227, 250, 0) 56%), radial-gradient(circle at 92% 8%, rgba(147, 197, 253, 0.58) 0%, rgba(147, 197, 253, 0) 54%), linear-gradient(180deg, rgba(240, 249, 255, 0.45) 0%, rgba(255, 255, 255, 0) 100%)',
-                            }}
-                        />
-                        <div
-                            aria-hidden="true"
-                            className="pointer-events-none absolute inset-x-0 top-0 h-[66%] hidden dark:block"
-                            style={{
-                                background:
-                                    'radial-gradient(circle at 12% 10%, rgba(14, 165, 233, 0.22) 0%, rgba(14, 165, 233, 0) 56%), radial-gradient(circle at 92% 8%, rgba(37, 99, 235, 0.24) 0%, rgba(37, 99, 235, 0) 54%)',
-                            }}
+                    <div
+                        ref={tankRef}
+                        onPointerMove={handleTankPointerMove}
+                        onPointerLeave={handleTankPointerLeave}
+                        onPointerDown={handleTankPointerDown}
+                        className="swap-in relative w-full h-full flex flex-col bg-[#eefafd] dark:bg-[#071122] sm:rounded-[28px] sm:border border-sky-200/80 dark:border-sky-900/60 shadow-2xl overflow-hidden transition-all duration-200"
+                    >
+                        {/* Interactive Pixel-Art Aquarium Backdrop */}
+                        <KikoAquariumCanvas
+                            pointerRef={pointerRef}
+                            isTyping={inputText.trim().length > 0}
+                            sendBurstKey={sendBurstKey}
+                            tapEvent={tapEvent}
+                            dimmed={messages.length > 0}
                         />
 
                         {/* Floating White Capsule Header Pill */}
                         <div className="relative z-10 mx-4 mt-3.5 shrink-0 flex items-center justify-between rounded-full bg-white/95 dark:bg-[#111a30]/95 px-3.5 py-2 border border-slate-200/80 dark:border-slate-700/80 shadow-[0_6px_22px_rgba(15,23,42,0.08)]">
                             <div className="flex items-center gap-2.5 min-w-0">
                                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-50 dark:bg-sky-950/60 text-[#005A9D] dark:text-cyan-400">
-                                    <svg
-                                        viewBox="0 0 28 28"
-                                        fill="none"
-                                        className="h-5 w-5"
-                                        aria-hidden="true"
-                                    >
-                                        <circle
-                                            cx="12.5"
-                                            cy="10"
-                                            r="3.2"
-                                            stroke="currentColor"
-                                            strokeWidth="1.7"
-                                        />
-                                        <circle
-                                            cx="11.5"
-                                            cy="19"
-                                            r="4.2"
-                                            stroke="currentColor"
-                                            strokeWidth="1.7"
-                                        />
-                                        <circle
-                                            cx="19"
-                                            cy="15.5"
-                                            r="2.4"
-                                            stroke="currentColor"
-                                            strokeWidth="1.7"
-                                        />
-                                    </svg>
+                                    <MessageSquare className="h-[18px] w-[18px]" />
                                 </span>
                                 <div className="min-w-0">
                                     <h3 className="text-[13px] font-extrabold leading-tight text-[#14335D] dark:text-white truncate">
@@ -430,26 +437,8 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                     </div>
                                 ) : (
                                     <>
-                                        {/* Floating 3 Aquatic Idea Tiles + Animated Kiko Fish Head */}
-                                        <div className="relative flex flex-col items-center mb-3.5">
-                                            <div
-                                                aria-hidden="true"
-                                                className="pointer-events-none absolute -inset-x-10 -top-4 -bottom-2 rounded-full blur-2xl bg-[radial-gradient(circle,rgba(253,224,71,0.34)_0%,rgba(251,191,36,0.14)_52%,transparent_76%)] dark:bg-[radial-gradient(circle,rgba(251,191,36,0.16)_0%,rgba(6,132,229,0.22)_58%,transparent_78%)]"
-                                            />
-                                            <div
-                                                aria-hidden="true"
-                                                className="pointer-events-none absolute -inset-x-10 -top-5 -bottom-2 opacity-35 dark:opacity-20"
-                                                style={{
-                                                    backgroundImage:
-                                                        'radial-gradient(#94a3b8 1px, transparent 1px)',
-                                                    backgroundSize: '9px 9px',
-                                                    WebkitMaskImage:
-                                                        'radial-gradient(circle, black 25%, transparent 72%)',
-                                                    maskImage:
-                                                        'radial-gradient(circle, black 25%, transparent 72%)',
-                                                }}
-                                            />
-
+                                        {/* Floating 3 Aquatic Idea Tiles + Animated Kiko Mascot */}
+                                        <div className="relative flex flex-col items-center mb-3">
                                             {/* 3 Floating Idea Tiles Arc Above Kiko */}
                                             <div className="relative z-10 flex items-end justify-center gap-2.5">
                                                 <div
@@ -512,29 +501,37 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                             />
                                         </div>
 
-                                        {/* Personalized Greeting (Logged-in shows name; Guest omits bracket cleanly) */}
-                                        <h3 className="text-[19px] sm:text-[21px] font-extrabold tracking-tight leading-[1.3] text-[#14335D] dark:text-white">
-                                            {greetingName
-                                                ? pick(
-                                                      <>
-                                                          Ada yang perlu Kiko bantu, {greetingName}?
-                                                      </>,
-                                                      <>
-                                                          How can Kiko help you, {greetingName}?
-                                                      </>,
-                                                  )
-                                                : pick(
-                                                      'Ada yang perlu Kiko bantu?',
-                                                      'How can Kiko help you?',
-                                                  )}
-                                        </h3>
+                                        {/* High-contrast Greeting Card floating cleanly above the aquarium */}
+                                        <div className="rounded-2xl bg-white/85 dark:bg-[#09162b]/85 border border-white/90 dark:border-sky-300/20 px-4 py-3 shadow-[0_8px_24px_rgba(11,55,75,0.12)] max-w-[340px]">
+                                            <h3 className="text-[18px] sm:text-[20px] font-extrabold tracking-tight leading-[1.28] text-[#14335D] dark:text-white">
+                                                {greetingName
+                                                    ? pick(
+                                                          <>
+                                                              Ada yang perlu Kiko bantu, {greetingName}?
+                                                          </>,
+                                                          <>
+                                                              How can Kiko help you, {greetingName}?
+                                                          </>,
+                                                      )
+                                                    : pick(
+                                                          'Ada yang perlu Kiko bantu?',
+                                                          'How can Kiko help you?',
+                                                      )}
+                                            </h3>
 
-                                        <p className="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-300 max-w-[34ch]">
-                                            {pick(
-                                                'Halo! Saya Kiko, maskot dan asisten pintar Dunia Ikan. Senang sekali bisa membantu kamu hari ini!',
-                                                "Hi! I'm Kiko, Dunia Ikan's mascot and smart assistant. Happy to help you today!",
-                                            )}
-                                        </p>
+                                            <p className="mt-1.5 text-xs leading-relaxed text-[#1b3a57] dark:text-slate-200">
+                                                {pick(
+                                                    'Halo! Saya Kiko, asisten Dunia Ikan untuk rekomendasi ikan hias, parameter air, dan kesehatan akuarium.',
+                                                    "Hi! I'm Kiko, Dunia Ikan's assistant for ornamental fish recommendations, water parameters, and tank health.",
+                                                )}
+                                            </p>
+                                            <p className="mt-1.5 text-[11px] font-semibold text-[#005A9D] dark:text-[#60C2E6]">
+                                                {pick(
+                                                    'Gerakkan kursor atau ketuk air akuarium di belakang.',
+                                                    'Move your pointer or tap the water behind.',
+                                                )}
+                                            </p>
+                                        </div>
 
                                         {historyError && (
                                             <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/70 px-3 py-1.5 text-[11px] font-semibold text-rose-700 dark:text-rose-300">
@@ -578,7 +575,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                                     width={28}
                                                     height={28}
                                                     decoding="async"
-                                                    className="w-7 h-7 rounded-full border border-cyan-500/40 bg-slate-900 object-contain shrink-0 shadow-xs mt-1"
+                                                    className="w-7 h-7 rounded-full border border-[#60C2E6]/60 bg-gradient-to-b from-[#d8f3fb] to-[#60C2E6] p-0.5 object-contain shrink-0 shadow-xs mt-1"
                                                 />
                                             )}
 
@@ -727,7 +724,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                             width={20}
                                             height={20}
                                             decoding="async"
-                                            className="w-5 h-5 rounded-full object-contain shrink-0 animate-spin"
+                                            className="w-5 h-5 rounded-full bg-gradient-to-b from-[#d8f3fb] to-[#60C2E6] p-0.5 object-contain shrink-0 animate-spin"
                                         />
                                         <span>
                                             {pick(
@@ -786,19 +783,19 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                 }
                                 className="inline-flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white dark:bg-[#111a30] border border-slate-200 dark:border-neutral-700/80 px-3 py-1.5 text-[11.5px] font-bold text-slate-900 dark:text-neutral-100 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:border-[#005A9D] hover:bg-sky-50/70 dark:hover:bg-[#162240] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D]"
                             >
-                                <PlusCircle className="h-3.5 w-3.5 text-slate-800 dark:text-slate-200" />
+                                <FirstAid className="h-3.5 w-3.5 text-slate-800 dark:text-slate-200" />
                                 {pick('Kesehatan ikan', 'Fish health')}
                             </button>
                         </div>
 
-                        {/* Floating Rounded Composer Card */}
+                        {/* Floating Frosted Glass Composer Card (fish blur softly behind it) */}
                         <div className="relative z-10 shrink-0 px-4 pb-4 pt-1">
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     handleSendMessage();
                                 }}
-                                className="rounded-[20px] border border-slate-300/90 dark:border-slate-700 focus-within:border-[#005A9D] bg-white dark:bg-[#111a30] shadow-[0_6px_22px_rgba(15,23,42,0.08)] px-3.5 pt-3 pb-2.5 transition"
+                                className="rounded-[20px] border border-white/90 dark:border-sky-300/20 focus-within:border-[#005A9D] dark:focus-within:border-[#60C2E6] bg-white/80 dark:bg-[#0c1830]/85 backdrop-blur-md shadow-[0_10px_28px_rgba(11,55,75,0.16)] px-3.5 pt-3 pb-2.5 transition"
                             >
                                 <input
                                     type="file"
@@ -853,7 +850,7 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose }) {
                                             handleSendMessage();
                                         }
                                     }}
-                                    className="w-full resize-none border-0 bg-transparent p-0 text-[13px] leading-snug text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-none focus:ring-0"
+                                    className="w-full resize-none border-0 bg-transparent p-0 text-[13px] leading-snug text-[#14335D] dark:text-white placeholder:text-[#335573] dark:placeholder:text-slate-300 focus:outline-none focus:ring-0"
                                 />
 
                                 <div className="mt-2 flex items-center justify-between">

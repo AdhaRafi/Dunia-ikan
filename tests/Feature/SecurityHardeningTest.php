@@ -178,6 +178,7 @@ class SecurityHardeningTest extends TestCase
         $registerResponse = $this->post('/register', [
             'name' => 'Aquarist Uppercase',
             'email' => 'Budi.Uppercase@Example.COM',
+            'phone' => '081234567890',
             'password' => 'password123',
             'password_confirmation' => 'password123',
             'account_type' => 'buyer',
@@ -427,6 +428,7 @@ class SecurityHardeningTest extends TestCase
         $this->post('/register', [
             'name' => 'Turnstile Buyer',
             'email' => 'turnstile-buyer@example.com',
+            'phone' => '081234567890',
             'password' => 'password',
             'password_confirmation' => 'password',
             'account_type' => 'buyer',

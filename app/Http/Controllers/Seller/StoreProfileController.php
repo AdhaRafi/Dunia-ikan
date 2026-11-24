@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HomeController;
 use App\Models\Store;
+use App\Support\ContactValidation;
 use App\Support\MediaStorage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -43,16 +44,23 @@ class StoreProfileController extends Controller
                 return back()->with('error', 'Pengajuan akun penjual Anda sedang menunggu verifikasi admin.');
             }
 
+            $request->merge([
+                'phone' => ContactValidation::normalizePhone($request->input('phone', $user->phone)),
+            ]);
+
             $application = $request->validate([
                 'seller_store_name' => 'required|string|max:120',
+                'phone' => ContactValidation::phoneRules(),
                 'seller_application_note' => 'nullable|string|max:500',
             ], [
+                ...ContactValidation::messages(),
                 'seller_store_name.required' => 'Nama rencana toko atau farm wajib diisi.',
             ]);
 
             $note = trim((string) ($application['seller_application_note'] ?? ''));
 
             $user->update([
+                'phone' => $application['phone'],
                 'seller_status' => 'pending',
                 'seller_store_name' => trim((string) $application['seller_store_name']),
                 'seller_application_note' => $note !== '' ? $note : null,
@@ -63,18 +71,22 @@ class StoreProfileController extends Controller
                 ->with('success', 'Pengajuan akun penjual berhasil dikirim! Mohon tunggu persetujuan admin.');
         }
 
+        $request->merge([
+            'phone' => ContactValidation::normalizePhone($request->input('phone')),
+        ]);
+
         $validated = $request->validate([
             'name' => 'required|string|max:100|unique:stores,name',
             'city' => 'required|string|max:100',
             'province' => 'required|string|max:100',
             'address' => 'required|string|max:500',
-            'phone' => 'required|string|max:20',
+            'phone' => ContactValidation::phoneRules(),
             'description' => 'nullable|string|max:1000',
             'doa_policy' => 'nullable|string|max:1000',
             'bank_name' => 'nullable|string|max:50',
             'bank_account_number' => 'nullable|string|max:50',
             'bank_account_name' => 'nullable|string|max:100',
-        ]);
+        ], ContactValidation::messages());
 
         $slug = Str::slug($validated['name']);
 
@@ -119,12 +131,16 @@ class StoreProfileController extends Controller
             abort(404);
         }
 
+        $request->merge([
+            'phone' => ContactValidation::normalizePhone($request->input('phone')),
+        ]);
+
         $validated = $request->validate([
             'name' => 'required|string|max:100|unique:stores,name,'.$store->id,
             'city' => 'required|string|max:100',
             'province' => 'required|string|max:100',
             'address' => 'required|string|max:500',
-            'phone' => 'required|string|max:20',
+            'phone' => ContactValidation::phoneRules(),
             'description' => 'nullable|string|max:1000',
             'doa_policy' => 'nullable|string|max:1000',
             'bank_name' => 'nullable|string|max:50',
@@ -133,7 +149,7 @@ class StoreProfileController extends Controller
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'remove_logo' => 'nullable|boolean',
             'qris_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-        ]);
+        ], ContactValidation::messages());
 
         if ($request->hasFile('logo')) {
             MediaStorage::delete($store->logo);

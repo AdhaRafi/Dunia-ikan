@@ -83,6 +83,11 @@ class Store extends Model
         return $this->hasMany(StoreReview::class);
     }
 
+    public function conversations(): HasMany
+    {
+        return $this->hasMany(StoreConversation::class);
+    }
+
     /**
      * Build aggregated store rating statistics and review list.
      *

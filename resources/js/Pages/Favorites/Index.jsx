@@ -3,7 +3,7 @@ import { Head, Link, router, usePage } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import FavoriteButton from '@/Components/FavoriteButton';
 import { useLanguage } from '@/lib/i18n';
-import { Check, Compass, Heart, LogIn, ShoppingCart } from 'lucide-react';
+import { Check, Compass, Heart, LogIn, ShoppingCart } from '@/Components/Icons';
 
 function formatPrice(price) {
     return new Intl.NumberFormat('id-ID', {
@@ -16,33 +16,14 @@ function formatPrice(price) {
 const fallbackFish =
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='450' viewBox='0 0 600 450' fill='none'%3E%3Crect width='600' height='450' fill='%23eef6ff'/%3E%3Cpath d='M300 155 C380 155 435 205 435 235 C435 265 380 315 300 315 C245 315 190 265 145 280 L145 190 C190 205 245 155 300 155 Z' fill='%23001454' opacity='0.22'/%3E%3C/svg%3E";
 
-function FavoritesSparkleHeartIcon() {
+function FavoritesHeaderIcon() {
     return (
-        <svg
-            viewBox="0 0 56 56"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <span
             aria-hidden="true"
-            className="w-11 h-11 sm:w-12 sm:h-12 shrink-0"
+            className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-slate-800 text-[#005A9D] dark:text-[#60C2E6] shadow-xs"
         >
-            {/* Subtle radial burst sparkles */}
-            <path d="M13 11L9 7" stroke="#9ecbf5" strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M9 21L4 21" stroke="#9ecbf5" strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M12 31L7 34" stroke="#9ecbf5" strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M28 8L28 3" stroke="#9ecbf5" strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M43 11L47 7" stroke="#9ecbf5" strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M47 21L52 21" stroke="#9ecbf5" strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M44 31L49 34" stroke="#9ecbf5" strokeWidth="2.2" strokeLinecap="round" />
-
-            {/* Crisp outlined heart */}
-            <path
-                d="M28 44.5C28 44.5 14.5 34.8 14.5 24.4C14.5 19.8 18.1 16.2 22.5 16.2C25.2 16.2 27.1 17.6 28 19.3C28.9 17.6 30.8 16.2 33.5 16.2C37.9 16.2 41.5 19.8 41.5 24.4C41.5 34.8 28 44.5 28 44.5Z"
-                className="stroke-[#0b1c48] dark:stroke-[#60C2E6]"
-                strokeWidth="3.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
-        </svg>
+            <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
+        </span>
     );
 }
 
@@ -91,7 +72,7 @@ export default function Index({ favorites = [] }) {
 
     return (
         <AppLayout>
-            <Head title={pick('Produk Favorit — Dunia Ikan', 'Favorite Products — Dunia Ikan')} />
+            <Head title={pick('Produk Favorit | Dunia Ikan', 'Favorite Products | Dunia Ikan')} />
 
             <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#d9efff] via-[#eaf5ff] to-[#f4f9ff] dark:from-[#071326] dark:via-[#0a1428] dark:to-[#070b14]">
                 {/* Sunlit underwater caustic glow */}
@@ -107,15 +88,15 @@ export default function Index({ favorites = [] }) {
                     {/* Header matching reference */}
                     <div className="flex flex-wrap items-center justify-between gap-4 mb-7 sm:mb-8">
                         <div className="flex items-center gap-3">
-                            <FavoritesSparkleHeartIcon />
+                            <FavoritesHeaderIcon />
                             <div>
                                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0b1c48] dark:text-white leading-tight">
                                     {pick('Produk Favorit', 'Favorite Products')}
                                 </h1>
                                 <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-0.5">
                                     {pick(
-                                        'Produk yang kamu sukai, dalam satu tempat ♡',
-                                        'Products you love, saved in one place ♡',
+                                        'Produk pilihan yang tersimpan di daftar favorit Anda.',
+                                        'Your saved fish and aquarium picks in one place.',
                                     )}
                                 </p>
                             </div>

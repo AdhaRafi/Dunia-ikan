@@ -1,5 +1,6 @@
 import InputError from '@/Components/InputError';
 import { useLanguage } from '@/lib/i18n';
+import { getEmailValidationError, getPhoneValidationError } from '@/lib/validation';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 
@@ -16,10 +17,20 @@ export default function UpdateProfileInformation({
         useForm({
             name: user.name,
             email: user.email,
+            phone: user.phone || '',
         });
+
+    const emailError = getEmailValidationError(data.email, errors.email, pick);
+    const phoneError = getPhoneValidationError(data.phone, errors.phone, pick);
+    const hasClientError =
+        Boolean(getEmailValidationError(data.email, '', pick)) ||
+        Boolean(getPhoneValidationError(data.phone, '', pick));
 
     const submit = (e) => {
         e.preventDefault();
+        if (hasClientError) {
+            return;
+        }
         patch(route('profile.update'), { preserveScroll: true });
     };
 
@@ -48,7 +59,7 @@ export default function UpdateProfileInformation({
 
                     <button
                         type="submit"
-                        disabled={processing || !isDirty}
+                        disabled={processing || !isDirty || hasClientError}
                         className="px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 text-white text-xs font-semibold disabled:opacity-40 transition"
                     >
                         {pick('Simpan', 'Save')}
@@ -98,7 +109,30 @@ export default function UpdateProfileInformation({
                             spellCheck={false}
                             className="w-full bg-transparent border-0 rounded-md px-2 py-1 -mx-2 text-xs sm:text-[13px] font-medium text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-900/50 focus:bg-slate-50 dark:focus:bg-slate-900/70 focus:ring-1 focus:ring-slate-300 dark:focus:ring-neutral-700 transition"
                         />
-                        <InputError className="mt-1" message={errors.email} />
+                        <InputError className="mt-1" message={emailError} />
+                    </div>
+                </div>
+
+                <div className="px-6 py-3.5 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-6">
+                    <label
+                        htmlFor="phone"
+                        className="sm:w-44 shrink-0 text-xs sm:text-[13px] text-slate-400 dark:text-neutral-500"
+                    >
+                        {pick('Nomor HP / WhatsApp:', 'Phone / WhatsApp:')}
+                    </label>
+                    <div className="flex-1 min-w-0">
+                        <input
+                            id="phone"
+                            type="tel"
+                            inputMode="tel"
+                            value={data.phone}
+                            onChange={(e) => setData('phone', e.target.value)}
+                            required
+                            placeholder="081234567890"
+                            autoComplete="tel"
+                            className="w-full bg-transparent border-0 rounded-md px-2 py-1 -mx-2 text-xs sm:text-[13px] font-medium text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-900/50 focus:bg-slate-50 dark:focus:bg-slate-900/70 focus:ring-1 focus:ring-slate-300 dark:focus:ring-neutral-700 transition"
+                        />
+                        <InputError className="mt-1" message={phoneError} />
                     </div>
                 </div>
 

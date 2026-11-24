@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
+use App\Support\ContactValidation;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class ProfileUpdateRequest extends FormRequest
 {
@@ -14,7 +12,13 @@ class ProfileUpdateRequest extends FormRequest
     {
         if ($this->has('email')) {
             $this->merge([
-                'email' => Str::lower(trim((string) $this->input('email'))),
+                'email' => ContactValidation::normalizeEmail($this->input('email')),
+            ]);
+        }
+
+        if ($this->has('phone')) {
+            $this->merge([
+                'phone' => ContactValidation::normalizePhone($this->input('phone')),
             ]);
         }
     }
@@ -28,16 +32,18 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'string',
-                'lowercase',
-                'email',
-                'max:255',
-                Rule::unique(User::class)->ignore($this->user()->id),
-            ],
+            'email' => ContactValidation::emailRules($this->user()->id),
+            'phone' => ContactValidation::phoneRules(sometimes: true),
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
             'remove_avatar' => ['nullable', 'boolean'],
         ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return ContactValidation::messages();
     }
 }

@@ -3,7 +3,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import ProductCard from '@/Components/ProductCard';
 import { HeroWaveTransition } from '@/Components/AquaticMotifs';
-import { Search, SlidersHorizontal, ChevronDown } from 'lucide-react';
+import { Search, SlidersHorizontal, ChevronDown } from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 
 const SORT_OPTIONS = [

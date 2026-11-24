@@ -17,6 +17,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Seller\StoreProfileController as SellerStoreProfileController;
+use App\Http\Controllers\StoreChatController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreReviewController;
 use Illuminate\Support\Facades\Route;
@@ -97,6 +98,18 @@ Route::middleware('auth')->group(function () {
 
     // Store Rating & Reviews
     Route::post('/stores/{slug}/reviews', [StoreReviewController::class, 'store'])->name('stores.reviews.store');
+
+    // Direct Store Chat (Buyer & Seller)
+    Route::get('/chat', [StoreChatController::class, 'index'])->name('chat.index');
+    Route::post('/stores/{slug}/chat', [StoreChatController::class, 'start'])
+        ->middleware('throttle:30,1')
+        ->name('stores.chat.start');
+    Route::get('/chat/{conversation}/messages', [StoreChatController::class, 'messages'])
+        ->middleware('throttle:120,1')
+        ->name('chat.messages');
+    Route::post('/chat/{conversation}/messages', [StoreChatController::class, 'storeMessage'])
+        ->middleware('throttle:30,1')
+        ->name('chat.messages.store');
 
     // Global Community Chat
     Route::post('/community/messages', [GlobalChatController::class, 'store'])

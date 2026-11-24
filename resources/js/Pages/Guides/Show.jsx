@@ -21,7 +21,7 @@ import {
     MessageSquare,
     ShieldCheck,
     ShoppingBag,
-} from 'lucide-react';
+} from '@/Components/Icons';
 
 const QUICK_TOPICS = [
     { labelId: 'Cupang', labelEn: 'Betta', query: 'Cupang' },
@@ -71,7 +71,7 @@ export default function Show({ guide, relatedGuides = [] }) {
 
     return (
         <AppLayout>
-            <Head title={`${guide.title} — ${pick('Panduan Dunia Ikan', 'Dunia Ikan Guides')}`}>
+            <Head title={`${guide.title} | ${pick('Panduan Dunia Ikan', 'Dunia Ikan Guides')}`}>
                 <meta
                     head-key="description"
                     name="description"
@@ -110,11 +110,8 @@ export default function Show({ guide, relatedGuides = [] }) {
                         <div className="lg:col-span-7 space-y-4">
                             <div className="flex flex-wrap items-center gap-2">
                                 <span
-                                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border ${badgeMeta.badgeClass}`}
+                                    className={`inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold border ${badgeMeta.badgeClass}`}
                                 >
-                                    <span
-                                        className={`w-1.5 h-1.5 rounded-full ${badgeMeta.dotClass}`}
-                                    />
                                     {trGuideCategory(guide.category)}
                                 </span>
                                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#131d33] text-slate-600 dark:text-slate-300 text-[11px] font-semibold">
@@ -429,11 +426,8 @@ export default function Show({ guide, relatedGuides = [] }) {
                                     >
                                         <div className="space-y-2.5">
                                             <span
-                                                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${relBadge.badgeClass}`}
+                                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${relBadge.badgeClass}`}
                                             >
-                                                <span
-                                                    className={`w-1.5 h-1.5 rounded-full ${relBadge.dotClass}`}
-                                                />
                                                 {trGuideCategory(related.category)}
                                             </span>
                                             <h3 className="text-sm sm:text-[15px] font-bold text-[#14335D] dark:text-white group-hover:text-[#005A9D] dark:group-hover:text-sky-400 leading-snug line-clamp-2 transition-colors">

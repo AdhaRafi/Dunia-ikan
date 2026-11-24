@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { flushSync } from 'react-dom';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun } from '@/Components/Icons';
 
 let transitionSequence = 0;
 

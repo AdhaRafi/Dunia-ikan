@@ -6,8 +6,9 @@ import TextInput from '@/Components/TextInput';
 import TurnstileWidget from '@/Components/TurnstileWidget';
 import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { ShoppingBag, Store } from 'lucide-react';
+import { ShoppingBag, Store } from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
+import { getEmailValidationError, getPhoneValidationError } from '@/lib/validation';
 import { useState } from 'react';
 
 export default function Register() {
@@ -17,6 +18,7 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
+        phone: '',
         password: '',
         password_confirmation: '',
         account_type: 'buyer',
@@ -26,6 +28,8 @@ export default function Register() {
     });
 
     const isSellerApplicant = data.account_type === 'seller';
+    const emailError = getEmailValidationError(data.email, errors.email, pick);
+    const phoneError = getPhoneValidationError(data.phone, errors.phone, pick);
     const hasPasswordMismatch = Boolean(data.password_confirmation) && data.password !== data.password_confirmation;
     const passwordConfirmationError = getPasswordConfirmationError(
         data.password,
@@ -33,11 +37,15 @@ export default function Register() {
         errors.password_confirmation,
         pick,
     );
+    const hasClientValidationError =
+        Boolean(getEmailValidationError(data.email, '', pick)) ||
+        Boolean(getPhoneValidationError(data.phone, '', pick)) ||
+        hasPasswordMismatch;
 
     const submit = (e) => {
         e.preventDefault();
 
-        if (hasPasswordMismatch) {
+        if (hasClientValidationError) {
             return;
         }
 
@@ -57,7 +65,7 @@ export default function Register() {
                 'Discover curated ornamental fish and consult directly with Kiko.'
             )}
         >
-            <Head title={pick('Daftar — Dunia Ikan', 'Sign Up — Dunia Ikan')} />
+            <Head title={pick('Daftar | Dunia Ikan', 'Sign Up | Dunia Ikan')} />
 
             <div>
                 <h1 className="text-[24px] sm:text-[26px] font-bold tracking-[-0.025em] text-slate-900 dark:text-white">
@@ -166,16 +174,46 @@ export default function Register() {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1.5"
-                        placeholder="nama@email.com"
+                        className={`mt-1.5 ${
+                            emailError
+                                ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20 dark:border-rose-400'
+                                : ''
+                        }`}
+                        placeholder="nama@gmail.com"
                         autoComplete="username"
                         autoCapitalize="none"
                         autoCorrect="off"
                         spellCheck={false}
+                        aria-invalid={Boolean(emailError)}
                         onChange={(e) => setData('email', e.target.value)}
                         required
                     />
-                    <InputError message={errors.email} className="mt-1.5" />
+                    <InputError message={emailError} className="mt-1.5" />
+                </div>
+
+                <div>
+                    <InputLabel
+                        htmlFor="phone"
+                        value={pick('Nomor HP / WhatsApp', 'Phone / WhatsApp Number')}
+                    />
+                    <TextInput
+                        id="phone"
+                        type="tel"
+                        name="phone"
+                        value={data.phone}
+                        className={`mt-1.5 ${
+                            phoneError
+                                ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20 dark:border-rose-400'
+                                : ''
+                        }`}
+                        placeholder={pick('Contoh: 081234567890', 'Example: 081234567890')}
+                        autoComplete="tel"
+                        inputMode="tel"
+                        aria-invalid={Boolean(phoneError)}
+                        onChange={(e) => setData('phone', e.target.value)}
+                        required
+                    />
+                    <InputError message={phoneError} className="mt-1.5" />
                 </div>
 
                 {isSellerApplicant && (
@@ -272,7 +310,11 @@ export default function Register() {
                 <div className="pt-1">
                     <button
                         type="submit"
-                        disabled={processing || (Boolean(turnstileSiteKey) && !data['cf-turnstile-response'])}
+                        disabled={
+                            processing ||
+                            hasClientValidationError ||
+                            (Boolean(turnstileSiteKey) && !data['cf-turnstile-response'])
+                        }
                         className={authPrimaryButtonClass}
                     >
                         {processing

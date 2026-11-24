@@ -30,6 +30,7 @@ class RegistrationTest extends TestCase
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'phone' => '0812-3456-7890',
             'password' => 'password',
             'password_confirmation' => 'password',
         ]);
@@ -39,6 +40,7 @@ class RegistrationTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'email' => 'test@example.com',
+            'phone' => '081234567890',
             'role' => 'buyer',
             'seller_status' => 'none',
         ]);
@@ -49,6 +51,7 @@ class RegistrationTest extends TestCase
         $invalid = $this->post('/register', [
             'name' => 'Calon Penjual',
             'email' => 'calon@example.com',
+            'phone' => '081234567890',
             'password' => 'password',
             'password_confirmation' => 'password',
             'account_type' => 'seller',
@@ -60,6 +63,7 @@ class RegistrationTest extends TestCase
         $response = $this->post('/register', [
             'name' => 'Calon Penjual',
             'email' => 'calon@example.com',
+            'phone' => '+62 812-3456-7890',
             'password' => 'password',
             'password_confirmation' => 'password',
             'account_type' => 'seller',
@@ -71,6 +75,7 @@ class RegistrationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false));
 
         $user = User::where('email', 'calon@example.com')->firstOrFail();
+        $this->assertSame('+6281234567890', $user->phone);
         $this->assertSame('buyer', $user->role);
         $this->assertSame('pending', $user->seller_status);
         $this->assertSame('Garuda Koi Farm', $user->seller_store_name);
@@ -85,6 +90,77 @@ class RegistrationTest extends TestCase
             ->assertStatus(403);
     }
 
+    public function test_registration_rejects_invalid_emails(): void
+    {
+        foreach (['budi@gmail', 'budi@gmailcom', 'budi@gmail.', 'budi@gmail.c', 'budi@.com'] as $badEmail) {
+            $this->post('/register', [
+                'name' => 'Pembeli Uji',
+                'email' => $badEmail,
+                'phone' => '081234567890',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+                'account_type' => 'buyer',
+            ])->assertSessionHasErrors('email');
+
+            $this->assertGuest();
+        }
+    }
+
+    public function test_registration_and_seller_application_require_valid_phone(): void
+    {
+        foreach (['', '12345', '1234567890', '0800000000', '0812abcd567'] as $badPhone) {
+            $this->post('/register', [
+                'name' => 'Pembeli Tanpa HP Valid',
+                'email' => 'buyer-phone-check@gmail.com',
+                'phone' => $badPhone,
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+                'account_type' => 'buyer',
+            ])->assertSessionHasErrors('phone');
+
+            $this->assertGuest();
+        }
+
+        foreach (['', '12345', '0800000000'] as $badPhone) {
+            $this->post('/register', [
+                'name' => 'Penjual Tanpa HP Valid',
+                'email' => 'seller-phone-check@gmail.com',
+                'phone' => $badPhone,
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+                'account_type' => 'seller',
+                'seller_store_name' => 'Nusantara Koi',
+            ])->assertSessionHasErrors('phone');
+
+            $this->assertGuest();
+        }
+
+        $buyerWithoutPhone = User::factory()->create([
+            'role' => 'buyer',
+            'seller_status' => 'none',
+            'phone' => null,
+        ]);
+
+        $this->actingAs($buyerWithoutPhone)->post('/seller/register', [
+            'seller_store_name' => 'Farm Tanpa Nomor',
+            'phone' => '12345',
+        ])->assertSessionHasErrors('phone');
+
+        $approvedSeller = User::factory()->create([
+            'role' => 'seller',
+            'seller_status' => 'approved',
+            'phone' => '081234567890',
+        ]);
+
+        $this->actingAs($approvedSeller)->post('/seller/register', [
+            'name' => 'Toko Nomor Salah',
+            'city' => 'Bandung',
+            'province' => 'Jawa Barat',
+            'address' => 'Jl. Asia Afrika No. 1',
+            'phone' => '1234567890',
+        ])->assertSessionHasErrors('phone');
+    }
+
     public function test_unverified_buyer_cannot_bypass_admin_approval_via_seller_register(): void
     {
         $buyer = User::factory()->create([
@@ -94,12 +170,14 @@ class RegistrationTest extends TestCase
 
         $response = $this->actingAs($buyer)->post('/seller/register', [
             'seller_store_name' => 'Bypass Farm',
+            'phone' => '081299887766',
             'seller_application_note' => 'Ingin langsung jualan',
         ]);
 
         $response->assertRedirect(route('seller.store.create'));
 
         $buyer->refresh();
+        $this->assertSame('081299887766', $buyer->phone);
         $this->assertSame('buyer', $buyer->role);
         $this->assertSame('pending', $buyer->seller_status);
         $this->assertNull($buyer->store);

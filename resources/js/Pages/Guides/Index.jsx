@@ -20,7 +20,7 @@ import {
     Search,
     TrendingUp,
     X,
-} from 'lucide-react';
+} from '@/Components/Icons';
 
 const SPECIES_TOPICS = [
     {
@@ -126,8 +126,8 @@ export default function Index({
         <AppLayout>
             <Head
                 title={pick(
-                    'Panduan Kesehatan Ikan — Dunia Ikan',
-                    'Fish Care & Health Guides — Dunia Ikan',
+                    'Panduan Kesehatan Ikan | Dunia Ikan',
+                    'Fish Care & Health Guides | Dunia Ikan',
                 )}
             >
                 <meta
@@ -151,7 +151,7 @@ export default function Index({
                         src="/images/hero/aquarium-poster.webp"
                         width={1280}
                         height={720}
-                        fetchPriority="high"
+                        fetchpriority="high"
                         decoding="sync"
                         alt={pick(
                             'Akuarium aquascape dengan ikan hias',
@@ -516,11 +516,8 @@ export default function Index({
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent" />
                                             <span
-                                                className={`absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border backdrop-blur-xs bg-white/95 dark:bg-slate-900/90 ${badgeMeta.badgeClass}`}
+                                                className={`absolute top-3 left-3 inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold border backdrop-blur-xs bg-white/95 dark:bg-slate-900/90 ${badgeMeta.badgeClass}`}
                                             >
-                                                <span
-                                                    className={`w-1.5 h-1.5 rounded-full ${badgeMeta.dotClass}`}
-                                                />
                                                 {trGuideCategory(guide.category)}
                                             </span>
                                         </div>

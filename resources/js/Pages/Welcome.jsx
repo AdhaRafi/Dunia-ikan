@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Minus, Plus } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
+import FaqSection from '@/Components/FaqSection';
 import ProductCard from '@/Components/ProductCard';
 import StoreLogo from '@/Components/StoreLogo';
 import {
@@ -10,65 +10,11 @@ import {
 } from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
 
-const FAQ_ITEMS = [
-    {
-        id: {
-            question: 'Apakah garansi ikan hidup 100% berlaku di seluruh Indonesia?',
-            answer: 'Ya, setiap pengiriman ikan hias dari penangkar terverifikasi dilindungi garansi DOA (Dead on Arrival) dengan syarat melampirkan video unboxing tanpa jeda saat paket diterima.',
-        },
-        en: {
-            question: 'Does the 100% live arrival guarantee apply across Indonesia?',
-            answer: 'Yes, every ornamental fish shipment from verified breeders is covered by our DOA (Dead on Arrival) guarantee as long as you provide a continuous unboxing video upon delivery.',
-        },
-    },
-    {
-        id: {
-            question: 'Bagaimana standar packing agar ikan tetap aman selama pengiriman?',
-            answer: 'Penangkar memakai kantong oksigen ganda bertekanan, air kondisi stabil, serta boks styrofoam atau insulasi thermal sesuai jarak pengiriman.',
-        },
-        en: {
-            question: 'What packing standards keep fish safe during shipping?',
-            answer: 'Breeders use double pressurized oxygen bags, conditioned water, and insulated styrofoam or thermal boxes matched to shipping distance.',
-        },
-    },
-    {
-        id: {
-            question: 'Bagaimana cara memilih ikan air tawar atau air laut di katalog?',
-            answer: 'Anda bisa langsung klik menu Air Tawar atau Air Laut di menu header, atau gunakan filter Tipe Air di halaman Katalog lengkap beserta informasi pH dan suhu ideal.',
-        },
-        en: {
-            question: 'How do I browse freshwater or saltwater fish in the catalog?',
-            answer: 'Select Freshwater or Saltwater directly from the header menu, or use the Water Type filter on the full Catalog page with ideal pH and temperature notes.',
-        },
-    },
-    {
-        id: {
-            question: 'Kapan dana pembayaran diteruskan ke toko penangkar?',
-            answer: 'Pembayaran ditahan sementara oleh sistem dan baru diteruskan setelah pesanan dikonfirmasi diterima dalam kondisi baik atau melewati batas waktu konfirmasi.',
-        },
-        en: {
-            question: 'When is payment released to the breeder store?',
-            answer: 'Payment is held securely in escrow and only released after you confirm the order arrived healthy or once the confirmation window closes.',
-        },
-    },
-    {
-        id: {
-            question: 'Apakah penangkar atau toko aquascape bisa berjualan di sini?',
-            answer: 'Bisa. Anda cukup mendaftar akun lalu melengkapi profil toko di menu Buka Toko untuk mulai menayangkan stok ikan hias, tanaman, dan perlengkapan akuarium.',
-        },
-        en: {
-            question: 'Can breeders or aquascape stores sell on Dunia Ikan?',
-            answer: 'Yes. Register an account, apply as a seller or complete your store profile, and list your fish stock, aquatic plants, and tank gear after verification.',
-        },
-    },
-];
-
 export default function Welcome({ categories, featuredFish, featuredStores, stats }) {
     const { auth } = usePage().props;
     const { pick, isEn } = useLanguage();
     const firstName = auth?.user?.name?.trim().split(/\s+/)[0] || '';
     const [selectedTab, setSelectedTab] = useState('all');
-    const [openFaq, setOpenFaq] = useState(0);
     const [showAllCategories, setShowAllCategories] = useState(false);
     const [showHeroVideo, setShowHeroVideo] = useState(false);
 
@@ -230,7 +176,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             src="/images/hero/aquarium-poster.webp"
                             width={1280}
                             height={720}
-                            fetchPriority="high"
+                            fetchpriority="high"
                             decoding="sync"
                             loading="eager"
                             alt={pick('Akuarium Ikan Hias Dunia Ikan', 'Dunia Ikan Ornamental Aquarium')}
@@ -335,7 +281,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                         width={300}
                                         height={300}
                                         loading={idx < 2 ? 'eager' : 'lazy'}
-                                        fetchPriority={idx < 2 ? 'auto' : 'low'}
+                                        fetchpriority={idx < 2 ? 'auto' : 'low'}
                                         decoding="async"
                                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                                     />
@@ -478,71 +424,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 <SectionWaveDivider />
 
                 {/* 6. FREQUENTLY ASKED QUESTIONS */}
-                <section className="relative overflow-hidden rounded-[24px] sm:rounded-[28px] aquatic-soft-panel border border-[#005A9D]/15 dark:border-[#60C2E6]/20 px-5 sm:px-10 lg:px-14 py-10 sm:py-14 lg:py-16">
-                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-stretch">
-                        {/* Left Column: Heading at top, Helper Subtext + Pill CTA at bottom */}
-                        <div className="lg:col-span-5 flex flex-col justify-between gap-7">
-                            <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-semibold tracking-[-0.03em] leading-[1.12] text-slate-900 dark:text-white">
-                                {pick('Pertanyaan Umum', 'Common Questions')}
-                                <br />
-                                {pick('dari para pembeli.', 'from our buyers.')}
-                            </h2>
-
-                            <div>
-                                <p className="max-w-[34ch] text-xs sm:text-[13.5px] leading-relaxed text-slate-600 dark:text-slate-300">
-                                    {pick(
-                                        'Tim dan asisten Kiko kami selalu siap membantu dengan jawaban cepat, jelas, dan tepercaya kapan pun Anda butuh.',
-                                        'Our team and Kiko assistant are always ready with fast, clear, and trusted answers whenever you need help.',
-                                    )}
-                                </p>
-                                <button
-                                    type="button"
-                                    onClick={() => window.dispatchEvent(new CustomEvent('dunia-ikan:open-chat'))}
-                                    className="btn-motion btn-sheen mt-4 inline-flex items-center justify-center rounded-full bg-slate-950 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-950 px-5 py-2.5 text-xs sm:text-[13px] font-semibold shadow-[0_6px_18px_rgba(15,23,42,0.18)]"
-                                >
-                                    {pick('Tanya Kiko', 'Ask Kiko')}
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Right Column: Clean White Card Accordion Stack */}
-                        <div className="lg:col-span-7 space-y-3">
-                            {FAQ_ITEMS.map((item, index) => {
-                                const isExpanded = openFaq === index;
-                                const copy = isEn ? item.en : item.id;
-
-                                return (
-                                    <button
-                                        key={copy.question}
-                                        type="button"
-                                        onClick={() => setOpenFaq(isExpanded ? null : index)}
-                                        aria-expanded={isExpanded}
-                                        className="card-hover-subtle group w-full text-left rounded-2xl bg-white dark:bg-[#131d33] border border-slate-200/80 dark:border-slate-700/80 px-5 sm:px-6 py-4 sm:py-5 shadow-[0_2px_10px_rgba(15,23,42,0.03)] hover:border-slate-300 dark:hover:border-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00477C]"
-                                    >
-                                        <div className="flex items-center justify-between gap-4">
-                                            <span className="text-sm sm:text-[15px] font-semibold leading-snug text-slate-900 dark:text-white">
-                                                {copy.question}
-                                            </span>
-                                            <span className={`shrink-0 w-6 h-6 rounded-full border border-slate-400/75 dark:border-slate-500 inline-flex items-center justify-center text-slate-600 dark:text-slate-300 transition-transform duration-200 ${isExpanded ? 'rotate-180 bg-slate-100 dark:bg-slate-800' : 'group-hover:scale-110'}`}>
-                                                {isExpanded ? (
-                                                    <Minus className="w-3.5 h-3.5" strokeWidth={1.8} />
-                                                ) : (
-                                                    <Plus className="w-3.5 h-3.5" strokeWidth={1.8} />
-                                                )}
-                                            </span>
-                                        </div>
-
-                                        {isExpanded && (
-                                            <p className="swap-in mt-2.5 pr-8 text-xs sm:text-[13.5px] leading-relaxed text-slate-500 dark:text-slate-400">
-                                                {copy.answer}
-                                            </p>
-                                        )}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </section>
+                <FaqSection />
             </div>
         </AppLayout>
     );

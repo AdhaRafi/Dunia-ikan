@@ -2,10 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\StoreConversation;
 use App\Models\User;
 use App\Services\TurnstileVerifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Middleware;
 use Throwable;
 
@@ -47,6 +49,7 @@ class HandleInertiaRequests extends Middleware
 
         $cartCount = 0;
         $favoriteIds = [];
+        $unreadChatCount = 0;
         if ($user) {
             $cartCount = $user->cartItems()->sum('quantity');
             try {
@@ -56,6 +59,14 @@ class HandleInertiaRequests extends Middleware
                     ->all();
             } catch (Throwable) {
                 $favoriteIds = [];
+            }
+
+            try {
+                if (Schema::hasTable('store_conversations') && Schema::hasTable('store_messages')) {
+                    $unreadChatCount = StoreConversation::totalUnreadFor($user);
+                }
+            } catch (Throwable) {
+                $unreadChatCount = 0;
             }
         }
 
@@ -72,6 +83,7 @@ class HandleInertiaRequests extends Middleware
                 : 0,
             'cartCount' => $cartCount,
             'favoriteIds' => $favoriteIds,
+            'unreadChatCount' => $unreadChatCount,
             'visitorStats' => fn () => $this->recordAndGetVisitorStats($request),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
@@ -104,7 +116,7 @@ class HandleInertiaRequests extends Middleware
             && $request->hasSession()
             && ! $isBot
             && ! $request->headers->has('X-Inertia-Partial-Data')
-            && ! $request->is('api/*', 'up', 'sitemap.xml', 'robots.txt', 'chatbot/*');
+            && ! $request->is('api/*', 'up', 'sitemap.xml', 'robots.txt', 'chatbot/*', 'chat/*/messages');
 
         $counterKeys = [
             $keys['today'][0],

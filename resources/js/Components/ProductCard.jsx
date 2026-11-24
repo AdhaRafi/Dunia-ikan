@@ -1,6 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
-import { Check } from 'lucide-react';
+import { Check } from '@/Components/Icons';
 import FavoriteButton from '@/Components/FavoriteButton';
 import { useLanguage } from '@/lib/i18n';
 

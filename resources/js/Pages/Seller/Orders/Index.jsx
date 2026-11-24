@@ -1,6 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import SellerLayout from '@/Layouts/SellerLayout';
-import { Package, ArrowRight, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Package, ArrowRight, Clock, CheckCircle2, AlertCircle } from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 
 export default function Index({ store, orders }) {

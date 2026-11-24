@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { MapPin, Plus, Trash2, Edit3, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { MapPin, Plus, Trash2, Edit3, CheckCircle2, ArrowLeft } from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 
 export default function Index({ addresses }) {

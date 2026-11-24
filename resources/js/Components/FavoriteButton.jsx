@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { router, usePage } from '@inertiajs/react';
-import { Heart } from 'lucide-react';
+import { Heart } from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 
 export default function FavoriteButton({

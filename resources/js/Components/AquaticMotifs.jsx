@@ -2,7 +2,11 @@
  * Shared shoreline transition & section divider helpers for Dunia Ikan.
  */
 
-export function HeroWaveTransition({ variant = 'canvas', className = '' }) {
+export function HeroWaveTransition({
+    variant = 'canvas',
+    className = '',
+    fillClass = 'fill-[#fbf8ff] dark:fill-[#070b14]',
+}) {
     if (variant === 'sheet') {
         return (
             <div
@@ -58,7 +62,7 @@ export function HeroWaveTransition({ variant = 'canvas', className = '' }) {
                 {/* Foreground canvas blend wave */}
                 <path
                     d="M0 58C260 28 520 58 840 44C1100 32 1280 22 1440 46V84H0V58Z"
-                    className="fill-[#fbf8ff] dark:fill-[#070b14] transition-colors duration-200"
+                    className={`${fillClass} transition-colors duration-200`}
                 />
             </svg>
         </div>

@@ -8,7 +8,7 @@ import {
     Sprout,
     Store,
     Waves,
-} from 'lucide-react';
+} from '@/Components/Icons';
 
 /**
  * Shared storefront navigation links used by mobile drawer and desktop header matching.

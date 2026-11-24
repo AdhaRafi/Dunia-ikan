@@ -11,9 +11,9 @@ import {
     ArrowLeft, 
     CheckCircle2, 
     PlusCircle,
-    Zap,
+    Wallet,
     X 
-} from 'lucide-react';
+} from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 
 export default function Index({ groupedCart, addresses = [], totalProducts, totalShipping, grandTotal, supportsManualQris = false }) {
@@ -231,7 +231,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-1.5">
-                                                <Zap className="w-5 h-5 text-dunia-blue dark:text-[#60C2E6]" />
+                                                <Wallet className="w-5 h-5 text-dunia-blue dark:text-[#60C2E6]" />
                                                 <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-blue-100 dark:bg-[#005A9D]/20 text-dunia-blue dark:text-sky-300">
                                                     {pick('Otomatis', 'Instant')}
                                                 </span>

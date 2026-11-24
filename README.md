@@ -48,54 +48,83 @@
 
 ## Struktur Proyek
 
+### Pembagian Area Utama
+
+| Bagian | Lokasi Folder | Fungsi Utama |
+| --- | --- | --- |
+| **Backend (Umum & Pembeli)** | `app/Http/Controllers/`, `app/Http/Middleware/`, `app/Http/Requests/`, `app/Http/Resources/`, `app/Models/`, `app/Services/`, `app/Support/`, `routes/`, `bootstrap/` | Logika bisnis marketplace, API v1, autentikasi, validasi kontak, chat toko, komunitas, Midtrans, dan chatbot Kiko |
+| **Backend (Penjual / Seller)** | `app/Http/Controllers/Seller/` | Kelola profil toko, produk/morf ikan, dan pesanan masuk khusus akun penjual |
+| **Admin Panel (Filament v5)** | `app/Filament/`, `app/Http/Controllers/Admin/`, `app/Providers/Filament/`, `app/Services/AdminAnalyticsService.php` | Dashboard analitik, persetujuan penjual, CRUD master data (`/admin`), dan ekspor laporan transaksi |
+| **Frontend (Publik & Pembeli)** | `resources/js/Components/`, `resources/js/Layouts/` (`AppLayout`, `GuestLayout`), `resources/js/Pages/`, `resources/js/lib/`, `resources/css/`, `resources/views/`, `public/` | Antarmuka React + Inertia + Tailwind, komponen UI, ikon Hugeicons, tema gelap/terang, i18n (`ID`/`EN`), dan aset statis |
+| **Frontend (Portal Penjual)** | `resources/js/Layouts/SellerLayout.jsx`, `resources/js/Pages/Seller/` | Tampilan khusus dashboard penjual (produk, pesanan masuk, profil toko & DOA) |
+| **Database** | `database/` (`migrations/`, `seeders/`, `factories/`) | Skema tabel PostgreSQL/SQLite, data awal, dan factory untuk testing |
+| **Testing** | `tests/` (`Feature/`, `Unit/`) | Pengujian otomatis PHPUnit (fitur marketplace, auth, chat, Midtrans, API, keamanan) |
+| **Mobile Android** | `android/` | Companion app Android WebView native (Kotlin) |
+| **Konfigurasi & Deploy** | `config/`, `Caddyfile`, `Dockerfile.vercel`, `docker-entrypoint.sh`, `vercel.json` | Pengaturan framework Laravel, guard auth, dan pipeline container/deployment |
+
+### Pohon Folder Berlabel
+
 ```text
 .
-├── app/
-│   ├── Filament/
-│   │   ├── Pages/Auth/AdminLogin.php       # Halaman login panel Filament (/admin/login) + Turnstile & rate limit
-│   │   └── Resources/                      # Resource CRUD Filament: Categories, Orders, Products, Stores, Users
+├── app/                                            # [BACKEND & ADMIN] Seluruh kode PHP aplikasi Laravel
+│   ├── Filament/                                   # [ADMIN] Panel Admin Filament v5 (/admin)
+│   │   ├── Pages/
+│   │   │   ├── Auth/AdminLogin.php                 # [ADMIN] Halaman login admin (/admin/login) + Turnstile & rate limit
+│   │   │   ├── Dashboard.php                       # [ADMIN] Beranda dashboard analitik admin
+│   │   │   └── TransactionReports.php              # [ADMIN] Halaman laporan & rekap transaksi
+│   │   ├── Resources/                              # [ADMIN] CRUD Filament: Categories, FishGuides, Orders, Products, Stores, Users
+│   │   └── Widgets/                                # [ADMIN] Grafik tren penjualan, distribusi kota, statistik & top transaksi
 │   ├── Http/
-│   │   ├── Controllers/
-│   │   │   ├── Admin/                      # Controller Portal Admin Inertia (/admin-portal/*)
-│   │   │   ├── Auth/                       # Autentikasi Breeze + AdminLogoutController
-│   │   │   ├── Seller/                     # Manajemen toko, produk, dan pesanan penjual (/seller/*)
-│   │   │   └── *.php                       # Storefront, katalog, keranjang, checkout, order, review, chatbot, Midtrans
-│   │   ├── Middleware/                     # EnsureUserHasRole, HandleInertiaRequests, SecurityHeaders
-│   │   └── Requests/                       # Validasi LoginRequest & ProfileUpdateRequest
-│   ├── Models/                             # User, Store, Category, Product, FishDetail, FishGuide, Address, CartItem, Order, OrderItem, StoreReview, ChatSession, ChatMessage
-│   ├── Providers/                          # AppServiceProvider & Filament\AdminPanelProvider
-│   └── Services/                           # TurnstileVerifier (verifikasi token Cloudflare Turnstile)
-├── bootstrap/
-│   ├── app.php                             # Routing, middleware, CSRF exception webhook Midtrans, render 403/404 Inertia, & path /tmp/storage di Vercel
-│   └── providers.php                       # Registrasi service provider aplikasi & Filament
-├── config/                                 # Konfigurasi Laravel (auth guard web/admin, services, ziggy filter, cors, sanctum, dll.)
-├── database/
-│   ├── factories/                          # Model factories untuk pengujian
-│   ├── migrations/                         # Skema tabel marketplace, Midtrans snap_token, verifikasi seller, ulasan toko
-│   └── seeders/                            # DatabaseSeeder, FishSpeciesExpansionSeeder, StoreReviewSeeder
-├── public/
-│   ├── images/                             # Aset lokal: brand, banner, kategori, produk, avatar Kiko, hero showcase
-│   └── videos/                             # Video latar hero halaman utama
-├── resources/
-│   ├── css/app.css                         # Entry styling Tailwind CSS
+│   │   ├── Controllers/                            # [BACKEND] Pengendali request web & API
+│   │   │   ├── Admin/                              # [ADMIN] ReportController (ekspor laporan transaksi admin)
+│   │   │   ├── Api/                                # [BACKEND / API] SystemController & endpoint REST API V1
+│   │   │   ├── Auth/                               # [BACKEND / AUTH] Login, register, OAuth Google/Facebook, reset password, logout admin
+│   │   │   ├── Seller/                             # [BACKEND / SELLER] Manajemen toko, produk, dan pesanan penjual (/seller/*)
+│   │   │   └── *.php                               # [BACKEND / BUYER] Beranda, katalog, toko, favorit, keranjang, checkout, order, ulasan, panduan, chat toko, komunitas, chatbot Kiko, Midtrans
+│   │   ├── Middleware/                             # [BACKEND] Role guard (EnsureUserHasRole), shared props Inertia, & SecurityHeaders
+│   │   ├── Requests/                               # [BACKEND] Validasi request (LoginRequest, ProfileUpdateRequest)
+│   │   └── Resources/                              # [BACKEND / API] Transformasi JSON API (Product, Store, Category, FishGuide, User)
+│   ├── Models/                                     # [BACKEND / DATA] Model Eloquent (User, Store, Product, FishDetail, Order, StoreConversation, StoreMessage, GlobalMessage, Favorite, ChatSession, dll.)
+│   ├── Providers/                                  # [BACKEND & ADMIN] AppServiceProvider & Filament/AdminPanelProvider
+│   ├── Services/                                   # [BACKEND & ADMIN] AdminAnalyticsService (statistik admin) & TurnstileVerifier (anti-bot)
+│   └── Support/                                    # [BACKEND] Helper bersama (ContactValidation, MediaStorage, SeoMetadata)
+├── bootstrap/                                      # [BACKEND] Konfigurasi boot Laravel, middleware, CSRF exception Midtrans, & error Inertia
+├── config/                                         # [CONFIG] Pengaturan Laravel (auth guard web/admin, services, cors, sanctum, ziggy)
+├── database/                                       # [DATABASE] Skema & data basis data
+│   ├── factories/                                  # [DATABASE / TESTING] Factory data dummy untuk PHPUnit
+│   ├── migrations/                                 # [DATABASE] Migrasi tabel marketplace, chat toko, komunitas, favorit, Midtrans, dll.
+│   └── seeders/                                    # [DATABASE] DatabaseSeeder, FishSpeciesExpansionSeeder, StoreReviewSeeder
+├── public/                                         # [FRONTEND / ASET] File publik yang diakses langsung browser
+│   ├── images/                                     # [FRONTEND] Logo brand, banner, foto ikan/produk, avatar & maskot Kiko
+│   └── videos/                                     # [FRONTEND] Video latar hero halaman utama
+├── resources/                                      # [FRONTEND] Kode antarmuka pengguna (React + Inertia + Tailwind + Blade)
+│   ├── css/app.css                                 # [FRONTEND] Entry styling Tailwind CSS & token tema laut
 │   ├── js/
-│   │   ├── Components/                     # TopHeader, Sidebar, Footer, ProductCard, ChatbotWidget, TurnstileWidget, dll.
-│   │   ├── Layouts/                        # AppLayout, GuestLayout, SellerLayout, AdminLayout
-│   │   ├── Pages/                          # Halaman Inertia (Welcome, Products, Stores, Guides, Cart, Checkout, Orders, Seller, Admin, Auth, Profile, Errors/HttpError)
-│   │   └── lib/                            # Helper frontend (i18n.jsx, guideMeta.js)
-│   └── views/                              # app.blade.php (root Inertia) & komponen Blade Turnstile Filament
-├── routes/
-│   ├── web.php                             # Route storefront, buyer, seller (/seller/*), admin (/admin-portal/*), Midtrans, chatbot
-│   ├── auth.php                            # Route autentikasi pengguna (/login, /register, reset password, dll.)
-│   ├── api.php                             # Endpoint /api/health & /api/user (Sanctum)
-│   └── console.php                         # Perintah Artisan CLI
-├── tests/
-│   └── Feature/                            # PHPUnit suite (Auth, MarketplaceTest, MidtransTest, ProfileTest, SecurityHardeningTest)
-├── android/                                # Aplikasi Android WebView (Kotlin, splash screen & server switcher)
-├── Caddyfile                               # Konfigurasi webserver FrankenPHP/Caddy + blokir akses /build/manifest.json
-├── Dockerfile.vercel                       # Multi-stage Docker image (Node 22 + FrankenPHP PHP 8.4)
-├── docker-entrypoint.sh                    # Inisialisasi container saat boot (migrasi, optimasi cache, start FrankenPHP)
-└── vercel.json                             # Konfigurasi deployment container di Vercel
+│   │   ├── Components/                             # [FRONTEND] Komponen UI: TopHeader, UserDropdown, Sidebar, Footer, ProductCard, ChatbotWidget, KikoAquariumCanvas, FaqSection, Icons (Hugeicons), dll.
+│   │   ├── Layouts/                                # [FRONTEND] Kerangka halaman: AppLayout (publik/pembeli), GuestLayout (login/daftar), SellerLayout ([FRONTEND / SELLER])
+│   │   ├── Pages/                                  # [FRONTEND] Halaman Inertia per fitur
+│   │   │   ├── Auth/                               # [FRONTEND / AUTH] Login, Register, lupa/reset kata sandi
+│   │   │   ├── Chat/, Community/, Favorites/       # [FRONTEND / BUYER] Chat Toko 2 arah, chat global komunitas, daftar favorit
+│   │   │   ├── Products/, Stores/, Guides/         # [FRONTEND / PUBLIK] Katalog ikan, halaman toko, panduan perawatan
+│   │   │   ├── Cart/, Checkout/, Orders/, Addresses/, Profile/ # [FRONTEND / BUYER] Keranjang, checkout, pesanan, buku alamat, profil akun
+│   │   │   ├── Seller/                             # [FRONTEND / SELLER] Portal penjual (kelola produk, pesanan masuk, buat/edit toko)
+│   │   │   ├── Errors/                             # [FRONTEND] Halaman error 403/404/500 Inertia
+│   │   │   └── Welcome.jsx                         # [FRONTEND / PUBLIK] Halaman beranda utama
+│   │   └── lib/                                    # [FRONTEND] Helper client (i18n.jsx, navigation.js, guideMeta.js, validation.js)
+│   └── views/                                      # [FRONTEND & ADMIN] app.blade.php (root Inertia) & view Blade Turnstile untuk Filament
+├── routes/                                         # [BACKEND / ROUTING] Pemetaan URL ke controller
+│   ├── web.php                                     # [BACKEND] Route publik, pembeli, penjual (/seller/*), chat, Midtrans, chatbot, & redirect admin
+│   ├── auth.php                                    # [BACKEND / AUTH] Route login, register, OAuth sosial, verifikasi email, reset sandi
+│   ├── api.php                                     # [BACKEND / API] Endpoint REST API (/api/health, /api/user, /api/v1/*)
+│   └── console.php                                 # [BACKEND / CLI] Perintah Artisan CLI
+├── tests/                                          # [TESTING] Suite pengujian otomatis PHPUnit
+│   ├── Feature/                                    # [TESTING] Tes fitur (Auth, Api/V1, Marketplace, Midtrans, StoreChat, GlobalChat, Favorite, AdminReport, Profile, SecurityHardening)
+│   └── Unit/                                       # [TESTING] Tes unit terisolasi
+├── android/                                        # [MOBILE] Aplikasi Android WebView native (Kotlin)
+├── Caddyfile                                       # [CONFIG & DEPLOY] Webserver FrankenPHP/Caddy
+├── Dockerfile.vercel                               # [CONFIG & DEPLOY] Multi-stage Docker image (Node 22 + FrankenPHP PHP 8.4)
+├── docker-entrypoint.sh                            # [CONFIG & DEPLOY] Skrip startup container (migrasi & cache)
+└── vercel.json                                     # [CONFIG & DEPLOY] Konfigurasi deployment container
 ```
 
 ---

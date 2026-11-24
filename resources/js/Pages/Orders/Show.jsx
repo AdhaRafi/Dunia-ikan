@@ -7,6 +7,7 @@ import {
     Store, 
     ArrowLeft, 
     CreditCard, 
+    MessageSquare,
     QrCode, 
     Truck, 
     CheckCircle2, 
@@ -14,10 +15,10 @@ import {
     Upload, 
     ShieldCheck, 
     Clock,
-    Zap,
+    Wallet,
     RefreshCw,
     ExternalLink
-} from 'lucide-react';
+} from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 
 export default function Show({ order, midtransClientKey, isMidtransProduction }) {
@@ -396,7 +397,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                     <div className="flex items-start sm:items-center gap-3">
                                         <div className="w-10 h-10 rounded-xl bg-dunia-blue text-white flex items-center justify-center font-bold shrink-0 shadow-xs">
-                                            <Zap className="w-5 h-5 fill-white" />
+                                            <Wallet className="w-5 h-5" />
                                         </div>
                                         <div>
                                             <h4 className="text-sm font-extrabold text-dunia-navy dark:text-white flex items-center gap-2">
@@ -420,7 +421,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
                                             disabled={loadingSnap}
                                             className="px-5 py-2.5 rounded-xl bg-dunia-blue hover:bg-sky-600 text-white font-extrabold text-xs shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
                                         >
-                                            <Zap className="w-4 h-4 fill-white" />
+                                            <Wallet className="w-4 h-4" />
                                             {loadingSnap
                                                 ? pick('Memuat Snap...', 'Loading Snap...')
                                                 : pick('Bayar Sekarang (Midtrans)', 'Pay Now (Midtrans)')}
@@ -570,10 +571,22 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
 
                 {/* Items & Store Details */}
                 <div className="bg-white dark:bg-[#0e1424] p-6 rounded-2xl border border-sky-100 dark:border-slate-800 shadow-xs space-y-4">
-                    <h3 className="font-bold text-sm text-dunia-navy dark:text-white uppercase tracking-wider flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
-                        <Store className="w-4 h-4 text-dunia-marine dark:text-[#60C2E6]" />
-                        {pick('Detail Ikan & Produk dari', 'Items from')} {store?.name}
-                    </h3>
+                    <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+                        <h3 className="font-bold text-sm text-dunia-navy dark:text-white uppercase tracking-wider flex items-center gap-2">
+                            <Store className="w-4 h-4 text-dunia-marine dark:text-[#60C2E6]" />
+                            {pick('Detail Ikan & Produk dari', 'Items from')} {store?.name}
+                        </h3>
+                        {store?.slug && (
+                            <button
+                                type="button"
+                                onClick={() => router.post(`/stores/${store.slug}/chat`)}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#131d33] hover:border-[#005A9D] text-xs font-semibold text-[#14335D] dark:text-[#60C2E6] transition cursor-pointer"
+                            >
+                                <MessageSquare className="w-3.5 h-3.5" />
+                                {pick('Chat Toko', 'Chat Store')}
+                            </button>
+                        )}
+                    </div>
 
                     <div className="divide-y divide-slate-100 dark:divide-slate-800">
                         {order.items?.map((item) => (

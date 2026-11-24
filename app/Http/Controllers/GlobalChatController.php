@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\GlobalMessage;
 use App\Support\MediaStorage;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use Throwable;
 
 class GlobalChatController extends Controller
 {
@@ -21,8 +25,10 @@ class GlobalChatController extends Controller
 
     private const MIGRATION_PATH = 'database/migrations/2026_11_19_054200_create_global_messages_table.php';
 
+    private const CHANNEL_MIGRATION_PATH = 'database/migrations/2026_11_23_162308_add_channel_to_global_messages_table.php';
+
     /**
-     * Render the public Community Global Chat page with recent messages.
+     * Render the public Community Global Chat page with all recent messages in one unified room.
      */
     public function index(): Response
     {
@@ -120,9 +126,12 @@ class GlobalChatController extends Controller
             $messages = $messages->reverse()->values();
         }
 
+        $totalMessages = GlobalMessage::count();
+
         return response()->json([
             'messages' => $messages->map(fn (GlobalMessage $msg): array => $this->formatMessage($msg))->all(),
-            'total_messages' => GlobalMessage::count(),
+            'has_more' => $afterId === 0 ? $totalMessages > $messages->count() : false,
+            'total_messages' => $totalMessages,
             'participants_count' => GlobalMessage::distinct('user_id')->count('user_id'),
         ]);
     }
@@ -157,6 +166,7 @@ class GlobalChatController extends Controller
 
         $msg = GlobalMessage::create([
             'user_id' => $request->user()->id,
+            'channel' => GlobalMessage::DEFAULT_CHANNEL,
             'reply_to_id' => $validated['reply_to_id'] ?? null,
             'message' => $cleanMessage !== '' ? $cleanMessage : null,
             'image_path' => $imagePath,
@@ -203,6 +213,7 @@ class GlobalChatController extends Controller
      *
      * @return array{
      *     id: int,
+     *     channel: string,
      *     message: ?string,
      *     image_url: ?string,
      *     created_at: ?string,
@@ -245,6 +256,7 @@ class GlobalChatController extends Controller
 
         return [
             'id' => $msg->id,
+            'channel' => $msg->channel ?: GlobalMessage::DEFAULT_CHANNEL,
             'message' => $msg->message,
             'image_url' => $msg->image_url,
             'created_at' => $msg->created_at?->toIso8601String(),
@@ -263,10 +275,31 @@ class GlobalChatController extends Controller
     }
 
     /**
-     * Ensure the global_messages table is created when deployed without boot migrations.
+     * Ensure the global_messages table and channel column exist when deployed without boot migrations.
      */
     private function ensureGlobalMessagesTable(): bool
     {
-        return $this->ensureTableMigrated('global_messages', self::MIGRATION_PATH);
+        if (! $this->ensureTableMigrated('global_messages', self::MIGRATION_PATH)) {
+            return false;
+        }
+
+        if (! Schema::hasColumn('global_messages', 'channel')) {
+            try {
+                Artisan::call('migrate', [
+                    '--path' => self::CHANNEL_MIGRATION_PATH,
+                    '--force' => true,
+                ]);
+            } catch (Throwable) {
+                // Fall through to direct schema guard below.
+            }
+
+            if (! Schema::hasColumn('global_messages', 'channel')) {
+                Schema::table('global_messages', function (Blueprint $table): void {
+                    $table->string('channel', 32)->default('general')->index();
+                });
+            }
+        }
+
+        return Schema::hasColumn('global_messages', 'channel');
     }
 }

@@ -4,15 +4,14 @@ import {
     Search,
     Heart,
     ShoppingCart,
-    User,
     ChevronDown,
-    Package,
-    MapPin,
+    Menu,
+    MessageSquare,
     X,
-} from 'lucide-react';
+} from '@/Components/Icons';
 import AnimatedThemeToggler, { toggleThemeWithTransition } from '@/Components/AnimatedThemeToggler';
 import BrandWordmark from '@/Components/BrandWordmark';
-import UserAvatar from '@/Components/UserAvatar';
+import UserDropdown from '@/Components/UserDropdown';
 import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
 import { buildCatalogDropdownItems, buildStoreNavItem } from '@/lib/navigation';
 
@@ -67,7 +66,7 @@ export default function TopHeader({
     onToggleDarkMode,
 }) {
     const { url, props } = usePage();
-    const { auth, cartCount, favoriteIds } = props;
+    const { auth, cartCount, favoriteIds, unreadChatCount = 0 } = props;
     const [liveFavoriteIds, setLiveFavoriteIds] = useState(() =>
         Array.isArray(favoriteIds) ? favoriteIds : [],
     );
@@ -79,11 +78,11 @@ export default function TopHeader({
     const [searchQuery, setSearchQuery] = useState('');
     const [searchOpen, setSearchOpen] = useState(false);
     const [catalogOpen, setCatalogOpen] = useState(false);
-    const [userDropdownOpen, setUserDropdownOpen] = useState(false);
     const [overDarkSection, setOverDarkSection] = useState(
         () =>
             pathname === '/' ||
             pathname === '/guides' ||
+            pathname === '/community' ||
             pathname === '/products' ||
             pathname.startsWith('/stores/'),
     );
@@ -173,14 +172,12 @@ export default function TopHeader({
             if (headerRef.current && !headerRef.current.contains(event.target)) {
                 setSearchOpen(false);
                 setCatalogOpen(false);
-                setUserDropdownOpen(false);
             }
         };
         const handleEscape = (event) => {
             if (event.key === 'Escape') {
                 setSearchOpen(false);
                 setCatalogOpen(false);
-                setUserDropdownOpen(false);
             }
         };
         document.addEventListener('mousedown', handleOutside);
@@ -216,7 +213,6 @@ export default function TopHeader({
     useEffect(() => {
         setSearchOpen(false);
         setCatalogOpen(false);
-        setUserDropdownOpen(false);
     }, [url]);
 
     useEffect(() => {
@@ -244,7 +240,6 @@ export default function TopHeader({
 
     const handleToggleSearch = () => {
         setCatalogOpen(false);
-        setUserDropdownOpen(false);
         setSearchOpen((prev) => {
             const next = !prev;
             if (next) {
@@ -444,16 +439,8 @@ export default function TopHeader({
                         onClick={() => onOpenChat?.()}
                         className={`${getNavLinkClass(false)} btn-motion inline-flex items-center gap-1.5`}
                     >
+                        <MessageSquare className="w-3.5 h-3.5 shrink-0" />
                         <span>{pick('Tanya Kiko', 'Ask Kiko')}</span>
-                        <span
-                            className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider leading-none transition-colors duration-300 ${
-                                isDarkNav
-                                    ? 'bg-[#60C2E6]/20 border border-[#60C2E6]/35 text-[#8BE8EC]'
-                                    : 'bg-[#60C2E6]/15 border border-[#1E80A0]/25 text-[#00696D]'
-                            }`}
-                        >
-                            AI
-                        </span>
                     </button>
 
                     <Link
@@ -547,109 +534,21 @@ export default function TopHeader({
                                 </Link>
                             )}
 
-                            <div className="relative">
-                                <button
-                                    type="button"
-                                    onClick={() => setUserDropdownOpen((prev) => !prev)}
-                                    className={`btn-motion flex items-center gap-1.5 p-0.5 pr-2 rounded-full border transition-colors duration-300 ${
-                                        isDarkNav
-                                            ? 'border-white/20 bg-white/10 hover:bg-white/20 text-white'
-                                            : 'border-[#1E80A0]/20 bg-white/80 hover:bg-white text-[#14335D]'
-                                    }`}
-                                    aria-label={pick('Menu Pengguna', 'User Menu')}
-                                >
-                                    <UserAvatar user={user} className="w-7 h-7 text-[11px]" />
-                                    <span className="hidden xl:inline text-xs font-semibold max-w-[92px] truncate">
-                                        {user.name}
-                                    </span>
-                                    <ChevronDown
-                                        className={`w-3.5 h-3.5 transition-colors duration-300 ${
-                                            isDarkNav ? 'text-white/75' : 'text-[#1E80A0]'
-                                        }`}
-                                    />
-                                </button>
-
-                                {userDropdownOpen && (
-                                    <div
-                                        className="dropdown-in absolute right-0 z-50 mt-3 w-56 rounded-2xl bg-white dark:bg-[#0b152d] border border-[#1E80A0]/15 dark:border-[#60C2E6]/20 shadow-[0_22px_50px_-12px_rgba(0,20,84,0.22)] dark:shadow-[0_24px_54px_-12px_rgba(2,6,23,0.82)] py-2 text-xs text-[#14335D] dark:text-white"
-                                        onClick={() => setUserDropdownOpen(false)}
-                                    >
-                                        <div className="px-4 py-2 border-b border-slate-100 dark:border-white/10">
-                                            <p className="font-extrabold text-[#14335D] dark:text-white truncate">{user.name}</p>
-                                            <p className="text-[11px] text-slate-500 dark:text-white/60 truncate">{user.email}</p>
-                                        </div>
-
-                                        <Link href="/profile" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#14335D] dark:text-white/90 transition">
-                                            <User className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#60C2E6]" />
-                                            <span>{pick('Profil Saya', 'My Profile')}</span>
-                                        </Link>
-                                        <Link href="/orders" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#14335D] dark:text-white/90 transition font-medium">
-                                            <Package className="w-3.5 h-3.5 text-[#005A9D] dark:text-sky-400" />
-                                            <span>{pick('Pesanan Saya', 'My Orders')}</span>
-                                        </Link>
-                                        <Link href="/favorites" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#14335D] dark:text-white/90 transition">
-                                            <Heart className="w-3.5 h-3.5 text-rose-500" />
-                                            <span>{pick('Produk Favorit', 'Favorites')}</span>
-                                        </Link>
-                                        <Link href="/addresses" className="flex items-center gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#14335D] dark:text-white/90 transition">
-                                            <MapPin className="w-3.5 h-3.5 text-[#1E80A0] dark:text-[#60C2E6]" />
-                                            <span>{pick('Buku Alamat', 'Address Book')}</span>
-                                        </Link>
-
-                                        {user.role === 'seller' && (
-                                            <div className="border-t border-slate-100 dark:border-white/10 my-1 pt-1">
-                                                <span className="px-4 text-[10px] font-bold text-[#1E80A0] dark:text-[#60C2E6] uppercase tracking-wider block mb-1">
-                                                    {pick('Toko Saya', 'My Store')}
-                                                </span>
-                                                <Link href="/seller/products" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#14335D] dark:text-white/90 transition">
-                                                    {pick('Produk Toko', 'Store Products')}
-                                                </Link>
-                                                <Link href="/seller/orders" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#14335D] dark:text-white/90 transition">
-                                                    {pick('Pesanan Masuk', 'Incoming Orders')}
-                                                </Link>
-                                                <Link href="/seller/store" className="block px-4 py-1.5 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#14335D] dark:text-white/90 transition">
-                                                    {pick('Profil Toko', 'Store Profile')}
-                                                </Link>
-                                            </div>
-                                        )}
-
-                                        {user.role === 'buyer' && (
-                                            <div className="border-t border-slate-100 dark:border-white/10 my-1 pt-1">
-                                                <Link href="/seller/register" className="flex items-center justify-between gap-2 px-4 py-2 hover:bg-[#f3f2ff] dark:hover:bg-white/10 text-[#005A9D] dark:text-cyan-300 font-bold transition">
-                                                    <span>
-                                                        {user.seller_status === 'pending'
-                                                            ? pick('Status Penjual', 'Seller Status')
-                                                            : user.seller_status === 'rejected'
-                                                              ? pick('Ajukan Ulang Toko', 'Reapply Store')
-                                                              : pick('Buka Toko Penangkar', 'Open Breeder Store')}
-                                                    </span>
-                                                    {user.seller_status === 'pending' && (
-                                                        <span className="px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-400/20 text-amber-800 dark:text-amber-300 text-[10px] font-bold">
-                                                            Pending
-                                                        </span>
-                                                    )}
-                                                    {user.seller_status === 'rejected' && (
-                                                        <span className="px-1.5 py-0.5 rounded-full bg-rose-100 dark:bg-rose-400/20 text-rose-700 dark:text-rose-300 text-[10px] font-bold">
-                                                            {pick('Ditolak', 'Rejected')}
-                                                        </span>
-                                                    )}
-                                                </Link>
-                                            </div>
-                                        )}
-
-                                        <div className="border-t border-slate-100 dark:border-white/10 mt-1 pt-1">
-                                            <Link
-                                                href="/logout"
-                                                method="post"
-                                                as="button"
-                                                className="block w-full text-left px-4 py-2 text-[#ba1a1a] dark:text-rose-300 hover:bg-[#ffdad6]/40 dark:hover:bg-rose-500/20 transition font-medium"
-                                            >
-                                                {pick('Keluar', 'Sign Out')}
-                                            </Link>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
+                            <UserDropdown
+                                user={user}
+                                isDarkNav={isDarkNav}
+                                darkMode={darkMode}
+                                onToggleTheme={handleToggleTheme}
+                                onOpenChat={onOpenChat}
+                                unreadChatCount={unreadChatCount}
+                                favoriteCount={favoriteCount}
+                                onOpenChange={(nextOpen) => {
+                                    if (nextOpen) {
+                                        setSearchOpen(false);
+                                        setCatalogOpen(false);
+                                    }
+                                }}
+                            />
                         </div>
                     ) : (
                         <div className="flex items-center gap-1.5 ml-0.5">
@@ -687,10 +586,7 @@ export default function TopHeader({
                         }`}
                         aria-label={pick('Buka Menu Navigasi', 'Open Navigation Menu')}
                     >
-                        <svg viewBox="0 0 16 10" className="w-3.5 h-2.5 fill-none stroke-current" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
-                            <line x1="1" y1="2.5" x2="15" y2="2.5" />
-                            <line x1="1" y1="7.5" x2="15" y2="7.5" />
-                        </svg>
+                        <Menu className="w-4 h-4" />
                     </button>
                 </div>
                 </div>

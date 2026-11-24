@@ -8,7 +8,7 @@ import {
     Settings,
     UserPlus,
     X,
-} from 'lucide-react';
+} from '@/Components/Icons';
 import BrandWordmark from '@/Components/BrandWordmark';
 import UserAvatar from '@/Components/UserAvatar';
 import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
@@ -87,6 +87,7 @@ export default function Sidebar({
     const { url, props } = usePage();
     const { pick } = useLanguage();
     const user = props?.auth?.user;
+    const unreadChatCount = props?.unreadChatCount || 0;
 
     useEffect(() => {
         if (!isOpen) {
@@ -112,6 +113,19 @@ export default function Sidebar({
             icon: Heart,
             active: pathname.startsWith('/favorites'),
         },
+        ...(user
+            ? [
+                  {
+                      label:
+                          unreadChatCount > 0
+                              ? `${pick('Chat Toko', 'Store Chat')} (${unreadChatCount})`
+                              : pick('Chat Toko', 'Store Chat'),
+                      href: '/chat',
+                      icon: MessageSquare,
+                      active: pathname.startsWith('/chat'),
+                  },
+              ]
+            : []),
         {
             label: pick('Tanya Kiko', 'Ask Kiko'),
             icon: MessageSquare,

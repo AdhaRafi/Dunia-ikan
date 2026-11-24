@@ -14,7 +14,7 @@ import {
     Shield,
     Store,
     User as UserIcon,
-} from 'lucide-react';
+} from '@/Components/Icons';
 
 const formatPrice = (price) =>
     new Intl.NumberFormat('id-ID', {

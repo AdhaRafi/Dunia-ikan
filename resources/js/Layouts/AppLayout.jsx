@@ -4,12 +4,12 @@ import TopHeader from '@/Components/TopHeader';
 import Footer from '@/Components/Footer';
 import { toggleThemeWithTransition } from '@/Components/AnimatedThemeToggler';
 import { useLanguage } from '@/lib/i18n';
-import { AlertTriangle, Check, X } from 'lucide-react';
+import { AlertTriangle, Check, X } from '@/Components/Icons';
 
 const Sidebar = lazy(() => import('@/Components/Sidebar'));
 const ChatbotWidget = lazy(() => import('@/Components/ChatbotWidget'));
 
-export default function AppLayout({ children }) {
+export default function AppLayout({ children, hideChatFab = false }) {
     const { flash } = usePage().props;
     const { pick } = useLanguage();
     const [chatOpen, setChatOpen] = useState(false);
@@ -240,9 +240,10 @@ export default function AppLayout({ children }) {
                         isOpen={chatOpen}
                         onOpen={() => setChatOpen(true)}
                         onClose={() => setChatOpen(false)}
+                        hideTrigger={hideChatFab}
                     />
                 </Suspense>
-            ) : (
+            ) : !hideChatFab ? (
                 <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 select-none">
                     <button
                         type="button"
@@ -259,8 +260,8 @@ export default function AppLayout({ children }) {
                             />
                         </span>
 
-                        <span className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#133b9e] to-[#081c59] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_28px_rgba(0,20,84,0.3)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
-                            <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#1642ad] to-[#081c59] p-1">
+                        <span className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#A1E1EF] to-[#60C2E6] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_26px_rgba(30,128,160,0.32)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
+                            <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#d8f3fb] via-[#9adcf0] to-[#60C2E6] p-1">
                                 <img
                                     src="/images/kiko/avatar.webp"
                                     alt="Kiko"
@@ -270,11 +271,10 @@ export default function AppLayout({ children }) {
                                     className="h-full w-full object-contain -translate-y-0.5"
                                 />
                             </span>
-                            <span className="absolute top-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-[#070b14]" />
                         </span>
                     </button>
                 </div>
-            )}
+            ) : null}
 
             <Footer />
         </div>

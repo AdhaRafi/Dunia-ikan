@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useForm, usePage } from '@inertiajs/react';
-import { CheckCircle2, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { CheckCircle2, ChevronLeft, ChevronRight, Star } from '@/Components/Icons';
 import UserAvatar from '@/Components/UserAvatar';
 import { useLanguage } from '@/lib/i18n';
 

@@ -1,163 +1,51 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
+import { HeroWaveTransition } from '@/Components/AquaticMotifs';
 import UserAvatar from '@/Components/UserAvatar';
 import { useLanguage } from '@/lib/i18n';
 import {
     ArrowDown,
-    Fish,
     ImagePlus,
-    Lightbulb,
     LogIn,
-    MessageSquare,
     MessagesSquare,
     Reply,
     Send,
-    ShoppingCart,
     Store,
     Trash2,
     Users,
-    Wrench,
     X,
-} from 'lucide-react';
+} from '@/Components/Icons';
 
 const POLL_INTERVAL_MS = 4000;
 const MAX_IMAGE_BYTES = 3 * 1024 * 1024;
 
-const STARTER_TOPICS = [
+const QUICK_PROMPTS = [
     {
-        id: 'species',
-        icon: Fish,
-        labelId: 'Jenis ikan hias',
-        labelEn: 'Ornamental species',
-        promptId: 'Halo teman-teman! Ada rekomendasi jenis ikan hias yang cantik dan tahan banting buat penghobi baru?',
-        promptEn: 'Hi everyone! Any recommendations on colorful, hardy ornamental fish for a community tank?',
+        labelId: 'Rekomendasi ikan pemula',
+        labelEn: 'Beginner fish picks',
+        textId: 'Halo teman-teman! Ada rekomendasi jenis ikan hias yang cantik dan tahan banting buat pemula?',
+        textEn: 'Hi everyone! Any colorful, hardy ornamental fish picks for beginners?',
     },
     {
-        id: 'care',
-        icon: Wrench,
-        labelId: 'Perawatan ikan',
-        labelEn: 'Fish care',
-        promptId: 'Mau sharing soal perawatan air & kesehatan ikan nih — gimana rutinitas ganti air kalian?',
-        promptEn: 'Let us talk water quality & fish health — how often do you do partial water changes?',
+        labelId: 'Tips perawatan & filter',
+        labelEn: 'Care & filter tips',
+        textId: 'Ada rekomendasi filter atau rutinitas ganti air untuk akuarium 60cm biar air tetap jernih?',
+        textEn: 'Any recommendations for a quiet filter or water change routine for a 60cm tank?',
     },
     {
-        id: 'trade',
-        icon: ShoppingCart,
-        labelId: 'Jual beli ikan',
-        labelEn: 'Buy & sell fish',
-        promptId: 'Ada penangkar atau toko ikan terpercaya di sini yang lagi ready stok cakep?',
-        promptEn: 'Any trusted breeders or sellers here with healthy stock ready to ship today?',
+        labelId: 'Inspirasi aquascape',
+        labelEn: 'Aquascape ideas',
+        textId: 'Tanaman aquascape apa yang paling mudah dirawat tanpa CO2 tabung?',
+        textEn: 'Which aquascape plants thrive best without pressurized CO2?',
     },
     {
-        id: 'tips',
-        icon: Lightbulb,
-        labelId: 'Tips akuarium',
-        labelEn: 'Aquarium tips',
-        promptId: 'Boleh share setup akuarium & tips aquascape favorit kalian dong!',
-        promptEn: 'Would love to hear your favorite aquarium setup and aquascaping tips!',
+        labelId: 'Tanya stok & jual beli',
+        labelEn: 'Stock & marketplace',
+        textId: 'Ada penangkar atau toko di sini yang sedang ready stok Cupang Halfmoon atau Guppy indukan?',
+        textEn: 'Any breeders or stores here with Halfmoon Betta or Guppy pairs ready to ship?',
     },
 ];
-
-function CommunityHeroWaves() {
-    return (
-        <div
-            aria-hidden="true"
-            className="pointer-events-none select-none absolute inset-0 overflow-hidden"
-        >
-            {/* Soft radial glow */}
-            <div className="absolute -top-16 right-12 w-80 h-80 rounded-full bg-white/45 dark:bg-[#60C2E6]/10 blur-3xl" />
-
-            {/* Subtle far-right reef silhouette & waves along bottom */}
-            <svg
-                viewBox="0 0 1440 200"
-                preserveAspectRatio="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="absolute inset-x-0 bottom-0 w-full h-28 sm:h-36"
-            >
-                <path
-                    d="M0 124C210 78 430 140 680 110C910 82 1130 50 1440 96V200H0V124Z"
-                    className="fill-[#dfe5fe]/75 dark:fill-[#162354]/65"
-                />
-                <path
-                    d="M0 150C290 106 540 172 840 136C1110 104 1280 86 1440 124V200H0V150Z"
-                    className="fill-[#d0d8fc]/80 dark:fill-[#1d2c66]/70"
-                />
-                <path
-                    d="M0 178C340 158 620 186 940 166C1170 152 1330 156 1440 172V200H0V178Z"
-                    className="fill-[#c4cefa]/55 dark:fill-[#0d1638]/80"
-                />
-            </svg>
-        </div>
-    );
-}
-
-function CommunityHeroFishDuo() {
-    return (
-        <svg
-            viewBox="0 0 250 112"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            className="hidden md:block w-52 lg:w-60 h-auto pointer-events-none select-none -mt-3 -mb-1"
-        >
-            <defs>
-                <linearGradient id="commBigFishBody" x1="20" y1="22" x2="145" y2="86" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#6570d9" />
-                    <stop offset="100%" stopColor="#464bb8" />
-                </linearGradient>
-                <linearGradient id="commBigFishFin" x1="112" y1="25" x2="165" y2="80" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#818cf8" />
-                    <stop offset="100%" stopColor="#5861cf" />
-                </linearGradient>
-                <linearGradient id="commClownBody" x1="158" y1="68" x2="225" y2="104" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#6e77df" />
-                    <stop offset="100%" stopColor="#4f54bf" />
-                </linearGradient>
-            </defs>
-
-            {/* Floating soft bubbles */}
-            <circle cx="152" cy="18" r="4.5" className="fill-white/80 dark:fill-[#60C2E6]/40" />
-            <circle cx="168" cy="9" r="2.6" className="fill-white/75 dark:fill-[#60C2E6]/30" />
-            <circle cx="32" cy="24" r="3" className="fill-white/70 dark:fill-[#60C2E6]/30" />
-
-            {/* Subtle left coral tip peeking neatly beside fish */}
-            <path
-                d="M14 112C14 96 10 82 4 72C1 67 2 62 7 61C12 60 17 68 18 75C20 62 24 52 30 54C36 56 32 72 28 84C33 76 39 74 42 78C45 83 35 96 28 106V112H14Z"
-                className="fill-[#aeb9f4]/75 dark:fill-[#38498f]/70"
-            />
-
-            {/* Bigger reef angelfish swimming left */}
-            <g>
-                <path d="M126 52L166 26C170 42 170 62 166 78L126 52Z" fill="url(#commBigFishFin)" />
-                <path d="M68 24C84 4 112 6 126 24L98 32L68 24Z" fill="url(#commBigFishFin)" />
-                <path d="M70 78C86 96 112 94 124 76L96 72L70 78Z" fill="url(#commBigFishFin)" />
-                <path
-                    d="M32 52C44 26 78 14 114 24C132 30 144 42 144 52C144 62 132 74 114 80C78 90 44 78 32 52Z"
-                    fill="url(#commBigFishBody)"
-                />
-                <path d="M70 25C78 40 78 62 70 79" stroke="#e8ecff" strokeOpacity="0.68" strokeWidth="5.5" strokeLinecap="round" />
-                <path d="M98 22C105 40 105 64 98 82" stroke="#e8ecff" strokeOpacity="0.55" strokeWidth="5.5" strokeLinecap="round" />
-                <path d="M120 30C125 42 125 62 120 74" stroke="#e8ecff" strokeOpacity="0.4" strokeWidth="4" strokeLinecap="round" />
-                <circle cx="52" cy="47" r="4.6" fill="#ffffff" />
-                <circle cx="51" cy="47" r="2.4" fill="#182052" />
-            </g>
-
-            {/* Smaller cute striped clownfish beside it */}
-            <g>
-                <path d="M214 86L238 72C240 81 240 91 238 100L214 86Z" fill="url(#commBigFishFin)" />
-                <path
-                    d="M164 86C170 70 190 64 210 72C220 76 226 81 226 86C226 91 220 96 210 100C190 108 170 102 164 86Z"
-                    fill="url(#commClownBody)"
-                />
-                <path d="M185 70C189 80 189 92 185 102" stroke="#ffffff" strokeOpacity="0.84" strokeWidth="4" strokeLinecap="round" />
-                <path d="M204 71C207 80 207 92 204 101" stroke="#ffffff" strokeOpacity="0.72" strokeWidth="3.8" strokeLinecap="round" />
-                <circle cx="175" cy="83" r="3.2" fill="#ffffff" />
-                <circle cx="174.2" cy="83" r="1.7" fill="#182052" />
-            </g>
-        </svg>
-    );
-}
 
 function CommunityEmptyArtwork() {
     return (
@@ -166,34 +54,30 @@ function CommunityEmptyArtwork() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
-            className="w-52 sm:w-60 h-auto mx-auto"
+            className="w-44 sm:w-52 h-auto mx-auto"
         >
             <defs>
                 <linearGradient id="emptyFishGrad" x1="56" y1="68" x2="132" y2="108" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#5861cf" />
-                    <stop offset="100%" stopColor="#3c40a8" />
+                    <stop offset="0%" stopColor="#005A9D" />
+                    <stop offset="100%" stopColor="#14335D" />
                 </linearGradient>
                 <linearGradient id="emptyBubbleGrad" x1="128" y1="18" x2="188" y2="66" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#8b94f6" />
-                    <stop offset="100%" stopColor="#656ee0" />
+                    <stop offset="0%" stopColor="#60C2E6" />
+                    <stop offset="100%" stopColor="#005A9D" />
                 </linearGradient>
             </defs>
 
-            {/* Soft circular halo behind illustration */}
-            <circle cx="120" cy="68" r="54" className="fill-[#eef1ff] dark:fill-[#152042]" />
-
-            {/* Subtle seabed coral */}
+            <circle cx="120" cy="68" r="54" className="fill-[#e8f5ff] dark:fill-[#10223e]" />
             <path
                 d="M44 114C44 98 40 84 32 74C28 69 29 63 34 62C39 61 44 68 46 76C48 64 52 54 58 55C63 56 61 70 57 82C62 76 68 74 71 78C74 82 66 93 60 100C58 106 58 110 58 114H44Z"
-                className="fill-[#c2cbf8] dark:fill-[#293973]"
+                className="fill-[#a9d8f4] dark:fill-[#18355c]"
             />
             <path
                 d="M180 114C180 96 184 82 192 70C196 64 202 62 204 66C207 70 201 80 196 90C202 84 209 82 211 86C213 91 204 102 194 114H180Z"
-                className="fill-[#b6c1f6] dark:fill-[#24346b]"
+                className="fill-[#93ccef] dark:fill-[#142c4d]"
             />
-            <ellipse cx="120" cy="115" rx="68" ry="6" className="fill-[#dde3fc] dark:fill-[#1b2856]" />
+            <ellipse cx="120" cy="115" rx="68" ry="6" className="fill-[#d2ecfc] dark:fill-[#102440]" />
 
-            {/* Floating chat speech bubble with typing dots */}
             <path
                 d="M132 20H180C186.627 20 192 25.3726 192 32V52C192 58.6274 186.627 64 180 64H152L140 74V64H132C125.373 64 120 58.6274 120 52V32C120 25.3726 125.373 20 132 20Z"
                 fill="url(#emptyBubbleGrad)"
@@ -202,30 +86,16 @@ function CommunityEmptyArtwork() {
             <circle cx="156" cy="42" r="3.4" fill="#ffffff" />
             <circle cx="168" cy="42" r="3.4" fill="#ffffff" />
 
-            {/* Cute clownfish facing right */}
-            <path d="M72 86L50 70C47 80 47 92 50 102L72 86Z" fill="#7781ea" />
-            <path d="M90 66C98 54 112 56 116 68L98 72L90 66Z" fill="#7781ea" />
+            <path d="M72 86L50 70C47 80 47 92 50 102L72 86Z" fill="#60C2E6" />
+            <path d="M90 66C98 54 112 56 116 68L98 72L90 66Z" fill="#60C2E6" />
             <path
                 d="M128 86C122 68 100 62 80 70C70 74 64 80 64 86C64 92 70 98 80 102C100 110 122 104 128 86Z"
                 fill="url(#emptyFishGrad)"
             />
-            <path
-                d="M84 69C80 80 80 92 84 103"
-                stroke="#ffffff"
-                strokeOpacity="0.88"
-                strokeWidth="4.8"
-                strokeLinecap="round"
-            />
-            <path
-                d="M104 68C101 80 101 92 104 104"
-                stroke="#ffffff"
-                strokeOpacity="0.85"
-                strokeWidth="4.5"
-                strokeLinecap="round"
-            />
+            <path d="M84 69C80 80 80 92 84 103" stroke="#ffffff" strokeOpacity="0.88" strokeWidth="4.8" strokeLinecap="round" />
+            <path d="M104 68C101 80 101 92 104 104" stroke="#ffffff" strokeOpacity="0.85" strokeWidth="4.5" strokeLinecap="round" />
             <circle cx="116" cy="82" r="4" fill="#ffffff" />
-            <circle cx="117" cy="82" r="2.1" fill="#182052" />
-            <circle cx="137" cy="70" r="2.5" className="fill-[#9fa8f5] dark:fill-[#60C2E6]" />
+            <circle cx="117" cy="82" r="2.1" fill="#14335D" />
         </svg>
     );
 }
@@ -241,10 +111,7 @@ function getJakartaDateKey(offsetDays = 0) {
 }
 
 function formatDateHeading(dateKey, pick, isEn) {
-    if (!dateKey) {
-        return pick('Hari ini', 'Today');
-    }
-    if (dateKey === getJakartaDateKey(0)) {
+    if (!dateKey || dateKey === getJakartaDateKey(0)) {
         return pick('Hari ini', 'Today');
     }
     if (dateKey === getJakartaDateKey(-1)) {
@@ -548,19 +415,23 @@ export default function Index({
         }
     };
 
-    const handleSelectTopic = (topic) => {
+    const handlePickPrompt = (promptText) => {
         if (!currentUser) {
             setErrorMessage(
                 pick(
-                    'Masuk dulu ke akun Dunia Ikan untuk mulai diskusi topik tersebut.',
-                    'Sign in to your Dunia Ikan account to start discussing this topic.',
+                    'Masuk dulu ke akun Dunia Ikan untuk ikut mengirim pesan di obrolan komunitas.',
+                    'Sign in to your Dunia Ikan account to post messages in community chat.',
                 ),
             );
             return;
         }
         setErrorMessage('');
-        setDraft(pick(topic.promptId, topic.promptEn));
+        setDraft(promptText);
         window.requestAnimationFrame(() => inputRef.current?.focus());
+    };
+
+    const openKikoChat = () => {
+        window.dispatchEvent(new CustomEvent('dunia-ikan:open-chat'));
     };
 
     const groupedItems = useMemo(() => {
@@ -580,64 +451,144 @@ export default function Index({
         <AppLayout>
             <Head
                 title={pick(
-                    'Komunitas & Chat Global — Dunia Ikan',
-                    'Community Global Chat — Dunia Ikan',
+                    'Komunitas Dunia Ikan | Obrolan Aquarist',
+                    'Dunia Ikan Community | Aquarist Chat',
                 )}
             />
 
-            <div className="min-h-screen bg-[#f4f6ff] dark:bg-[#070b14]">
-                {/* Soft Pastel Ocean Wave Hero */}
-                <section className="pt-6 sm:pt-8 pb-5 sm:pb-7 relative w-full overflow-hidden bg-gradient-to-b from-[#eef1ff] via-[#e4e9fe] to-[#d9e1fd] dark:from-[#0b1332] dark:via-[#111c45] dark:to-[#0d1638] border-b border-indigo-200/70 dark:border-slate-800">
-                    <CommunityHeroWaves />
+            <div className="min-h-screen bg-[#f4f9ff] dark:bg-[#070b14]">
+                {/* 1. Full-Bleed Blue-Glass Underwater Hero Banner + Shoreline Curve */}
+                <section
+                    data-nav-theme="dark"
+                    className="-mt-16 pt-20 sm:pt-24 pb-20 sm:pb-24 relative w-full overflow-hidden bg-[#07305e]"
+                >
+                    <picture className="pointer-events-none select-none">
+                        <source media="(max-width: 767px)" srcSet="/images/hero/aquarium-poster-mobile.webp" />
+                        <img
+                            src="/images/hero/aquarium-poster.webp"
+                            width={1280}
+                            height={720}
+                            fetchpriority="high"
+                            decoding="sync"
+                            alt={pick('Suasana akuarium komunitas Dunia Ikan', 'Dunia Ikan community aquarium')}
+                            className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
+                        />
+                    </picture>
+                    {/* Luminous Blue Glass Atmosphere Overlays */}
+                    <div
+                        aria-hidden="true"
+                        className="absolute inset-0 bg-gradient-to-r from-[#073366]/80 via-[#0d5494]/60 to-[#1486cc]/40 pointer-events-none"
+                    />
+                    <div
+                        aria-hidden="true"
+                        className="absolute inset-0 bg-gradient-to-t from-[#062d59]/65 via-[#0e5a9e]/20 to-[#062a54]/45 pointer-events-none"
+                    />
+                    <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -top-20 right-1/4 h-72 w-72 rounded-full bg-[#60C2E6]/30 blur-3xl"
+                    />
+                    <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -bottom-16 left-1/3 h-64 w-80 rounded-full bg-[#38bdf8]/20 blur-3xl"
+                    />
 
-                    <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                        <div className="space-y-2 max-w-xl">
-                            <div className="inline-flex items-center gap-2 rounded-full bg-white/85 dark:bg-white/10 backdrop-blur-xs border border-indigo-200/80 dark:border-white/15 px-3.5 py-1 text-xs font-semibold text-[#182052] dark:text-[#8BE8EC] shadow-2xs">
-                                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                                <span>{pick('Obrolan Publik Terbuka', 'Public Community Room')}</span>
+                    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="max-w-2xl rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#166db8]/45 via-[#0c4a85]/45 to-[#072e5c]/55 backdrop-blur-xl border border-[#A1E1EF]/40 px-5 sm:px-7 py-5 sm:py-6 shadow-[0_24px_60px_-14px_rgba(3,48,108,0.45),inset_0_1px_0_rgba(255,255,255,0.32)] space-y-3">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#60C2E6]/25 backdrop-blur-md border border-[#BAE6FD]/45 px-3.5 py-1 text-xs font-semibold text-[#E8F7FF]">
+                                <MessagesSquare className="w-3.5 h-3.5 text-[#BAE6FD]" />
+                                <span>{pick('Obrolan Komunitas', 'Community Chat')}</span>
+                            </span>
+
+                            <div className="space-y-1.5">
+                                <h1 className="text-2xl sm:text-3xl lg:text-[36px] font-extrabold tracking-[-0.025em] leading-[1.12] text-white">
+                                    {pick('Komunitas Dunia Ikan', 'Dunia Ikan Community')}
+                                </h1>
+                                <p className="text-xs sm:text-sm text-[#E8F7FF] leading-relaxed max-w-xl">
+                                    {pick(
+                                        'Diskusi, berbagi pengalaman, dan dapatkan tips seputar dunia ikan hias bersama sesama pecinta ikan.',
+                                        'Discuss, share experiences, and exchange ornamental fish care tips with fellow hobbyists and breeders.',
+                                    )}
+                                </p>
                             </div>
-                            <h1 className="text-2xl sm:text-3xl lg:text-[2.25rem] font-extrabold tracking-tight leading-tight text-[#0d1440] dark:text-white">
-                                {pick('Chat Global Komunitas Ikan', 'Global Aquarist Chat')}
-                            </h1>
-                            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                                {pick(
-                                    'Tempat berkumpulnya penghobi, pembudidaya, dan penjual ikan hias untuk berbagi informasi dan berdiskusi.',
-                                    'A gathering place for ornamental fish hobbyists, breeders, and sellers to share tips and connect.',
-                                )}
-                            </p>
-                        </div>
 
-                        <div className="flex flex-col md:items-end gap-2 shrink-0">
-                            <CommunityHeroFishDuo />
-
-                            <div className="flex items-center gap-2.5">
-                                <div className="inline-flex items-center gap-1.5 rounded-full bg-white/90 dark:bg-white/10 backdrop-blur-xs border border-indigo-200/80 dark:border-white/15 px-3.5 py-1.5 text-xs font-semibold text-[#1c2454] dark:text-slate-100 shadow-xs">
-                                    <MessagesSquare className="w-3.5 h-3.5 text-[#4348b8] dark:text-[#60C2E6]" />
-                                    <span className="tabular-nums">{stats?.totalMessages ?? messages.length}</span>
-                                    <span className="text-slate-500 dark:text-slate-300">{pick('pesan', 'messages')}</span>
-                                </div>
-                                <div className="inline-flex items-center gap-1.5 rounded-full bg-white/90 dark:bg-white/10 backdrop-blur-xs border border-indigo-200/80 dark:border-white/15 px-3.5 py-1.5 text-xs font-semibold text-[#1c2454] dark:text-slate-100 shadow-xs">
-                                    <Users className="w-3.5 h-3.5 text-[#4348b8] dark:text-[#60C2E6]" />
+                            <div className="flex flex-wrap items-center gap-2.5 pt-0.5">
+                                <div className="inline-flex items-center gap-1.5 rounded-full bg-[#09386b]/55 backdrop-blur-md border border-[#A1E1EF]/35 px-3.5 py-1.5 text-xs font-semibold text-white">
+                                    <Users className="w-3.5 h-3.5 text-[#BAE6FD]" />
                                     <span className="tabular-nums">{stats?.participantsCount ?? 0}</span>
-                                    <span className="text-slate-500 dark:text-slate-300">{pick('anggota', 'members')}</span>
+                                    <span className="text-[#E8F7FF]/90">{pick('Anggota', 'Members')}</span>
+                                </div>
+                                <div className="inline-flex items-center gap-1.5 rounded-full bg-[#09386b]/55 backdrop-blur-md border border-[#A1E1EF]/35 px-3.5 py-1.5 text-xs font-semibold text-white">
+                                    <MessagesSquare className="w-3.5 h-3.5 text-[#BAE6FD]" />
+                                    <span className="tabular-nums">{stats?.totalMessages ?? messages.length}</span>
+                                    <span className="text-[#E8F7FF]/90">{pick('Pesan', 'Messages')}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
 
-                {/* Chat Card Workspace */}
-                <div className="w-full max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
-                    <div className="relative flex flex-col rounded-3xl bg-white dark:bg-[#0e1424] border border-indigo-100/90 dark:border-slate-800 shadow-[0_20px_50px_-20px_rgba(30,41,110,0.16)] overflow-hidden">
+                    {/* Shoreline Wave Curve Matching Home Hero */}
+                    <HeroWaveTransition
+                        variant="canvas"
+                        fillClass="fill-[#f4f9ff] dark:fill-[#070b14]"
+                    />
+                </section>
+                <div
+                    aria-hidden="true"
+                    className="relative z-20 -mt-[2px] h-[3px] w-full bg-[#f4f9ff] dark:bg-[#070b14]"
+                />
+
+                {/* 2. Unified Community Chat Workspace Card */}
+                <div className="pt-3 sm:pt-5 relative z-20 max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pb-10 sm:pb-14">
+                    <section className="relative flex flex-col min-h-0 rounded-2xl sm:rounded-3xl bg-white dark:bg-[#0e1424] border border-sky-200/75 dark:border-slate-800 shadow-[0_24px_60px_-20px_rgba(0,40,104,0.2)] dark:shadow-[0_24px_60px_-20px_rgba(2,6,23,0.8)] overflow-hidden">
+                        {/* Unified Room Header */}
+                        <div className="px-4 sm:px-6 py-3.5 border-b border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 shrink-0">
+                            <div className="flex items-center gap-3 min-w-0">
+                                <span className="w-10 h-10 rounded-full bg-gradient-to-b from-[#e6f5fd] to-[#cbeafa] dark:from-[#122645] dark:to-[#0f203b] border border-[#60C2E6]/40 dark:border-sky-800/60 text-[#005A9D] dark:text-[#60C2E6] flex items-center justify-center shrink-0">
+                                    <MessagesSquare className="w-5 h-5" />
+                                </span>
+                                <div className="min-w-0">
+                                    <h2 className="text-sm sm:text-base font-extrabold text-[#14335D] dark:text-white leading-tight truncate">
+                                        {pick('Ruang Obrolan Komunitas', 'Community Chat Room')}
+                                    </h2>
+                                    <p className="text-[11.5px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
+                                        {pick(
+                                            'Semua diskusi ikan hias, tips perawatan, aquascape, dan jual beli dalam satu ruang',
+                                            'All ornamental fish talk, care tips, aquascape, and marketplace chats in one place',
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 shrink-0">
+                                <button
+                                    type="button"
+                                    onClick={openKikoChat}
+                                    className="inline-flex items-center gap-2 rounded-full bg-[#eef7fd] hover:bg-[#dff1fb] dark:bg-[#122645] dark:hover:bg-[#183157] border border-[#60C2E6]/45 dark:border-[#60C2E6]/35 pl-1.5 pr-3 py-1 text-xs font-bold text-[#14335D] dark:text-[#E8F7FF] transition"
+                                >
+                                    <span className="w-6 h-6 rounded-full bg-gradient-to-b from-[#d8f3fb] to-[#60C2E6] p-0.5 flex items-center justify-center shrink-0">
+                                        <img
+                                            src="/images/kiko/avatar.webp"
+                                            alt="Kiko"
+                                            width={22}
+                                            height={22}
+                                            className="w-full h-full object-contain"
+                                        />
+                                    </span>
+                                    <span>{pick('Tanya Kiko', 'Ask Kiko')}</span>
+                                </button>
+
+                                <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f0f7fc] dark:bg-[#13223b] border border-sky-200/70 dark:border-slate-700 px-3 py-1.5 text-xs font-bold text-[#14335D] dark:text-sky-200">
+                                    <Users className="w-3.5 h-3.5 text-[#005A9D] dark:text-[#60C2E6]" />
+                                    <span className="tabular-nums">{stats?.participantsCount ?? 0}</span>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Message Feed */}
                         <div
                             ref={scrollContainerRef}
                             onScroll={handleScroll}
-                            className={`relative overflow-y-auto px-3 sm:px-6 bg-white dark:bg-[#0e1424] ${
-                                groupedItems.length === 0
-                                    ? 'min-h-[240px] py-5 flex flex-col justify-center'
-                                    : 'h-[52dvh] min-h-[340px] max-h-[580px] py-5 sm:py-6 space-y-3.5'
-                            }`}
+                            className="relative overflow-y-auto px-4 sm:px-6 bg-[#fafdff] dark:bg-[#0b1220] h-[400px] sm:h-[440px] py-4 space-y-3.5"
                         >
                             {hasMoreOlder && (
                                 <div className="flex justify-center pb-1">
@@ -645,7 +596,7 @@ export default function Index({
                                         type="button"
                                         onClick={handleLoadOlder}
                                         disabled={loadingOlder}
-                                        className="px-4 py-1.5 rounded-full bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold text-[#38369a] dark:text-slate-200 transition disabled:opacity-50"
+                                        className="px-4 py-1.5 rounded-full bg-[#eef6ff] hover:bg-[#dfeeff] dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold text-[#005A9D] dark:text-slate-200 transition disabled:opacity-50"
                                     >
                                         {loadingOlder
                                             ? pick('Memuat pesan lama...', 'Loading older messages...')
@@ -655,354 +606,331 @@ export default function Index({
                             )}
 
                             {groupedItems.length === 0 ? (
-                                <div className="flex flex-col items-center justify-center text-center px-4 py-2 space-y-2">
+                                <div className="h-full flex flex-col items-center justify-center text-center px-4 py-4 space-y-3">
                                     <CommunityEmptyArtwork />
-                                    <h2 className="text-base sm:text-lg font-extrabold text-[#111842] dark:text-white tracking-tight">
-                                        {pick('Belum ada diskusi nih!', 'No discussions yet!')}
-                                    </h2>
-                                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-lg">
-                                        {pick(
-                                            'Jadilah yang pertama memulai percakapan bersama komunitas ikan hias.',
-                                            'Be the first to start a conversation with the ornamental fish community.',
-                                        )}
-                                    </p>
+                                    <div className="space-y-1">
+                                        <h3 className="text-base font-extrabold text-[#14335D] dark:text-white tracking-tight">
+                                            {pick('Belum ada diskusi nih!', 'No discussions yet!')}
+                                        </h3>
+                                        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+                                            {pick(
+                                                'Mulai percakapan pertama dengan memilih topik di bawah atau tulis pesan langsung.',
+                                                'Start the first conversation by picking a topic below or typing directly.',
+                                            )}
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-wrap justify-center gap-2 pt-1 max-w-xl">
+                                        {QUICK_PROMPTS.map((prompt) => (
+                                            <button
+                                                key={prompt.labelId}
+                                                type="button"
+                                                onClick={() => handlePickPrompt(pick(prompt.textId, prompt.textEn))}
+                                                className="inline-flex items-center gap-1.5 rounded-full bg-white dark:bg-[#13223b] hover:bg-[#eef6ff] dark:hover:bg-[#192d4d] border border-sky-200/80 dark:border-slate-700 hover:border-[#005A9D] px-3.5 py-1.5 text-xs font-semibold text-[#14335D] dark:text-slate-200 transition shadow-2xs"
+                                            >
+                                                <span>{pick(prompt.labelId, prompt.labelEn)}</span>
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             ) : (
-                            groupedItems.map((item) => {
-                                if (item.type === 'date') {
-                                    return (
-                                        <div key={item.key} className="flex items-center justify-center py-1">
-                                            <span className="px-3 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800/90 text-[10px] font-bold text-slate-500 dark:text-slate-400">
-                                                {formatDateHeading(item.dateKey, pick, isEn)}
-                                            </span>
-                                        </div>
-                                    );
-                                }
-
-                                const { msg } = item;
-                                const isMine = Boolean(currentUser && msg.user?.id === currentUser.id);
-                                const canDelete = Boolean(
-                                    currentUser && (isMine || currentUser.role === 'admin'),
-                                );
-                                const isSeller = msg.user?.role === 'seller' && msg.user?.store_slug;
-                                const isAdmin = msg.user?.role === 'admin';
-
-                                return (
-                                    <div
-                                        key={item.key}
-                                        className={`group flex items-end gap-2.5 ${
-                                            isMine ? 'flex-row-reverse' : 'flex-row'
-                                        }`}
-                                    >
-                                        <UserAvatar
-                                            user={msg.user}
-                                            className="w-8 h-8 text-xs shrink-0 mb-0.5 ring-1 ring-slate-200/80 dark:ring-slate-700"
-                                        />
-
-                                        <div
-                                            className={`flex flex-col max-w-[80%] sm:max-w-[70%] ${
-                                                isMine ? 'items-end' : 'items-start'
-                                            }`}
-                                        >
-                                            {/* Sender Meta Row */}
-                                            <div
-                                                className={`flex flex-wrap items-center gap-1.5 mb-1 px-1 text-[11px] ${
-                                                    isMine ? 'flex-row-reverse' : 'flex-row'
-                                                }`}
-                                            >
-                                                <span className="font-bold text-[#14335D] dark:text-slate-100">
-                                                    {isMine
-                                                        ? pick('Kamu', 'You')
-                                                        : msg.user?.name || pick('Pengguna', 'User')}
-                                                </span>
-
-                                                {isAdmin && (
-                                                    <span className="rounded-full bg-amber-100 dark:bg-amber-500/20 px-1.5 py-0.2 text-[9px] font-bold uppercase text-amber-800 dark:text-amber-300">
-                                                        Admin
+                                    groupedItems.map((item) => {
+                                        if (item.type === 'date') {
+                                            return (
+                                                <div key={item.key} className="flex items-center justify-center py-1">
+                                                    <span className="px-3 py-0.5 rounded-full bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700 text-[10.5px] font-bold text-slate-500 dark:text-slate-300">
+                                                        {formatDateHeading(item.dateKey, pick, isEn)}
                                                     </span>
-                                                )}
-
-                                                {isSeller && (
-                                                    <Link
-                                                        href={`/stores/${msg.user.store_slug}`}
-                                                        className="inline-flex items-center gap-1 rounded-full bg-cyan-50 dark:bg-[#60C2E6]/15 border border-cyan-200/80 dark:border-[#60C2E6]/30 px-2 py-0.2 text-[9.5px] font-bold text-[#00696D] dark:text-[#60C2E6] hover:underline"
-                                                    >
-                                                        <Store className="w-2.5 h-2.5" />
-                                                        <span>{msg.user.store_name || pick('Penjual', 'Seller')}</span>
-                                                    </Link>
-                                                )}
-
-                                                <span className="text-[10px] text-slate-400 tabular-nums">
-                                                    {msg.time_label}
-                                                </span>
-                                            </div>
-
-                                            {/* Bubble + Inline Actions */}
-                                            <div
-                                                className={`flex items-center gap-1.5 ${
-                                                    isMine ? 'flex-row-reverse' : 'flex-row'
-                                                }`}
-                                            >
-                                                <div
-                                                    className={`rounded-2xl px-3.5 py-2.5 text-xs sm:text-[13px] leading-relaxed shadow-2xs ${
-                                                        isMine
-                                                            ? 'bg-[#38369a] dark:bg-[#005A9D] text-white rounded-br-xs'
-                                                            : 'bg-[#f4f6fc] dark:bg-[#152038] text-slate-800 dark:text-slate-100 border border-indigo-100/80 dark:border-slate-700/70 rounded-bl-xs'
-                                                    }`}
-                                                >
-                                                    {msg.reply_to && (
-                                                        <div
-                                                            className={`mb-2 rounded-lg px-2.5 py-1.5 border-l-2 text-[11px] ${
-                                                                isMine
-                                                                    ? 'bg-white/10 border-[#60C2E6] text-slate-200'
-                                                                    : 'bg-white dark:bg-[#0e1628] border-[#005A9D] text-slate-600 dark:text-slate-300'
-                                                            }`}
-                                                        >
-                                                            <p className="font-bold truncate">
-                                                                {msg.reply_to.user_name}
-                                                            </p>
-                                                            <p className="line-clamp-1 opacity-90">
-                                                                {msg.reply_to.snippet}
-                                                            </p>
-                                                        </div>
-                                                    )}
-
-                                                    {msg.image_url && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => setLightboxUrl(msg.image_url)}
-                                                            className="block mb-2 overflow-hidden rounded-xl border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-[#60C2E6]"
-                                                        >
-                                                            <img
-                                                                src={msg.image_url}
-                                                                alt={pick('Foto komunitas', 'Community photo')}
-                                                                loading="lazy"
-                                                                className="max-h-60 w-auto max-w-full object-cover hover:opacity-95 transition"
-                                                            />
-                                                        </button>
-                                                    )}
-
-                                                    {msg.message && (
-                                                        <p className="whitespace-pre-wrap break-words">
-                                                            {msg.message}
-                                                        </p>
-                                                    )}
                                                 </div>
+                                            );
+                                        }
 
-                                                {/* Action Buttons */}
-                                                {(currentUser || canDelete) && (
-                                                    <div className="flex items-center gap-0.5 opacity-80 sm:opacity-0 sm:group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
-                                                        {currentUser && (
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => {
-                                                                    setReplyTo(msg);
-                                                                    inputRef.current?.focus();
-                                                                }}
-                                                                title={pick('Balas pesan', 'Reply')}
-                                                                aria-label={pick('Balas pesan', 'Reply')}
-                                                                className="p-1.5 rounded-full text-slate-400 hover:text-[#005A9D] hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                                                            >
-                                                                <Reply className="w-3.5 h-3.5" />
-                                                            </button>
-                                                        )}
-                                                        {canDelete && (
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleDelete(msg.id)}
-                                                                disabled={deletingId === msg.id}
-                                                                title={pick('Hapus pesan', 'Delete message')}
-                                                                aria-label={pick('Hapus pesan', 'Delete message')}
-                                                                className="p-1.5 rounded-full text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition disabled:opacity-40"
-                                                            >
-                                                                <Trash2 className="w-3.5 h-3.5" />
-                                                            </button>
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })
-                        )}
-                    </div>
-
-                    {/* Floating New Messages Pill */}
-                    {hasUnseenBelow && (
-                        <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20">
-                            <button
-                                type="button"
-                                onClick={() => scrollToBottom('smooth')}
-                                className="inline-flex items-center gap-1.5 rounded-full bg-[#38369a] hover:bg-[#2c2a85] dark:bg-[#005A9D] text-white px-4 py-1.5 text-xs font-bold shadow-lg transition"
-                            >
-                                <ArrowDown className="w-3.5 h-3.5" />
-                                <span>{pick('Pesan baru', 'New messages')}</span>
-                            </button>
-                        </div>
-                    )}
-
-                    {/* Bottom Starter Topics + Pill Composer / Guest Callout */}
-                    <div className="border-t border-indigo-100/80 dark:border-slate-800 bg-white dark:bg-[#0e1424] px-4 sm:px-6 pt-4 pb-5 space-y-4">
-                        {groupedItems.length === 0 && (
-                            <div className="space-y-2.5">
-                                <div className="flex items-center gap-2 text-xs sm:text-[13px] font-bold text-[#141c4c] dark:text-slate-200">
-                                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#38369a] dark:bg-[#60C2E6] text-white dark:text-[#14335D]">
-                                        <MessageSquare className="w-3 h-3" />
-                                    </span>
-                                    <span>
-                                        {pick(
-                                            'Mulai diskusi dari topik berikut',
-                                            'Start a discussion from these topics',
-                                        )}
-                                    </span>
-                                </div>
-
-                                <div className="flex flex-wrap items-center gap-2">
-                                    {STARTER_TOPICS.map((topic) => {
-                                        const TopicIcon = topic.icon;
+                                        const { msg } = item;
+                                        const isMine = Boolean(currentUser && msg.user?.id === currentUser.id);
+                                        const canDelete = Boolean(
+                                            currentUser && (isMine || currentUser.role === 'admin'),
+                                        );
+                                        const isSeller = msg.user?.role === 'seller' && msg.user?.store_slug;
+                                        const isAdmin = msg.user?.role === 'admin';
 
                                         return (
-                                            <button
-                                                key={topic.id}
-                                                type="button"
-                                                onClick={() => handleSelectTopic(topic)}
-                                                className="inline-flex items-center gap-1.5 rounded-full bg-[#eef0fc] hover:bg-[#e1e5fb] dark:bg-[#162040] dark:hover:bg-[#1e2c57] border border-indigo-200/70 dark:border-slate-700 px-3.5 py-1.5 text-xs font-medium text-[#1b2250] dark:text-slate-200 transition"
+                                            <div
+                                                key={item.key}
+                                                className={`group flex items-start gap-2.5 ${
+                                                    isMine ? 'flex-row-reverse' : 'flex-row'
+                                                }`}
                                             >
-                                                <TopicIcon className="w-3.5 h-3.5 text-[#38369a] dark:text-[#60C2E6]" />
-                                                <span>{pick(topic.labelId, topic.labelEn)}</span>
-                                            </button>
+                                                <UserAvatar
+                                                    user={msg.user}
+                                                    className="w-8 h-8 text-xs shrink-0 mt-0.5 ring-1 ring-slate-200/80 dark:ring-slate-700"
+                                                />
+
+                                                <div
+                                                    className={`flex flex-col max-w-[82%] sm:max-w-[72%] ${
+                                                        isMine ? 'items-end' : 'items-start'
+                                                    }`}
+                                                >
+                                                    <div
+                                                        className={`flex flex-wrap items-center gap-1.5 mb-1 px-0.5 text-[11px] ${
+                                                            isMine ? 'flex-row-reverse' : 'flex-row'
+                                                        }`}
+                                                    >
+                                                        <span className="font-bold text-[#14335D] dark:text-slate-100">
+                                                            {isMine
+                                                                ? pick('Kamu', 'You')
+                                                                : msg.user?.name || pick('Pengguna', 'User')}
+                                                        </span>
+
+                                                        {isAdmin && (
+                                                            <span className="rounded-full bg-amber-100 dark:bg-amber-500/20 px-1.5 py-0.5 text-[9.5px] font-bold uppercase text-amber-800 dark:text-amber-300">
+                                                                Admin
+                                                            </span>
+                                                        )}
+
+                                                        {isSeller && (
+                                                            <Link
+                                                                href={`/stores/${msg.user.store_slug}`}
+                                                                className="inline-flex items-center gap-1 rounded-full bg-sky-50 dark:bg-[#60C2E6]/15 border border-sky-200/80 dark:border-[#60C2E6]/30 px-2 py-0.5 text-[9.5px] font-bold text-[#005A9D] dark:text-[#60C2E6] hover:underline"
+                                                            >
+                                                                <Store className="w-2.5 h-2.5" />
+                                                                <span>{msg.user.store_name || pick('Penjual', 'Seller')}</span>
+                                                            </Link>
+                                                        )}
+
+                                                        <span className="text-[10.5px] text-slate-400 tabular-nums">
+                                                            {msg.time_label}
+                                                        </span>
+                                                    </div>
+
+                                                    <div
+                                                        className={`flex items-center gap-1.5 ${
+                                                            isMine ? 'flex-row-reverse' : 'flex-row'
+                                                        }`}
+                                                    >
+                                                        <div
+                                                            className={`rounded-2xl px-3.5 py-2.5 text-xs sm:text-[13px] leading-relaxed shadow-2xs ${
+                                                                isMine
+                                                                    ? 'bg-[#005A9D] text-white rounded-tr-xs'
+                                                                    : 'bg-[#eef6fc] dark:bg-[#13223b] text-[#14335D] dark:text-slate-100 border border-sky-100 dark:border-slate-700/70 rounded-tl-xs'
+                                                            }`}
+                                                        >
+                                                            {msg.reply_to && (
+                                                                <div
+                                                                    className={`mb-2 rounded-lg px-2.5 py-1.5 border-l-2 text-[11px] ${
+                                                                        isMine
+                                                                            ? 'bg-white/15 border-[#A1E1EF] text-sky-100'
+                                                                            : 'bg-white dark:bg-[#0e1628] border-[#005A9D] text-slate-600 dark:text-slate-300'
+                                                                    }`}
+                                                                >
+                                                                    <p className="font-bold truncate">
+                                                                        {msg.reply_to.user_name}
+                                                                    </p>
+                                                                    <p className="line-clamp-1 opacity-90">
+                                                                        {msg.reply_to.snippet}
+                                                                    </p>
+                                                                </div>
+                                                            )}
+
+                                                            {msg.image_url && (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => setLightboxUrl(msg.image_url)}
+                                                                    className="block mb-2 overflow-hidden rounded-xl border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-[#60C2E6]"
+                                                                >
+                                                                    <img
+                                                                        src={msg.image_url}
+                                                                        alt={pick('Foto komunitas', 'Community photo')}
+                                                                        loading="lazy"
+                                                                        className="max-h-60 w-auto max-w-full object-cover hover:opacity-95 transition"
+                                                                    />
+                                                                </button>
+                                                            )}
+
+                                                            {msg.message && (
+                                                                <p className="whitespace-pre-wrap break-words">
+                                                                    {msg.message}
+                                                                </p>
+                                                            )}
+                                                        </div>
+
+                                                        {(currentUser || canDelete) && (
+                                                            <div className="flex items-center gap-0.5 opacity-80 sm:opacity-0 sm:group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                                                                {currentUser && (
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => {
+                                                                            setReplyTo(msg);
+                                                                            inputRef.current?.focus();
+                                                                        }}
+                                                                        title={pick('Balas pesan', 'Reply')}
+                                                                        aria-label={pick('Balas pesan', 'Reply')}
+                                                                        className="p-1.5 rounded-full text-slate-400 hover:text-[#005A9D] hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                                                                    >
+                                                                        <Reply className="w-3.5 h-3.5" />
+                                                                    </button>
+                                                                )}
+                                                                {canDelete && (
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleDelete(msg.id)}
+                                                                        disabled={deletingId === msg.id}
+                                                                        title={pick('Hapus pesan', 'Delete message')}
+                                                                        aria-label={pick('Hapus pesan', 'Delete message')}
+                                                                        className="p-1.5 rounded-full text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition disabled:opacity-40"
+                                                                    >
+                                                                        <Trash2 className="w-3.5 h-3.5" />
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         );
-                                    })}
+                                    })
+                                )}
+                            </div>
+
+                            {/* Floating New Messages Pill */}
+                            {hasUnseenBelow && (
+                                <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20">
+                                    <button
+                                        type="button"
+                                        onClick={() => scrollToBottom('smooth')}
+                                        className="inline-flex items-center gap-1.5 rounded-full bg-[#005A9D] hover:bg-[#14335D] text-white px-4 py-1.5 text-xs font-bold shadow-lg transition"
+                                    >
+                                        <ArrowDown className="w-3.5 h-3.5" />
+                                        <span>{pick('Pesan baru', 'New messages')}</span>
+                                    </button>
                                 </div>
-                            </div>
-                        )}
+                            )}
 
-                        {errorMessage && (
-                            <div className="flex items-center justify-between gap-2 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/70 px-3 py-2 text-xs text-rose-700 dark:text-rose-300">
-                                <span>{errorMessage}</span>
-                                <button
-                                    type="button"
-                                    onClick={() => setErrorMessage('')}
-                                    aria-label={pick('Tutup error', 'Close error')}
-                                >
-                                    <X className="w-3.5 h-3.5" />
-                                </button>
-                            </div>
-                        )}
-
-                        {currentUser ? (
-                            <form onSubmit={handleSubmit} className="space-y-2.5">
-                                {replyTo && (
-                                    <div className="flex items-center justify-between gap-2 rounded-xl bg-[#eef0fc] dark:bg-[#131d33] border border-indigo-200/70 dark:border-slate-700 px-3 py-2 text-xs">
-                                        <div className="min-w-0">
-                                            <span className="font-bold text-[#38369a] dark:text-[#60C2E6]">
-                                                {pick('Membalas', 'Replying to')}{' '}
-                                                {replyTo.user?.name || pick('Pengguna', 'User')}:
-                                            </span>{' '}
-                                            <span className="text-slate-600 dark:text-slate-300 truncate">
-                                                {replyTo.message || pick('[Foto]', '[Photo]')}
-                                            </span>
-                                        </div>
+                            {/* Bottom Pill Composer / Guest Callout */}
+                            <div className="border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-[#0e1424] px-4 sm:px-5 py-3.5 space-y-2.5 shrink-0">
+                                {errorMessage && (
+                                    <div className="flex items-center justify-between gap-2 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/70 px-3 py-2 text-xs text-rose-700 dark:text-rose-300">
+                                        <span>{errorMessage}</span>
                                         <button
                                             type="button"
-                                            onClick={() => setReplyTo(null)}
-                                            className="p-1 rounded-full hover:bg-white/70 dark:hover:bg-slate-800 text-slate-500"
-                                            aria-label={pick('Batalkan balasan', 'Cancel reply')}
+                                            onClick={() => setErrorMessage('')}
+                                            aria-label={pick('Tutup error', 'Close error')}
                                         >
                                             <X className="w-3.5 h-3.5" />
                                         </button>
                                     </div>
                                 )}
 
-                                {imagePreview && (
-                                    <div className="relative inline-block">
-                                        <img
-                                            src={imagePreview}
-                                            alt={pick('Pratinjau foto', 'Photo preview')}
-                                            className="h-20 w-auto rounded-xl border border-indigo-100 dark:border-slate-700 object-cover"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={clearImage}
-                                            aria-label={pick('Hapus foto', 'Remove photo')}
-                                            className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-slate-900 text-white flex items-center justify-center shadow-xs hover:bg-rose-600 transition"
-                                        >
-                                            <X className="w-3 h-3" />
-                                        </button>
+                                {currentUser ? (
+                                    <form onSubmit={handleSubmit} className="space-y-2.5">
+                                        {replyTo && (
+                                            <div className="flex items-center justify-between gap-2 rounded-xl bg-[#eef6ff] dark:bg-[#131d33] border border-sky-200/70 dark:border-slate-700 px-3 py-2 text-xs">
+                                                <div className="min-w-0">
+                                                    <span className="font-bold text-[#005A9D] dark:text-[#60C2E6]">
+                                                        {pick('Membalas', 'Replying to')}{' '}
+                                                        {replyTo.user?.name || pick('Pengguna', 'User')}:
+                                                    </span>{' '}
+                                                    <span className="text-slate-600 dark:text-slate-300 truncate">
+                                                        {replyTo.message || pick('[Foto]', '[Photo]')}
+                                                    </span>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setReplyTo(null)}
+                                                    className="p-1 rounded-full hover:bg-white/70 dark:hover:bg-slate-800 text-slate-500"
+                                                    aria-label={pick('Batalkan balasan', 'Cancel reply')}
+                                                >
+                                                    <X className="w-3.5 h-3.5" />
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        {imagePreview && (
+                                            <div className="relative inline-block">
+                                                <img
+                                                    src={imagePreview}
+                                                    alt={pick('Pratinjau foto', 'Photo preview')}
+                                                    className="h-20 w-auto rounded-xl border border-sky-200/80 dark:border-slate-700 object-cover"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={clearImage}
+                                                    aria-label={pick('Hapus foto', 'Remove photo')}
+                                                    className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-slate-900 text-white flex items-center justify-center shadow-xs hover:bg-rose-600 transition"
+                                                >
+                                                    <X className="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        <div className="flex items-center gap-2 rounded-full bg-[#f4f9ff] dark:bg-[#131d33] border border-sky-200/80 dark:border-slate-700 p-1.5 focus-within:border-[#005A9D] dark:focus-within:border-[#60C2E6] focus-within:ring-2 focus-within:ring-[#005A9D]/15 transition">
+                                            <input
+                                                ref={fileInputRef}
+                                                type="file"
+                                                accept="image/jpeg,image/png,image/webp,image/jpg"
+                                                onChange={handleFileSelect}
+                                                className="hidden"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => fileInputRef.current?.click()}
+                                                title={pick('Lampirkan foto', 'Attach photo')}
+                                                aria-label={pick('Lampirkan foto', 'Attach photo')}
+                                                className="h-10 w-10 shrink-0 inline-flex items-center justify-center rounded-full border border-sky-200/70 dark:border-slate-700 bg-white hover:bg-[#eef6ff] dark:bg-[#0e1628] dark:hover:bg-slate-800 text-[#005A9D] dark:text-[#60C2E6] transition"
+                                            >
+                                                <ImagePlus className="w-4 h-4" />
+                                            </button>
+
+                                            <textarea
+                                                ref={inputRef}
+                                                rows={1}
+                                                maxLength={600}
+                                                value={draft}
+                                                onChange={(e) => setDraft(e.target.value)}
+                                                onKeyDown={handleTextareaKeyDown}
+                                                placeholder={pick(
+                                                    'Tulis pesan di sini...',
+                                                    'Write a message here...',
+                                                )}
+                                                className="flex-1 min-h-[40px] max-h-24 resize-none border-0 bg-transparent px-2 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-0 leading-snug"
+                                            />
+
+                                            <button
+                                                type="submit"
+                                                disabled={sending || (draft.trim() === '' && !imageFile)}
+                                                aria-label={sending ? pick('Mengirim...', 'Sending...') : pick('Kirim pesan', 'Send message')}
+                                                title={sending ? pick('Mengirim...', 'Sending...') : pick('Kirim', 'Send')}
+                                                className="btn-motion h-10 w-10 shrink-0 inline-flex items-center justify-center rounded-full bg-[#005A9D] hover:bg-[#14335D] dark:bg-[#60C2E6] dark:hover:bg-[#38b2d8] text-white dark:text-[#14335D] shadow-xs disabled:opacity-45 disabled:cursor-not-allowed transition"
+                                            >
+                                                <Send className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </form>
+                                ) : (
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl sm:rounded-full bg-[#f4f9ff] dark:bg-[#131d33] border border-sky-200/80 dark:border-slate-700 px-4 py-2.5">
+                                        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                                            {pick(
+                                                'Masuk ke akun Dunia Ikan untuk ikut mengirim pesan dan berdiskusi dengan komunitas.',
+                                                'Sign in to your Dunia Ikan account to post messages and chat with the community.',
+                                            )}
+                                        </p>
+                                        <div className="flex items-center gap-2 shrink-0">
+                                            <Link
+                                                href="/login"
+                                                className="btn-motion inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#005A9D] hover:bg-[#14335D] dark:bg-[#60C2E6] dark:text-[#14335D] text-white text-xs font-bold transition"
+                                            >
+                                                <LogIn className="w-3.5 h-3.5" />
+                                                <span>{pick('Masuk', 'Sign In')}</span>
+                                            </Link>
+                                            <Link
+                                                href="/register"
+                                                className="px-4 py-2 rounded-full border border-sky-200/80 dark:border-slate-700 bg-white dark:bg-[#0e1628] hover:border-[#005A9D] text-xs font-semibold text-[#14335D] dark:text-slate-200 transition"
+                                            >
+                                                {pick('Daftar', 'Sign Up')}
+                                            </Link>
+                                        </div>
                                     </div>
                                 )}
-
-                                <div className="flex items-center gap-2 rounded-full bg-[#f8f9ff] dark:bg-[#131d33] border border-indigo-200/80 dark:border-slate-700 p-1.5 focus-within:border-[#38369a] dark:focus-within:border-[#60C2E6] focus-within:ring-2 focus-within:ring-[#38369a]/15 transition">
-                                    <input
-                                        ref={fileInputRef}
-                                        type="file"
-                                        accept="image/jpeg,image/png,image/webp,image/jpg"
-                                        onChange={handleFileSelect}
-                                        className="hidden"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => fileInputRef.current?.click()}
-                                        title={pick('Lampirkan foto', 'Attach photo')}
-                                        aria-label={pick('Lampirkan foto', 'Attach photo')}
-                                        className="h-10 w-10 shrink-0 inline-flex items-center justify-center rounded-full border border-indigo-100 dark:border-slate-700 bg-white hover:bg-indigo-50 dark:bg-[#0e1628] dark:hover:bg-slate-800 text-[#38369a] dark:text-[#60C2E6] transition"
-                                    >
-                                        <ImagePlus className="w-4 h-4" />
-                                    </button>
-
-                                    <textarea
-                                        ref={inputRef}
-                                        rows={1}
-                                        maxLength={600}
-                                        value={draft}
-                                        onChange={(e) => setDraft(e.target.value)}
-                                        onKeyDown={handleTextareaKeyDown}
-                                        placeholder={pick(
-                                            'Tulis pesan untuk komunitas...',
-                                            'Write a message for the community...',
-                                        )}
-                                        className="flex-1 min-h-[40px] max-h-24 resize-none border-0 bg-transparent px-2 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-0 leading-snug"
-                                    />
-
-                                    <button
-                                        type="submit"
-                                        disabled={sending || (draft.trim() === '' && !imageFile)}
-                                        aria-label={sending ? pick('Mengirim...', 'Sending...') : pick('Kirim pesan', 'Send message')}
-                                        title={sending ? pick('Mengirim...', 'Sending...') : pick('Kirim', 'Send')}
-                                        className="btn-motion h-10 w-10 shrink-0 inline-flex items-center justify-center rounded-full bg-[#38369a] hover:bg-[#2c2a85] dark:bg-[#60C2E6] dark:hover:bg-[#38a2a7] text-white dark:text-[#14335D] shadow-xs disabled:opacity-45 disabled:cursor-not-allowed transition"
-                                    >
-                                        <Send className="w-4 h-4" />
-                                    </button>
-                                </div>
-                            </form>
-                        ) : (
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl sm:rounded-full bg-[#f8f9ff] dark:bg-[#131d33] border border-indigo-200/80 dark:border-slate-700 px-4 py-2.5">
-                                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-                                    {pick(
-                                        'Masuk ke akun Dunia Ikan untuk ikut mengirim pesan dan berdiskusi dengan komunitas.',
-                                        'Sign in to your Dunia Ikan account to post messages and chat with the community.',
-                                    )}
-                                </p>
-                                <div className="flex items-center gap-2 shrink-0">
-                                    <Link
-                                        href="/login"
-                                        className="btn-motion inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#38369a] hover:bg-[#2c2a85] dark:bg-[#60C2E6] dark:text-[#14335D] text-white text-xs font-bold transition"
-                                    >
-                                        <LogIn className="w-3.5 h-3.5" />
-                                        <span>{pick('Masuk', 'Sign In')}</span>
-                                    </Link>
-                                    <Link
-                                        href="/register"
-                                        className="px-4 py-2 rounded-full border border-indigo-200 dark:border-slate-700 bg-white dark:bg-[#0e1628] hover:border-[#38369a] text-xs font-semibold text-[#182052] dark:text-slate-200 transition"
-                                    >
-                                        {pick('Daftar', 'Sign Up')}
-                                    </Link>
-                                </div>
                             </div>
-                        )}
-                    </div>
-                    </div>
+                        </section>
                 </div>
             </div>
 

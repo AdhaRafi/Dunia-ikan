@@ -189,4 +189,36 @@ class GlobalChatTest extends TestCase
             'message' => 'halooo',
         ]);
     }
+
+    public function test_messages_from_legacy_channels_appear_together_in_unified_community_feed(): void
+    {
+        $user = User::factory()->create(['role' => 'buyer', 'name' => 'RizkiAquatic']);
+
+        GlobalMessage::factory()->create([
+            'user_id' => $user->id,
+            'channel' => 'tips',
+            'message' => 'Ganti air 25 persen tiap minggu biar stabil.',
+        ]);
+
+        GlobalMessage::factory()->create([
+            'user_id' => $user->id,
+            'channel' => 'aquascape',
+            'message' => 'Anubias nana cocok untuk low tech tank.',
+        ]);
+
+        $this->getJson('/community/messages')
+            ->assertStatus(200)
+            ->assertJsonCount(2, 'messages')
+            ->assertJsonPath('messages.0.message', 'Ganti air 25 persen tiap minggu biar stabil.')
+            ->assertJsonPath('messages.1.message', 'Anubias nana cocok untuk low tech tank.')
+            ->assertJsonPath('total_messages', 2);
+
+        $this->get('/community')
+            ->assertStatus(200)
+            ->assertInertia(fn (Assert $inertia) => $inertia
+                ->component('Community/Index')
+                ->has('initialMessages', 2)
+                ->where('communityStats.totalMessages', 2)
+            );
+    }
 }

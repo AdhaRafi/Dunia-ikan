@@ -8,8 +8,9 @@ import {
     ShieldCheck,
     Store,
     XCircle,
-} from 'lucide-react';
+} from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
+import { getPhoneValidationError } from '@/lib/validation';
 
 export default function Create({
     verificationStatus = 'none',
@@ -25,8 +26,15 @@ export default function Create({
 
     const applicationForm = useForm({
         seller_store_name: pendingStoreName || '',
+        phone: user?.phone || '',
         seller_application_note: applicationNote || '',
     });
+
+    const applicationPhoneError = getPhoneValidationError(
+        applicationForm.data.phone,
+        applicationForm.errors.phone,
+        pick,
+    );
 
     const storeForm = useForm({
         name: pendingStoreName || '',
@@ -41,13 +49,25 @@ export default function Create({
         bank_account_name: '',
     });
 
+    const storePhoneError = getPhoneValidationError(
+        storeForm.data.phone,
+        storeForm.errors.phone,
+        pick,
+    );
+
     const handleSubmitApplication = (e) => {
         e.preventDefault();
+        if (getPhoneValidationError(applicationForm.data.phone, '', pick)) {
+            return;
+        }
         applicationForm.post('/seller/register');
     };
 
     const handleSubmitStore = (e) => {
         e.preventDefault();
+        if (getPhoneValidationError(storeForm.data.phone, '', pick)) {
+            return;
+        }
         storeForm.post('/seller/register');
     };
 
@@ -178,6 +198,24 @@ export default function Create({
 
                             <div>
                                 <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
+                                    {pick('Nomor HP / WhatsApp Aktif Penjual', 'Active Seller Phone / WhatsApp')}
+                                </label>
+                                <input
+                                    type="tel"
+                                    inputMode="tel"
+                                    placeholder="081234567890"
+                                    value={applicationForm.data.phone}
+                                    onChange={(e) => applicationForm.setData('phone', e.target.value)}
+                                    className="w-full p-3 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                                    required
+                                />
+                                {applicationPhoneError && (
+                                    <p className="text-rose-600 mt-1">{applicationPhoneError}</p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
                                     {pick('Catatan untuk Admin (Opsional)', 'Note for Admin (Optional)')}
                                 </label>
                                 <textarea
@@ -277,14 +315,15 @@ export default function Create({
                                         {pick('Nomor Kontak Toko / WhatsApp', 'Store Contact / WhatsApp')}
                                     </label>
                                     <input
-                                        type="text"
-                                        placeholder="0812xxxx"
+                                        type="tel"
+                                        inputMode="tel"
+                                        placeholder="081234567890"
                                         value={storeForm.data.phone}
                                         onChange={(e) => storeForm.setData('phone', e.target.value)}
                                         className="w-full p-3 rounded-xl border border-slate-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
                                         required
                                     />
-                                    {storeForm.errors.phone && <p className="text-rose-600 mt-1">{storeForm.errors.phone}</p>}
+                                    {storePhoneError && <p className="text-rose-600 mt-1">{storePhoneError}</p>}
                                 </div>
                             </div>
 

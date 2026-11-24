@@ -7,7 +7,7 @@ import TextInput from '@/Components/TextInput';
 import TurnstileWidget from '@/Components/TurnstileWidget';
 import GuestLayout, { authPrimaryButtonClass } from '@/Layouts/GuestLayout';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { Store, User } from 'lucide-react';
+import { Store, User } from '@/Components/Icons';
 import { useLanguage } from '@/lib/i18n';
 import { useState } from 'react';
 
