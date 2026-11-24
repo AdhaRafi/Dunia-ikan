@@ -319,7 +319,7 @@ export default function TopHeader({
                         : 'glass-nav-light text-[#14335D]'
                 } ${isScrolled ? 'glass-nav-scrolled' : ''}`}
             >
-                <div className="max-w-7xl mx-auto h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 sm:gap-5">
+                <div className="max-w-[1440px] mx-auto h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 sm:gap-5">
                 {/* Left: Smoothly Crossfading Adaptive Brand Wordmark */}
                 <Link
                     href="/"

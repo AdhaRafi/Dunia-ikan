@@ -84,7 +84,7 @@ export default function Index({ favorites = [] }) {
                     <div className="absolute -top-20 right-1/4 w-[380px] h-[300px] rounded-full bg-[#b7e2ff]/40 dark:bg-[#60C2E6]/10 blur-3xl" />
                 </div>
 
-                <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 sm:pt-10 pb-14 sm:pb-16">
+                <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-7 sm:pt-10 pb-14 sm:pb-16">
                     {/* Header matching reference */}
                     <div className="flex flex-wrap items-center justify-between gap-4 mb-7 sm:mb-8">
                         <div className="flex items-center gap-3">
@@ -154,7 +154,7 @@ export default function Index({ favorites = [] }) {
                             </div>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-5">
                             {items.map((item) => {
                                 const { product } = item;
                                 if (!product) {

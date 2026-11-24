@@ -165,7 +165,7 @@ export default function Index({
                     className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/35 pointer-events-none"
                 />
 
-                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="rounded-2xl sm:rounded-[24px] bg-[#0a1322]/55 backdrop-blur-md border border-white/25 p-5 sm:p-7 lg:p-8 shadow-[0_24px_60px_-14px_rgba(0,0,0,0.55)]">
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
                             {/* Left Column: Search & Category Filters */}
@@ -382,7 +382,7 @@ export default function Index({
                 </div>
             </section>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8 sm:space-y-10">
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8 sm:space-y-10">
                 {/* 2. Browse by Fish Species & Topic */}
                 <section className="space-y-3.5">
                     <div className="flex items-center justify-between gap-2">

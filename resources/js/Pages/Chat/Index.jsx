@@ -364,7 +364,7 @@ export default function Index({
         <AppLayout hideChatFab>
             <Head title={pick('Chat Toko | Dunia Ikan', 'Store Chat | Dunia Ikan')} />
 
-            <div className="max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-8 py-4 sm:py-5">
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
                 {/* Page Header */}
                 <div className="flex flex-wrap items-end justify-between gap-3 mb-3.5 sm:mb-4">
                     <div>

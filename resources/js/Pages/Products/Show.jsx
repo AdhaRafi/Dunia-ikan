@@ -206,7 +206,7 @@ export default function Show({ product, relatedProducts, storeRating }) {
                 />
             </Head>
 
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
                 {/* Breadcrumb */}
                 <nav
                     className="flex flex-wrap items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400"

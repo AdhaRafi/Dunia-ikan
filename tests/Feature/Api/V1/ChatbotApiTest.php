@@ -84,4 +84,122 @@ class ChatbotApiTest extends TestCase
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['message']);
     }
+
+    public function test_authenticated_user_can_list_switch_and_delete_chat_history_sessions(): void
+    {
+        config(['services.gemini.api_key' => null]);
+
+        $owner = User::factory()->create(['role' => 'buyer']);
+        $otherUser = User::factory()->create(['role' => 'buyer']);
+
+        $otherSession = ChatSession::create([
+            'user_id' => $otherUser->id,
+            'session_token' => str_repeat('z', 40),
+            'title' => 'Sesi Orang Lain',
+        ]);
+        ChatMessage::create([
+            'chat_session_id' => $otherSession->id,
+            'sender' => 'user',
+            'message' => 'Rahasia pengguna lain',
+        ]);
+
+        // Conversation 1
+        $first = $this->actingAs($owner)
+            ->postJson('/chatbot/message', ['message' => 'Rekomendasi ikan cupang untuk pemula'])
+            ->assertOk();
+        $firstToken = (string) $first->json('session_token');
+
+        // Start a fresh session and send Conversation 2
+        $fresh = $this->actingAs($owner)
+            ->postJson('/chatbot/new')
+            ->assertOk();
+        $secondSeedToken = (string) $fresh->json('session_token');
+        $this->assertNotSame($firstToken, $secondSeedToken);
+
+        $second = $this->actingAs($owner)
+            ->postJson('/chatbot/message', [
+                'message' => 'Cara atasi white spot di akuarium',
+                'session_token' => $secondSeedToken,
+            ])
+            ->assertOk();
+        $secondToken = (string) $second->json('session_token');
+        $this->assertSame($secondSeedToken, $secondToken);
+
+        // List sessions returns only owner's 2 conversations (most recent first)
+        $list = $this->actingAs($owner)
+            ->getJson('/chatbot/sessions')
+            ->assertOk()
+            ->assertJsonCount(2, 'sessions');
+
+        $tokens = collect($list->json('sessions'))->pluck('session_token')->all();
+        $this->assertSame([$secondToken, $firstToken], $tokens);
+        $this->assertStringNotContainsString('Rahasia pengguna lain', $list->getContent());
+
+        // Switch back to Conversation 1 via history endpoint
+        $this->actingAs($owner)
+            ->getJson('/chatbot/history?session_token='.$firstToken)
+            ->assertOk()
+            ->assertJsonPath('session_token', $firstToken)
+            ->assertJsonCount(2, 'messages')
+            ->assertJsonPath('messages.0.message', 'Rekomendasi ikan cupang untuk pemula');
+
+        // Cannot delete another user's session
+        $this->actingAs($owner)
+            ->deleteJson('/chatbot/sessions/'.$otherSession->session_token)
+            ->assertForbidden();
+
+        // Can delete own session
+        $this->actingAs($owner)
+            ->deleteJson('/chatbot/sessions/'.$firstToken)
+            ->assertOk()
+            ->assertJsonPath('deleted_token', $firstToken)
+            ->assertJsonPath('sessions_count', 1);
+
+        $this->assertDatabaseMissing('chat_sessions', ['session_token' => $firstToken]);
+    }
+
+    public function test_guest_web_session_tracks_multiple_conversations_and_blocks_foreign_deletes(): void
+    {
+        config(['services.gemini.api_key' => null]);
+
+        $foreignSession = ChatSession::create([
+            'user_id' => null,
+            'session_token' => str_repeat('q', 40),
+            'title' => 'Tamu Lain',
+        ]);
+        ChatMessage::create([
+            'chat_session_id' => $foreignSession->id,
+            'sender' => 'user',
+            'message' => 'Obrolan tamu lain',
+        ]);
+
+        $first = $this->postJson('/chatbot/message', ['message' => 'Pakan terbaik untuk ikan koki'])
+            ->assertOk();
+        $firstToken = (string) $first->json('session_token');
+
+        $new = $this->postJson('/chatbot/new')->assertOk();
+        $second = $this->postJson('/chatbot/message', [
+            'message' => 'Suhu ideal untuk neon tetra',
+            'session_token' => $new->json('session_token'),
+        ])->assertOk();
+        $secondToken = (string) $second->json('session_token');
+
+        $this->getJson('/chatbot/sessions')
+            ->assertOk()
+            ->assertJsonCount(2, 'sessions')
+            ->assertJsonPath('sessions.0.session_token', $secondToken)
+            ->assertJsonPath('sessions.1.session_token', $firstToken);
+
+        $this->getJson('/chatbot/history?session_token='.$firstToken)
+            ->assertOk()
+            ->assertJsonPath('session_token', $firstToken)
+            ->assertJsonPath('messages.0.message', 'Pakan terbaik untuk ikan koki');
+
+        $this->deleteJson('/chatbot/sessions/'.$foreignSession->session_token)
+            ->assertForbidden();
+
+        $this->deleteJson('/chatbot/sessions/'.$firstToken)
+            ->assertOk()
+            ->assertJsonPath('sessions_count', 1);
+    }
 }

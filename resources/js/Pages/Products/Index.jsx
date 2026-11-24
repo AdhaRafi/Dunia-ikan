@@ -185,7 +185,7 @@ export default function Index({ products, categories, cities, filters }) {
 
             {/* Floating Rounded Content Sheet */}
             <div className="-mt-6 relative isolate z-10 overflow-x-clip rounded-t-[28px] aquatic-canvas-ambient min-h-screen">
-                <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 pb-14">
+                <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-7 pb-14">
                     {/* Sheet Header Row: Headline + Pill Search Bar */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200/80 dark:border-neutral-800">
                         <div>
@@ -491,7 +491,7 @@ export default function Index({ products, categories, cities, filters }) {
                         {/* Right Catalog Grid */}
                         <div className="lg:col-span-9 min-w-0 space-y-8">
                             {products?.data?.length > 0 ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                                     {products.data.map((product, idx) => (
                                         <ProductCard
                                             key={product.id}

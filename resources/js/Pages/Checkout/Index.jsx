@@ -104,7 +104,7 @@ export default function Index({ groupedCart, addresses = [], totalProducts, tota
         <AppLayout>
             <Head title={pick('Checkout Pembelian Ikan - Dunia Ikan', 'Checkout — Dunia Ikan')} />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
                 <Link href="/cart" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-dunia-blue dark:hover:text-[#60C2E6] mb-6 transition">
                     <ArrowLeft className="w-4 h-4" />
                     {pick('Kembali ke Keranjang', 'Back to Cart')}

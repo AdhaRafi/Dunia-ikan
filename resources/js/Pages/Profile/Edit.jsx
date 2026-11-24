@@ -142,7 +142,7 @@ export default function Edit({ mustVerifyEmail, status, recentOrders = [], order
         <AppLayout>
             <Head title={pick('Profil — Dunia Ikan', 'Profile — Dunia Ikan')} />
 
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
                 <div className="rounded-2xl bg-white dark:bg-[#0e1424] border border-slate-200/80 dark:border-neutral-800 overflow-hidden shadow-xs">
                     <div className="grid grid-cols-1 md:grid-cols-12 min-h-[600px]">
                         {/* Left Settings Sub-Sidebar */}

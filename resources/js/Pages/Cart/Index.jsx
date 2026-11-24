@@ -41,7 +41,7 @@ export default function Index({ groupedCart = [], totalItems = 0, grandTotal = 0
         <AppLayout>
             <Head title={pick('Keranjang — Dunia Ikan', 'Cart — Dunia Ikan')} />
 
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                 {cartItems.length > 0 ? (
                     <div className="bg-white dark:bg-[#0e1424] rounded-3xl border border-slate-200/80 dark:border-neutral-800 overflow-hidden">
                         <div className="grid grid-cols-1 lg:grid-cols-12">

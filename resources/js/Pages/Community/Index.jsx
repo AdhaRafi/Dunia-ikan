@@ -492,7 +492,7 @@ export default function Index({
                         className="pointer-events-none absolute -bottom-16 left-1/3 h-64 w-80 rounded-full bg-[#38bdf8]/20 blur-3xl"
                     />
 
-                    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="max-w-2xl rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#166db8]/45 via-[#0c4a85]/45 to-[#072e5c]/55 backdrop-blur-xl border border-[#A1E1EF]/40 px-5 sm:px-7 py-5 sm:py-6 shadow-[0_24px_60px_-14px_rgba(3,48,108,0.45),inset_0_1px_0_rgba(255,255,255,0.32)] space-y-3">
                             <span className="inline-flex items-center gap-1.5 rounded-full bg-[#60C2E6]/25 backdrop-blur-md border border-[#BAE6FD]/45 px-3.5 py-1 text-xs font-semibold text-[#E8F7FF]">
                                 <MessagesSquare className="w-3.5 h-3.5 text-[#BAE6FD]" />
@@ -538,7 +538,7 @@ export default function Index({
                 />
 
                 {/* 2. Unified Community Chat Workspace Card */}
-                <div className="pt-3 sm:pt-5 relative z-20 max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pb-10 sm:pb-14">
+                <div className="pt-3 sm:pt-5 relative z-20 max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-8 pb-10 sm:pb-14">
                     <section className="relative flex flex-col min-h-0 rounded-2xl sm:rounded-3xl bg-white dark:bg-[#0e1424] border border-sky-200/75 dark:border-slate-800 shadow-[0_24px_60px_-20px_rgba(0,40,104,0.2)] dark:shadow-[0_24px_60px_-20px_rgba(2,6,23,0.8)] overflow-hidden">
                         {/* Unified Room Header */}
                         <div className="px-4 sm:px-6 py-3.5 border-b border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 shrink-0">

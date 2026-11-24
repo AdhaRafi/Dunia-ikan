@@ -42,6 +42,13 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
     // Chatbot Asisten Kiko (guest token or Sanctum bearer user)
     Route::prefix('chatbot')->name('chatbot.')->group(function (): void {
+        Route::get('/sessions', [ChatbotController::class, 'listSessions'])
+            ->middleware('throttle:60,1')
+            ->name('sessions');
+        Route::delete('/sessions/{sessionToken}', [ChatbotController::class, 'deleteSession'])
+            ->where('sessionToken', '[A-Za-z0-9_-]{16,100}')
+            ->middleware('throttle:30,1')
+            ->name('sessions.destroy');
         Route::get('/history', [ChatbotController::class, 'getHistory'])
             ->middleware('throttle:60,1')
             ->name('history');

@@ -204,7 +204,7 @@ export default function Show({ order, midtransClientKey, isMidtransProduction })
         <AppLayout>
             <Head title={`${pick('Pesanan', 'Order')} ${order.order_number} - Dunia Ikan`} />
 
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8">
                 {/* Back button */}
                 <Link href="/orders" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-dunia-blue dark:hover:text-[#60C2E6] transition">
                     <ArrowLeft className="w-4 h-4" />

@@ -43,6 +43,13 @@ Route::get('/storage/{path}', [MediaController::class, 'show'])
     ->name('media.show');
 
 // Chatbot Asisten Dunia Ikan
+Route::get('/chatbot/sessions', [ChatbotController::class, 'listSessions'])
+    ->middleware('throttle:60,1')
+    ->name('chatbot.sessions');
+Route::delete('/chatbot/sessions/{sessionToken}', [ChatbotController::class, 'deleteSession'])
+    ->where('sessionToken', '[A-Za-z0-9_-]{16,100}')
+    ->middleware('throttle:30,1')
+    ->name('chatbot.sessions.destroy');
 Route::get('/chatbot/history', [ChatbotController::class, 'getHistory'])
     ->middleware('throttle:60,1')
     ->name('chatbot.history');

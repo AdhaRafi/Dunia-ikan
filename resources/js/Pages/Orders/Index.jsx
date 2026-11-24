@@ -42,7 +42,7 @@ export default function Index({ orders }) {
         <AppLayout>
             <Head title={pick('Pesanan Saya - Dunia Ikan', 'My Orders — Dunia Ikan')} />
 
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-extrabold text-dunia-navy dark:text-white tracking-tight">
                         {pick('Pesanan Saya', 'My Orders')}

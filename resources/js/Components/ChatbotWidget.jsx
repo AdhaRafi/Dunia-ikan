@@ -2,15 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import {
     AlertCircle,
+    ArrowLeft,
     BookOpen,
     Camera,
+    Clock,
     FirstAid,
     Fish,
     MessageSquare,
     Package,
     Paperclip,
+    Plus,
     RotateCcw,
     Send,
+    Trash2,
     X,
 } from '@/Components/Icons';
 import axios from 'axios';
@@ -102,6 +106,11 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = f
     const [historyLoading, setHistoryLoading] = useState(false);
     const [historyLoaded, setHistoryLoaded] = useState(false);
     const [historyError, setHistoryError] = useState(false);
+    const [historyOpen, setHistoryOpen] = useState(false);
+    const [sessions, setSessions] = useState([]);
+    const [sessionsLoading, setSessionsLoading] = useState(false);
+    const [sessionsCount, setSessionsCount] = useState(0);
+    const [deletingToken, setDeletingToken] = useState(null);
     const [sessionToken, setSessionToken] = useState(null);
     const [sendBurstKey, setSendBurstKey] = useState(0);
     const [tapEvent, setTapEvent] = useState(null);
@@ -155,13 +164,17 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = f
 
         const handleKeyDown = (event) => {
             if (event.key === 'Escape') {
-                onClose();
+                if (historyOpen) {
+                    setHistoryOpen(false);
+                } else {
+                    onClose();
+                }
             }
         };
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isOpen, onClose]);
+    }, [isOpen, historyOpen, onClose]);
 
     useEffect(() => {
         if (messages.length > 0 || loading) {
@@ -169,12 +182,26 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = f
         }
     }, [messages, loading]);
 
-    const fetchHistory = async () => {
+    const fetchSessions = async () => {
+        setSessionsLoading(true);
+        try {
+            const res = await axios.get('/chatbot/sessions');
+            const list = Array.isArray(res.data?.sessions) ? res.data.sessions : [];
+            setSessions(list);
+            setSessionsCount(list.length);
+        } catch (err) {
+            console.error('Failed to load chat sessions:', err);
+        } finally {
+            setSessionsLoading(false);
+        }
+    };
+
+    const fetchHistory = async (targetToken = null) => {
         setHistoryLoading(true);
         setHistoryError(false);
 
         try {
-            const token = localStorage.getItem('dunia_ikan_chat_token');
+            const token = targetToken ?? localStorage.getItem('dunia_ikan_chat_token');
             const res = await axios.get('/chatbot/history', {
                 params: { session_token: token },
             });
@@ -187,6 +214,10 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = f
                 );
             }
 
+            if (typeof res.data.sessions_count === 'number') {
+                setSessionsCount(res.data.sessions_count);
+            }
+
             setMessages(Array.isArray(res.data.messages) ? res.data.messages : []);
             setHistoryLoaded(true);
         } catch (err) {
@@ -194,6 +225,53 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = f
             setHistoryError(true);
         } finally {
             setHistoryLoading(false);
+        }
+    };
+
+    const handleToggleHistory = () => {
+        const next = !historyOpen;
+        setHistoryOpen(next);
+        if (next) {
+            fetchSessions();
+        }
+    };
+
+    const handleSelectSession = async (targetToken) => {
+        if (!targetToken || loading) {
+            return;
+        }
+        setHistoryOpen(false);
+        await fetchHistory(targetToken);
+    };
+
+    const handleDeleteSession = async (event, targetToken) => {
+        event.stopPropagation();
+        if (!targetToken || deletingToken) {
+            return;
+        }
+        setDeletingToken(targetToken);
+        try {
+            const res = await axios.delete(`/chatbot/sessions/${encodeURIComponent(targetToken)}`);
+            setSessions((prev) => prev.filter((item) => item.session_token !== targetToken));
+            if (typeof res.data?.sessions_count === 'number') {
+                setSessionsCount(res.data.sessions_count);
+            } else {
+                setSessionsCount((prev) => Math.max(0, prev - 1));
+            }
+            if (sessionToken === targetToken) {
+                const nextToken = res.data?.next_session_token || null;
+                setSessionToken(nextToken);
+                if (nextToken) {
+                    localStorage.setItem('dunia_ikan_chat_token', nextToken);
+                } else {
+                    localStorage.removeItem('dunia_ikan_chat_token');
+                }
+                setMessages([]);
+            }
+        } catch (err) {
+            console.error('Failed to delete chat session:', err);
+        } finally {
+            setDeletingToken(null);
         }
     };
 
@@ -211,7 +289,11 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = f
                     res.data.session_token,
                 );
             }
+            if (typeof res.data.sessions_count === 'number') {
+                setSessionsCount(res.data.sessions_count);
+            }
             setMessages([]);
+            setHistoryOpen(false);
             setHistoryLoaded(true);
             setHistoryError(false);
         } catch (err) {
@@ -296,6 +378,10 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = f
                 );
             }
 
+            if (typeof response.data.sessions_count === 'number') {
+                setSessionsCount(response.data.sessions_count);
+            }
+
             setMessages((prev) => [...prev, response.data.assistant_message]);
         } catch (error) {
             console.error('Chat error:', error);
@@ -375,27 +461,67 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = f
                             isTyping={inputText.trim().length > 0}
                             sendBurstKey={sendBurstKey}
                             tapEvent={tapEvent}
-                            dimmed={messages.length > 0}
+                            dimmed={messages.length > 0 || historyOpen}
                         />
 
                         {/* Floating White Capsule Header Pill */}
                         <div className="relative z-10 mx-4 mt-3.5 shrink-0 flex items-center justify-between rounded-full bg-white/95 dark:bg-[#111a30]/95 px-3.5 py-2 border border-slate-200/80 dark:border-slate-700/80 shadow-[0_6px_22px_rgba(15,23,42,0.08)]">
                             <div className="flex items-center gap-2.5 min-w-0">
-                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-50 dark:bg-sky-950/60 text-[#005A9D] dark:text-cyan-400">
-                                    <MessageSquare className="h-[18px] w-[18px]" />
-                                </span>
+                                {historyOpen ? (
+                                    <button
+                                        type="button"
+                                        onClick={() => setHistoryOpen(false)}
+                                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-50 dark:bg-sky-950/60 text-[#005A9D] dark:text-[#60C2E6] hover:bg-sky-100 dark:hover:bg-sky-900/60 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D]"
+                                        aria-label={pick('Kembali ke obrolan', 'Back to chat')}
+                                    >
+                                        <ArrowLeft className="h-4 w-4" />
+                                    </button>
+                                ) : (
+                                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-50 dark:bg-sky-950/60 text-[#005A9D] dark:text-cyan-400">
+                                        <MessageSquare className="h-[18px] w-[18px]" />
+                                    </span>
+                                )}
                                 <div className="min-w-0">
                                     <h3 className="text-[13px] font-extrabold leading-tight text-[#14335D] dark:text-white truncate">
-                                        Kiko
+                                        {historyOpen
+                                            ? pick('Riwayat Chat', 'Chat History')
+                                            : 'Kiko'}
                                     </h3>
                                     <p className="text-[10.5px] font-medium leading-tight text-slate-600 dark:text-slate-300 truncate">
-                                        {pick('Asisten Dunia Ikan', 'Dunia Ikan Fish Care AI')}
+                                        {historyOpen
+                                            ? auth?.user
+                                                ? pick('Tersimpan di akun Anda', 'Saved to your account')
+                                                : pick('Tersimpan di sesi ini', 'Saved in this browser')
+                                            : pick('Asisten Dunia Ikan', 'Dunia Ikan Fish Care AI')}
                                     </p>
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-1 shrink-0">
-                                {messages.length > 0 && (
+                                <button
+                                    type="button"
+                                    onClick={handleToggleHistory}
+                                    aria-label={pick('Riwayat obrolan', 'Chat history')}
+                                    aria-pressed={historyOpen}
+                                    title={pick('Riwayat obrolan', 'Chat history')}
+                                    className={`relative flex h-8 items-center gap-1 rounded-full px-2.5 text-[11px] font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D] ${
+                                        historyOpen
+                                            ? 'bg-[#e7f6fd] dark:bg-[#132847] text-[#005A9D] dark:text-[#60C2E6]'
+                                            : 'text-slate-700 dark:text-slate-200 hover:bg-sky-50 dark:hover:bg-slate-800 hover:text-[#005A9D] dark:hover:text-[#60C2E6]'
+                                    }`}
+                                >
+                                    <Clock className="h-3.5 w-3.5" />
+                                    <span className="hidden xs:inline sm:inline">
+                                        {pick('Riwayat', 'History')}
+                                    </span>
+                                    {sessionsCount > 0 && (
+                                        <span className="min-w-[16px] h-4 px-1 rounded-full bg-[#005A9D] dark:bg-[#60C2E6] text-white dark:text-[#14335D] text-[9.5px] font-extrabold inline-flex items-center justify-center tabular-nums">
+                                            {sessionsCount > 99 ? '99+' : sessionsCount}
+                                        </span>
+                                    )}
+                                </button>
+
+                                {messages.length > 0 && !historyOpen && (
                                     <button
                                         type="button"
                                         onClick={handleNewSession}
@@ -418,8 +544,138 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = f
                             </div>
                         </div>
 
-                        {/* Body: Welcome Hero State OR Conversation Messages */}
-                        {messages.length === 0 && !loading ? (
+                        {/* Body: Chat History Drawer OR Welcome Hero State OR Conversation Messages */}
+                        {historyOpen ? (
+                            <div className="relative z-10 mx-4 my-3.5 flex-1 min-h-0 flex flex-col rounded-2xl bg-white/90 dark:bg-[#0b1529]/90 backdrop-blur-md border border-white/90 dark:border-sky-900/60 shadow-[0_12px_32px_rgba(11,55,75,0.14)] overflow-hidden">
+                                {/* History Toolbar */}
+                                <div className="px-3.5 py-3 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between gap-2 shrink-0">
+                                    <p className="text-xs font-extrabold text-[#14335D] dark:text-white">
+                                        {pick('Daftar Percakapan', 'Conversations')}
+                                        {sessions.length > 0 && (
+                                            <span className="ml-1.5 text-[11px] font-semibold text-slate-500 dark:text-slate-400 tabular-nums">
+                                                ({sessions.length})
+                                            </span>
+                                        )}
+                                    </p>
+                                    <button
+                                        type="button"
+                                        onClick={handleNewSession}
+                                        disabled={loading}
+                                        className="inline-flex items-center gap-1 rounded-full bg-[#005A9D] hover:bg-[#14335D] dark:bg-[#60C2E6] dark:hover:bg-[#49b3db] text-white dark:text-[#14335D] px-3 py-1.5 text-[11px] font-bold transition shadow-2xs disabled:opacity-45"
+                                    >
+                                        <Plus className="h-3.5 w-3.5" />
+                                        <span>{pick('Obrolan Baru', 'New Chat')}</span>
+                                    </button>
+                                </div>
+
+                                {/* Saved Sessions List */}
+                                <div className="flex-1 overflow-y-auto p-3 space-y-2">
+                                    {sessionsLoading ? (
+                                        <div className="h-full flex items-center justify-center py-10 text-xs font-medium text-slate-500 dark:text-slate-400">
+                                            {pick('Memuat riwayat obrolan...', 'Loading chat history...')}
+                                        </div>
+                                    ) : sessions.length === 0 ? (
+                                        <div className="h-full flex flex-col items-center justify-center text-center px-4 py-10 space-y-2.5">
+                                            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#e7f6fd] dark:bg-[#132847] text-[#005A9D] dark:text-[#60C2E6]">
+                                                <Clock className="h-5 w-5" />
+                                            </span>
+                                            <div className="space-y-1">
+                                                <p className="text-sm font-extrabold text-[#14335D] dark:text-white">
+                                                    {pick('Belum ada riwayat obrolan', 'No chat history yet')}
+                                                </p>
+                                                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed max-w-[240px]">
+                                                    {pick(
+                                                        'Mulai bertanya ke Kiko, nanti setiap percakapan tersimpan otomatis di sini.',
+                                                        'Start chatting with Kiko and your conversations will be saved here automatically.',
+                                                    )}
+                                                </p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => setHistoryOpen(false)}
+                                                className="mt-1 rounded-full bg-[#005A9D] hover:bg-[#14335D] dark:bg-[#60C2E6] dark:text-[#14335D] text-white px-4 py-2 text-xs font-bold transition"
+                                            >
+                                                {pick('Mulai Obrolan', 'Start Chat')}
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        sessions.map((item) => {
+                                            const isCurrent = item.session_token === sessionToken && messages.length > 0;
+                                            const isDeleting = deletingToken === item.session_token;
+
+                                            return (
+                                                <div
+                                                    key={item.session_token}
+                                                    className={`group flex items-start gap-2 rounded-xl border p-2.5 transition ${
+                                                        isCurrent
+                                                            ? 'bg-[#e7f6fd] dark:bg-[#132847] border-[#60C2E6]/65 dark:border-[#60C2E6]/40'
+                                                            : 'bg-white/95 dark:bg-[#0f1c35] border-slate-200/80 dark:border-slate-800 hover:border-[#60C2E6]/70 dark:hover:border-sky-700'
+                                                    }`}
+                                                >
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleSelectSession(item.session_token)}
+                                                        className="min-w-0 flex-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D] rounded-lg"
+                                                    >
+                                                        <div className="flex items-center justify-between gap-2">
+                                                            <p className="text-xs font-bold text-[#14335D] dark:text-white truncate">
+                                                                {item.title}
+                                                            </p>
+                                                            <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
+                                                                {item.time_label}
+                                                            </span>
+                                                        </div>
+
+                                                        {item.preview && (
+                                                            <p className="mt-0.5 text-[11px] text-slate-600 dark:text-slate-300 line-clamp-1">
+                                                                {item.preview}
+                                                            </p>
+                                                        )}
+
+                                                        <div className="mt-1.5 flex items-center gap-2 text-[10px]">
+                                                            <span className="font-semibold text-slate-500 dark:text-slate-400 tabular-nums">
+                                                                {pick(`${item.message_count} pesan`, `${item.message_count} messages`)}
+                                                            </span>
+                                                            {isCurrent && (
+                                                                <span className="rounded-full bg-[#005A9D]/10 dark:bg-[#60C2E6]/20 px-2 py-0.5 font-bold text-[#005A9D] dark:text-[#60C2E6]">
+                                                                    {pick('Aktif', 'Active')}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => handleDeleteSession(e, item.session_token)}
+                                                        disabled={isDeleting}
+                                                        aria-label={pick(`Hapus obrolan ${item.title}`, `Delete chat ${item.title}`)}
+                                                        title={pick('Hapus obrolan', 'Delete chat')}
+                                                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                                                    >
+                                                        <Trash2 className="h-3.5 w-3.5" />
+                                                    </button>
+                                                </div>
+                                            );
+                                        })
+                                    )}
+                                </div>
+
+                                {!auth?.user && (
+                                    <div className="px-3.5 py-2.5 border-t border-sky-100 dark:border-slate-800 bg-[#f3fbfe] dark:bg-[#081224] flex items-center justify-between gap-2 text-[11px] shrink-0">
+                                        <span className="text-slate-600 dark:text-slate-300">
+                                            {pick('Masuk agar riwayat tersimpan di akunmu', 'Sign in to sync history to your account')}
+                                        </span>
+                                        <Link
+                                            href="/login"
+                                            onClick={onClose}
+                                            className="font-bold text-[#005A9D] dark:text-[#60C2E6] hover:underline shrink-0"
+                                        >
+                                            {pick('Masuk', 'Sign in')}
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
+                        ) : messages.length === 0 && !loading ? (
                             <div className="relative z-10 flex-1 overflow-y-auto px-6 py-4 flex flex-col items-center justify-center text-center">
                                 {historyLoading ? (
                                     <div className="flex flex-col items-center gap-3">
@@ -739,7 +995,9 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = f
                             </div>
                         )}
 
-                        {/* 3 Quick-Action Pill Chips (Pakan, Jenis ikan, Kesehatan ikan) */}
+                        {/* 3 Quick-Action Pill Chips & Composer (hidden while browsing History) */}
+                        {!historyOpen && (
+                        <>
                         <div className="relative z-10 flex shrink-0 items-center justify-center gap-2 overflow-x-auto px-4 pb-2.5 pt-1 text-xs [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                             <button
                                 type="button"
@@ -886,6 +1144,8 @@ export default function ChatbotWidget({ isOpen, onOpen, onClose, hideTrigger = f
                                 </div>
                             </form>
                         </div>
+                        </>
+                        )}
                     </div>
                 </div>
             )}

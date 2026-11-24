@@ -44,7 +44,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
             if (selectedTab === 'female') return item.fish_detail?.sex === 'female';
             return true;
         }) || []
-    ).slice(0, 8);
+    ).slice(0, 10);
 
     // MorphMarket-style clean shop categories grid (fish species, aquarium tools, care & aquatic plants)
     const shopCategories = [
@@ -203,7 +203,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent sm:hidden pointer-events-none" />
 
                 {/* Hero Content Overlay: Center-aligned within standard content width */}
-                <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28">
+                <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28">
                     <div className="max-w-2xl text-white space-y-6">
                         <div className="space-y-3">
                             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
@@ -245,7 +245,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 <HeroWaveTransition variant="canvas" />
             </section>
 
-            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
+            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
                 {/* 2. KATEGORI TOKO (Clean MorphMarket Studio Cutout Cards) */}
                 <section className="space-y-5">
                     <div className="flex items-center justify-between gap-2">
@@ -346,7 +346,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
                         {displayedProducts.map((product, idx) => (
                             <ProductCard
                                 key={product.id}

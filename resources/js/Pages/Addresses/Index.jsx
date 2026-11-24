@@ -66,7 +66,7 @@ export default function Index({ addresses }) {
         <AppLayout>
             <Head title={pick('Buku Alamat Pengiriman - Dunia Ikan', 'Address Book — Dunia Ikan')} />
 
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl sm:text-3xl font-extrabold text-dunia-navy dark:text-white tracking-tight">
