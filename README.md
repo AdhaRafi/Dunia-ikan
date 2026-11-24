@@ -122,9 +122,8 @@
 │   └── Unit/                                       # [TESTING] Tes unit terisolasi
 ├── android/                                        # [MOBILE] Aplikasi Android WebView native (Kotlin)
 ├── Caddyfile                                       # [CONFIG & DEPLOY] Webserver FrankenPHP/Caddy
-├── Dockerfile.vercel                               # [CONFIG & DEPLOY] Multi-stage Docker image (Node 22 + FrankenPHP PHP 8.4)
-├── docker-entrypoint.sh                            # [CONFIG & DEPLOY] Skrip startup container (migrasi & cache)
-└── vercel.json                                     # [CONFIG & DEPLOY] Konfigurasi deployment container
+├── Dockerfile.vercel                               # [CONFIG & DEPLOY] Multi-stage Docker image untuk Railway (Node 22 + FrankenPHP PHP 8.4)
+└── docker-entrypoint.sh                            # [CONFIG & DEPLOY] Skrip startup container (migrasi & cache)
 ```
 
 ---
@@ -219,19 +218,19 @@ php vendor/bin/pint --test --format agent
 
 ---
 
-## Deployment Container / Vercel
+## Deployment Container / Railway
 
-Repository ini dilengkapi `vercel.json` (`"framework": "container"`), `Dockerfile.vercel`, `docker-entrypoint.sh`, dan `Caddyfile` (FrankenPHP PHP 8.4). Untuk deploy produksi:
-1. Atur environment variable di platform hosting (`APP_KEY`, `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, `DB_CONNECTION=pgsql`, `DB_URL` / koneksi PostgreSQL, `SESSION_SECURE_COOKIE=true`, `TURNSTILE_*`, `MIDTRANS_*`, `GEMINI_*`).
+Repository ini memakai `Dockerfile.vercel`, `docker-entrypoint.sh`, dan `Caddyfile` (FrankenPHP PHP 8.4) untuk deployment produksi di **Railway** (`https://dunia-ikan-production.up.railway.app`). Untuk deploy produksi:
+1. Atur environment variable di platform hosting (`APP_KEY`, `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, `DB_CONNECTION=pgsql`, `DATABASE_URL` / koneksi PostgreSQL, `RUN_BOOT_MIGRATIONS=true`, `TURNSTILE_*`, `MIDTRANS_*`, `GEMINI_*`).
 2. Pastikan `APP_DEMO_MODE=false` pada deployment publik.
 
 ---
 
 ## Aplikasi Android (`android/`)
 
-Companion app Android WebView (`id.duniaikan.app`, Kotlin) dilengkapi layar loading (splash screen) dan pengalih server (produksi `https://dunia-ikan.vercel.app`, emulator `10.0.2.2:8000`, USB `127.0.0.1:8000`, atau IP LAN lokal). Build APK debug:
+Companion app Android WebView (`id.duniaikan.app`, Kotlin) dilengkapi layar loading (splash screen) dan pengalih server. Build APK debug:
 ```bash
 cd android
 ./gradlew assembleDebug
 ```
-*(Folder `android/` dikecualikan dari build container melalui `.dockerignore` dan `.vercelignore`.)*
+*(Folder `android/` dikecualikan dari build container melalui `.dockerignore`.)*

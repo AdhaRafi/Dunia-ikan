@@ -6,6 +6,10 @@
 .phpactor.json
 .phpunit.result.cache
 .vercel
+/.agents
+/AGENTS.md
+/.mcp.json
+/boost.json
 /.codex
 /.cursor/
 /.idea
