@@ -8,7 +8,7 @@ export default function BrandWordmark({
         return (
             <span className="relative inline-flex items-center">
                 <img
-                    src="/images/brand/logo-dunia-ikan.webp?v=3"
+                    src="/images/brand/logo-dunia-ikan.webp?v=4"
                     alt={alt}
                     width={86}
                     height={40}
@@ -18,7 +18,7 @@ export default function BrandWordmark({
                     }`}
                 />
                 <img
-                    src="/images/brand/logo-dunia-ikan-white.webp?v=3"
+                    src="/images/brand/logo-dunia-ikan-white.webp?v=4"
                     alt=""
                     aria-hidden="true"
                     width={86}
@@ -35,7 +35,7 @@ export default function BrandWordmark({
     if (variant === 'white') {
         return (
             <img
-                src="/images/brand/logo-dunia-ikan-white.webp?v=3"
+                src="/images/brand/logo-dunia-ikan-white.webp?v=4"
                 alt={alt}
                 width={86}
                 height={40}
@@ -48,7 +48,7 @@ export default function BrandWordmark({
     if (variant === 'default') {
         return (
             <img
-                src="/images/brand/logo-dunia-ikan.webp?v=3"
+                src="/images/brand/logo-dunia-ikan.webp?v=4"
                 alt={alt}
                 width={86}
                 height={40}
@@ -62,7 +62,7 @@ export default function BrandWordmark({
     return (
         <>
             <img
-                src="/images/brand/logo-dunia-ikan.webp?v=3"
+                src="/images/brand/logo-dunia-ikan.webp?v=4"
                 alt={alt}
                 width={86}
                 height={40}
@@ -70,7 +70,7 @@ export default function BrandWordmark({
                 className={`w-auto object-contain select-none dark:hidden ${className}`}
             />
             <img
-                src="/images/brand/logo-dunia-ikan-white.webp?v=3"
+                src="/images/brand/logo-dunia-ikan-white.webp?v=4"
                 alt={alt}
                 width={86}
                 height={40}
