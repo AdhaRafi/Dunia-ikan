@@ -5,6 +5,7 @@ import {
     Heart,
     ShoppingCart,
     ChevronDown,
+    ChevronRight,
     Menu,
     MessageSquare,
     X,
@@ -13,7 +14,7 @@ import AnimatedThemeToggler, { toggleThemeWithTransition } from '@/Components/An
 import BrandWordmark from '@/Components/BrandWordmark';
 import UserDropdown from '@/Components/UserDropdown';
 import { LanguageSwitcher, useLanguage } from '@/lib/i18n';
-import { buildCatalogDropdownItems, buildStoreNavItem } from '@/lib/navigation';
+import { buildCatalogDropdownGroups, buildStoreNavItem } from '@/lib/navigation';
 
 const SEARCH_GROUPS = [
     {
@@ -91,6 +92,7 @@ export default function TopHeader({
     const headerRef = useRef(null);
     const searchInputRef = useRef(null);
     const catalogCloseTimerRef = useRef(null);
+    const catalogOpenedByHoverRef = useRef(0);
 
     const [internalDarkMode, setInternalDarkMode] = useState(() => {
         if (typeof window !== 'undefined') {
@@ -108,7 +110,7 @@ export default function TopHeader({
     // Navbar adopts dark glass when over a dark hero section or when site-wide Dark Mode is active.
     const isDarkNav = darkMode || overDarkSection;
 
-    const catalogItems = buildCatalogDropdownItems(url, pick);
+    const catalogGroups = buildCatalogDropdownGroups(url, pick);
     const storeNavItem = buildStoreNavItem(url, user, pick);
     const isCatalogActive = pathname.startsWith('/products');
 
@@ -262,7 +264,22 @@ export default function TopHeader({
             clearTimeout(catalogCloseTimerRef.current);
             catalogCloseTimerRef.current = null;
         }
-        setCatalogOpen(true);
+        setCatalogOpen((prev) => {
+            if (!prev) {
+                catalogOpenedByHoverRef.current = Date.now();
+            }
+            return true;
+        });
+    };
+
+    const handleCatalogClick = () => {
+        // Ignore the immediate click right after mouseEnter opened the menu so it stays open.
+        if (catalogOpen && Date.now() - catalogOpenedByHoverRef.current < 350) {
+            catalogOpenedByHoverRef.current = 0;
+            return;
+        }
+        catalogOpenedByHoverRef.current = 0;
+        setCatalogOpen((prev) => !prev);
     };
 
     const closeCatalogHover = () => {
@@ -348,7 +365,7 @@ export default function TopHeader({
                         {pick('Beranda', 'Home')}
                     </Link>
 
-                    {/* Katalog Dropdown */}
+                    {/* Katalog Dropdown (CommandBar-style 2-column popover) */}
                     <div
                         className="relative"
                         onMouseEnter={openCatalogHover}
@@ -356,11 +373,17 @@ export default function TopHeader({
                     >
                         <button
                             type="button"
-                            onClick={() => setCatalogOpen((prev) => !prev)}
+                            onClick={handleCatalogClick}
                             data-active={isCatalogActive || catalogOpen ? 'true' : 'false'}
                             aria-expanded={catalogOpen}
                             aria-haspopup="true"
-                            className={`${getNavLinkClass(isCatalogActive || catalogOpen)} inline-flex items-center gap-1`}
+                            className={`${getNavLinkClass(isCatalogActive || catalogOpen)} inline-flex items-center gap-1 px-2.5 rounded-xl transition-all duration-200 ${
+                                catalogOpen
+                                    ? isDarkNav
+                                        ? 'bg-white/15 text-white'
+                                        : 'bg-[#eef6ff] text-[#14335D]'
+                                    : ''
+                            }`}
                         >
                             <span>{pick('Katalog', 'Catalog')}</span>
                             <ChevronDown
@@ -371,46 +394,81 @@ export default function TopHeader({
                         </button>
 
                         {catalogOpen && (
-                            <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 z-50 w-[330px]">
-                                <div className="dropdown-in rounded-2xl bg-white dark:bg-[#0b152d] border border-[#1E80A0]/15 dark:border-[#60C2E6]/20 shadow-[0_22px_50px_-12px_rgba(0,20,84,0.22)] dark:shadow-[0_24px_54px_-12px_rgba(2,6,23,0.82)] p-2 space-y-0.5">
-                                    {catalogItems.map((item) => {
-                                        const ItemIcon = item.icon;
+                            <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 z-50 w-[660px] max-w-[calc(100vw-2rem)]">
+                                <div className="dropdown-in [text-shadow:none] rounded-[24px] bg-white dark:bg-[#0b152d] border border-[#1E80A0]/15 dark:border-[#60C2E6]/20 shadow-[0_24px_60px_-14px_rgba(0,20,84,0.22)] dark:shadow-[0_28px_64px_-14px_rgba(2,6,23,0.88)] p-5 sm:p-6">
+                                    <div className="grid grid-cols-2 gap-5 sm:gap-6">
+                                        {catalogGroups.map((group) => (
+                                            <div key={group.heading} className="space-y-1.5">
+                                                <p className="px-3 pb-1 text-[13px] font-bold tracking-[-0.01em] text-[#14335D] dark:text-white">
+                                                    {group.heading}
+                                                </p>
+                                                <div className="space-y-1">
+                                                    {group.items.map((item) => {
+                                                        const ItemIcon = item.icon;
 
-                                        return (
-                                            <Link
-                                                key={item.href}
-                                                href={item.href}
-                                                onClick={() => setCatalogOpen(false)}
-                                                className={`group/drop flex items-start gap-3.5 rounded-xl p-2.5 transition-colors ${
-                                                    item.active
-                                                        ? 'bg-[#eef6ff] dark:bg-white/15'
-                                                        : 'hover:bg-slate-50 dark:hover:bg-white/10'
-                                                }`}
-                                            >
-                                                <span
-                                                    className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-transform duration-200 group-hover/drop:scale-105 ${item.iconClass}`}
-                                                >
-                                                    <ItemIcon className="h-4 w-4" strokeWidth={1.9} />
-                                                </span>
+                                                        return (
+                                                            <Link
+                                                                key={item.href}
+                                                                href={item.href}
+                                                                onClick={() => setCatalogOpen(false)}
+                                                                className={`group/drop flex items-center gap-3.5 rounded-2xl px-3.5 py-3 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#005A9D] dark:focus-visible:ring-[#60C2E6] ${
+                                                                    item.active
+                                                                        ? 'bg-[#eef6ff] dark:bg-[#60C2E6]/15'
+                                                                        : 'hover:bg-[#eef6ff]/85 dark:hover:bg-[#60C2E6]/15'
+                                                                }`}
+                                                            >
+                                                                <ItemIcon
+                                                                    className={`h-7 w-7 shrink-0 transition-colors duration-150 ${
+                                                                        item.active
+                                                                            ? 'text-[#005A9D] dark:text-[#60C2E6]'
+                                                                            : 'text-slate-500 dark:text-slate-400 group-hover/drop:text-[#005A9D] dark:group-hover/drop:text-[#60C2E6]'
+                                                                    }`}
+                                                                    strokeWidth={1.55}
+                                                                />
 
-                                                <div className="min-w-0 flex-1">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-[13px] font-semibold text-[#14335D] dark:text-white leading-tight">
-                                                            {item.title}
-                                                        </span>
-                                                        {item.badge && (
-                                                            <span className="rounded-full bg-[#60C2E6]/15 border border-[#1E80A0]/20 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-[#00696D] dark:bg-[#60C2E6]/20 dark:border-[#60C2E6]/30 dark:text-[#60C2E6]">
-                                                                {item.badge}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <p className="mt-0.5 text-[11.5px] leading-snug text-slate-500 dark:text-white/60">
-                                                        {item.description}
-                                                    </p>
+                                                                <div className="min-w-0 flex-1">
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span
+                                                                            className={`text-[14px] font-semibold leading-tight transition-colors duration-150 ${
+                                                                                item.active
+                                                                                    ? 'text-[#005A9D] dark:text-[#60C2E6]'
+                                                                                    : 'text-[#14335D] dark:text-white group-hover/drop:text-[#005A9D] dark:group-hover/drop:text-[#60C2E6]'
+                                                                            }`}
+                                                                        >
+                                                                            {item.title}
+                                                                        </span>
+                                                                        {item.badge && (
+                                                                            <span className="rounded-full bg-[#eef6ff] dark:bg-[#60C2E6]/20 px-2.5 py-0.5 text-[10.5px] font-semibold leading-none text-[#005A9D] dark:text-[#60C2E6]">
+                                                                                {item.badge}
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                    <p
+                                                                        className={`mt-1 text-[12px] leading-snug transition-colors duration-150 truncate ${
+                                                                            item.active
+                                                                                ? 'text-[#005A9D]/90 dark:text-sky-200'
+                                                                                : 'text-slate-500 dark:text-slate-400 group-hover/drop:text-[#005A9D]/90 dark:group-hover/drop:text-sky-200'
+                                                                        }`}
+                                                                    >
+                                                                        {item.description}
+                                                                    </p>
+                                                                </div>
+
+                                                                <ChevronRight
+                                                                    className={`h-4 w-4 shrink-0 transition-all duration-150 ${
+                                                                        item.active
+                                                                            ? 'opacity-100 translate-x-0 text-[#005A9D] dark:text-[#60C2E6]'
+                                                                            : 'opacity-0 -translate-x-1 text-[#005A9D] dark:text-[#60C2E6] group-hover/drop:opacity-100 group-hover/drop:translate-x-0'
+                                                                    }`}
+                                                                    strokeWidth={2}
+                                                                />
+                                                            </Link>
+                                                        );
+                                                    })}
                                                 </div>
-                                            </Link>
-                                        );
-                                    })}
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         )}
@@ -504,11 +562,15 @@ export default function TopHeader({
 
                     <Link
                         href="/cart"
-                        className={`btn-motion relative h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full transition-colors duration-300 ${iconButtonClass}`}
+                        className={`btn-motion relative h-8 w-8 sm:h-9 sm:w-9 inline-flex items-center justify-center rounded-full transition-colors duration-300 ${
+                            isDarkNav
+                                ? 'text-white/95 hover:text-white hover:bg-white/15'
+                                : 'text-[#111827] hover:text-black hover:bg-slate-900/5'
+                        }`}
                         title={pick('Keranjang Belanja', 'Shopping Cart')}
                         aria-label={pick('Keranjang Belanja', 'Shopping Cart')}
                     >
-                        <ShoppingCart className="w-4 h-4" />
+                        <ShoppingCart className="w-[18px] h-[18px]" />
                         {cartCount > 0 && (
                             <span
                                 key={cartCount}

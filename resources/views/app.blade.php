@@ -42,8 +42,8 @@
         <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v=2">
 
         @if (in_array($page['component'] ?? '', ['Welcome', 'Guides/Index'], true))
-            <link rel="preload" as="image" media="(max-width: 767px)" href="{{ asset('images/hero/aquarium-poster-mobile.webp') }}" fetchpriority="high">
-            <link rel="preload" as="image" media="(min-width: 768px)" href="{{ asset('images/hero/aquarium-poster.webp') }}" fetchpriority="high">
+            <link rel="preload" as="image" media="(max-width: 767px)" href="{{ asset('images/hero/aquarium-poster-mobile.webp') }}?v=2" fetchpriority="high">
+            <link rel="preload" as="image" media="(min-width: 768px)" href="{{ asset('images/hero/aquarium-poster.webp') }}?v=2" fetchpriority="high">
         @endif
 
         <!-- Theme Detection Script -->

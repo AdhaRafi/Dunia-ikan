@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import FaqSection from '@/Components/FaqSection';
@@ -10,9 +10,16 @@ import {
 } from '@/Components/AquaticMotifs';
 import { useLanguage } from '@/lib/i18n';
 
+const SPLIT_WAVE_MAIN_PATH =
+    'M 229.5 32.3 Q 238.3 32.0 258.8 33.5 Q 279.2 34.9 299.7 41.8 Q 320.2 48.7 339.9 62.3 Q 359.6 75.8 374.6 92.9 Q 389.5 110.1 400.1 130.7 Q 410.8 151.2 415.9 171.8 Q 421.1 192.3 422.5 212.9 Q 424.0 233.5 422.7 254.0 Q 421.3 274.6 412.6 295.1 Q 403.8 315.7 385.4 334.6 Q 367.0 353.6 346.5 364.3 Q 326.0 375.0 305.6 376.2 Q 285.1 377.3 269.7 362.7 Q 254.4 348.0 252.9 327.4 Q 251.5 306.9 242.0 288.4 Q 232.5 269.9 212.0 268.2 Q 191.5 266.6 171.1 271.0 Q 150.6 275.4 130.1 280.0 Q 109.6 284.5 89.2 285.1 Q 68.7 285.7 55.1 269.9 Q 41.5 254.0 41.7 233.5 Q 41.8 212.9 45.8 192.3 Q 49.7 171.8 58.8 151.2 Q 67.8 130.7 83.2 110.6 Q 98.5 90.4 118.7 74.9 Q 138.9 59.3 159.4 50.1 Q 179.8 40.8 200.3 36.7 Q 220.8 32.6 229.5 32.3 Z';
+
+const SPLIT_WAVE_CRESCENT_PATH =
+    'M 203.2 316.2 Q 212.0 310.0 224.4 318.8 Q 236.8 327.7 239.7 344.3 Q 242.5 360.9 235.7 377.6 Q 228.9 394.2 213.0 406.1 Q 197.0 417.9 180.5 418.9 Q 163.9 419.8 147.4 419.6 Q 130.8 419.5 114.3 410.8 Q 97.7 402.1 87.4 386.0 Q 77.1 370.0 72.9 353.4 Q 68.8 336.8 72.7 326.0 Q 76.7 315.3 93.2 330.0 Q 109.8 344.7 126.3 349.6 Q 142.9 354.5 159.0 345.5 Q 175.2 336.4 184.8 329.4 Q 194.4 322.4 203.2 316.2 Z';
+
 export default function Welcome({ categories, featuredFish, featuredStores, stats }) {
     const { auth } = usePage().props;
     const { pick, isEn } = useLanguage();
+    const showcaseMaskId = useId().replace(/:/g, '');
     const firstName = auth?.user?.name?.trim().split(/\s+/)[0] || '';
     const [selectedTab, setSelectedTab] = useState('all');
     const [showAllCategories, setShowAllCategories] = useState(false);
@@ -29,7 +36,7 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
             return;
         }
 
-        const timer = window.setTimeout(() => setShowHeroVideo(true), 2200);
+        const timer = window.setTimeout(() => setShowHeroVideo(true), 400);
         return () => window.clearTimeout(timer);
     }, []);
 
@@ -163,23 +170,23 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 />
             </Head>
 
-            {/* 1. HERO SECTION: Full-Bleed Edge-to-Edge Banner (Living Aquarium Habitat) */}
+            {/* 1. CINEMATIC BLUE-OCEAN HERO (Live Sea-Teal Nemo Reef Loop) */}
             <section
                 data-nav-theme="dark"
-                className="-mt-16 pt-16 relative w-full overflow-hidden bg-black min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex items-center"
+                className="-mt-16 pt-16 relative w-full overflow-hidden bg-[#052333] min-h-[520px] sm:min-h-[580px] lg:min-h-[640px] flex items-center"
             >
-                {/* Full-Bleed Background Poster (Instant LCP) + Idle-Deferred Aquarium Video */}
+                {/* Full-Bleed Blue Ocean Clownfish Poster (Instant LCP) + Seamless Looping Video */}
                 <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden transform-gpu">
                     <picture className="block w-full h-full">
-                        <source media="(max-width: 767px)" srcSet="/images/hero/aquarium-poster-mobile.webp" />
+                        <source media="(max-width: 767px)" srcSet="/images/hero/aquarium-poster-mobile.webp?v=2" />
                         <img
-                            src="/images/hero/aquarium-poster.webp"
+                            src="/images/hero/aquarium-poster.webp?v=2"
                             width={1280}
                             height={720}
                             fetchpriority="high"
                             decoding="sync"
                             loading="eager"
-                            alt={pick('Akuarium Ikan Hias Dunia Ikan', 'Dunia Ikan Ornamental Aquarium')}
+                            alt={pick('Ikan badut Nemo di terumbu karang laut biru Dunia Ikan', 'Dunia Ikan blue ocean clownfish reef')}
                             className="w-full h-full object-cover object-center select-none"
                         />
                     </picture>
@@ -192,52 +199,44 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             preload="auto"
                             className="absolute inset-0 w-full h-full object-cover object-center select-none"
                         >
-                            <source src="/videos/aquarium-hero.mp4" type="video/mp4" />
+                            <source src="/videos/aquarium-hero.mp4?v=2" type="video/mp4" />
                         </video>
                     )}
                 </div>
 
-                {/* Cinematic Ambient Dark Scrim & Text Readability Gradients */}
-                <div className="absolute inset-0 bg-black/40 pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent sm:w-3/4 pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent sm:hidden pointer-events-none" />
+                {/* BBC Earth Deep Sea-Teal Atmospheric Veils (#08284E -> #135C65 -> #13BFC1 glow) */}
+                <div className="absolute inset-0 bg-[#052333]/20 pointer-events-none" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_48%_54%_at_48%_48%,rgba(19,191,193,0.16),transparent_70%)] pointer-events-none" />
+                <div className="absolute inset-y-0 left-0 w-full lg:w-[66%] bg-gradient-to-r from-[#041D2E]/85 via-[#083446]/45 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#041C2E]/65 via-[#041C2E]/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#031A29]/75 via-[#06293B]/20 to-transparent pointer-events-none" />
 
-                {/* Hero Content Overlay: Center-aligned within standard content width */}
-                <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28">
-                    <div className="max-w-2xl text-white space-y-6">
-                        <div className="space-y-3">
-                            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
-                                {auth?.user
-                                    ? firstName
-                                        ? pick(`Halo, ${firstName}!`, `Welcome back, ${firstName}!`)
-                                        : 'Dunia Ikan Aquatic'
-                                    : 'Join Dunia Ikan'}
-                            </h1>
-                            <p className="text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
-                                {pick(
-                                    'Akses langsung ke peternak bersertifikasi di seluruh Indonesia. Temukan mutasi morph langka, lelang galur murni, dan garansi ikan hidup 100% sampai tujuan!',
-                                    'Direct access to verified breeders across Indonesia. Discover rare genetic morphs, purebred strains, and a 100% live arrival guarantee to your door!',
-                                )}
-                            </p>
-                        </div>
-
-                        {/* MorphMarket Two Action Buttons */}
-                        <div className="flex items-center gap-3 pt-2">
-                            <Link 
-                                href="/products" 
-                                className="btn-motion btn-sheen px-7 py-3 rounded-full bg-white text-black dark:bg-[#60C2E6] dark:text-[#14335D] font-bold text-xs sm:text-sm hover:bg-neutral-100 dark:hover:bg-[#38a2a7] shadow-sm hover:shadow-lg"
-                            >
-                                {pick('Jelajahi Katalog', 'Explore Catalog')}
-                            </Link>
-                            {!auth?.user && (
-                                <Link 
-                                    href="/register" 
-                                    className="btn-motion px-7 py-3 rounded-full border border-neutral-600 dark:border-neutral-700 text-white font-semibold text-xs sm:text-sm hover:bg-white/10 hover:border-neutral-400"
-                                >
-                                    {pick('Buat Akun', 'Create Account')}
-                                </Link>
+                {/* Clean Minimal Hero Overlay */}
+                <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 pt-10 pb-24 sm:pt-14 sm:pb-28">
+                    <div className="max-w-2xl text-white space-y-4">
+                        <h1 className="font-['Montserrat',sans-serif] text-4xl sm:text-5xl lg:text-[60px] font-extrabold uppercase tracking-[0.02em] leading-[1.04] text-white drop-shadow-[0_4px_24px_rgba(2,24,36,0.5)]">
+                            {auth?.user
+                                ? firstName
+                                    ? pick(`Halo, ${firstName}`, `Hello, ${firstName}`)
+                                    : 'DUNIA IKAN'
+                                : 'JOIN DUNIA IKAN'}
+                        </h1>
+                        <p className="text-xs sm:text-[15px] text-[#E3F5F7]/90 leading-relaxed max-w-[470px]">
+                            {pick(
+                                'Akses langsung ke peternak bersertifikasi di seluruh Indonesia. Temukan ikan hias air tawar, terumbu laut, dan garansi ikan hidup 100% sampai tujuan.',
+                                'Direct access to certified breeders across Indonesia. Discover vibrant freshwater morphs, marine reef fish, and a 100% live arrival guarantee to your door.',
                             )}
-                        </div>
+                        </p>
+                        {!auth?.user && (
+                            <div className="pt-2">
+                                <Link
+                                    href="/login"
+                                    className="btn-motion btn-sheen inline-flex items-center justify-center rounded-full bg-white px-7 py-2.5 text-xs sm:text-sm font-bold text-[#052534] hover:bg-[#E3F5F7] dark:bg-[#60C2E6] dark:text-[#052534] dark:hover:bg-[#82D2EE] shadow-md"
+                                >
+                                    {pick('Masuk', 'Sign In')}
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -399,24 +398,114 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                             ))}
                         </div>
 
-                        <div className="relative overflow-hidden rounded-3xl aquatic-cta-surface border border-[#1E80A0]/35 p-6 sm:p-8 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-[0_14px_38px_-14px_rgba(0,20,84,0.35)]">
-                            <div className="relative z-10 space-y-1">
-                                <h3 className="text-lg sm:text-xl font-bold tracking-tight">
-                                    {pick('Punya Farm atau Toko Aquascape?', 'Own a Farm or Aquascape Store?')}
-                                </h3>
-                                <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
-                                    {pick(
-                                        'Pasarkan ikan hias, alat akuarium, dan tanaman aquascape Anda langsung ke penghobi di seluruh Indonesia.',
-                                        'Reach ornamental fish hobbyists across Indonesia with verified listings for fish, tank gear, and aquascape plants.',
-                                    )}
-                                </p>
+                        {/* Editorial Sky-Blue Ornamental Fish Showcase & Breeder CTA Banner */}
+                        <div className="group relative overflow-hidden rounded-[28px] bg-gradient-to-b from-[#CBEBFF] via-[#E5F6FF] to-[#F6FBFF] dark:from-[#0C1D3B] dark:via-[#11294E] dark:to-[#173663] border border-[#B5E0FA]/90 dark:border-[#1E3D6B] shadow-[0_18px_46px_-24px_rgba(0,90,157,0.22)] dark:shadow-[0_22px_52px_-20px_rgba(2,8,24,0.65)]">
+                            <div
+                                aria-hidden="true"
+                                className="pointer-events-none absolute -top-24 right-1/4 h-72 w-72 rounded-full bg-white/55 dark:bg-[#60C2E6]/10 blur-3xl"
+                            />
+
+                            <div className="relative z-10 mx-auto flex max-w-5xl flex-col lg:flex-row items-center justify-center gap-7 lg:gap-12 xl:gap-16 px-7 sm:px-10 lg:px-12 py-9 sm:py-11 lg:py-8">
+                                {/* Left Copy & Twin Compact Action Buttons */}
+                                <div className="w-full lg:flex-1 lg:max-w-[470px] space-y-4">
+                                    <h3 className="text-2xl sm:text-3xl lg:text-[36px] font-extrabold tracking-[-0.03em] leading-[1.12] text-[#14335D] dark:text-white">
+                                        {pick('Kenalkan Ikan Hias', 'Showcase Your Finest')}
+                                        <br />
+                                        {pick('Terbaik dari Farm Anda', 'Ornamental Fish')}
+                                    </h3>
+
+                                    <p className="text-xs sm:text-sm leading-relaxed text-[#35537A] dark:text-slate-300 max-w-md">
+                                        {pick(
+                                            'Dari cupang halfmoon, arwana, koi, hingga tanaman aquascape, perkenalkan koleksi ikan hias unggulan dari farm atau toko Anda langsung ke penghobi di seluruh Indonesia.',
+                                            'From halfmoon bettas, arowana, and koi to lush aquascape plants, introduce your farm or shop collection directly to hobbyists across Indonesia.',
+                                        )}
+                                    </p>
+
+                                    <div className="flex flex-wrap items-center gap-2.5 pt-2">
+                                        <Link
+                                            href="/seller/register"
+                                            className="btn-motion btn-sheen inline-flex items-center justify-center rounded-xl bg-[#14335D] hover:bg-[#005A9D] dark:bg-[#60C2E6] dark:hover:bg-[#82D2EE] px-5 py-2.5 text-xs sm:text-[13px] font-bold text-white dark:text-[#0B182E] shadow-xs whitespace-nowrap"
+                                        >
+                                            {pick('Buka Toko', 'Open Store')}
+                                        </Link>
+                                        <Link
+                                            href="/products?category=ikan-hias"
+                                            className="btn-motion inline-flex items-center justify-center rounded-xl bg-white/90 hover:bg-white dark:bg-[#173058] dark:hover:bg-[#1F3F73] border border-[#14335D]/15 dark:border-[#60C2E6]/30 px-5 py-2.5 text-xs sm:text-[13px] font-semibold text-[#14335D] dark:text-white shadow-2xs whitespace-nowrap"
+                                        >
+                                            {pick('Kenali Ikan Hias', 'Explore Fish')}
+                                        </Link>
+                                    </div>
+                                </div>
+
+                                {/* Right Organic Split-Wave Underwater Ornamental Fish Porthole */}
+                                <div className="relative flex shrink-0 items-center justify-center w-full max-w-[300px] sm:max-w-[340px] lg:w-[375px] xl:w-[395px] lg:max-w-none">
+                                    <svg
+                                        viewBox="30 22 406 410"
+                                        role="img"
+                                        aria-label={pick(
+                                            'Koleksi ikan hias unggulan Dunia Ikan: discus, ikan kepe-kepe, cupang halfmoon, ikan badut, dan terumbu karang',
+                                            'Dunia Ikan ornamental fish showcase featuring discus, butterflyfish, halfmoon betta, clownfish, and coral reef',
+                                        )}
+                                        className="w-full h-auto select-none overflow-visible drop-shadow-[0_18px_28px_rgba(14,44,88,0.18)] dark:drop-shadow-[0_22px_36px_rgba(0,0,0,0.52)]"
+                                    >
+                                        <defs>
+                                            <clipPath id={`porthole-clip-${showcaseMaskId}`}>
+                                                <path d={SPLIT_WAVE_MAIN_PATH} />
+                                                <path d={SPLIT_WAVE_CRESCENT_PATH} />
+                                            </clipPath>
+                                            <linearGradient
+                                                id={`porthole-rim-${showcaseMaskId}`}
+                                                x1="0%"
+                                                y1="62%"
+                                                x2="100%"
+                                                y2="100%"
+                                            >
+                                                <stop offset="0%" stopColor="#084C6E" />
+                                                <stop offset="48%" stopColor="#0EA5C6" />
+                                                <stop offset="100%" stopColor="#4CE3F7" />
+                                            </linearGradient>
+                                        </defs>
+
+                                        {/* Luminous turquoise bevel edge beneath the split-wave porthole */}
+                                        <path
+                                            d={SPLIT_WAVE_MAIN_PATH}
+                                            transform="translate(2.5 5.5)"
+                                            fill={`url(#porthole-rim-${showcaseMaskId})`}
+                                        />
+                                        <path
+                                            d={SPLIT_WAVE_CRESCENT_PATH}
+                                            transform="translate(1.5 3.5)"
+                                            fill={`url(#porthole-rim-${showcaseMaskId})`}
+                                            opacity="0.72"
+                                        />
+
+                                        <g clipPath={`url(#porthole-clip-${showcaseMaskId})`}>
+                                            <image
+                                                href="/images/banners/fish-porthole-showcase.webp"
+                                                x="39"
+                                                y="30"
+                                                width="388"
+                                                height="392"
+                                                preserveAspectRatio="xMidYMid slice"
+                                                className="[transform-box:fill-box] origin-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                                            />
+                                        </g>
+
+                                        <path
+                                            d={SPLIT_WAVE_MAIN_PATH}
+                                            fill="none"
+                                            strokeWidth="1.5"
+                                            className="stroke-white/30 dark:stroke-[#60C2E6]/45"
+                                        />
+                                        <path
+                                            d={SPLIT_WAVE_CRESCENT_PATH}
+                                            fill="none"
+                                            strokeWidth="1.5"
+                                            className="stroke-white/30 dark:stroke-[#60C2E6]/45"
+                                        />
+                                    </svg>
+                                </div>
                             </div>
-                            <Link
-                                href="/seller/register"
-                                className="relative z-10 btn-motion btn-sheen px-6 py-2.5 rounded-full bg-white text-[#0f172a] font-bold text-xs hover:bg-slate-100 whitespace-nowrap self-start sm:self-auto shadow-sm"
-                            >
-                                {pick('Buka Toko', 'Open Store')}
-                            </Link>
                         </div>
                     </section>
                 )}

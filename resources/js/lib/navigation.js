@@ -1,9 +1,12 @@
 import {
     BookOpen,
+    Droplets,
     Fish,
     Home,
     LayoutGrid,
     MessagesSquare,
+    Package,
+    ShieldCheck,
     ShoppingBag,
     Sprout,
     Store,
@@ -68,12 +71,12 @@ export function buildPrimaryNavItems(url, pick) {
 }
 
 /**
- * Rich catalog dropdown items for the Carbon-style desktop header menu.
+ * Two-column CommandBar-style catalog dropdown groups for the desktop header menu.
  *
  * @param {string} url
  * @param {(idText: string, enText: string) => string} pick
  */
-export function buildCatalogDropdownItems(url, pick) {
+export function buildCatalogDropdownGroups(url, pick) {
     const [pathname, queryString = ''] = String(url ?? '/').split('?');
     const searchParams = new URLSearchParams(queryString);
     const waterType = searchParams.get('water_type');
@@ -81,37 +84,71 @@ export function buildCatalogDropdownItems(url, pick) {
 
     return [
         {
-            title: pick('Semua Katalog', 'All Catalog'),
-            description: pick('Jelajahi ikan hias, pakan & perlengkapan', 'Browse ornamental fish, food & equipment'),
-            href: '/products',
-            icon: LayoutGrid,
-            iconClass: 'bg-sky-50 text-[#005A9D] ring-1 ring-sky-200/70 dark:bg-sky-400/15 dark:text-sky-300 dark:ring-sky-400/25',
-            active: pathname.startsWith('/products') && !waterType && !category,
+            heading: pick('Katalog Ikan', 'Fish Catalog'),
+            items: [
+                {
+                    title: pick('Semua Katalog', 'All Catalog'),
+                    description: pick('Seluruh ikan hias, pakan & alat', 'All fish, food & aquarium gear'),
+                    href: '/products',
+                    icon: LayoutGrid,
+                    active: pathname.startsWith('/products') && !waterType && !category,
+                },
+                {
+                    title: pick('Ikan Air Tawar', 'Freshwater Fish'),
+                    description: pick('Cupang, Channa, Arwana & Koi', 'Betta, Channa, Arowana & Koi'),
+                    href: '/products?water_type=freshwater',
+                    icon: Fish,
+                    active: pathname.startsWith('/products') && waterType === 'freshwater',
+                },
+                {
+                    title: pick('Ikan Air Laut', 'Saltwater Fish'),
+                    description: pick('Clownfish, Tang & ikan terumbu', 'Clownfish, Tang & reef fish'),
+                    href: '/products?water_type=saltwater',
+                    icon: Waves,
+                    badge: pick('Populer', 'Popular'),
+                    active: pathname.startsWith('/products') && waterType === 'saltwater',
+                },
+                {
+                    title: pick('Ikan Air Payau', 'Brackish Fish'),
+                    description: pick('Puffer, Archerfish & estuari', 'Puffer, Archerfish & estuary'),
+                    href: '/products?water_type=brackish',
+                    icon: Droplets,
+                    active: pathname.startsWith('/products') && waterType === 'brackish',
+                },
+            ],
         },
         {
-            title: pick('Ikan Air Tawar', 'Freshwater Fish'),
-            description: pick('Cupang, Channa, Arwana, Koi, Discus & Tetra', 'Betta, Channa, Arowana, Koi, Discus & Tetra'),
-            href: '/products?water_type=freshwater',
-            icon: Fish,
-            iconClass: 'bg-amber-50 text-amber-600 ring-1 ring-amber-200/70 dark:bg-amber-400/15 dark:text-amber-300 dark:ring-amber-400/25',
-            active: pathname.startsWith('/products') && waterType === 'freshwater',
-        },
-        {
-            title: pick('Ikan Air Laut', 'Saltwater Fish'),
-            description: pick('Clownfish, Tang & spesies terumbu karang', 'Clownfish, Tangs & vibrant reef species'),
-            href: '/products?water_type=saltwater',
-            icon: Waves,
-            iconClass: 'bg-cyan-50 text-[#1E80A0] ring-1 ring-cyan-200/70 dark:bg-cyan-400/15 dark:text-[#60C2E6] dark:ring-cyan-400/25',
-            badge: pick('Populer', 'Popular'),
-            active: pathname.startsWith('/products') && waterType === 'saltwater',
-        },
-        {
-            title: pick('Aquascape & Alat', 'Aquascape & Gear'),
-            description: pick('Tanaman hias, filter & perawatan air', 'Aquatic plants, filtration & water care'),
-            href: '/products?category=aquascape',
-            icon: Sprout,
-            iconClass: 'bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200/70 dark:bg-emerald-400/15 dark:text-emerald-300 dark:ring-emerald-400/25',
-            active: pathname.startsWith('/products') && category === 'aquascape',
+            heading: pick('Kebutuhan & Hobi', 'Supplies & Hobby'),
+            items: [
+                {
+                    title: 'Aquascape',
+                    description: pick('Anubias, Buce & tanaman air', 'Anubias, Buce & aquatic plants'),
+                    href: '/products?category=aquascape',
+                    icon: Sprout,
+                    active: pathname.startsWith('/products') && category === 'aquascape',
+                },
+                {
+                    title: pick('Perlengkapan', 'Equipment'),
+                    description: pick('Tank rimless, filter & lampu', 'Rimless tanks, filters & lights'),
+                    href: '/products?category=perlengkapan-aquarium',
+                    icon: Package,
+                    active: pathname.startsWith('/products') && category === 'perlengkapan-aquarium',
+                },
+                {
+                    title: pick('Pakan & Pelet', 'Food & Pellets'),
+                    description: pick('Pelet premium & nutrisi ikan', 'Premium pellets & fish nutrition'),
+                    href: '/products?category=pakan-ikan',
+                    icon: ShoppingBag,
+                    active: pathname.startsWith('/products') && category === 'pakan-ikan',
+                },
+                {
+                    title: pick('Perawatan Air', 'Water Care'),
+                    description: pick('Obat ikan, bakteri & garam', 'Fish meds, bacteria & salt'),
+                    href: '/products?category=perawatan-ikan',
+                    icon: ShieldCheck,
+                    active: pathname.startsWith('/products') && category === 'perawatan-ikan',
+                },
+            ],
         },
     ];
 }

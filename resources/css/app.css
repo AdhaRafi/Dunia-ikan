@@ -527,6 +527,10 @@
 
     /* Brand-aligned underwater ambient light canvas & editorial surfaces */
     .aquatic-canvas-ambient {
+        --hero-wave-stop-1: #13bfc1;
+        --hero-wave-stop-2: #1e8c9b;
+        --hero-wave-stop-3: #c0eef0;
+        --hero-wave-stop-4: #f8fcfe;
         background-color: #f8fcfe;
         background-image:
             radial-gradient(64rem 40rem at 104% -4%, rgba(0, 90, 157, 0.08), transparent 62%),
@@ -535,11 +539,34 @@
     }
 
     .dark .aquatic-canvas-ambient {
+        --hero-wave-stop-1: #13bfc1;
+        --hero-wave-stop-2: #135c65;
+        --hero-wave-stop-3: #062433;
+        --hero-wave-stop-4: #070e1b;
         background-color: #070e1b;
         background-image:
             radial-gradient(64rem 40rem at 104% -4%, rgba(0, 90, 157, 0.16), transparent 62%),
             radial-gradient(52rem 34rem at -6% 42%, rgba(96, 194, 230, 0.13), transparent 60%),
             radial-gradient(48rem 32rem at 96% 96%, rgba(0, 90, 157, 0.10), transparent 58%);
+    }
+
+    @keyframes hero-wave-slide {
+        0% {
+            transform: translate3d(0, 0, 0);
+        }
+        100% {
+            transform: translate3d(-50%, 0, 0);
+        }
+    }
+
+    .hero-wave-drift {
+        animation: hero-wave-slide 11s linear infinite;
+        will-change: transform;
+    }
+
+    .hero-wave-drift-slow {
+        animation: hero-wave-slide 18s linear infinite reverse;
+        will-change: transform;
     }
 
     .aquatic-cta-surface {
@@ -620,7 +647,9 @@
         }
 
         .theme-icon-sun,
-        .theme-icon-moon {
+        .theme-icon-moon,
+        .hero-wave-drift,
+        .hero-wave-drift-slow {
             animation: none;
             opacity: 1;
             transform: none;
