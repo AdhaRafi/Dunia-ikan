@@ -16,6 +16,12 @@ const SPLIT_WAVE_MAIN_PATH =
 const SPLIT_WAVE_CRESCENT_PATH =
     'M 203.2 316.2 Q 212.0 310.0 224.4 318.8 Q 236.8 327.7 239.7 344.3 Q 242.5 360.9 235.7 377.6 Q 228.9 394.2 213.0 406.1 Q 197.0 417.9 180.5 418.9 Q 163.9 419.8 147.4 419.6 Q 130.8 419.5 114.3 410.8 Q 97.7 402.1 87.4 386.0 Q 77.1 370.0 72.9 353.4 Q 68.8 336.8 72.7 326.0 Q 76.7 315.3 93.2 330.0 Q 109.8 344.7 126.3 349.6 Q 142.9 354.5 159.0 345.5 Q 175.2 336.4 184.8 329.4 Q 194.4 322.4 203.2 316.2 Z';
 
+const SPLIT_WAVE_MAIN_NORM_PATH =
+    'M 0.4914 0.0251 Q 0.5131 0.0244 0.5635 0.0280 Q 0.6138 0.0315 0.6643 0.0483 Q 0.7148 0.0651 0.7633 0.0983 Q 0.8118 0.1312 0.8488 0.1729 Q 0.8855 0.2149 0.9116 0.2651 Q 0.9379 0.3151 0.9505 0.3654 Q 0.9633 0.4154 0.9667 0.4656 Q 0.9704 0.5159 0.9672 0.5659 Q 0.9638 0.6161 0.9424 0.6661 Q 0.9207 0.7163 0.8754 0.7624 Q 0.8300 0.8088 0.7796 0.8349 Q 0.7291 0.8610 0.6788 0.8639 Q 0.6283 0.8666 0.5904 0.8310 Q 0.5527 0.7951 0.5490 0.7449 Q 0.5456 0.6949 0.5222 0.6498 Q 0.4988 0.6046 0.4483 0.6005 Q 0.3978 0.5966 0.3475 0.6073 Q 0.2970 0.6180 0.2466 0.6293 Q 0.1961 0.6402 0.1458 0.6417 Q 0.0953 0.6432 0.0618 0.6046 Q 0.0283 0.5659 0.0288 0.5159 Q 0.0291 0.4656 0.0389 0.4154 Q 0.0485 0.3654 0.0709 0.3151 Q 0.0931 0.2651 0.1310 0.2161 Q 0.1687 0.1668 0.2185 0.1290 Q 0.2682 0.0910 0.3187 0.0685 Q 0.3690 0.0459 0.4195 0.0359 Q 0.4700 0.0259 0.4914 0.0251 Z';
+
+const SPLIT_WAVE_CRESCENT_NORM_PATH =
+    'M 0.4266 0.7176 Q 0.4483 0.7024 0.4788 0.7239 Q 0.5094 0.7456 0.5165 0.7861 Q 0.5234 0.8266 0.5067 0.8673 Q 0.4899 0.9078 0.4507 0.9368 Q 0.4113 0.9656 0.3707 0.9680 Q 0.3298 0.9702 0.2892 0.9698 Q 0.2483 0.9695 0.2076 0.9483 Q 0.1667 0.9271 0.1414 0.8878 Q 0.1160 0.8488 0.1057 0.8083 Q 0.0956 0.7678 0.1052 0.7415 Q 0.1150 0.7154 0.1557 0.7512 Q 0.1966 0.7871 0.2372 0.7990 Q 0.2781 0.8110 0.3177 0.7890 Q 0.3576 0.7668 0.3813 0.7498 Q 0.4049 0.7327 0.4266 0.7176 Z';
+
 export default function Welcome({ categories, featuredFish, featuredStores, stats }) {
     const { auth } = usePage().props;
     const { pick, isEn } = useLanguage();
@@ -57,92 +63,92 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
     const shopCategories = [
         {
             title: pick('Cupang', 'Betta Fish'),
-            image: '/images/categories/cupang.jpg',
+            image: '/images/categories/cupang.webp',
             link: '/products?category=ikan-hias&q=cupang',
         },
         {
             title: 'Channa',
-            image: '/images/categories/channa.jpg',
+            image: '/images/categories/channa.webp',
             link: '/products?category=ikan-hias&q=channa',
         },
         {
             title: 'Arwana',
-            image: '/images/categories/arwana.jpg',
+            image: '/images/categories/arwana.webp',
             link: '/products?category=ikan-hias&q=arwana',
         },
         {
             title: 'Koi',
-            image: '/images/categories/koi.jpg',
+            image: '/images/categories/koi.webp',
             link: '/products?category=ikan-hias&q=koi',
         },
         {
             title: pick('Mas Koki', 'Goldfish'),
-            image: '/images/categories/mas-koki.jpg',
+            image: '/images/categories/mas-koki.webp',
             link: '/products?category=ikan-hias&q=koki',
         },
         {
             title: 'Louhan',
-            image: '/images/categories/louhan.jpg',
+            image: '/images/categories/louhan.webp',
             link: '/products?category=ikan-hias&q=louhan',
         },
         {
             title: 'Discus',
-            image: '/images/categories/discus.jpg',
+            image: '/images/categories/discus.webp',
             link: '/products?category=ikan-hias&q=discus',
         },
         {
             title: 'Guppy',
-            image: '/images/categories/guppy.jpg',
+            image: '/images/categories/guppy.webp',
             link: '/products?category=ikan-hias&q=guppy',
         },
         {
             title: 'Neon Tetra',
-            image: '/images/categories/neon-tetra.jpg',
+            image: '/images/categories/neon-tetra.webp',
             link: '/products?water_type=freshwater&q=tetra',
         },
         {
             title: pick('Ikan Badut', 'Clownfish'),
-            image: '/images/categories/clownfish.jpg',
+            image: '/images/categories/clownfish.webp',
             link: '/products?water_type=saltwater&q=badut',
         },
         {
             title: 'Blue Tang',
-            image: '/images/categories/blue-tang.jpg',
+            image: '/images/categories/blue-tang.webp',
             link: '/products?water_type=saltwater&q=tang',
         },
         {
             title: pick('Filter Aquarium', 'Aquarium Filter'),
-            image: '/images/categories/filter-aquarium.jpg',
+            image: '/images/categories/filter-aquarium.webp',
             link: '/products?category=perlengkapan-aquarium&q=filter',
         },
         {
             title: pick('Tank Aquarium', 'Aquarium Tank'),
-            image: '/images/categories/tank-aquarium.jpg',
+            image: '/images/categories/tank-aquarium.webp',
             link: '/products?category=perlengkapan-aquarium&q=aquarium',
         },
         {
             title: pick('Pakan & Pelet', 'Food & Pellets'),
-            image: '/images/categories/pakan-ikan.jpg',
+            image: '/images/categories/pakan-ikan.webp',
             link: '/products?category=pakan-ikan',
         },
         {
             title: pick('Perawatan Air', 'Water Care'),
-            image: '/images/categories/perawatan-air.jpg',
+            image: '/images/categories/perawatan-air.webp',
             link: '/products?category=perawatan-ikan',
         },
         {
             title: 'Anubias',
-            image: '/images/categories/anubias.jpg',
+            image: '/images/categories/anubias.webp',
             link: '/products?category=aquascape&q=anubias',
         },
         {
             title: 'Bucephalandra',
-            image: '/images/categories/bucephalandra.jpg',
+            image: '/images/categories/bucephalandra.webp',
             link: '/products?category=aquascape&q=bucephalandra',
         },
         {
             title: pick('Tanaman Hias', 'Aquatic Plants'),
-            image: '/images/categories/tanaman-hias.jpg',
+            image: '/images/categories/tanaman-hias.webp',
             link: '/products?category=aquascape',
         },
     ];
@@ -178,9 +184,9 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                 {/* Full-Bleed Blue Ocean Clownfish Poster (Instant LCP) + Seamless Looping Video */}
                 <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden transform-gpu">
                     <picture className="block w-full h-full">
-                        <source media="(max-width: 767px)" srcSet="/images/hero/aquarium-poster-mobile.webp?v=2" />
+                        <source media="(max-width: 767px)" srcSet="/images/hero/aquarium-poster-mobile.webp?v=3" />
                         <img
-                            src="/images/hero/aquarium-poster.webp?v=2"
+                            src="/images/hero/aquarium-poster.webp?v=3"
                             width={1280}
                             height={720}
                             fetchpriority="high"
@@ -277,8 +283,8 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                     <img
                                         src={group.image}
                                         alt={group.title}
-                                        width={300}
-                                        height={300}
+                                        width={264}
+                                        height={264}
                                         loading={idx < 2 ? 'eager' : 'lazy'}
                                         fetchpriority={idx < 2 ? 'auto' : 'low'}
                                         decoding="async"
@@ -437,73 +443,89 @@ export default function Welcome({ categories, featuredFish, featuredStores, stat
                                     </div>
                                 </div>
 
-                                {/* Right Organic Split-Wave Underwater Ornamental Fish Porthole */}
+                                {/* Right Organic Split-Wave Underwater Ornamental Fish Porthole (HTML img + CSS clip-path for true lazy-loading) */}
                                 <div className="relative flex shrink-0 items-center justify-center w-full max-w-[300px] sm:max-w-[340px] lg:w-[375px] xl:w-[395px] lg:max-w-none">
-                                    <svg
-                                        viewBox="30 22 406 410"
-                                        role="img"
-                                        aria-label={pick(
-                                            'Koleksi ikan hias unggulan Dunia Ikan: discus, ikan kepe-kepe, cupang halfmoon, ikan badut, dan terumbu karang',
-                                            'Dunia Ikan ornamental fish showcase featuring discus, butterflyfish, halfmoon betta, clownfish, and coral reef',
-                                        )}
-                                        className="w-full h-auto select-none overflow-visible drop-shadow-[0_18px_28px_rgba(14,44,88,0.18)] dark:drop-shadow-[0_22px_36px_rgba(0,0,0,0.52)]"
-                                    >
-                                        <defs>
-                                            <clipPath id={`porthole-clip-${showcaseMaskId}`}>
-                                                <path d={SPLIT_WAVE_MAIN_PATH} />
-                                                <path d={SPLIT_WAVE_CRESCENT_PATH} />
-                                            </clipPath>
-                                            <linearGradient
-                                                id={`porthole-rim-${showcaseMaskId}`}
-                                                x1="0%"
-                                                y1="62%"
-                                                x2="100%"
-                                                y2="100%"
-                                            >
-                                                <stop offset="0%" stopColor="#084C6E" />
-                                                <stop offset="48%" stopColor="#0EA5C6" />
-                                                <stop offset="100%" stopColor="#4CE3F7" />
-                                            </linearGradient>
-                                        </defs>
+                                    <div className="relative w-full aspect-[406/410] select-none drop-shadow-[0_18px_28px_rgba(14,44,88,0.18)] dark:drop-shadow-[0_22px_36px_rgba(0,0,0,0.52)]">
+                                        <svg
+                                            viewBox="30 22 406 410"
+                                            aria-hidden="true"
+                                            className="absolute inset-0 w-full h-full overflow-visible"
+                                        >
+                                            <defs>
+                                                <clipPath
+                                                    id={`porthole-clip-${showcaseMaskId}`}
+                                                    clipPathUnits="objectBoundingBox"
+                                                >
+                                                    <path d={SPLIT_WAVE_MAIN_NORM_PATH} />
+                                                    <path d={SPLIT_WAVE_CRESCENT_NORM_PATH} />
+                                                </clipPath>
+                                                <linearGradient
+                                                    id={`porthole-rim-${showcaseMaskId}`}
+                                                    x1="0%"
+                                                    y1="62%"
+                                                    x2="100%"
+                                                    y2="100%"
+                                                >
+                                                    <stop offset="0%" stopColor="#084C6E" />
+                                                    <stop offset="48%" stopColor="#0EA5C6" />
+                                                    <stop offset="100%" stopColor="#4CE3F7" />
+                                                </linearGradient>
+                                            </defs>
 
-                                        {/* Luminous turquoise bevel edge beneath the split-wave porthole */}
-                                        <path
-                                            d={SPLIT_WAVE_MAIN_PATH}
-                                            transform="translate(2.5 5.5)"
-                                            fill={`url(#porthole-rim-${showcaseMaskId})`}
-                                        />
-                                        <path
-                                            d={SPLIT_WAVE_CRESCENT_PATH}
-                                            transform="translate(1.5 3.5)"
-                                            fill={`url(#porthole-rim-${showcaseMaskId})`}
-                                            opacity="0.72"
-                                        />
-
-                                        <g clipPath={`url(#porthole-clip-${showcaseMaskId})`}>
-                                            <image
-                                                href="/images/banners/fish-porthole-showcase.webp"
-                                                x="39"
-                                                y="30"
-                                                width="388"
-                                                height="392"
-                                                preserveAspectRatio="xMidYMid slice"
-                                                className="[transform-box:fill-box] origin-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                                            {/* Luminous turquoise bevel edge beneath the split-wave porthole */}
+                                            <path
+                                                d={SPLIT_WAVE_MAIN_PATH}
+                                                transform="translate(2.5 5.5)"
+                                                fill={`url(#porthole-rim-${showcaseMaskId})`}
                                             />
-                                        </g>
+                                            <path
+                                                d={SPLIT_WAVE_CRESCENT_PATH}
+                                                transform="translate(1.5 3.5)"
+                                                fill={`url(#porthole-rim-${showcaseMaskId})`}
+                                                opacity="0.72"
+                                            />
+                                        </svg>
 
-                                        <path
-                                            d={SPLIT_WAVE_MAIN_PATH}
-                                            fill="none"
-                                            strokeWidth="1.5"
-                                            className="stroke-white/30 dark:stroke-[#60C2E6]/45"
-                                        />
-                                        <path
-                                            d={SPLIT_WAVE_CRESCENT_PATH}
-                                            fill="none"
-                                            strokeWidth="1.5"
-                                            className="stroke-white/30 dark:stroke-[#60C2E6]/45"
-                                        />
-                                    </svg>
+                                        <div
+                                            className="absolute inset-0 overflow-hidden"
+                                            style={{
+                                                clipPath: `url(#porthole-clip-${showcaseMaskId})`,
+                                            }}
+                                        >
+                                            <img
+                                                src="/images/banners/fish-porthole-showcase.webp?v=2"
+                                                alt={pick(
+                                                    'Koleksi ikan hias unggulan Dunia Ikan: discus, ikan kepe-kepe, cupang halfmoon, ikan badut, dan terumbu karang',
+                                                    'Dunia Ikan ornamental fish showcase featuring discus, butterflyfish, halfmoon betta, clownfish, and coral reef',
+                                                )}
+                                                width={600}
+                                                height={600}
+                                                loading="lazy"
+                                                fetchpriority="low"
+                                                decoding="async"
+                                                className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                                            />
+                                        </div>
+
+                                        <svg
+                                            viewBox="30 22 406 410"
+                                            aria-hidden="true"
+                                            className="pointer-events-none absolute inset-0 w-full h-full overflow-visible"
+                                        >
+                                            <path
+                                                d={SPLIT_WAVE_MAIN_PATH}
+                                                fill="none"
+                                                strokeWidth="1.5"
+                                                className="stroke-white/30 dark:stroke-[#60C2E6]/45"
+                                            />
+                                            <path
+                                                d={SPLIT_WAVE_CRESCENT_PATH}
+                                                fill="none"
+                                                strokeWidth="1.5"
+                                                className="stroke-white/30 dark:stroke-[#60C2E6]/45"
+                                            />
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
                         </div>

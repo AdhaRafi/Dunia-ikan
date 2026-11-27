@@ -263,10 +263,11 @@ export default function AppLayout({ children, hideChatFab = false }) {
                         <span className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#A1E1EF] to-[#60C2E6] p-0.5 ring-2 ring-white dark:ring-slate-800 shadow-[0_10px_26px_rgba(30,128,160,0.32)] transition-all duration-200 group-hover:scale-105 group-active:scale-95">
                             <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#d8f3fb] via-[#9adcf0] to-[#60C2E6] p-1">
                                 <img
-                                    src="/images/kiko/avatar.webp"
+                                    src="/images/kiko/avatar.webp?v=2"
                                     alt="Kiko"
                                     width={56}
                                     height={48}
+                                    fetchpriority="low"
                                     decoding="async"
                                     className="h-full w-full object-contain -translate-y-0.5"
                                 />

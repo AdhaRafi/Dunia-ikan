@@ -42,8 +42,8 @@
         <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v=2">
 
         @if (in_array($page['component'] ?? '', ['Welcome', 'Guides/Index'], true))
-            <link rel="preload" as="image" media="(max-width: 767px)" href="{{ asset('images/hero/aquarium-poster-mobile.webp') }}?v=2" fetchpriority="high">
-            <link rel="preload" as="image" media="(min-width: 768px)" href="{{ asset('images/hero/aquarium-poster.webp') }}?v=2" fetchpriority="high">
+            <link rel="preload" as="image" media="(max-width: 767px)" href="{{ asset('images/hero/aquarium-poster-mobile.webp') }}?v=3" fetchpriority="high">
+            <link rel="preload" as="image" media="(min-width: 768px)" href="{{ asset('images/hero/aquarium-poster.webp') }}?v=3" fetchpriority="high">
         @endif
 
         <!-- Theme Detection Script -->
@@ -62,9 +62,57 @@
             })();
         </script>
 
-        <!-- Scripts & Core Styles (prioritize first-party Vite assets before external fonts) -->
-        @viteReactRefresh
-        @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
+        <!-- Scripts & Core Styles (inline production CSS to eliminate render-blocking stylesheet RTT) -->
+        @php
+            $manifestPath = public_path('build/manifest.json');
+            $useInlineProdAssets = ! file_exists(public_path('hot')) && file_exists($manifestPath);
+        @endphp
+        @if ($useInlineProdAssets)
+            @php
+                static $viteManifest = null;
+                static $viteCssCache = [];
+                if ($viteManifest === null) {
+                    $viteManifest = json_decode(file_get_contents($manifestPath), true) ?: [];
+                }
+                $appEntry = $viteManifest['resources/js/app.jsx'] ?? null;
+                $pageKey = "resources/js/Pages/{$page['component']}.jsx";
+                $pageEntry = $viteManifest[$pageKey] ?? null;
+                $preloadKeys = array_values(array_unique(array_merge(
+                    $appEntry['imports'] ?? [],
+                    $pageEntry['imports'] ?? [],
+                )));
+                $cssFiles = array_values(array_unique(array_merge(
+                    $appEntry['css'] ?? [],
+                    $pageEntry['css'] ?? [],
+                    ...array_map(fn ($key) => $viteManifest[$key]['css'] ?? [], $preloadKeys),
+                )));
+            @endphp
+            @foreach ($cssFiles as $cssFile)
+                @php
+                    if (! array_key_exists($cssFile, $viteCssCache)) {
+                        $fullCssPath = public_path('build/' . $cssFile);
+                        $viteCssCache[$cssFile] = file_exists($fullCssPath) ? file_get_contents($fullCssPath) : '';
+                    }
+                @endphp
+                @if ($viteCssCache[$cssFile] !== '')
+                    <style>{!! $viteCssCache[$cssFile] !!}</style>
+                @endif
+            @endforeach
+            @foreach ($preloadKeys as $importKey)
+                @if (! empty($viteManifest[$importKey]['file']))
+                    <link rel="modulepreload" href="{{ asset('build/' . $viteManifest[$importKey]['file']) }}">
+                @endif
+            @endforeach
+            @if (! empty($appEntry['file']))
+                <script type="module" src="{{ asset('build/' . $appEntry['file']) }}"></script>
+            @endif
+            @if (! empty($pageEntry['file']))
+                <script type="module" src="{{ asset('build/' . $pageEntry['file']) }}"></script>
+            @endif
+        @else
+            @viteReactRefresh
+            @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
+        @endif
         @inertiaHead
 
         <!-- Fonts (non-render-blocking) -->
